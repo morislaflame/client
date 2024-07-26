@@ -1,0 +1,23 @@
+.card_list {
+    width: 50%;
+    margin-top: 15px;
+    marker: none;
+
+}
+
+.card {
+    width: 100%;
+    cursor: pointer; 
+    padding: 15px; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 15px;
+    border-color: #edf2f4;
+}
+
+.card_img {
+    width: 80%;
+}

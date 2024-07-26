@@ -1,0 +1,87 @@
+.container {
+    width: 100vw;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    overflow-x: hidden;
+}
+
+.topic {
+    font-size: 5em;
+}
+
+.photo {
+    width: 50%;
+    margin-bottom: 30px;
+}
+
+.img {
+    width: 100%;
+}
+
+.price-n-buy {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    left: 40px;
+    top: 73px;
+    justify-content: center;
+    align-items: center;
+    gap: 7px;
+    padding: 5px;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    
+}
+
+.price {
+    font-size: 2em
+}
+
+.buy {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background-color: black;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    padding: 10px;
+}
+
+.buy:hover {
+    background-color: #2B2D42;
+    color: white;
+}
+
+.description {
+    display: flex;
+    flex-direction: column;
+    margin: 15px;
+    gap: 4px;
+    padding: 10px;
+    border-style: solid;
+    border-width: 2px;
+    border-radius: 5px;
+    position: absolute;
+    right: 40px;
+    top: 73px;
+    text-align: center;
+}
+
+.des_str {
+    background-color: white;
+    padding: 5px;
+}
+
+.des_str.second {
+    background-color: #4cc9f0;
+    color: white;
+    
+}
