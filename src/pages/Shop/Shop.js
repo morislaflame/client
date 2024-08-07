@@ -1,6 +1,4 @@
 import React, { useContext, useEffect } from 'react';
-import Col from 'react-bootstrap/esm/Col';
-import Row from 'react-bootstrap/Row';
 import TypeBar from '../../components/TypeBar/TypeBar';
 import './Shop.css'
 import BrandBar from '../../components/BrandBar/BrandBar';
@@ -23,7 +21,7 @@ const Shop = observer(() => {
   }, [])
 
   useEffect(() => {
-    fetchThings(thing.selectedType.id, thing.selectedBrand.id, thing.page, 2).then(data => { // Здесь указываем кол-во товаров на странице
+    fetchThings(thing.selectedType.id, thing.selectedBrand.id, thing.page, 2).then(data => {
       thing.setThings(data.rows)
       thing.setTotalCount(data.count)
     })

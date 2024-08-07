@@ -1,0 +1,324 @@
+:root {
+    --index: calc(1vw + 1vh);
+    --transition: transform .75s cubic-bezier(.075, .5, 0, 1);
+}
+
+.main {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    display: flex; /* Используем flexbox для центрирования */
+    flex-direction: column;
+    justify-content: center; /* Горизонтальное центрирование */
+    min-height: 100vh; /* Устанавливаем высоту main на 100% высоты окна */
+    background: black; /* Цвет фона main для наглядности */
+    font-family: "Montserrat", sans-serif;
+    
+  }
+
+.mainPhoto {
+    width: 100%; /* Ширина container 50% от main */
+    height: 95vh; /* Высота container 50% от main */
+    background: 
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
+     /* Полупрозрачный черный фон */
+    background-size: cover; /* Заднее фото покрывает весь контейнер */
+    background-position: center; /* Центрирование заднего фото */
+    display: flex; /* Горизонтальное центрирование контента внутри container */
+    justify-content: right;
+    align-items: center; /* Вертикальное центрирование контента внутри container */
+    z-index: 1 ;
+}
+
+.skeleton {
+    height: 70vh;
+    width: 60%;
+    left: 0;
+    background: url('../../../../server/static/back.jpg');
+    background-size: cover; /* Заднее фото покрывает весь контейнер */
+    background-position: center;
+}
+
+  .mainArticle {
+    width: 60%;
+    height: 100%;
+    display: flex; /* Горизонтальное центрирование контента внутри container */
+    align-items: center; /* Вертикальное центрирование контента внутри container */
+    justify-content: center;
+    flex-direction: column;
+    background-color: black;
+    z-index: 10;
+    color: white;
+    top: 27vh;
+    text-align: center;
+  }
+
+  .mainArticle h1 {
+    font-size: 5em;
+    font-weight: 900;
+  }
+
+  .mainArticle h3 {
+    margin-top: 80px;
+    text-align: center;
+    /* margin-left: 3vw; */
+  }
+
+  @media (max-width: 600px) {
+    .mainPhoto {
+      flex-direction: column;
+      height: 80vh;
+    }
+  
+    .mainArticle {
+      background-color: rgba(0, 0, 0, 0);
+      width: 100%;
+    }
+
+    .mainArticle h1 {
+      font-size: calc(var(--index) * 4);
+    }
+
+    .mainArticle h3 {
+      font-size: 1em;
+      padding: 20px;
+      margin-top: 0;
+    }
+
+    .skeleton {
+      position: absolute;
+      width: 100%;
+      height: calc(var(--index) * 17);
+      bottom: 0;
+      z-index: -1;
+      background: url('../../../../server/static/backtwo.jpg') no-repeat center center;
+      background-size: contain; /* Изображение полностью помещается внутри элемента */
+    }
+  }
+
+  .infoBox {
+    margin-top: 20px;
+    width: 100%;
+    min-height: 100vh;
+    background-color: black;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+  }
+
+  @media (max-width: 600px) {
+    .infoBox {
+      padding: calc(var(--index) * 3);
+    }
+  }
+
+  .infoBar {
+    width: 70%;
+    padding: 20px;
+    background-color: black;
+    display: flex; 
+    flex-direction: column;
+    align-items: center;
+    justify-items: center;
+    border-style: solid;
+    border-color: #fedada;
+    box-shadow: 
+        0 0 2px #fedada36, 
+        0 0 5px #fedada36, 
+        0 0 10px #fedada36, 
+        0 0 15px #fedada36;
+    border-width: 3px;
+    border-radius: 10px;
+    z-index: 30;
+  }
+
+  @media (max-width: 600px) {
+    .infoBar {
+      width: 100%;
+    }
+  }
+
+  .article {
+    padding: 15px;
+    background-color: white;
+    color: black;
+    width: 700px;
+    height: fit-content;
+    font-size: 1em;
+    font-weight: 700;
+    text-align: center;
+    border-radius: 10px;
+  }
+
+  @media (max-width: 600px) {
+    .article {
+      font-size: calc(var(--index) * 1);
+      width: 100%;
+    }
+  }
+
+  .perfomance {
+    padding: 15px;
+    color: white;
+    width: 100%;
+    height: fit-content;
+    font-size: 1em;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 20px;
+  }
+
+  @media (max-width: 600px) {
+    .perfomance{
+      padding: 15px 0 0 0;
+      font-size: calc(var(--index) * 1);
+    }
+  }
+
+  .advantages {
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+  }
+
+  @media (max-width: 600px) {
+    .advantages {
+      padding: 15px 0 0 0;
+      font-size: calc(var(--index) * 1);
+    }
+  }
+
+  .advList {
+    margin-top: 25px;
+    background-color: black;
+    color: white;
+    width: 80vw;
+    height: fit-content;
+    font-size: 1em;
+    font-weight: 500;
+    text-align: center;
+    border-radius: 12px;
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+  }
+
+  @media (max-width: 600px) {
+    .advList{
+      padding: 15px 0 0 0;
+      flex-direction: column;
+      font-size: calc(var(--index) * 1);
+      width: 100%;
+    }
+  }
+
+  .advListTop {
+    width: 100%;
+    height: calc(var(--index) * 15);
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .advListTop h3 {
+    position: absolute;
+    right: calc(var(--index) * 6);
+    font-weight: 600;
+  }
+
+  .art {
+    width: 60%;
+    height: 100%;
+    margin-bottom: 0;
+    background: linear-gradient(to right, #ce3b7e99, #000000db, #ce3b7e99 ), 
+    url('../../../../server/static/girls2.jpg');
+    filter: blur(calc(var(--index) * 4));
+    background-size: cover;
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    border-radius: 0 calc(var(--index) * 1) calc(var(--index) * 1) 0;
+  }
+
+  .pic {
+    width: 40%;
+    height: 150px;
+    padding: 10px;
+    background: url('../../../../server/static/girls2.jpg') no-repeat center center;
+    background-size: cover;
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    border-radius: calc(var(--index) * 1) 0 0 calc(var(--index) * 1) ;
+    z-index: 30;
+  }
+
+  @media (max-width: 600px) {
+    .pic{
+      height: 100%;
+    }
+  }
+
+  .txt {
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    z-index: 30;
+  }
+
+  @media (max-width: 600px) {
+    .txt{
+      text-align: left;
+      padding: calc(var(--index) * 3) 0 0 0;
+
+    }
+  }
+
+
+  .advListTop2 {
+    width: 100%;
+    height: calc(var(--index) * 15);
+    display: flex;
+    justify-content: left;
+    align-items: center;
+  }
+
+  .advListTop2 h3 {
+    position: absolute;
+    left: calc(var(--index) * 4);
+    font-weight: 600;
+  }
+
+  .art2 {
+    width: 60%;
+    height: 100%;
+    margin-bottom: 0;
+    background: linear-gradient(to right, #5b04f5b8, #000000db, #5b04f5b8 ), 
+    url('../../../../server/static/middleman.jpg');
+    filter: blur(calc(var(--index) * 4));
+    background-size: cover;
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    border-radius: 0 calc(var(--index) * 1) calc(var(--index) * 1) 0;
+  }
+
+  .pic2 {
+    width: 40%;
+    height: 150px;
+    padding: 10px;
+    background: url('../../../../server/static/middleman.jpg') no-repeat center center;
+    background-size: cover;
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    border-radius: 0 calc(var(--index) * 1) calc(var(--index) * 1) 0;
+    z-index: 30;
+  }
+
+  @media (max-width: 600px) {
+    .pic2{
+      height: 100%;
+    }
+  }

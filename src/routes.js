@@ -4,7 +4,8 @@ import Basket from "./pages/Basket";
 import Shop from "./pages/Shop/Shop";
 import Auth from "./pages/Auth";
 import ThingPage from "./pages/ThingPage/ThingPage";
-import { ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE, THING_ROUTE } from "./utils/consts";
+import { ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE, THING_ROUTE, MAIN_ROUTE } from "./utils/consts";
+import Main from "./pages/Main/Main";
 
 export const authRoutes = [
     {
@@ -18,6 +19,10 @@ export const authRoutes = [
 ]
 
 export const publicRoutes = [
+    {
+        path: MAIN_ROUTE,
+        Component: <Main/>
+    },
     {
         path: SHOP_ROUTE,
         Component: <Shop/>

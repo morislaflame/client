@@ -1,0 +1,19 @@
+.story-slider {
+    margin: 20px 0;
+  }
+  
+  .story-card {
+    padding: 10px;
+    text-align: center;
+  }
+  
+  .story-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  
+  .story-card p {
+    margin-top: 10px;
+    font-size: 14px;
+  }

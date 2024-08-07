@@ -13,6 +13,7 @@ const ThingPage = () => {
 
   return (
     <div className={'container'}>
+      
         <div className='name'>
           <h2 className={'topic'}>{thing.name}</h2>
         </div>
@@ -47,8 +48,12 @@ const ThingPage = () => {
         </div>
         <div className='description'>
           {thing.info.map((info, index) =>
-            <div key={info.id} className={`des_str ${index === 12 ? 'second' : ''}`}>
-              {info.title}: {info.description}
+            <div key={info.id} className='des_str'>
+              <span>AGE: {info.age}</span>
+              <span>SMARTPHONE: {info.smartphone}</span>
+              <span>% FOR HER: {info.percent}</span>
+              <span>TIME PER DAY: {info.time}</span>
+              <span>ENGLISH LEVEL: {info.english}</span>
             </div>
           )}
         </div>
