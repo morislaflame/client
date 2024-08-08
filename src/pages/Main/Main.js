@@ -1,16 +1,20 @@
 import React from 'react';
 import './Main.css';
 import ProductSlider from '../../components/ProductSlider/ProductSlider';
+import StorySlider from '../../components/StorySlider/StorySlider';
+import MyButton from '../../components/MyButton/MyButton';
+import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 
 export default function Main() {
   return (
-    <div className='main'>  
+    <div className='main'>
+        <StorySlider /> {/* Добавляем компонент ProductSlider */} 
         <div className='mainPhoto'>
-            <div className='skeleton'></div>
             <div className='mainArticle'>
                 <h1>THE MODEL'S HOTEL</h1>
                 <h3>Here you can buy models for OnlyFans and other platforms (please check “platforms available” section)</h3>
             </div>
+            <div className='skeleton'></div>
         </div>
 
         <div className='infoBox'>
@@ -59,8 +63,11 @@ export default function Main() {
                     </div>
                 </div>
             </div>
+            <MyButton text="Перейти в магазин" />
         </div>
         <ProductSlider /> {/* Добавляем компонент ProductSlider */}
+        <h2 className='Faq'>FAQ</h2>
+        <FaqAccordion />
     </div>
   )
 }

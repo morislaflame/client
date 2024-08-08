@@ -24,7 +24,7 @@ const NavBar = observer(() => {
         <Navbar expand="lg" className="bg-body-tertiary">
         {user.isAuth ?
         <Container fluid>
-            <Navbar.Brand href="/">TUTTO ITALIANO</Navbar.Brand>
+            <Navbar.Brand href="/">Model's Hotel</Navbar.Brand>
             <Navbar.Toggle aria-controls="navbarScroll" />
             <Navbar.Collapse id="navbarScroll">
             <Nav

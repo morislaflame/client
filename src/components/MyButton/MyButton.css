@@ -1,0 +1,36 @@
+:root {
+    --index: calc(1vw + 1vh);
+    --transition: transform .75s cubic-bezier(.075, .5, 0, 1);
+}
+
+.main-button {
+    margin: calc(var(--index) * 2.3) 0;
+}
+
+.skelet {
+    height: calc(var(--index) * 3);
+    width: 40%;
+    background: url('../../../../server/static/button.jpg') no-repeat center center;
+    background-size: contain; /* Изображение полностью помещается внутри элемента */
+}
+
+.my-button {
+    padding: calc(var(--index) * 1) calc(var(--index) * 4);
+    background-color: #5800f4;
+    color: #fff;
+    border-style: solid;
+    border-color: #fedada;
+    border-radius: 5px;
+    box-shadow: 
+        0 0 2px #5b04f582, 
+        0 0 5px #5b04f582, 
+        0 0 10px #5b04f582, 
+        0 0 15px #5b04f582;
+    cursor: pointer;
+    border-width: 1px;
+    font-size: calc(var(--index) * 1.5);
+  }
+  
+  .my-button:hover {
+    background-color: #0056b3;
+  }

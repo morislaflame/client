@@ -1,19 +1,47 @@
+/* src/components/StorySlider.css */
 .story-slider {
-    margin: 20px 0;
+    width: 100%;
+    margin: calc(var(--index) * 3) 0;
+  }
+  
+  .story-group {
+    display: flex;
+    justify-content: center;
+    gap: calc(var(--index) * 0); /* Расстояние между историями */
+  }
+
+  .carousel-inner {
+    width: 80%;
+  }
+
+  .carousel {
+    display: flex;
+    justify-content: center;
   }
   
   .story-card {
-    padding: 10px;
+    flex: 1;
+    padding: calc(var(--index) * 0.5);
     text-align: center;
+    cursor: pointer;
+    width: 150px;
+    color: white;
   }
   
   .story-card img {
-    width: 100%;
-    height: auto;
-    border-radius: 10px;
+    width: calc(var(--index) * 6);
+    height: calc(var(--index) * 6);
+    border-radius: 50%;
   }
   
   .story-card p {
     margin-top: 10px;
     font-size: 14px;
   }
+  
+  .modal-img {
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+  }
+  

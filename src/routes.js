@@ -4,8 +4,10 @@ import Basket from "./pages/Basket";
 import Shop from "./pages/Shop/Shop";
 import Auth from "./pages/Auth";
 import ThingPage from "./pages/ThingPage/ThingPage";
-import { ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE, THING_ROUTE, MAIN_ROUTE } from "./utils/consts";
+import { ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE, THING_ROUTE, MAIN_ROUTE, TERMS_ROUTE, PRIVACY_ROUTE } from "./utils/consts";
 import Main from "./pages/Main/Main";
+import TermsOfService from "./pages/TermsOfService/TermsOfService";
+import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 
 export const authRoutes = [
     {
@@ -38,5 +40,13 @@ export const publicRoutes = [
     {
         path: THING_ROUTE + '/:id',
         Component: <ThingPage/>
+    },
+    {
+        path: TERMS_ROUTE,
+        Component: <TermsOfService/>
+    },
+    {
+        path: PRIVACY_ROUTE,
+        Component: <PrivacyPolicy/>
     },
 ]

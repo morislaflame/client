@@ -25,6 +25,7 @@
     background-size: cover; /* Заднее фото покрывает весь контейнер */
     background-position: center; /* Центрирование заднего фото */
     display: flex; /* Горизонтальное центрирование контента внутри container */
+    flex-direction: column;
     justify-content: right;
     align-items: center; /* Вертикальное центрирование контента внутри container */
     z-index: 1 ;
@@ -44,12 +45,10 @@
     height: 100%;
     display: flex; /* Горизонтальное центрирование контента внутри container */
     align-items: center; /* Вертикальное центрирование контента внутри container */
-    justify-content: center;
     flex-direction: column;
     background-color: black;
     z-index: 10;
     color: white;
-    top: 27vh;
     text-align: center;
   }
 
@@ -67,12 +66,13 @@
   @media (max-width: 600px) {
     .mainPhoto {
       flex-direction: column;
-      height: 80vh;
+      height: 70vh;
     }
   
     .mainArticle {
       background-color: rgba(0, 0, 0, 0);
       width: 100%;
+      margin-top: calc(var(--index) * 3);
     }
 
     .mainArticle h1 {
@@ -86,10 +86,10 @@
     }
 
     .skeleton {
-      position: absolute;
+      /* position: absolute; */
       width: 100%;
-      height: calc(var(--index) * 17);
-      bottom: 0;
+      height: calc(var(--index) * 30);
+      bottom: calc(var(--index) * 0);
       z-index: -1;
       background: url('../../../../server/static/backtwo.jpg') no-repeat center center;
       background-size: contain; /* Изображение полностью помещается внутри элемента */
@@ -108,7 +108,8 @@
 
   @media (max-width: 600px) {
     .infoBox {
-      padding: calc(var(--index) * 3);
+      margin: calc(var(--index) * -2) 0;
+      padding: 0 calc(var(--index) * 3) calc(var(--index) * 3) calc(var(--index) * 3);
     }
   }
 
@@ -179,12 +180,12 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: calc(var(--index) * 5);
   }
 
   @media (max-width: 600px) {
     .advantages {
-      padding: 15px 0 0 0;
+      padding: calc(var(--index) * 7) 0 calc(var(--index) * 2) 0;
       font-size: calc(var(--index) * 1);
     }
   }
@@ -321,4 +322,10 @@
     .pic2{
       height: 100%;
     }
+  }
+
+  .Faq {
+    color: white;
+    align-self: center;
+    margin-top: calc(var(--index) * 5);
   }

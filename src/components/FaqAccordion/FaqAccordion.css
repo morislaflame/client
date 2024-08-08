@@ -1,0 +1,41 @@
+:root {
+  --index: calc(1vw + 1vh);
+  --transition: transform .75s cubic-bezier(.075, .5, 0, 1);
+}
+
+.accordion {
+  cursor: pointer;
+  padding: calc(var(--index) * 3);
+  --bs-accordion-bg: #48152d1a;
+  --bs-accordion-btn-color: white;
+  color: #fff;
+  border-radius: 5px;
+}
+
+.accordion-item {
+  border-style: solid;
+    box-shadow: 
+        0 0 2px #5b04f582, 
+        0 0 5px #5b04f582, 
+        0 0 7px #5b04f582; 
+        
+    cursor: pointer;
+    border-width: 1px;
+    font-size: calc(var(--index) * 1.5);
+    margin-right: 0;
+    
+}
+
+.accordion-header {
+  border-radius: 5px;
+}
+
+.accordion-body {
+  background-color: #fff; /* Цвет фона тела аккордеона */
+  color: #000; /* Цвет текста тела аккордеона */
+}
+
+.accordion-button:not(.collapsed) {
+  background-color: #e2e3e5; /* Цвет фона активного заголовка */
+  color: #000; /* Цвет текста активного заголовка */
+}
