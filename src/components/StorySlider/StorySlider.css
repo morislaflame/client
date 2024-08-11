@@ -45,3 +45,16 @@
     border-radius: 10px;
   }
   
+  .modal-content {
+    flex-direction: column-reverse;
+    height: 90vh;
+  }
+
+  .modal-header {
+    /* position: absolute; */
+    z-index: 100;
+  }
+
+  .modal-body {
+    display: flex;
+  }

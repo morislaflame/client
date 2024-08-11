@@ -49,7 +49,7 @@ const StorySlider = () => {
         <Modal.Header closeButton>
           <Modal.Title>{selectedStory && selectedStory.title}</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
+        <Modal.Body> 
           {selectedStory && (
             <img
               src={`${process.env.REACT_APP_API_URL}${selectedStory.img}`}

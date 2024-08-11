@@ -14,10 +14,30 @@ const ProductSlider = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 3,
+    slidesToShow: 7,
     slidesToScroll: 1,
     autoplay: true,
     autoplaySpeed: 2000,
+    responsive: [
+      {
+        breakpoint: 1024, // Ширина экрана меньше 1024 пикселей
+        settings: {
+          slidesToShow: 5, // Количество слайдов для экранов среднего размера
+        },
+      },
+      {
+        breakpoint: 768, // Ширина экрана меньше 768 пикселей
+        settings: {
+          slidesToShow: 4, // Количество слайдов для планшетов
+        },
+      },
+      {
+        breakpoint: 480, // Ширина экрана меньше 480 пикселей
+        settings: {
+          slidesToShow: 3, // Количество слайдов для телефонов
+        },
+      },
+    ],
   };
 
   return (
