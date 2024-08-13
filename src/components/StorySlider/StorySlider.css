@@ -10,7 +10,7 @@
     gap: calc(var(--index) * 0); /* Расстояние между историями */
   }
 
-  .carousel-inner {
+  .story-slider .carousel-inner {
     width: 80%;
   }
 
@@ -46,15 +46,20 @@
   }
   
   .modal-content {
-    flex-direction: column-reverse;
-    min-height: 90vh;
+    min-height: auto;
   }
 
   .modal-header {
     /* position: absolute; */
     z-index: 100;
+    border-bottom: 0;
   }
 
-  .modal-body {
+  .story.modal-body {
     display: flex;
+
+  }
+
+  .story .modal-img {
+    height: 100%;
   }

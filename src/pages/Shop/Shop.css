@@ -6,6 +6,7 @@
     min-height: fit-content;
     overflow: hidden;
     min-height: 100vh;
+    background-color: black;
 }
 
 .sidebar {
@@ -22,4 +23,5 @@
     width: 77%;
     padding: 0 20px 0 10px;
     justify-content: center;
+    
 }

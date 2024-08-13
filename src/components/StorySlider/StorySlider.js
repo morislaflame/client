@@ -46,10 +46,7 @@ const StorySlider = () => {
       </Carousel>
 
       <Modal show={modalShow} onHide={handleClose} centered>
-        <Modal.Header closeButton>
-          <Modal.Title>{selectedStory && selectedStory.title}</Modal.Title>
-        </Modal.Header>
-        <Modal.Body> 
+        <Modal.Body className='story' closeButton> 
           {selectedStory && (
             <img
               src={`${process.env.REACT_APP_API_URL}${selectedStory.img}`}
@@ -58,6 +55,9 @@ const StorySlider = () => {
             />
           )}
         </Modal.Body>
+        <Modal.Header>
+          <Modal.Title>{selectedStory && selectedStory.title}</Modal.Title>
+        </Modal.Header>
       </Modal>
     </div>
   );

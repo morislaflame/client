@@ -1,23 +1,69 @@
+:root {
+    --index: calc(1vw + 1vh);
+  }
+
 .card_list {
     width: 50%;
     margin-top: 15px;
-    marker: none;
-
 }
+
+@media (max-width: 600px) {
+    .card_list {
+        width: 50%;
+        margin-top: 15px;
+    }
+  }
 
 .card {
     width: 100%;
     cursor: pointer; 
-    padding: 15px; 
+    padding: calc(var(--index) * 0.5); 
     display: flex;
     align-items: center;
     justify-content: center;
     border-style: solid;
-    border-width: 2px;
-    border-radius: 15px;
-    border-color: #edf2f4;
+    border-color: #fedada;
+    border-radius: calc(var(--index) * 0.7);
+    box-shadow: 
+        0 0 2px #5b04f582, 
+        0 0 5px #5b04f582, 
+        0 0 10px #5b04f582, 
+        0 0 15px #5b04f582;
+    cursor: pointer;
+    border-width: 1px;
 }
 
 .card_img {
-    width: 80%;
+    width: 95%;
+}
+
+.brand-item {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--index) * 1);
+    
+    font-size: calc(var(--index) * 1); /* Расстояние между иконкой и текстом */
+}
+
+
+.brand-icon {
+    width: calc(var(--index) * 2); /* Ширина иконки */
+    height: auto; /* Высота иконки */
+}
+
+.descript {
+    margin-top: calc(var(--index) * 0);
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: calc(var(--index) * 1);
+    flex-wrap: wrap;
+    
+    padding: calc(var(--index) * 0.7);
+}
+
+.thingName {
+    font-size: calc(var(--index) * 2);
 }

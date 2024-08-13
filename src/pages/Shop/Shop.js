@@ -14,21 +14,21 @@ const Shop = observer(() => {
   useEffect(() => {
     fetchTypes().then(data => thing.setTypes(data))
     fetchBrands().then(data => thing.setBrands(data))
-    fetchThings(null, null, 1, 2).then(data => { // Здесь указываем кол-во товаров на странице
+    fetchThings(null, null, 1, 6).then(data => { // Здесь указываем кол-во товаров на странице
       thing.setThings(data.rows)
       thing.setTotalCount(data.count)
     })
   }, [])
 
   useEffect(() => {
-    fetchThings(thing.selectedType.id, thing.selectedBrand.id, thing.page, 2).then(data => {
+    fetchThings(thing.selectedType.id, thing.selectedBrand.id, thing.page, 6).then(data => {
       thing.setThings(data.rows)
       thing.setTotalCount(data.count)
     })
   }, [thing.page, thing.selectedType, thing.selectedBrand])
 
   return (
-    <div style={{display: 'flex', minHeight: '100vh'}}>
+    <div style={{display: 'flex', minHeight: '100vh', backgroundColor: 'black'}}>
       <div className={'sidebar'}>
         <div>
           <TypeBar/>
