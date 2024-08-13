@@ -6,46 +6,75 @@ import Row from 'react-bootstrap/Row';
 import Col from 'react-bootstrap/Col';
 import Dropdown from "react-bootstrap/esm/Dropdown";
 import { Context } from "../../index";
-import { createThing, fetchBrands, fetchThings, fetchTypes } from '../../http/thingAPI';
+import { createThing, fetchBrands, fetchTypes } from '../../http/thingAPI';
 import { observer } from "mobx-react-lite";
 
 const CreateModel = observer(({show, onHide}) => {
-    const{thing} = useContext(Context)
-    const [name, setName] = useState('')
-    const [price, setPrice] = useState(0)
-    const [file, setFile] = useState(null)
-    const [info, setInfo] = useState([])
+    const {thing} = useContext(Context);
+    const [name, setName] = useState('');
+    const [price, setPrice] = useState(0);
+    const [files, setFiles] = useState([]);
+    const [info, setInfo] = useState([]); // Инициализация как массива
+    const [selectedBrands, setSelectedBrands] = useState([]);
 
     useEffect(() => {
-        fetchTypes().then(data => thing.setTypes(data))
-        fetchBrands().then(data => thing.setBrands(data))
-      }, [])
+        fetchTypes().then(data => thing.setTypes(data));
+        fetchBrands().then(data => thing.setBrands(data));
+    }, [thing]);
 
     const addInfo = () => {
-        setInfo([...info, {title: '', description: '', number: Date.now()}])
+        setInfo(prevInfo => [...prevInfo, {
+            age: '', 
+            smartphone: '', 
+            percent: '', 
+            time: '', 
+            english: '', 
+            content: '', 
+            contract: '', 
+            start: '', 
+            socialmedia: '', 
+            tiktok: '', 
+            cblocked: '', 
+            ofverif: '',
+            number: Date.now()
+        }]);
     }
 
     const removeInfo = (number) => {
-        setInfo(info.filter(i => i.number !== number))
+        setInfo(prevInfo => prevInfo.filter(i => i.number !== number));
     }
 
     const changeInfo = (key, value, number) => {
-        setInfo(info.map(i => i.number === number ? {...i, [key]: value} : i))
+        setInfo(prevInfo => prevInfo.map(i => i.number === number ? {...i, [key]: value} : i));
     }
 
-    const selectFile = e => {
-        setFile(e.target.files[0])
+    const selectFiles = e => {
+        setFiles(Array.from(e.target.files));
+    }
+
+    const toggleBrandSelection = (brand) => {
+        if (selectedBrands.includes(brand)) {
+            setSelectedBrands(prevBrands => prevBrands.filter(b => b.id !== brand.id));
+        } else {
+            setSelectedBrands(prevBrands => [...prevBrands, brand]);
+        }
     }
 
     const addThing = () => {
-        const formData = new FormData()
-        formData.append('name', name)
-        formData.append('price', `${price}`)
-        formData.append('img', file)
-        formData.append('brandId', thing.selectedBrand.id)
-        formData.append('typeId', thing.selectedType.id)
-        formData.append('info', JSON.stringify(info))
-        createThing(formData).then(data => onHide())
+        const formData = new FormData();
+        formData.append('name', name);
+        formData.append('price', `${price}`);
+        formData.append('typeId', thing.selectedType.id);
+        formData.append('info', JSON.stringify(info));
+
+        const brandIds = selectedBrands.map(b => b.id);
+        formData.append('brandIds', JSON.stringify(brandIds));
+
+        files.forEach(file => {
+            formData.append('img', file);
+        });
+
+        createThing(formData).then(data => onHide());
     }
 
     return (
@@ -75,13 +104,13 @@ const CreateModel = observer(({show, onHide}) => {
                     </Dropdown.Menu>
                 </Dropdown>
                 <Dropdown className="mt-3 mb-2">
-                    <Dropdown.Toggle>{thing.selectedBrand.name || "Выберите бренд"}</Dropdown.Toggle>
+                    <Dropdown.Toggle>{selectedBrands.length > 0 ? selectedBrands.map(b => b.name).join(", ") : "Выберите бренды"}</Dropdown.Toggle>
                     <Dropdown.Menu>
                         {thing.brands.map(brand => 
                             <Dropdown.Item 
-                                onClick={() => thing.setSelectedBrand(brand)} 
+                                onClick={() => toggleBrandSelection(brand)} 
                                 key={brand.id}>
-                                {brand.name}
+                                {brand.name} {selectedBrands.includes(brand) ? "(выбрано)" : ""}
                             </Dropdown.Item>
                         )}
                     </Dropdown.Menu>
@@ -90,43 +119,114 @@ const CreateModel = observer(({show, onHide}) => {
                     value={name}
                     onChange={e => setName(e.target.value)}
                     className="mt-3"
-                    placeholder="Введите имя чепки"
+                    placeholder="Введите имя товара"
                 />
                 <Form.Control
                     value={price}
                     onChange={e => setPrice(Number(e.target.value))}
                     className="mt-3"
-                    placeholder="Введите цену чепки"
+                    placeholder="Введите цену товара"
                     type="number"
                 />
                 <Form.Control
                     className="mt-3"
                     type="file"
-                    onChange={selectFile}
+                    onChange={selectFiles}
+                    multiple
                 />
+                <Button variant="outline-dark" onClick={addInfo} className="mt-3">Добавить информацию</Button>
                 <hr/>
-                <Button variant="outline-dark" onClick={addInfo}>Добавить Замечание</Button>
-                {info.map(i => 
-                    <Row className="mt-3" key={i.number}>
-                        <Col md={4}>
+                {info.map(i => (
+                    <Row key={i.number} className="mt-3">
+                        <Col md={6}>
                             <Form.Control
-                                value={i.title}
-                                onChange={(e) => changeInfo('title', e.target.value, i.number)}
-                                placeholder='Введите название замечания'
+                                value={i.age}
+                                onChange={e => changeInfo('age', e.target.value, i.number)}
+                                placeholder='Возраст'
                             />
                         </Col>
-                        <Col md={4}>
+                        <Col md={6}>
                             <Form.Control
-                                value={i.description}
-                                onChange={(e) => changeInfo('description', e.target.value, i.number)}
-                                placeholder='Введите замечание'
+                                value={i.smartphone}
+                                onChange={e => changeInfo('smartphone', e.target.value, i.number)}
+                                placeholder='Смартфон'
                             />
                         </Col>
-                        <Col md={4}>
-                            <Button onClick={() => removeInfo(i.number)} variant="outline-danger">Удалить</Button>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.percent}
+                                onChange={e => changeInfo('percent', e.target.value, i.number)}
+                                placeholder='Процент'
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.time}
+                                onChange={e => changeInfo('time', e.target.value, i.number)}
+                                placeholder='Время'
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.english}
+                                onChange={e => changeInfo('english', e.target.value, i.number)}
+                                placeholder='Уровень английского'
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.content}
+                                onChange={e => changeInfo('content', e.target.value, i.number)}
+                                placeholder='Контент'
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.contract}
+                                onChange={e => changeInfo('contract', e.target.value, i.number)}
+                                placeholder='Контракт'
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.start}
+                                onChange={e => changeInfo('start', e.target.value, i.number)}
+                                placeholder='Дата начала'
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.socialmedia}
+                                onChange={e => changeInfo('socialmedia', e.target.value, i.number)}
+                                placeholder='Социальные сети'
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.tiktok}
+                                onChange={e => changeInfo('tiktok', e.target.value, i.number)}
+                                placeholder='TikTok'
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.cblocked}
+                                onChange={e => changeInfo('cblocked', e.target.value, i.number)}
+                                placeholder='CBlocked'
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.ofverif}
+                                onChange={e => changeInfo('ofverif', e.target.value, i.number)}
+                                placeholder='OF Verification'
+                            />
+                        </Col>
+                        <Col md={12}>
+                            <Button variant="outline-danger" onClick={() => removeInfo(i.number)} className="mt-2">Удалить информацию</Button>
                         </Col>
                     </Row>
-                )}
+                ))}
             </Form>
         </Modal.Body>
         <Modal.Footer>
