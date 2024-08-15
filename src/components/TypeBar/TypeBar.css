@@ -20,6 +20,7 @@
     border-color: dimgray;
     padding: 10px 0;
     background-color: #edf2f4;
+    color: black;
 }
 
 .type_name.selected {

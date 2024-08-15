@@ -5,6 +5,9 @@
 
 .main-button {
     margin: calc(var(--index) * 2.3) 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .skelet {

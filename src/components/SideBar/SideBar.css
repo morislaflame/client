@@ -1,0 +1,11 @@
+.offcanvas.offcanvas-top {
+    height: 70vh;
+    background: linear-gradient(to bottom, black, #000000ab);
+    color: white;
+}
+
+.offcanvas-header {
+    display: flex;
+    justify-content: center;
+    background: linear-gradient(to bottom, black, #000000ab);
+}

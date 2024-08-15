@@ -4,8 +4,16 @@ import ProductSlider from '../../components/ProductSlider/ProductSlider';
 import StorySlider from '../../components/StorySlider/StorySlider';
 import MyButton from '../../components/MyButton/MyButton';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
+import { useNavigate } from 'react-router-dom';
+import { SHOP_ROUTE } from '../../utils/consts';
 
 export default function Main() {
+    const navigate = useNavigate();
+
+    const handleClick = () => {
+        navigate(SHOP_ROUTE);
+      };
+
   return (
     <div className='main'>
         <StorySlider /> {/* Добавляем компонент ProductSlider */} 
@@ -63,7 +71,7 @@ export default function Main() {
                     </div>
                 </div>
             </div>
-            <MyButton text="Перейти в магазин" />
+            <MyButton text="Перейти в магазин" onClick={handleClick} />
         </div>
         <ProductSlider /> {/* Добавляем компонент ProductSlider */}
         <h2 className='Faq'>FAQ</h2>

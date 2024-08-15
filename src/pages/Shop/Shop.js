@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { fetchBrands, fetchThings, fetchTypes } from '../../http/thingAPI';
 import Pages from '../../components/Pages';
+import SideBar from '../../components/SideBar/SideBar';
 
 const Shop = observer(() => {
   const {thing} = useContext(Context)
@@ -28,15 +29,8 @@ const Shop = observer(() => {
   }, [thing.page, thing.selectedType, thing.selectedBrand])
 
   return (
-    <div style={{display: 'flex', minHeight: '100vh', backgroundColor: 'black'}}>
-      <div className={'sidebar'}>
-        <div>
-          <TypeBar/>
-        </div>
-        <div>
-          <BrandBar/>
-        </div>
-      </div>
+    <div style={{display: 'flex', flexDirection: 'column', alignItems:'center', minHeight: '100vh', backgroundColor: 'black'}}>
+      <div className='filters'><SideBar/></div>
       <div className={'mainlist'}>
       <ThingList/>
       <Pages/>

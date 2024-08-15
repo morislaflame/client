@@ -1,19 +1,12 @@
 import React from 'react';
-import { useNavigate } from 'react-router-dom';
-import { SHOP_ROUTE } from '../../utils/consts';
 import './MyButton.css';
 
-const MyButton = ({ text }) => {
-  const navigate = useNavigate();
-
-  const handleClick = () => {
-    navigate(SHOP_ROUTE);
-  };
+const MyButton = ({ text, onClick }) => {
 
   return (
     <div className='main-button'>
         <div className='skelet'></div>
-        <button className="my-button" onClick={handleClick}>
+        <button className="my-button" onClick={onClick}>
             {text}
         </button>
     </div>
