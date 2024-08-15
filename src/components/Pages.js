@@ -6,6 +6,8 @@ import Pagination from 'react-bootstrap/Pagination';
 
 const Pages = observer(() => {
     const {thing} = useContext(Context)
+    console.log("Total Count:", thing.totalCount); // должно быть 6
+    console.log("Limit:", thing.limit); // должно быть 6
     const pageCount = Math.ceil(thing.totalCount / thing.limit)
     const pages = []
 
