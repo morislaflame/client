@@ -18,6 +18,8 @@ const Shop = observer(() => {
     fetchThings(null, null, 1, 6).then(data => { // Здесь указываем кол-во товаров на странице
       thing.setThings(data.rows)
       thing.setTotalCount(data.count)
+      console.log('Data received from fetchThings:', data.count, data.rows);
+
     })
   }, [])
 
@@ -27,6 +29,8 @@ const Shop = observer(() => {
       thing.setTotalCount(data.count)
     })
   }, [thing.page, thing.selectedType, thing.selectedBrand])
+
+  
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems:'center', minHeight: '100vh', backgroundColor: 'black'}}>
