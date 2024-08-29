@@ -10,6 +10,7 @@
   --bs-accordion-btn-color: white;
   color: #fff;
   border-radius: 5px;
+  width: 100%;
 }
 
 .accordion-item {

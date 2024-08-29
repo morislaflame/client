@@ -329,3 +329,7 @@
     align-self: center;
     margin-top: calc(var(--index) * 5);
   }
+
+  .go-shop {
+    margin: calc(var(--index) * 2);
+  }

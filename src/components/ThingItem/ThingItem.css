@@ -4,13 +4,12 @@
 
 .card_list {
     width: 50%;
-    margin-top: 15px;
 }
 
 @media (max-width: 600px) {
     .card_list {
         width: 50%;
-        margin-top: 15px;
+        padding: calc(var(--index) * 0.5);
     }
   }
 
@@ -24,11 +23,7 @@
     border-style: solid;
     border-color: #fedada;
     border-radius: calc(var(--index) * 0.7);
-    box-shadow: 
-        0 0 2px #5b04f582, 
-        0 0 5px #5b04f582, 
-        0 0 10px #5b04f582, 
-        0 0 15px #5b04f582;
+    
     cursor: pointer;
     border-width: 1px;
 }

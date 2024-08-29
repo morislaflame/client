@@ -1,7 +1,7 @@
 :root {
     --index: calc(1vw + 1vh);
 }
-.container {
+.thing-content {
     width: 100vw;
     min-height: 100vh;
     display: flex;
@@ -9,36 +9,38 @@
     justify-content: center;
     flex-direction: column;
     overflow-x: hidden;
+    background-color: black;
 }
 
 .topic {
     font-size: 5em;
+    color: white;
 }
 
 .photo {
-    width: 50%;
-    margin-bottom: 30px;
+    width: 90%;
 }
 
-.img {
+
+.photos {
+    border-radius: calc(var(--index) * 1) calc(var(--index) * 1) 0 0;
+    display: block;
     width: 100%;
 }
 
 .price-n-buy {
-    margin: 20px;
+    margin: calc(var(--index) * 3);
     display: flex;
     flex-direction: column;
-    position: absolute;
-    left: 40px;
-    top: 73px;
     justify-content: center;
     align-items: center;
-    gap: 7px;
-    padding: 5px;
+    gap: calc(var(--index) * 1);
+    padding: calc(var(--index) * 1);
     border-style: solid;
     border-width: 2px;
-    border-radius: 5px;
-    
+    border-radius: calc(var(--index) * 1);
+    background-color: white;
+    width: 90%;
 }
 
 .price {
@@ -66,25 +68,24 @@
 .description {
     display: flex;
     flex-direction: column;
-    margin: 15px;
+    width: 90%;
+    margin: 0 calc(var(--index) * 1) calc(var(--index) * 1) calc(var(--index) * 1);
     gap: 4px;
-    padding: 10px;
+    background-color: white;
     border-style: solid;
-    border-width: 2px;
-    border-radius: 5px;
-    position: absolute;
-    right: 40px;
-    top: 73px;
+    border-width: 1px;
+    border-color: white;
+    border-radius: 0 0 calc(var(--index) * 1) calc(var(--index) * 1);
     text-align: center;
 }
 
 .des_str {
-    background-color: white;
-    padding: 5px;
+    padding: calc(var(--index) * 1);
     display: flex;
     flex-direction: column;
     gap: 10px;
     font-size: 1.3em;
+    border-radius: 0 0 calc(var(--index) * 1) calc(var(--index) * 1);
 }
 
 .des_str.second {
@@ -92,4 +93,14 @@
     color: white;
     display: flex;
     flex-direction: column;
+}
+
+.payment-ico {
+    width: calc(var(--index) * 2);
+    position: absolute;
+    right: calc(var(--index) * 5);
+}
+
+.accord {
+    width: 90%;
 }

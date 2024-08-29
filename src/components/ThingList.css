@@ -1,0 +1,10 @@
+:root {
+    --index: calc(1vw + 1vh);
+  }
+
+
+.thing-list {
+    display: flex;
+    flex-wrap: wrap;
+    margin: calc(var(--index) * 0.5);
+}

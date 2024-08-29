@@ -71,7 +71,7 @@ export default function Main() {
                     </div>
                 </div>
             </div>
-            <MyButton text="Перейти в магазин" onClick={handleClick} />
+            <div className='go-shop'><MyButton text="Перейти в магазин" onClick={handleClick} /></div>
         </div>
         <ProductSlider /> {/* Добавляем компонент ProductSlider */}
         <h2 className='Faq'>FAQ</h2>

@@ -8,6 +8,7 @@ import { Context } from '../../index';
 import { fetchBrands, fetchThings, fetchTypes } from '../../http/thingAPI';
 import Pages from '../../components/Pages';
 import SideBar from '../../components/SideBar/SideBar';
+import StorySlider from '../../components/StorySlider/StorySlider';
 
 const Shop = observer(() => {
   const {thing} = useContext(Context)
@@ -34,6 +35,7 @@ const Shop = observer(() => {
 
   return (
     <div style={{display: 'flex', flexDirection: 'column', alignItems:'center', minHeight: '100vh', backgroundColor: 'black'}}>
+      <StorySlider/>
       <div className='filters'><SideBar/></div>
       <div className={'mainlist'}>
       <ThingList/>

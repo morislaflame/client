@@ -44,7 +44,10 @@ const ProductSlider = () => {
     <Slider {...settings} className='slider'>
       {products.map(product => (
         <div key={product.id} className="product-card">
-          <img src={`${process.env.REACT_APP_API_URL}${product.img}`} alt={product.name} />
+          <img 
+            src={`${process.env.REACT_APP_API_URL}${product.images?.[0]?.img || 'placeholder.jpg'}`} 
+            alt={product.name} 
+          />
           <p>{product.name}</p>
         </div>
       ))}
