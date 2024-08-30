@@ -1,4 +1,4 @@
-import {makeAutoObservable} from "mobx";
+import { makeAutoObservable } from "mobx";
 
 export default class ThingStore {
     constructor() {
@@ -10,15 +10,34 @@ export default class ThingStore {
         this._page = 1
         this._totalCount = 0
         this._limit = 6
+
+        // Новое состояние для корзины
+        this._basket = []
+
         makeAutoObservable(this)
+    }
+
+    // Методы для управления состоянием корзины
+    addToBasket(thing) {
+        this._basket.push(thing)
+    }
+
+    removeFromBasket(thingId) {
+        this._basket = this._basket.filter(item => item.id !== thingId)
+    }
+
+    clearBasket() {
+        this._basket = []
     }
 
     setTypes(types) {
         this._types = types
     }
+
     setBrands(brands) {
         this._brands = brands
     }
+
     setThings(things) {
         this._things = things
     }
@@ -39,6 +58,15 @@ export default class ThingStore {
 
     setTotalCount(count) {
         this._totalCount = count
+    }
+
+    // Геттеры для корзины
+    get basket() {
+        return this._basket
+    }
+
+    get totalBasketAmount() {
+        return this._basket.reduce((sum, item) => sum + item.price, 0)
     }
 
     get types() {

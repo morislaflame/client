@@ -1,0 +1,14 @@
+.payment-page {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  .payment-details {
+    margin-top: 20px;
+  }
+  
+  .qr-code {
+    margin: 20px auto;
+    max-width: 256px;
+  }
+  

@@ -36,3 +36,9 @@ export const fetchOneThing = async (id) => {
     const {data} = await $host.get('api/thing/' + id)
     return data
 }
+
+
+export const addToBasket = async (thingId) => {
+    const {data} = await $authHost.post('api/basket/add', { thingId });
+    return data;
+}

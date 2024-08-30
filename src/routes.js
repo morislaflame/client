@@ -4,10 +4,11 @@ import Basket from "./pages/Basket";
 import Shop from "./pages/Shop/Shop";
 import Auth from "./pages/Auth";
 import ThingPage from "./pages/ThingPage/ThingPage";
-import { ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE, THING_ROUTE, MAIN_ROUTE, TERMS_ROUTE, PRIVACY_ROUTE } from "./utils/consts";
+import { ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE, THING_ROUTE, MAIN_ROUTE, TERMS_ROUTE, PRIVACY_ROUTE, PAYMENT_ROUTE } from "./utils/consts";
 import Main from "./pages/Main/Main";
 import TermsOfService from "./pages/TermsOfService/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
+import PaymentPage from "./pages/Payment/PaymentPage";
 
 export const authRoutes = [
     {
@@ -17,6 +18,10 @@ export const authRoutes = [
     {
         path: BASKET_ROUTE,
         Component: <Basket/>
+    },
+    {
+        path: PAYMENT_ROUTE,
+        Component: <PaymentPage/>
     }
 ]
 
