@@ -9,6 +9,7 @@ import { fetchBrands, fetchThings, fetchTypes } from '../../http/thingAPI';
 import Pages from '../../components/Pages';
 import SideBar from '../../components/SideBar/SideBar';
 import StorySlider from '../../components/StorySlider/StorySlider';
+import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 
 const Shop = observer(() => {
   const {thing} = useContext(Context)
@@ -41,7 +42,7 @@ const Shop = observer(() => {
       <ThingList/>
       <Pages/>
       </div>
-      
+      <FaqAccordion/>
     </div>
   );
 });

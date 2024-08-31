@@ -1,4 +1,5 @@
 import { makeAutoObservable } from "mobx";
+import { fetchBasket, addToBasket, removeFromBasket, clearBasket } from "../http/basketAPI";
 
 export default class ThingStore {
     constructor() {
@@ -10,25 +11,32 @@ export default class ThingStore {
         this._page = 1
         this._totalCount = 0
         this._limit = 6
-
-        // Новое состояние для корзины
         this._basket = []
 
         makeAutoObservable(this)
     }
 
-    // Методы для управления состоянием корзины
-    addToBasket(thing) {
-        this._basket.push(thing)
+    async loadBasket() {
+        const basketData = await fetchBasket();
+        this._basket = basketData.basket_things || [];
     }
 
-    removeFromBasket(thingId) {
-        this._basket = this._basket.filter(item => item.id !== thingId)
+    async addToBasket(thingId) {
+        const basketThing = await addToBasket(thingId);
+        this._basket.push(basketThing);
     }
 
-    clearBasket() {
-        this._basket = []
+    async removeFromBasket(thingId) {
+        await removeFromBasket(thingId);
+        this._basket = this._basket.filter(item => item.thingId !== thingId);
     }
+
+    async clearBasket() {
+        await clearBasket();
+        this._basket = [];
+    }
+
+    
 
     setTypes(types) {
         this._types = types
@@ -62,11 +70,11 @@ export default class ThingStore {
 
     // Геттеры для корзины
     get basket() {
-        return this._basket
+        return this._basket;
     }
 
     get totalBasketAmount() {
-        return this._basket.reduce((sum, item) => sum + item.price, 0)
+        return this._basket.reduce((sum, item) => sum + item.thing.price, 0);
     }
 
     get types() {
