@@ -3,7 +3,7 @@ import './Admin.css';
 import CreateBrand from '../../components/modals/CreateBrand';
 import CreateModel from '../../components/modals/CreateModel';
 import CreateType from '../../components/modals/CreateType';
-import NavBar from '../../components/NavBar';
+import NavBar from '../../components/NavBar/NavBar';
 import CreateStory from '../../components/modals/CreateStory';
 
 const Admin = () => {

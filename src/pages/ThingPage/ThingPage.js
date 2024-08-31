@@ -1,24 +1,26 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './ThingPage.css';
 import Carousel from 'react-bootstrap/Carousel';
 import { useParams } from 'react-router-dom';
-import { fetchOneThing, addToBasket } from '../../http/thingAPI';
+import { fetchOneThing } from '../../http/thingAPI';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import StorySlider from '../../components/StorySlider/StorySlider';
+import { Context } from '../../index';
 
 const ThingPage = () => {
   const [thing, setThing] = useState({ info: [], images: [] });
   const { id } = useParams();
+  const { thing: thingStore } = useContext(Context); // Получаем доступ к ThingStore
 
   useEffect(() => {
     fetchOneThing(id).then(data => setThing(data));
   }, [id]);
 
   const handleAddToBasket = () => {
-    addToBasket(id).then(() => {
+    thingStore.addToBasket(id).then(() => {
         alert('Товар добавлен в корзину!');
     }).catch(error => {
-        alert('Ошибка при добавлении товара в корзину: ' + error.response.data.message);
+        alert('Ошибка при добавлении товара в корзину: ' + error.message);
     });
   };
 

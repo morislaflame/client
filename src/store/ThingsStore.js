@@ -1,4 +1,4 @@
-import { makeAutoObservable } from "mobx";
+import { makeAutoObservable, action, runInAction } from "mobx";
 import { fetchBasket, addToBasket, removeFromBasket, clearBasket } from "../http/basketAPI";
 
 export default class ThingStore {
@@ -13,30 +13,42 @@ export default class ThingStore {
         this._limit = 6
         this._basket = []
 
-        makeAutoObservable(this)
+        makeAutoObservable(this, {
+            addToBasket: action,
+            removeFromBasket: action,
+            clearBasket: action,
+            loadBasket: action,
+        });
     }
 
     async loadBasket() {
         const basketData = await fetchBasket();
-        this._basket = basketData.basket_things || [];
+        runInAction(() => {
+            this._basket = basketData.basket_things || [];
+        });
     }
 
     async addToBasket(thingId) {
         const basketThing = await addToBasket(thingId);
-        this._basket.push(basketThing);
+        runInAction(() => {
+            this._basket.push(basketThing);
+        });
     }
 
     async removeFromBasket(thingId) {
         await removeFromBasket(thingId);
-        this._basket = this._basket.filter(item => item.thingId !== thingId);
+        runInAction(() => {
+            this._basket = this._basket.filter(item => item.thingId !== thingId);
+        });
     }
 
     async clearBasket() {
         await clearBasket();
-        this._basket = [];
+        runInAction(() => {
+            this._basket = [];
+        });
     }
 
-    
 
     setTypes(types) {
         this._types = types

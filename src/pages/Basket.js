@@ -1,12 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import './Basket.css';
 import { fetchBasket, removeFromBasket, clearBasket } from '../http/basketAPI';
 import { useNavigate } from 'react-router-dom';
+import { Context } from '../index';
 
 const Basket = () => {
   const [basket, setBasket] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
+  const { thing } = useContext(Context); // Получаем доступ к ThingStore
 
   useEffect(() => {
     fetchBasket().then(data => {
@@ -20,23 +22,25 @@ const Basket = () => {
     setTotalAmount(total);
   };
 
-  const handleRemove = (thingId) => {
-    removeFromBasket(thingId).then(() => {
+  const handleRemove = async (thingId) => {
+    try {
+      await thing.removeFromBasket(thingId); // Удаляем через ThingStore для синхронизации
       const updatedBasket = basket.filter(item => item.thingId !== thingId);
       setBasket(updatedBasket);
       calculateTotalAmount(updatedBasket);
-    }).catch(error => {
-      alert('Ошибка при удалении товара из корзины: ' + error.response.data.message);
-    });
+    } catch (error) {
+      alert('Ошибка при удалении товара из корзины: ' + error.message);
+    }
   };
 
-  const handleClearBasket = () => {
-    clearBasket().then(() => {
+  const handleClearBasket = async () => {
+    try {
+      await thing.clearBasket(); // Очищаем через ThingStore для синхронизации
       setBasket([]);
       setTotalAmount(0);
-    }).catch(error => {
-      alert('Ошибка при очистке корзины: ' + error.response.data.message);
-    });
+    } catch (error) {
+      alert('Ошибка при очистке корзины: ' + error.message);
+    }
   };
 
   if (basket.length === 0) {
