@@ -13,9 +13,9 @@
 }
 
 .topic {
-    font-size: 5em;
+    font-size: calc(var(--index) * 7);
     color: white;
-    margin: 0 0 calc(var(--index) * 1) 0;
+    margin: calc(var(--index) * -1) 0 calc(var(--index) * 1) 0;
 }
 
 .photo {
@@ -27,6 +27,9 @@
     border-radius: calc(var(--index) * 1) calc(var(--index) * 1) 0 0;
     display: block;
     width: 100%;
+    height: calc(var(--index) * 50);
+    object-fit: cover; /* Масштабирует изображение, заполняя контейнер, сохраняя пропорции */
+    object-position: center; /* Центрирует изображение в контейнере */
 }
 
 .price-n-buy {
@@ -97,7 +100,7 @@
 }
 
 .des_str {
-    padding: calc(var(--index) * 1) calc(var(--index) * 2) calc(var(--index) * 2) calc(var(--index) * 2);
+    padding: calc(var(--index) * 0) calc(var(--index) * 2) calc(var(--index) * 2) calc(var(--index) * 2);
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -129,6 +132,7 @@
     border-bottom: 1px solid #7f7e7e66;
     padding: calc(var(--index) * 1);
     min-height: calc(var(--index) * 5);
+    gap: calc(var(--index) * 1);
 }
 
 .info-str span {

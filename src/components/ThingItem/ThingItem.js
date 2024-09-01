@@ -54,9 +54,8 @@ const ThingItem = ({thing}) => {
                         {thing.name}
                     </div>
                     <div className="thing-info">
-                        
-                        <div>Content: {thing.info && thing.info.length > 0 ? thing.info[0].content : 'N/A'}</div>
-                        <div>OF Verified: {thing.info && thing.info.length > 0 ? thing.info[0].ofverif : 'N/A'}</div>
+                        <div><b>Content:</b> {thing.info && thing.info.length > 0 ? thing.info[0].content : 'N/A'}</div>
+                        <div><b>OF Verified:</b> {thing.info && thing.info.length > 0 ? thing.info[0].ofverif : 'N/A'}</div>
                     </div>
                     <div className="thing-price">
                         ${thing.price}

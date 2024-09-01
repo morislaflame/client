@@ -8,15 +8,13 @@
 
 @media (max-width: 600px) {
     .card_list {
-        width: 100%;
+        width: 50%;
         padding: calc(var(--index) * 0.5);
-        display: flex;
-        justify-content: center;
     }
   }
 
 .card {
-    width: 90%;
+    width: 100%;
     cursor: pointer; 
     padding: calc(var(--index) * 0.7); 
     display: flex;
@@ -32,7 +30,7 @@
 
 .card_img {
     width: 100%;
-    height: calc(var(--index) * 40);
+    height: calc(var(--index) * 18);
     border-radius: calc(var(--index) * 0.7);
     object-fit: cover; /* Масштабирует изображение, заполняя контейнер, сохраняя пропорции */
     object-position: center; /* Центрирует изображение в контейнере */
@@ -72,6 +70,7 @@
     text-align: center;
     padding: calc(var(--index) * 0.6);
     gap: calc(var(--index) * 0.6);
+    max-width: 80%;
 }
 
 .thingName {
@@ -81,8 +80,15 @@
 .thing-info {
     font-size: calc(var(--index) * 1.2);
     color: #676767;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--index) * 0.6);
 }
 
 .thing-price {
-    font-weight: 400;
+    font-weight: 500;
+}
+
+.thing-info div b {
+    font-weight: 500;
 }
