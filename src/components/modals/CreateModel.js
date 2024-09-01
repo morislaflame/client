@@ -49,8 +49,8 @@ const CreateModel = observer(({show, onHide}) => {
     }
 
     const selectFiles = e => {
-        setFiles(Array.from(e.target.files));
-    }
+        setFiles([...files, ...Array.from(e.target.files)]); // Добавление новых файлов к уже существующим
+    };
 
     const toggleBrandSelection = (brand) => {
         if (selectedBrands.includes(brand)) {
@@ -129,11 +129,17 @@ const CreateModel = observer(({show, onHide}) => {
                     type="number"
                 />
                 <Form.Control
-                    className="mt-3"
-                    type="file"
-                    onChange={selectFiles}
-                    multiple
-                />
+                        className="mt-3"
+                        type="file"
+                        onChange={selectFiles}
+                        multiple
+                    />
+                    <div className="mt-3">
+                        <h6>Выбранные изображения:</h6>
+                        {files.map((file, index) => (
+                            <div key={index}>{file.name}</div>
+                        ))}
+                    </div>
                 <Button variant="outline-dark" onClick={addInfo} className="mt-3">Добавить информацию</Button>
                 <hr/>
                 {info.map(i => (

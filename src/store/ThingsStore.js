@@ -59,7 +59,10 @@ export default class ThingStore {
     }
 
     setThings(things) {
-        this._things = things
+        this._things = things;
+        this._things.forEach(thing => {
+            thing.type = this._types.find(type => type.id === thing.typeId);
+        });
     }
 
     setSelectedType(type) {
