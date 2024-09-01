@@ -43,6 +43,12 @@ const brandIcons = {
     3: 'https://luzriquelme.com/wp-content/uploads/2017/05/screen-shot-2015-11-20-at-1-15-51-pm.png'
 };
 
+const typeIcons = {
+  1: '🍎',
+  2: '🇺🇦',
+  3: '🍎'
+};
+
   return (
     <div className={'thing-content'}>
       <StorySlider/>
@@ -65,30 +71,40 @@ const brandIcons = {
       
       <div className='description'>
       <div className="brands">
-                    {thing.brands && thing.brands.length > 0 ? (
-                            thing.brands.map(brand => (
-                                <div 
-                                    key={brand.id} 
-                                    style={brandStyles[brand.id] || { color: 'black' }}  // Применяем стиль, если он есть
-                                    className="brand-item"
-                                >
-                                    {brandIcons[brand.id] && (
-                                        <img 
-                                            src={brandIcons[brand.id]} 
-                                            alt={`${brand.name} icon`} 
-                                            className="brands-icons"
-                                        />
-                                    )}
-                                    {/* {brand.name} */}
-                                </div>
-                            ))
-                        ) : (
-                            <div>Unknown Brand</div>
-                        )}
-                </div>
+          {thing.brands && thing.brands.length > 0 ? (
+                   thing.brands.map(brand => (
+                      <div 
+                          key={brand.id} 
+                          style={brandStyles[brand.id] || { color: 'black' }}  // Применяем стиль, если он есть
+                          className="brand-item"
+                      >
+                          {brandIcons[brand.id] && (
+                              <img 
+                                   src={brandIcons[brand.id]} 
+                                  alt={`${brand.name} icon`} 
+                                  className="brands-icons"
+                              />
+                          )}
+                          {/* {brand.name} */}
+                      </div>
+                  ))
+               ) : (
+                  <div>Unknown Brand</div>
+              )}
+      </div>
+      {/* Отображение типа товара */}
+      <div className="thing-type">
+        {thing.type && (
+          <div className="type-item">
+            {typeIcons[thing.type.id] && (
+              <span className="type-icon">{typeIcons[thing.type.id]}</span>
+            )}
+            <div className='info-str'><span>Origin:</span> <div>{thing.type.name}</div></div>
+          </div>
+        )}
+      </div>
         {thing.info.map((info, index) =>
           <div key={info.id} className='des_str'>
-            <div className='info-str'><span>Origin:</span> <div>{info.age}</div></div>
             
             <div className='info-str'><span>Age:</span> <div>{info.age}</div></div>
             
