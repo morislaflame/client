@@ -1,3 +1,29 @@
+:root {
+    --index: calc(1vw + 1vh);
+    --transition: transform .75s cubic-bezier(.075, .5, 0, 1);
+}
+
+
 .navbar {
-    justify-content: center;
+    width: 100%;
+    --bs-navbar-padding-x: calc(var(--index) * 0.8);
+    --bs-navbar-padding-y: calc(var(--index) * 0.8);
+}
+
+.navbar-brand {
+    margin-right: 0;
+}
+
+.menu {
+    display: flex;
+    gap: calc(var(--index) * 1);
+}
+
+.navbar-toggler {
+    border: var(--bs-border-width) solid black;
+}
+
+.navbar-toggler:focus {
+    box-shadow: none;
+    background: radial-gradient(ellipse at center, rgb(0 0 0 / 0%), #00000036);
 }

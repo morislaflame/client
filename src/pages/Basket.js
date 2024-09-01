@@ -3,6 +3,8 @@ import './Basket.css';
 import { fetchBasket, removeFromBasket, clearBasket } from '../http/basketAPI';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../index';
+import MyButton from '../components/MyButton/MyButton';
+import MySecondBtn from '../components/MySecondBtn/MySecondBtn';
 
 const Basket = () => {
   const [basket, setBasket] = useState([]);
@@ -54,7 +56,7 @@ const Basket = () => {
   return (
     <div className="basket-page">
       <h2>Ваша корзина</h2>
-      <button className="clear-basket" onClick={handleClearBasket}>Очистить корзину</button>
+      
       <div className="basket-items">
         {basket.map(item => (
           <div key={item.thing.id} className="basket-item">
@@ -66,10 +68,12 @@ const Basket = () => {
             </div>
           </div>
         ))}
+        <MySecondBtn className="clear-basket" text={'Очистить корзину'} onClick={handleClearBasket}></MySecondBtn>
       </div>
       <div className="basket-total">
         <h3>Общая сумма: {totalAmount} руб</h3>
-        <button className="pay-button" onClick={handlePayment}>Перейти к оплате</button>
+        <MyButton className="pay-button" text={'Перейти к оплате'} onClick={handlePayment}></MyButton>
+        
       </div>
     </div>
   );

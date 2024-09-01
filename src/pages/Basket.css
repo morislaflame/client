@@ -1,5 +1,18 @@
+:root {
+    --index: calc(1vw + 1vh);
+  }
+
 .basket-page {
     padding: 20px;
+    background-color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: calc(var(--index) * 2);
+  }
+
+  .basket-page h2 {
+    color: white;
   }
   
   .basket-empty {
@@ -18,15 +31,17 @@
     display: flex;
     align-items: center;
     gap: 20px;
-    padding: 15px;
+    padding: calc(var(--index) * 0.7);
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: calc(var(--index) * 0.7);
+    background-color: white;
   }
   
   .basket-item-img {
-    width: 100px;
-    height: 100px;
+    width: calc(var(--index) * 12);
+    height: calc(var(--index) * 12);
     object-fit: cover;
+    border-radius: calc(var(--index) * 0.7);
   }
   
   .basket-item-info {
@@ -58,3 +73,14 @@
     background-color: #ff7875;
   }
   
+
+  .basket-total {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+    background-color: black;
+    padding: calc(var(--index) * 2);
+    gap: calc(var(--index) * 1);
+    color: white;
+  }

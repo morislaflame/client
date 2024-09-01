@@ -28,7 +28,6 @@ const ThingItem = ({thing}) => {
         <div className={'card_list'} onClick={() => navigate(THING_ROUTE + "/" + thing.id)}>
             <div className={'card'}>
                 <img className={'card_img'} src={process.env.REACT_APP_API_URL + previewImage} alt={thing.name}/>
-                {/* <Badge bg="danger">Danger</Badge> */}
                 <div className="descript">
                     {thing.brands && thing.brands.length > 0 ? (
                             thing.brands.map(brand => (
@@ -44,18 +43,25 @@ const ThingItem = ({thing}) => {
                                             className="brand-icon"
                                         />
                                     )}
-                                    {/* {brand.name} */}
                                 </div>
                             ))
                         ) : (
                             <div>Unknown Brand</div>
                         )}
                 </div>
-                <div className="thingName">
-                    {thing.name}
-                </div>
-                <div className="thing-price">
-                    ${thing.price}
+                <div className="thing-all">
+                    <div className="thingName">
+                        {thing.name}
+                    </div>
+                    <div className="thing-info">
+                        
+                        <div>Content: {thing.info && thing.info.length > 0 ? thing.info[0].content : 'N/A'}</div>
+                        <div>OF Verified: {thing.info && thing.info.length > 0 ? thing.info[0].ofverif : 'N/A'}</div>
+                    </div>
+                    <div className="thing-price">
+                        ${thing.price}
+                    </div>
+                    
                 </div>
             </div>
         </div>

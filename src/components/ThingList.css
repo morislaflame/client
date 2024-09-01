@@ -6,5 +6,5 @@
 .thing-list {
     display: flex;
     flex-wrap: wrap;
-    
+    gap: calc(var(--index) * 1);
 }

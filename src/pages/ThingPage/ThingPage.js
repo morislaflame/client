@@ -6,11 +6,17 @@ import { fetchOneThing } from '../../http/thingAPI';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import StorySlider from '../../components/StorySlider/StorySlider';
 import { Context } from '../../index';
+import { FaShoppingCart } from 'react-icons/fa';
+import { Button } from 'react-bootstrap';
+import { BASKET_ROUTE } from '../../utils/consts';
+import { useNavigate } from 'react-router-dom';
 
 const ThingPage = () => {
   const [thing, setThing] = useState({ info: [], images: [] });
   const { id } = useParams();
   const { thing: thingStore } = useContext(Context); // Получаем доступ к ThingStore
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     fetchOneThing(id).then(data => setThing(data));
@@ -23,6 +29,19 @@ const ThingPage = () => {
         alert('Ошибка при добавлении товара в корзину: ' + error.message);
     });
   };
+
+  const brandStyles = {
+    1: { color: '#008ccf' },  // Стиль для бренда с id: 1
+    2: { color: '#1fa7df' },   // Стиль для бренда с id: 2
+    3: { color: '#e8642c' }
+};
+
+// Иконки для брендов
+const brandIcons = {
+    1: 'https://www.freedownloadlogo.com/logos/o/onlyfans-2.svg',  // URL для иконки бренда с id: 1
+    2: 'https://socprofile.com/u/25823/socprofile.com_officialfansly._1662655605.png',   // URL для иконки бренда с id: 2
+    3: 'https://luzriquelme.com/wp-content/uploads/2017/05/screen-shot-2015-11-20-at-1-15-51-pm.png'
+};
 
   return (
     <div className={'thing-content'}>
@@ -45,40 +64,73 @@ const ThingPage = () => {
       </div>
       
       <div className='description'>
+      <div className="brands">
+                    {thing.brands && thing.brands.length > 0 ? (
+                            thing.brands.map(brand => (
+                                <div 
+                                    key={brand.id} 
+                                    style={brandStyles[brand.id] || { color: 'black' }}  // Применяем стиль, если он есть
+                                    className="brand-item"
+                                >
+                                    {brandIcons[brand.id] && (
+                                        <img 
+                                            src={brandIcons[brand.id]} 
+                                            alt={`${brand.name} icon`} 
+                                            className="brands-icons"
+                                        />
+                                    )}
+                                    {/* {brand.name} */}
+                                </div>
+                            ))
+                        ) : (
+                            <div>Unknown Brand</div>
+                        )}
+                </div>
         {thing.info.map((info, index) =>
           <div key={info.id} className='des_str'>
-            <div className='info-str'><span>ORIGIN:</span> <div>{info.age}</div></div>
-            <hr/>
-            <div className='info-str'><span>AGE:</span> <div>{info.age}</div></div>
-            <hr/>
-            <div className='info-str'><span>SMARTPHONE:</span> <div>{info.smartphone}</div></div>
-            <hr/>
-            <div className='info-str'><span>% FOR HER:</span> <div>{info.percent}</div></div>
-            <hr/>
-            <div className='info-str'><span>TIME PER DAY:</span> <div>{info.time}</div></div>
-            <hr/>
-            <div className='info-str'><span>ENGLISH SKILLS:</span> <div>{info.english}</div></div>
-            <hr/>
-            <div className='info-str'><span>CONTENT:</span> <div>{info.content}</div></div>
-            <hr/>
-            <div className='info-str'><span>WHEN SHE CAN START:</span> <div>{info.start}</div></div>
-            <hr/>
-            <div className='info-str'><span>SOCIAL MEDIA SET UP:</span> <div>{info.socialmedia}</div></div>
-            <hr/>
-            <div className='info-str'><span>WILLING TO DO TIKTOK:</span> <div>{info.tiktok}</div></div>
-            <hr/>
+            <div className='info-str'><span>Origin:</span> <div>{info.age}</div></div>
+            
+            <div className='info-str'><span>Age:</span> <div>{info.age}</div></div>
+            
+            <div className='info-str'><span>Smartphone:</span> <div>{info.smartphone}</div></div>
+            
+            <div className='info-str'><span>% For Her:</span> <div>{info.percent}</div></div>
+            
+            <div className='info-str'><span>Time Per Day:</span> <div>{info.time}</div></div>
+            
+            <div className='info-str'><span>English Skills:</span> <div>{info.english}</div></div>
+            
+            <div className='info-str'><span>Content:</span> <div>{info.content}</div></div>
+           
+            <div className='info-str'><span>When She Can Start:</span> <div>{info.start}</div></div>
+            
+            <div className='info-str'><span>Social Media Set Up:</span> <div>{info.socialmedia}</div></div>
+            
+            <div className='info-str'><span>Willing To Do TikTok:</span> <div>{info.tiktok}</div></div>
+            
             <div className='info-str'><span>Does She Need Any Countries Blocked:</span> <div>{info.cblocked}</div></div>
-            <hr/>
-            <div className='info-str'><span>OF VERIFIED:</span> <div>{info.ofverif}</div></div>
-            <hr/>
+            
+            <div className='info-str'><span>OF Verified:</span> <div>{info.ofverif}</div></div>
+            
             <div className='info-str'><span>Contract Signed:</span> <div>{info.contract}</div></div>
           </div>
         )}
       </div>
       <div className='price-n-buy'>
-        <span className='price'>{thing.price} руб</span>
-        <button className='buy' onClick={handleAddToBasket}>Добавить в корзину</button>
-        <img className='payment-ico' src={`${process.env.REACT_APP_API_URL}/tether.png`} alt="Payment icon"/>
+        <span className='price'>${thing.price}</span>
+        <div className='add-to-card'>
+          <button className='buy' onClick={handleAddToBasket}>Добавить в корзину</button>
+          <Button
+            className='shopping-card'
+            variant="outline-dark"
+            onClick={() => navigate(BASKET_ROUTE)}
+            style={{height: '100%' }}
+          >
+            <FaShoppingCart size={28} />
+          </Button>
+        </div>
+        {/* <img className='payment-ico' src={`${process.env.REACT_APP_API_URL}/tether.png`} alt="Payment icon"/> */}
+        
       </div>
       <FaqAccordion className='accord'/>
     </div>

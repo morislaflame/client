@@ -16,22 +16,21 @@
     background-size: contain; /* Изображение полностью помещается внутри элемента */
 }
 
-.my-button {
+.my-second-button {
     padding: calc(var(--index) * 1) calc(var(--index) * 4);
-    background-color: #5800f4;
-    color: #fff;
+    background-color: white;
+    color: black;
     border-style: solid;
     border-color: #fedada;
     border-radius: 5px;
-    box-shadow: 
-        0 0 2px #5b04f582, 
-        0 0 5px #5b04f582, 
-        0 0 10px #5b04f582, 
-        0 0 15px #5b04f582;
+    /* box-shadow: 
+        0 0 2px #f4000082, 
+        0 0 5px #f4000082, 
+        0 0 10px #f4000082, 
+        0 0 15px #f4000082; */
     cursor: pointer;
     border-width: 1px;
     font-size: calc(var(--index) * 1.7);
-    font-weight: 500;
   }
   
   .my-button:hover {
