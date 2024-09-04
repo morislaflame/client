@@ -4,15 +4,15 @@ import { Context } from "../../index";
 import './BrandBar.css';
 
 const BrandBar = observer(() => {
-    const {thing} = useContext(Context);
+    const { thing } = useContext(Context);
 
     const handleBrandClick = (brand) => {
-        if (thing.selectedBrand.id === brand.id) {
-            // Если бренд уже выбран, сбрасываем выбор
-            thing.setSelectedBrand({});
+        if (thing.selectedBrands.includes(brand.id)) {
+            // Если бренд уже выбран, удаляем его из массива
+            thing.setSelectedBrands(thing.selectedBrands.filter(id => id !== brand.id));
         } else {
-            // Иначе выбираем новый бренд
-            thing.setSelectedBrand(brand);
+            // Иначе добавляем новый бренд
+            thing.setSelectedBrands([...thing.selectedBrands, brand.id]);
         }
     };
 
@@ -20,7 +20,7 @@ const BrandBar = observer(() => {
         <div className={'brand_bar'}>
             {thing.brands.map(brand =>
                 <button
-                    className={`brand_button ${brand.id === thing.selectedBrand.id ? 'selected' : ''}`}
+                    className={`brand_button ${thing.selectedBrands.includes(brand.id) ? 'selected' : ''}`}
                     key={brand.id}
                     onClick={() => handleBrandClick(brand)}
                 >

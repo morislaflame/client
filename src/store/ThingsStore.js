@@ -7,7 +7,7 @@ export default class ThingStore {
         this._brands = []
         this._things = []
         this._selectedType = {}
-        this._selectedBrand = {}
+        this._selectedBrands = [];
         this._page = 1
         this._totalCount = 0
         this._limit = 6
@@ -70,9 +70,9 @@ export default class ThingStore {
         this._selectedType = type
     }
 
-    setSelectedBrand(brand) {
-        this.setPage(1)
-        this._selectedBrand = brand
+    setSelectedBrands(brands) {
+        this.setPage(1);
+        this._selectedBrands = brands;
     }
 
     setPage(page) {
@@ -108,8 +108,8 @@ export default class ThingStore {
         return this._selectedType
     }
 
-    get selectedBrand() {
-        return this._selectedBrand
+    get selectedBrands() {
+        return this._selectedBrands;
     }
 
     get totalCount() {
