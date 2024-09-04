@@ -46,7 +46,7 @@ const StorySlider = () => {
       </Carousel>
 
       <Modal show={modalShow} onHide={handleClose} centered>
-        <Modal.Body className='story' closeButton> 
+        <Modal.Body className='story'> 
           {selectedStory && (
             <img
               src={`${process.env.REACT_APP_API_URL}${selectedStory.img}`}
