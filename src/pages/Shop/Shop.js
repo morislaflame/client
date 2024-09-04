@@ -24,11 +24,14 @@ const Shop = observer(() => {
   }, []);
 
   useEffect(() => {
-    fetchThings(thing.selectedType.id, thing.selectedBrands, thing.page, 6).then(data => {
+    // Передаем параметры minPrice и maxPrice из стора
+    const { min, max } = thing.priceRange;
+    fetchThings(thing.selectedType.id, thing.selectedBrands, thing.page, 6, min, max).then(data => {
       thing.setThings(data.rows);
       thing.setTotalCount(data.count);
     });
-  }, [thing.page, thing.selectedType, thing.selectedBrands]);  // Следим за изменениями выбранных брендов
+  }, [thing.page, thing.selectedType, thing.selectedBrands, thing.priceRange]);  // Добавляем priceRange в зависимости
+
 
   
 

@@ -5,6 +5,7 @@ import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useState } from 'react';
 import MyButton from '../MyButton/MyButton';
 import './SideBar.css'
+import PriceSlider from '../PriceSlider/PriceSlider';
 
 export default function SideBar({ name, ...props }) {
 
@@ -29,6 +30,9 @@ export default function SideBar({ name, ...props }) {
                 </div>
                 <div>
                     <BrandBar/>
+                </div>
+                <div>
+                  <PriceSlider/>
                 </div>
             </div>
         </Offcanvas.Body>

@@ -12,6 +12,7 @@ export default class ThingStore {
         this._totalCount = 0
         this._limit = 6
         this._basket = []
+        this._priceRange = { min: 0, max: 10000 }; // Добавляем диапазон цен
 
         makeAutoObservable(this, {
             addToBasket: action,
@@ -83,6 +84,12 @@ export default class ThingStore {
         this._totalCount = count
     }
 
+    setPriceRange(priceRange) {
+        this._priceRange = priceRange;
+        this.setPage(1); // Сбрасываем страницу при фильтрации
+        console.log("Price range set in store:", priceRange); // Логируем новый диапазон цен
+    }
+
     // Геттеры для корзины
     get basket() {
         return this._basket;
@@ -122,5 +129,9 @@ export default class ThingStore {
 
     get limit() {
         return this._limit
+    }
+
+    get priceRange() {
+        return this._priceRange;
     }
 }

@@ -25,17 +25,31 @@ export const createThing = async (thing) => {
     return data
 }
 
-export const fetchThings = async (typeId, brandIds, page, limit = 6) => {
-    const {data} = await $host.get('api/thing', {params: {
-        typeId, brandIds, page, limit
-    }})
-    return data
-}
+export const fetchThings = async (typeId, brandIds, page, limit = 6, minPrice, maxPrice) => {
+    console.log("Fetching things with params:", { typeId, brandIds, page, limit, minPrice, maxPrice });
+    try {
+        const { data } = await $host.get('api/thing', {
+            params: { typeId, brandIds, page, limit, minPrice, maxPrice }
+        });
+        console.log("Fetched things:", data);
+        return data;
+    } catch (error) {
+        console.error("Error fetching things: ", error);
+    }
+};
+
+
+// Добавляем метод для получения диапазона цен всех товаров
+export const fetchPriceRange = async () => {
+    const { data } = await $host.get('api/thing/price-range');
+    return data;
+};
 
 export const fetchOneThing = async (id) => {
     const {data} = await $host.get('api/thing/' + id)
     return data
 }
+
 
 
 export const addToBasket = async (thingId) => {
