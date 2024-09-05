@@ -7,8 +7,9 @@
     background-color: black;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    /* justify-content: center; */
     gap: calc(var(--index) * 2);
+    min-height: 100vh;
   }
 
   .basket-page h2 {

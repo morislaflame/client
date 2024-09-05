@@ -9,12 +9,25 @@
     background-color: black;
 }
 
-.filters {
-    width:50%;
-    height: calc(var(--index) * 10);
+.pin-spacer {
+    display: flex;
 }
 
+.filters {
+    width: 100%;
+    padding: 0 calc(var(--index) * 10);
+    height: calc(var(--index) * 10);
+    margin: 0 auto; /* Центрируем блок относительно родителя */
+    background-color: black;
+    z-index: 10;
+}
 
+.filters.pinned {
+    position: relative;
+    top: 0;
+    
+    transform: translateX(-50%); /* Центрируем блок по горизонтали */
+}
 
 .mainlist {
     flex: 1;

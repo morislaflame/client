@@ -10,10 +10,14 @@ import Pages from '../../components/Pages';
 import SideBar from '../../components/SideBar/SideBar';
 import StorySlider from '../../components/StorySlider/StorySlider';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
+import { gsap } from "gsap";
+import { useGSAP } from "@gsap/react";
+import ScrollTrigger from 'gsap/src/ScrollTrigger';
 
 const Shop = observer(() => {
   const {thing} = useContext(Context)
-  
+  gsap.registerPlugin(ScrollTrigger);
+
   useEffect(() => {
     fetchTypes().then(data => thing.setTypes(data));
     fetchBrands().then(data => thing.setBrands(data));
