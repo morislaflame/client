@@ -4,6 +4,7 @@
     flex-direction: column;
     gap: 10px;
     /* background-color: blanchedalmond; */
+    
 }
 
 .type_name {
@@ -26,4 +27,23 @@
 .type_name.selected {
     color: aliceblue;
     background-color: #EF233C;
+}
+
+.typebar {
+    margin: calc(var(--index) * 1) auto;
+    padding: calc(var(--index) * 1);
+    background-color: #5b04f582;
+    border-radius: calc(var(--index) * 1);
+    border-color: #fedada;
+    box-shadow: 
+        0 0 2px #5b04f582, 
+        0 0 5px #5b04f582, 
+        0 0 10px #5b04f582, 
+        0 0 15px #5b04f582;
+    width: 100%;
+    max-width: 400px;
+}
+
+.list-group {
+    gap: calc(var(--index) * 0.7);
 }

@@ -20,19 +20,19 @@ export default function SideBar({ name, ...props }) {
       <MyButton text="Фильтры" onClick={toggleShow}/>
       <Offcanvas show={show} onHide={handleClose} scroll
       backdrop placement="top">
-        <Offcanvas.Header closeButton>
-          <Offcanvas.Title>ФИЛЬТРЫ</Offcanvas.Title>
+        <Offcanvas.Header>
+          <Offcanvas.Title>FILTERS</Offcanvas.Title>
         </Offcanvas.Header>
         <Offcanvas.Body>
             <div className={'sidebar'}>
                 <div>
-                    <TypeBar/>
+                  <PriceSlider/>
                 </div>
                 <div>
                     <BrandBar/>
                 </div>
                 <div>
-                  <PriceSlider/>
+                    <TypeBar/>
                 </div>
             </div>
         </Offcanvas.Body>

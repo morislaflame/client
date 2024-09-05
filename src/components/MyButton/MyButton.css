@@ -22,7 +22,7 @@
     color: #fff;
     border-style: solid;
     border-color: #fedada;
-    border-radius: 5px;
+    border-radius: calc(var(--index) * 1);
     box-shadow: 
         0 0 2px #5b04f582, 
         0 0 5px #5b04f582, 

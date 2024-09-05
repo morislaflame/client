@@ -9,3 +9,9 @@
     justify-content: center;
     background: linear-gradient(to bottom, black, #000000ab);
 }
+
+.offcanvas-header button{
+    color: white;
+    position: absolute;
+    right: 0;
+}
