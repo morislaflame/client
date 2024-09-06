@@ -9,7 +9,7 @@
 @media (max-width: 600px) {
     .card_list {
         width: 50%;
-        padding: calc(var(--index) * 0.5);
+        padding: calc(var(--index) * 0.6);
     }
   }
 
@@ -23,9 +23,14 @@
     border-style: solid;
     border-color: #fedada;
     border-radius: calc(var(--index) * 0.7);
-    
+    /* box-shadow: 
+        0 0 2px #1d014f82, 
+        0 0 5px #1d014f82, 
+        0 0 10px #1d014f82, 
+        0 0 15px #21025982; */
     cursor: pointer;
     border-width: 1px;
+    background-color: whitesmoke;
 }
 
 .card_img {

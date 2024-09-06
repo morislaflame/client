@@ -55,7 +55,7 @@ const Basket = () => {
 
   return (
     <div className="basket-page">
-      <h2>Ваша корзина</h2>
+      <h2>Your cart</h2>
       
       <div className="basket-items">
         {basket.map(item => (
@@ -63,16 +63,16 @@ const Basket = () => {
             <img src={process.env.REACT_APP_API_URL + item.thing.images[0].img} alt={item.thing.name} className="basket-item-img" />
             <div className="basket-item-info">
               <span className="basket-item-name">{item.thing.name}</span>
-              <span className="basket-item-price">{item.thing.price} руб</span>
-              <button onClick={() => handleRemove(item.thingId)} className="basket-item-remove">Удалить</button>
+              <span className="basket-item-price">${item.thing.price}</span>
+              <button onClick={() => handleRemove(item.thingId)} className="basket-item-remove">Remove</button>
             </div>
           </div>
         ))}
-        <MySecondBtn className="clear-basket" text={'Очистить корзину'} onClick={handleClearBasket}></MySecondBtn>
+        <MySecondBtn className="clear-basket" text={'Clear cart'} onClick={handleClearBasket}></MySecondBtn>
       </div>
       <div className="basket-total">
-        <h3>Общая сумма: {totalAmount} руб</h3>
-        <MyButton className="pay-button" text={'Перейти к оплате'} onClick={handlePayment}></MyButton>
+        <h3>Total amount: ${totalAmount}</h3>
+        <MyButton className="pay-button" text={'Go to payment'} onClick={handlePayment}></MyButton>
         
       </div>
     </div>

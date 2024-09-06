@@ -1,14 +1,60 @@
 .payment-page {
     text-align: center;
-    padding: 20px;
+    padding: calc(var(--index) * 2);
+    background: linear-gradient(to bottom, black, #130133, black);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: calc(var(--index) * 2);
   }
   
   .payment-details {
-    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .crypto-payment {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: calc(var(--index) * 2);
+    margin: calc(var(--index) * 2) 0;
   }
   
-  .qr-code {
-    margin: 20px auto;
-    max-width: 256px;
+  .qr-box {
+    padding: calc(var(--index) * 4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: white;
+    border-radius: calc(var(--index) * 2);
+    border-color: #fedada;
+    box-shadow: 
+        0 0 2px #2d027982, 
+        0 0 5px #2d027982, 
+        0 0 10px #2d027982, 
+        0 0 15px #4302b682;
   }
-  
+
+
+  .selector-pay {
+    width: 100%;
+    display: flex;
+    gap: calc(var(--index) * 0.5);
+    justify-content: space-between;
+    padding: calc(var(--index) * 2);
+    background-color: white;
+    color: black;
+    border-radius: calc(var(--index) * 1);
+    margin: calc(var(--index) * 2) 0 0 0;
+    font-weight: 500;
+  }
+
+
+  .custom-dropdown {
+    --bs-btn-bg: #5b04f582;
+  }

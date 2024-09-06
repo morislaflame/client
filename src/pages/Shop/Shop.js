@@ -40,7 +40,7 @@ const Shop = observer(() => {
   
 
   return (
-    <div style={{display: 'flex', flexDirection: 'column', alignItems:'center', minHeight: '100vh', backgroundColor: 'black'}}>
+    <div className='main-shop'>
       <StorySlider/>
       <div className='filters'><SideBar/></div>
       <div className={'mainlist'}>

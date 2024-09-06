@@ -1,12 +1,15 @@
-.container {
+
+
+
+.main-shop {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     min-width: 100vw;
-    justify-content: flex-start;
+    align-items: center;
     min-height: fit-content;
     overflow: hidden;
     min-height: 100vh;
-    background-color: black;
+    background: linear-gradient(to bottom, black, #130035, black);
 }
 
 .pin-spacer {
@@ -18,7 +21,7 @@
     padding: 0 calc(var(--index) * 10);
     height: calc(var(--index) * 10);
     margin: 0 auto; /* Центрируем блок относительно родителя */
-    background-color: black;
+    /* background-color: black; */
     z-index: 10;
 }
 

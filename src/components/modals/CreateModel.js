@@ -36,6 +36,8 @@ const CreateModel = observer(({show, onHide}) => {
             tiktok: '', 
             cblocked: '', 
             ofverif: '',
+            link: '',
+            girlmsg: '',
             number: Date.now()
         }]);
     }
@@ -52,6 +54,10 @@ const CreateModel = observer(({show, onHide}) => {
         setFiles([...files, ...Array.from(e.target.files)]); // Добавление новых файлов к уже существующим
     };
 
+    const removeFile = (index) => {
+        setFiles(prevFiles => prevFiles.filter((file, i) => i !== index));
+    };
+
     const toggleBrandSelection = (brand) => {
         if (selectedBrands.includes(brand)) {
             setSelectedBrands(prevBrands => prevBrands.filter(b => b.id !== brand.id));
@@ -61,6 +67,40 @@ const CreateModel = observer(({show, onHide}) => {
     }
 
     const addThing = () => {
+        if (!name.trim()) {
+            return alert("Введите имя товара!");
+        }
+    
+        // Проверка цены
+        if (!price || price <= 0) {
+            return alert("Введите корректную цену товара!");
+        }
+    
+        // Проверка, выбран ли тип
+        if (!thing.selectedType.id) {
+            return alert("Выберите тип товара!");
+        }
+    
+        // Проверка, выбраны ли бренды
+        if (selectedBrands.length === 0) {
+            return alert("Выберите хотя бы один бренд!");
+        }
+    
+        // Проверка, загружены ли изображения
+        if (files.length === 0) {
+            return alert("Добавьте хотя бы одно изображение!");
+        }
+    
+        // Проверка дополнительной информации (если необходимо, можно сделать обязательные поля)
+        for (let i of info) {
+            if (!i.age.trim() || !i.smartphone.trim() || !i.percent.trim() || !i.time.trim() || 
+                !i.english.trim() || !i.content.trim() || !i.contract.trim() || !i.start.trim() ||
+                !i.socialmedia.trim() || !i.tiktok.trim() || !i.cblocked.trim() || !i.ofverif.trim() ||
+                !i.link.trim() || !i.girlmsg.trim()) {
+                return alert("Заполните все поля информации!");
+            }
+        }
+
         const formData = new FormData();
         formData.append('name', name);
         formData.append('price', `${price}`);
@@ -137,7 +177,11 @@ const CreateModel = observer(({show, onHide}) => {
                     <div className="mt-3">
                         <h6>Выбранные изображения:</h6>
                         {files.map((file, index) => (
-                            <div key={index}>{file.name}</div>
+                            <div key={index} className="d-flex justify-content-between align-items-center">
+                                <span>{file.name}</span>
+                                <Button variant="outline-danger" onClick={() => removeFile(index)}>Удалить</Button>
+                            </div>
+                            
                         ))}
                     </div>
                 <Button variant="outline-dark" onClick={addInfo} className="mt-3">Добавить информацию</Button>
@@ -228,6 +272,21 @@ const CreateModel = observer(({show, onHide}) => {
                                 placeholder='OF Verification'
                             />
                         </Col>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.link}
+                                onChange={e => changeInfo('link', e.target.value, i.number)}
+                                placeholder='TG Link'
+                            />
+                        </Col>
+                        <Col md={6}>
+                            <Form.Control
+                                value={i.girlmsg}
+                                onChange={e => changeInfo('girlmsg', e.target.value, i.number)}
+                                placeholder='MSG From Girl'
+                            />
+                        </Col>
+                        
                         <Col md={12}>
                             <Button variant="outline-danger" onClick={() => removeInfo(i.number)} className="mt-2">Удалить информацию</Button>
                         </Col>
