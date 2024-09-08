@@ -43,7 +43,7 @@ const PriceSlider = observer(() => {
                 value={currentPriceRange}
                 onChange={handleSliderChange}
             />
-            <button onClick={applyPriceFilter}>Подтвердить цену</button>
+            <button onClick={applyPriceFilter}>Confirm</button>
         </div>
     );
 });

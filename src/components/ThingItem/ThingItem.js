@@ -5,6 +5,7 @@ import './ThingItem.css';
 import { THING_ROUTE } from "../../utils/consts";
 import Badge from 'react-bootstrap/Badge';
 
+
 const ThingItem = ({thing}) => {
     const navigate = useNavigate();
     const cardRef = useRef(null);

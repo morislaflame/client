@@ -17,7 +17,7 @@ export default function SideBar({ name, ...props }) {
   return (
 
     <>
-      <MyButton text="Фильтры" onClick={toggleShow}/>
+      <MyButton text="Filters" onClick={toggleShow}/>
       <Offcanvas show={show} onHide={handleClose} scroll
       backdrop placement="top">
         <Offcanvas.Header>
