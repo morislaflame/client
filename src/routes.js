@@ -1,4 +1,3 @@
-
 import Admin from "./pages/Admin/Admin";
 import Basket from "./pages/Basket";
 import Shop from "./pages/Shop/Shop";
@@ -10,48 +9,62 @@ import TermsOfService from "./pages/TermsOfService/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import PaymentPage from "./pages/Payment/PaymentPage";
 
-export const authRoutes = [
-    {
-        path: ADMIN_ROUTE,
-        Component: <Admin/>
-    },
-    {
-        path: BASKET_ROUTE,
-        Component: <Basket/>
-    },
-    {
-        path: PAYMENT_ROUTE,
-        Component: <PaymentPage/>
+export const authRoutes = (user) => {
+    console.log("User in authRoutes:", user);
+
+    const routes = [
+        {
+            path: BASKET_ROUTE,
+            Component: <Basket />
+        },
+        {
+            path: PAYMENT_ROUTE,
+            Component: <PaymentPage />
+        }
+    ];
+
+    // Добавляем маршрут к админке, если у пользователя роль ADMIN
+    if (user && user.role === 'ADMIN') {
+        console.log("User is admin, adding admin route");
+        routes.push({
+            path: ADMIN_ROUTE,
+            Component: <Admin />
+        });
+    } else {
+        console.log("User is not admin");
     }
-]
+
+
+    return routes;
+};
 
 export const publicRoutes = [
     {
         path: MAIN_ROUTE,
-        Component: <Main/>
+        Component: <Main />
     },
     {
         path: SHOP_ROUTE,
-        Component: <Shop/>
+        Component: <Shop />
     },
     {
         path: LOGIN_ROUTE,
-        Component: <Auth/>
+        Component: <Auth />
     },
     {
         path: REGISTRATION_ROUTE,
-        Component: <Auth/>
+        Component: <Auth />
     },
     {
         path: THING_ROUTE + '/:id',
-        Component: <ThingPage/>
+        Component: <ThingPage />
     },
     {
         path: TERMS_ROUTE,
-        Component: <TermsOfService/>
+        Component: <TermsOfService />
     },
     {
         path: PRIVACY_ROUTE,
-        Component: <PrivacyPolicy/>
-    },
-]
+        Component: <PrivacyPolicy />
+    }
+];

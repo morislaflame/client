@@ -21,40 +21,40 @@ const NavBar = observer(() => {
     }, [thing]);
 
     const logOut = () => {
-        user.setUser({});
-        user.setIsAuth(false);
+        user.logout(); // Используем метод logout для выхода из аккаунта
+        navigate(LOGIN_ROUTE); // Перенаправляем на страницу авторизации после выхода
     };
 
     return (
-        <Navbar expand="lg" className="bg-body-tertiary" style={{justifyContent: 'center'}}>
+        <Navbar expand="lg" className="bg-body-tertiary" style={{ justifyContent: 'center' }}>
             {user.isAuth ? (
                 <div className='navbar'>
                     <Navbar.Brand href="/">Model's Hotel</Navbar.Brand>
                     
                     <div className='menu'>
-                    <Button
-                        className='shopping-card'
-                                variant="outline-dark"
-                                onClick={() => navigate(BASKET_ROUTE)}
-                            >
-                                <FaShoppingCart size={24} />
-                                {thing.basket.length > 0 && (
-                                    <span
-                                        style={{
-                                            position: 'absolute',
-                                            top: '1px',
-                                            backgroundColor: 'red',
-                                            color: 'white',
-                                            borderRadius: '50%',
-                                            padding: '1px 6px',
-                                            fontSize: '12px',
-                                        }}
-                                    >
-                                        {thing.basket.length}
-                                    </span>
-                                )}
-                            </Button>
-                    <Navbar.Toggle aria-controls="navbarScroll" />
+                        <Button
+                            className='shopping-card'
+                            variant="outline-dark"
+                            onClick={() => navigate(BASKET_ROUTE)}
+                        >
+                            <FaShoppingCart size={24} />
+                            {thing.basket.length > 0 && (
+                                <span
+                                    style={{
+                                        position: 'absolute',
+                                        top: '1px',
+                                        backgroundColor: 'red',
+                                        color: 'white',
+                                        borderRadius: '50%',
+                                        padding: '1px 6px',
+                                        fontSize: '12px',
+                                    }}
+                                >
+                                    {thing.basket.length}
+                                </span>
+                            )}
+                        </Button>
+                        <Navbar.Toggle aria-controls="navbarScroll" />
                     </div>
                     
                     <Navbar.Collapse id="navbarScroll">
@@ -63,25 +63,27 @@ const NavBar = observer(() => {
                             style={{ maxHeight: '120px' }}
                             navbarScroll
                         >
-                            <Nav.Link href='https://t.me/themodelshotel' style={{display: 'flex', gap: '5px', alignItems: 'center', color:'black'}}><FaTelegram />Us in Telegram</Nav.Link>
+                            <Nav.Link href='https://t.me/themodelshotel' style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'black' }}>
+                                <FaTelegram /> Us in Telegram
+                            </Nav.Link>
                             <Nav.Link href="/shop">Store</Nav.Link>
-                            <Nav.Link href='/login'>Login</Nav.Link>
-                            
                         </Nav>
-                        <Form className="d-flex" style={{justifyContent: 'flex-end'}}>
-                            
+                        <Form className="d-flex" style={{ justifyContent: 'flex-end' }}>
+                            {/* Кнопка "Админка", показывается только если роль ADMIN */}
+                            {user.user.role === 'ADMIN' && (
+                                <Button
+                                    variant="outline-danger"
+                                    style={{ marginRight: '12px' }}
+                                    onClick={() => navigate(ADMIN_ROUTE)}
+                                >
+                                    Админка
+                                </Button>
+                            )}
                             <Button 
                                 variant="outline-danger" 
                                 onClick={logOut}>
                                 Выйти
                             </Button>
-                            <Button 
-                                variant="outline-danger" 
-                                style={{ marginLeft: '12px' }} 
-                                onClick={() => navigate(ADMIN_ROUTE)}>
-                                Админка
-                            </Button>
-                            
                         </Form>
                     </Navbar.Collapse>
                 </div>

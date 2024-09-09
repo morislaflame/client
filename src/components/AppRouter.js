@@ -1,22 +1,33 @@
-import React, { useContext } from 'react';
-import {Routes, Route, Navigate, BrowserRouter} from 'react-router-dom'
+import React, { useContext, useEffect, useState } from 'react';
+import { Routes, Route, Navigate } from 'react-router-dom';
 import { authRoutes, publicRoutes } from '../routes';
 import { SHOP_ROUTE } from '../utils/consts';
 import { Context } from '../index';
 
 const AppRouter = () => {
-    const {user} = useContext(Context)
+    const { user } = useContext(Context);
+    const [routes, setRoutes] = useState([]);
 
-    console.log(user)
+    // Обновляем маршруты при изменении состояния аутентификации или роли пользователя
+    useEffect(() => {
+        console.log("User authentication or role changed, updating routes");
+        setRoutes(authRoutes(user.user));
+    }, [user.isAuth, user.user.role]);  // Отслеживаем изменения в авторизации и роли
+
     return (
         <Routes>
-            {user.isAuth && authRoutes.map(({path, Component}) =>
-                <Route key={path} path={path} element={Component} exact/>
-            )}
-            {publicRoutes.map(({path, Component}) =>
-                <Route key={path} path={path} element={Component} exact/>
-            )}
-            <Route path="*" element={<Navigate to="/" />} />
+            {/* Маршруты, доступные только авторизованным пользователям */}
+            {user.isAuth && routes.map(({ path, Component }) => (
+                <Route key={path} path={path} element={Component} exact />
+            ))}
+
+            {/* Публичные маршруты */}
+            {publicRoutes.map(({ path, Component }) => (
+                <Route key={path} path={path} element={Component} exact />
+            ))}
+
+            {/* Перенаправляем на главную страницу, если маршрут не найден */}
+            <Route path="*" element={<Navigate to={SHOP_ROUTE} />} />
         </Routes>
     );
 };
