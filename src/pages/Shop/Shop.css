@@ -21,7 +21,7 @@
     padding: 0 calc(var(--index) * 10);
     height: calc(var(--index) * 10);
     margin: 0 auto; /* Центрируем блок относительно родителя */
-    /* background-color: black; */
+    background-color: black;
     z-index: 10;
 }
 

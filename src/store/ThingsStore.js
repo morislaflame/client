@@ -19,6 +19,7 @@ export default class ThingStore {
             removeFromBasket: action,
             clearBasket: action,
             loadBasket: action,
+            resetBasket: action // Добавим метод для сброса корзины
         });
     }
 
@@ -88,6 +89,10 @@ export default class ThingStore {
         this._priceRange = priceRange;
         this.setPage(1); // Сбрасываем страницу при фильтрации
         console.log("Price range set in store:", priceRange); // Логируем новый диапазон цен
+    }
+
+    resetBasket() {
+        this._basket = [];
     }
 
     // Геттеры для корзины

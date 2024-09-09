@@ -21,6 +21,7 @@ const NavBar = observer(() => {
     }, [thing]);
 
     const logOut = () => {
+        thing.resetBasket();
         user.logout(); // Используем метод logout для выхода из аккаунта
         navigate(LOGIN_ROUTE); // Перенаправляем на страницу авторизации после выхода
     };
