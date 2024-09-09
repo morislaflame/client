@@ -85,10 +85,13 @@ const StorySlider = () => {
       </Carousel>
 
       <Modal show={modalShow} onHide={handleClose} centered>
-      <ProgressBar now={progress} />
-      <Modal.Header data-bs-theme="dark">
-        <CloseButton onClick={handleClose}/>
-      </Modal.Header>
+        <div className='story-top'>
+          
+          <ProgressBar now={progress} />
+          <Modal.Header data-bs-theme="dark">
+            <CloseButton onClick={handleClose}/>
+          </Modal.Header>
+        </div>
         <Modal.Body className='story' onClick={togglePause}> 
           {selectedStory && (
             <img
