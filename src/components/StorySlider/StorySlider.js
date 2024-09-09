@@ -3,6 +3,8 @@ import { fetchStories } from '../../http/storyAPI';
 import './StorySlider.css';
 import Carousel from 'react-bootstrap/Carousel';
 import Modal from 'react-bootstrap/Modal';
+import Button from 'react-bootstrap/Button';
+import CloseButton from 'react-bootstrap/CloseButton';
 
 const StorySlider = () => {
   const [stories, setStories] = useState([]);
@@ -46,7 +48,11 @@ const StorySlider = () => {
       </Carousel>
 
       <Modal show={modalShow} onHide={handleClose} centered>
-        <Modal.Body className='story'> 
+        
+      <Modal.Footer data-bs-theme="dark">
+        <CloseButton onClick={handleClose}/>
+      </Modal.Footer>
+        <Modal.Body className='story' > 
           {selectedStory && (
             <img
               src={`${process.env.REACT_APP_API_URL}${selectedStory.img}`}
@@ -55,7 +61,7 @@ const StorySlider = () => {
             />
           )}
         </Modal.Body>
-        <Modal.Header>
+        <Modal.Header closeButton>
           <Modal.Title>{selectedStory && selectedStory.title}</Modal.Title>
         </Modal.Header>
       </Modal>

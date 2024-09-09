@@ -9,12 +9,7 @@
     justify-content: center;
 }
 
-.skelet {
-    height: calc(var(--index) * 3);
-    width: 40%;
-    background: url('../../../../server/static/button.jpg') no-repeat center center;
-    background-size: contain; /* Изображение полностью помещается внутри элемента */
-}
+
 
 .my-second-button {
     padding: calc(var(--index) * 1) calc(var(--index) * 4);
