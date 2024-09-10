@@ -21,11 +21,11 @@
     display: flex;
     align-items: center;
     border-style: solid;
-    border-color: #fedada;
+    /* border-color: #fedada; */
     border-radius: calc(var(--index) * 0.7);
     cursor: pointer;
     border-width: 1px;
-    background-color: whitesmoke;
+    background-color: #111111c4;
 }
 
 .card_img {
@@ -57,10 +57,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: calc(var(--index) * 1);
+    gap: calc(var(--index) * 1.2);
     flex-wrap: wrap;
     
-    padding: calc(var(--index) * 0.7) calc(var(--index) * 0.7) 0 calc(var(--index) * 0.7);
+    padding: calc(var(--index) * 1) calc(var(--index) * 0.7) 0 calc(var(--index) * 0.7);
 }
 
 .thing-all {
@@ -70,7 +70,8 @@
     text-align: center;
     padding: calc(var(--index) * 0.6);
     gap: calc(var(--index) * 0.6);
-    max-width: 80%;
+    width: 80%;
+    color: white;
 }
 
 .thingName {
@@ -79,10 +80,13 @@
 
 .thing-info {
     font-size: calc(var(--index) * 1.2);
-    color: #676767;
+    color: #b3b2b2;
     display: flex;
     flex-direction: column;
     gap: calc(var(--index) * 0.6);
+    border-bottom: 1px solid #7f7e7e66;
+    border-top: 1px solid #7f7e7e66;
+    padding: calc(var(--index) * 0.6) 0;
 }
 
 .thing-price {

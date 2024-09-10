@@ -4,6 +4,9 @@ import { gsap } from 'gsap';
 import './ThingItem.css';
 import { THING_ROUTE } from "../../utils/consts";
 import Badge from 'react-bootstrap/Badge';
+import MymIcon from '../../icons/Mym.png';
+import FanslyIcon from '../../icons/fansly.png';
+import OnlyIcon from '../../icons/onlyfans.png'
 
 
 const ThingItem = ({thing}) => {
@@ -20,9 +23,9 @@ const ThingItem = ({thing}) => {
     };
 
     const brandIcons = {
-        1: 'https://www.freedownloadlogo.com/logos/o/onlyfans-2.svg',
-        2: 'https://socprofile.com/u/25823/socprofile.com_officialfansly._1662655605.png',
-        3: 'https://luzriquelme.com/wp-content/uploads/2017/05/screen-shot-2015-11-20-at-1-15-51-pm.png'
+        1: OnlyIcon,
+        2: FanslyIcon,
+        3: MymIcon
     };
 
     useEffect(() => {

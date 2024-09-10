@@ -10,6 +10,9 @@ import { FaShoppingCart } from 'react-icons/fa';
 import { Button } from 'react-bootstrap';
 import { BASKET_ROUTE } from '../../utils/consts';
 import { useNavigate } from 'react-router-dom';
+import MymIcon from '../../icons/Mym.png';
+import FanslyIcon from '../../icons/fansly.png';
+import OnlyIcon from '../../icons/onlyfans.png'
 
 const ThingPage = () => {
   const [thing, setThing] = useState({ info: [], images: [] });
@@ -38,9 +41,9 @@ const ThingPage = () => {
 
 // Иконки для брендов
 const brandIcons = {
-    1: 'https://www.freedownloadlogo.com/logos/o/onlyfans-2.svg',  // URL для иконки бренда с id: 1
-    2: 'https://socprofile.com/u/25823/socprofile.com_officialfansly._1662655605.png',   // URL для иконки бренда с id: 2
-    3: 'https://luzriquelme.com/wp-content/uploads/2017/05/screen-shot-2015-11-20-at-1-15-51-pm.png'
+    1: OnlyIcon,  // URL для иконки бренда с id: 1
+    2: FanslyIcon,   // URL для иконки бренда с id: 2
+    3: MymIcon
 };
 
 const typeIcons = {
