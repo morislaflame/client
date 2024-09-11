@@ -10,6 +10,7 @@ import Form from 'react-bootstrap/Form';
 import { observer } from 'mobx-react-lite';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
+import { useNavigate } from 'react-router-dom';
 
 const Admin = observer(() => {
   const [brandVisible, setBrandVisible] = useState(false);
@@ -24,6 +25,7 @@ const Admin = observer(() => {
   const [filteredEmails, setFilteredEmails] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null); // Храним пользователя, которого нужно удалить
+  const navigate = useNavigate();
 
   useEffect(() => {
     loadUsers(); // Загружаем список всех пользователей при первом рендере
@@ -47,10 +49,10 @@ const Admin = observer(() => {
 
   const handleSearch = async (email) => {
     const result = await user.searchUserByEmail(email);
-    setSearchResult(result);
-    setEmail(result.email); // Устанавливаем email после выбора
-    setFilteredEmails([]); // Очищаем автоподсказки
-  };
+    if (result) {
+        navigate(`/user/${result.id}`); // Переход на страницу информации о пользователе
+    }
+};
 
   const handleRoleChange = async (userId, currentRole) => {
     const newRole = currentRole === 'USER' ? 'ADMIN' : 'USER'; // Переключаем роль

@@ -25,6 +25,11 @@ export const fetchUsers = async () => {
     return data;
 };
 
+export const getUserById = async (id) => {
+    const { data } = await $authHost.get(`api/user/user/${id}`);
+    return data;
+};
+
 // Поиск пользователя по email
 export const getUserByEmail = async (email) => {
     const { data } = await $authHost.post('api/user/user', { email });
@@ -42,3 +47,4 @@ export const deleteUser = async (userId) => {
     const { data } = await $authHost.delete('api/user/users', { data: { userId } });
     return data;
 };
+

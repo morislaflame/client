@@ -3,11 +3,12 @@ import Basket from "./pages/Basket";
 import Shop from "./pages/Shop/Shop";
 import Auth from "./pages/Auth";
 import ThingPage from "./pages/ThingPage/ThingPage";
-import { ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE, THING_ROUTE, MAIN_ROUTE, TERMS_ROUTE, PRIVACY_ROUTE, PAYMENT_ROUTE } from "./utils/consts";
+import { ADMIN_ROUTE, BASKET_ROUTE, LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE, THING_ROUTE, MAIN_ROUTE, TERMS_ROUTE, PRIVACY_ROUTE, PAYMENT_ROUTE, USERINFO_ROUTE } from "./utils/consts";
 import Main from "./pages/Main/Main";
 import TermsOfService from "./pages/TermsOfService/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import PaymentPage from "./pages/Payment/PaymentPage";
+import UserInfoPage from "./pages/UserInfoPage/UserInfoPage";
 
 export const authRoutes = (user) => {
     console.log("User in authRoutes:", user);
@@ -29,6 +30,10 @@ export const authRoutes = (user) => {
         routes.push({
             path: ADMIN_ROUTE,
             Component: <Admin />
+        });
+        routes.push({
+            path: USERINFO_ROUTE,
+            Component: <UserInfoPage />
         });
     } else {
         console.log("User is not admin");

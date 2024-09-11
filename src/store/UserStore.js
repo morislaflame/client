@@ -1,5 +1,5 @@
 import {makeAutoObservable, action} from "mobx";
-import { fetchUsers, getUserByEmail, changeUserRole, deleteUser } from "../http/userAPI";
+import { fetchUsers, getUserByEmail, changeUserRole, deleteUser, getUserById } from "../http/userAPI";
 
 export default class UserStore {
     constructor() {
@@ -54,6 +54,15 @@ export default class UserStore {
         }
     }
 
+    async getUserById(id) {
+        try {
+            const user = await getUserById(id);
+            return user;
+        } catch (error) {
+            console.error("Error fetching user by id:", error);
+        }
+    }
+
     async updateUserRole(userId, newRole) {
         try {
             const result = await changeUserRole(userId, newRole);
@@ -73,6 +82,8 @@ export default class UserStore {
             console.error("Error removing user:", error);
         }
     }
+
+    
 
     get users() {
         return this._users;
