@@ -19,3 +19,26 @@ export const check = async () => {
     localStorage.setItem('token', data.token)
     return jwtDecode(data.token)
 }
+
+export const fetchUsers = async () => {
+    const { data } = await $authHost.get('api/user/users');
+    return data;
+};
+
+// Поиск пользователя по email
+export const getUserByEmail = async (email) => {
+    const { data } = await $authHost.post('api/user/user', { email });
+    return data;
+};
+
+// Изменение роли пользователя
+export const changeUserRole = async (userId, newRole) => {
+    const { data } = await $authHost.put('api/user/role', { userId, newRole });
+    return data;
+};
+
+// Удаление пользователя
+export const deleteUser = async (userId) => {
+    const { data } = await $authHost.delete('api/user/users', { data: { userId } });
+    return data;
+};

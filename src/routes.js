@@ -23,7 +23,7 @@ export const authRoutes = (user) => {
         }
     ];
 
-    // Добавляем маршрут к админке, если у пользователя роль ADMIN
+    
     if (user && user.role === 'ADMIN') {
         console.log("User is admin, adding admin route");
         routes.push({
