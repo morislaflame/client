@@ -51,6 +51,7 @@ const UserAccount = observer(() => {
                                     </li>
                                 ))}
                             </ul>
+                            Общая стоимость: {order.totalPrice}
                         </ListGroup.Item>
                     ))}
                 </ListGroup>
