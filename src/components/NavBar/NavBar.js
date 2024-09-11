@@ -7,8 +7,8 @@ import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { FaShoppingCart } from 'react-icons/fa';
-import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE } from '../../utils/consts';
+import { FaShoppingCart, FaUser } from 'react-icons/fa'; // Импорт иконки пользователя
+import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE } from '../../utils/consts'; // Добавляем USER_ACCOUNT_ROUTE
 import './NavBar.css';
 import { FaTelegram } from "react-icons/fa6";
 
@@ -54,6 +54,13 @@ const NavBar = observer(() => {
                                     {thing.basket.length}
                                 </span>
                             )}
+                        </Button>
+                        <Button
+                            className='user-account'
+                            variant="outline-dark"
+                            onClick={() => navigate(USER_ACCOUNT_ROUTE)} // Переход на страницу аккаунта пользователя
+                        >
+                            <FaUser size={24} />
                         </Button>
                         <Navbar.Toggle aria-controls="navbarScroll" />
                     </div>

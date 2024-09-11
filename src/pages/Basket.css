@@ -47,10 +47,12 @@
     justify-content: center;
     align-items: center;
     color: white;
+    gap: calc(var(--index) * 0.7);
   }
 
   .info-brand {
     display: flex;
+    flex: 1;
   }
 
   .brands-basket {
@@ -58,7 +60,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
+    /* justify-content: center; */
     gap: calc(var(--index) * 0);
     flex-wrap: wrap;
     padding: calc(var(--index) * 0.2) calc(var(--index) * 0.4);
@@ -71,7 +73,7 @@
   
   .basket-item-img {
     width: calc(var(--index) * 12);
-    height: calc(var(--index) * 12);
+    height: calc(var(--index) * 15);
     object-fit: cover;
     border-radius: calc(var(--index) * 0.7);
   }
@@ -79,7 +81,8 @@
   .basket-item-info {
     display: flex;
     flex-direction: column;
-    height: calc(var(--index) * 12);
+    justify-content: space-between;
+    height: calc(var(--index) * 15);
     width: 70%;
   }
   
@@ -98,9 +101,10 @@
     color: white;
     padding: 5px 10px;
     border: none;
-    border-radius: 3px;
+    border-radius: calc(var(--index) * 0.7);
     cursor: pointer;
-    flex: 1;
+    /* flex: 1; */
+    height: calc(var(--index) * 4);
   }
   
   .basket-item-remove:hover {

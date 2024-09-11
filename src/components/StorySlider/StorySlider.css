@@ -20,7 +20,7 @@
   }
 
   .carousel-item {
-    transition: transform .7s cubic-bezier(0, 1.03, 0.32, 1.39);
+    transition: transform .7s cubic-bezier(0, 1.03, 0.53, 1.03);
   }
   
   .story-card {

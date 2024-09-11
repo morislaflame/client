@@ -54,6 +54,10 @@ const Admin = observer(() => {
     }
 };
 
+  const viewUserInfo = (userId) => {
+    navigate(`/user/${userId}`); // Переход на страницу пользователя
+  };
+
   const handleRoleChange = async (userId, currentRole) => {
     const newRole = currentRole === 'USER' ? 'ADMIN' : 'USER'; // Переключаем роль
     await user.updateUserRole(userId, newRole);
@@ -148,6 +152,7 @@ const Admin = observer(() => {
               checked={u.role === 'ADMIN'}
               onChange={() => handleRoleChange(u.id, u.role)}
             />
+            <button onClick={() => viewUserInfo(u.id)}>Посмотреть пользователя</button>
             <button onClick={() => confirmDeleteUser(u)}>Удалить</button>
           </li>
         ))}
