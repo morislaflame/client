@@ -45,6 +45,11 @@
     font-size: calc(var(--index) * 1); /* Расстояние между иконкой и текстом */
 }
 
+.carousel-item {
+    transition: transform .7s cubic-bezier(0.13, 0.98, 0.63, 0.99)
+
+}
+
 
 .brand-icon {
     width: calc(var(--index) * 2); /* Ширина иконки */

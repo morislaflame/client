@@ -5,12 +5,28 @@ import { useNavigate } from 'react-router-dom';
 import { Context } from '../index';
 import MyButton from '../components/MyButton/MyButton';
 import MySecondBtn from '../components/MySecondBtn/MySecondBtn';
+import MymIcon from '../icons/Mym.png';
+import FanslyIcon from '../icons/fansly.png';
+import OnlyIcon from '../icons/onlyfans.png'
 
 const Basket = () => {
   const [basket, setBasket] = useState([]);
   const [totalAmount, setTotalAmount] = useState(0);
   const navigate = useNavigate();
   const { thing } = useContext(Context); // Получаем доступ к ThingStore
+
+  const brandStyles = {
+    1: { color: '#008ccf' },  // Стиль для бренда с id: 1
+    2: { color: '#1fa7df' },   // Стиль для бренда с id: 2
+    3: { color: '#e8642c' }
+};
+
+// Иконки для брендов
+const brandIcons = {
+    1: OnlyIcon,  // URL для иконки бренда с id: 1
+    2: FanslyIcon,   // URL для иконки бренда с id: 2
+    3: MymIcon
+};
 
   useEffect(() => {
     fetchBasket().then(data => {
@@ -62,8 +78,35 @@ const Basket = () => {
           <div key={item.thing.id} className="basket-item">
             <img src={process.env.REACT_APP_API_URL + item.thing.images[0].img} alt={item.thing.name} className="basket-item-img" />
             <div className="basket-item-info">
-              <span className="basket-item-name">{item.thing.name}</span>
-              <span className="basket-item-price">${item.thing.price}</span>
+              <div className='info-brand'>
+                <div className="brands-basket">
+                {thing.brands && thing.brands.length > 0 ? (
+                        thing.brands.map(brand => (
+                            <div 
+                                key={brand.id} 
+                                style={brandStyles[brand.id] || { color: 'black' }}  // Применяем стиль, если он есть
+                                className="brand-item-basket"
+                            >
+                                {brandIcons[brand.id] && (
+                                    <img 
+                                        src={brandIcons[brand.id]} 
+                                        alt={`${brand.name} icon`} 
+                                        className="brands-icons-basket"
+                                    />
+                                )}
+                                {/* {brand.name} */}
+                            </div>
+                        ))
+                    ) : (
+                        <div>Unknown Brand</div>
+                    )}
+                </div>
+                <div className='items-name-price'>
+                  <span className="basket-item-name">{item.thing.name}</span>
+                  <span className="basket-item-price">${item.thing.price}</span>
+                </div>
+              </div>
+            
               <button onClick={() => handleRemove(item.thingId)} className="basket-item-remove">Remove</button>
             </div>
           </div>
