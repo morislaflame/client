@@ -11,3 +11,4 @@ export const PAYMENT_ROUTE = '/payment'
 export const USERINFO_ROUTE = '/user/:id'
 export const USER_ACCOUNT_ROUTE = '/account'
 export const ALL_ORDERS_ROUTE = '/admin/orders';
+export const ALL_USERS_ROUTE = '/all-users';

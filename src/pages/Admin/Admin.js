@@ -11,7 +11,7 @@ import { observer } from 'mobx-react-lite';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import { ALL_ORDERS_ROUTE } from '../../utils/consts'; // Импортируем новый маршрут для всех заказов
+import { ALL_ORDERS_ROUTE, ALL_USERS_ROUTE } from '../../utils/consts'; // Импортируем новый маршрут для всех заказов
 import { fetchNewOrders, confirmOrder, rejectOrder } from '../../http/orderAPI'; // Импортируем API для работы с заказами
 
 const Admin = observer(() => {
@@ -194,25 +194,9 @@ const Admin = observer(() => {
 
       {/* Кнопка для просмотра всех заказов */}
       <Button onClick={() => navigate(ALL_ORDERS_ROUTE)}>Посмотреть все заказы</Button>
+      <Button onClick={() => navigate(ALL_USERS_ROUTE)}>Посмотреть всех пользователей</Button>
 
-      {/* Список всех пользователей */}
-      <h3>Список всех пользователей</h3>
-      <ul>
-        {user.users.map((u) => (
-          <li key={u.id}>
-            {u.email} — {u.role}
-            <Form.Check 
-              type="switch"
-              id={`toggle-role-${u.id}`}
-              label={u.role === 'USER' ? 'USER' : 'ADMIN'}
-              checked={u.role === 'ADMIN'}
-              onChange={() => handleRoleChange(u.id, u.role)}
-            />
-            <button onClick={() => viewUserInfo(u.id)}>Посмотреть пользователя</button>
-            <button onClick={() => confirmDeleteUser(u)}>Удалить</button>
-          </li>
-        ))}
-      </ul>
+      
 
       {/* Модальное окно для подтверждения удаления */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
