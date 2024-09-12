@@ -103,6 +103,8 @@ const brandIcons = {
                 </div>
                 <div className='items-name-price'>
                   <span className="basket-item-name">{item.thing.name}</span>
+                  <span className="basket-item-name">{item.thing.ofverif}</span>
+                  <span className="basket-item-name">{item.thing.socialmedia}</span>
                   <span className="basket-item-price">${item.thing.price}</span>
                 </div>
               </div>
