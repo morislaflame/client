@@ -11,6 +11,8 @@ import { observer } from 'mobx-react-lite';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import { ALL_ORDERS_ROUTE } from '../../utils/consts'; // Импортируем новый маршрут для всех заказов
+import { fetchNewOrders, confirmOrder, rejectOrder } from '../../http/orderAPI'; // Импортируем API для работы с заказами
 
 const Admin = observer(() => {
   const [brandVisible, setBrandVisible] = useState(false);
@@ -25,14 +27,25 @@ const Admin = observer(() => {
   const [filteredEmails, setFilteredEmails] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null); // Храним пользователя, которого нужно удалить
+  const [newOrders, setNewOrders] = useState([]);
   const navigate = useNavigate();
 
   useEffect(() => {
     loadUsers(); // Загружаем список всех пользователей при первом рендере
+    loadNewOrders()
   }, []);
 
   const loadUsers = async () => {
     await user.fetchAllUsers();
+  };
+
+  const loadNewOrders = async () => {
+    try {
+      const orders = await fetchNewOrders();
+      setNewOrders(orders);
+    } catch (error) {
+      console.error('Ошибка при загрузке новых заказов:', error);
+    }
   };
 
   // Обновляем список подходящих пользователей при изменении введённого email
@@ -79,6 +92,24 @@ const Admin = observer(() => {
   const handleEmailClick = (email) => {
     setEmail(email); // Устанавливаем выбранный email
     setFilteredEmails([]); // Очищаем список подсказок
+  };
+
+  const handleConfirmOrder = async (orderId) => {
+    try {
+      await confirmOrder(orderId);
+      loadNewOrders(); // Перезагружаем новые заказы после подтверждения
+    } catch (error) {
+      console.error('Ошибка при подтверждении заказа:', error);
+    }
+  };
+
+  const handleRejectOrder = async (orderId) => {
+    try {
+      await rejectOrder(orderId);
+      loadNewOrders(); // Перезагружаем новые заказы после отклонения
+    } catch (error) {
+      console.error('Ошибка при отклонении заказа:', error);
+    }
   };
 
   return (
@@ -138,6 +169,31 @@ const Admin = observer(() => {
           </div>
         )}
       </div>
+
+      {/* Секция с новыми заказами */}
+      <h3>Новые заказы</h3>
+      {newOrders.length > 0 ? (
+        <ListGroup>
+          {newOrders.map(order => (
+            <ListGroup.Item key={order.id}>
+              Заказ №{order.id}, Сумма: {order.totalPrice}$,
+              {order.user.email}
+              <ul>
+                {order.order_things.map(item => (
+                  <li key={item.id}>Товар: {item.thing.name}, Цена: {item.thing.price}</li>
+                ))}
+              </ul>
+              <Button variant="success" onClick={() => handleConfirmOrder(order.id)}>Подтвердить</Button>
+              <Button variant="danger" onClick={() => handleRejectOrder(order.id)}>Отклонить</Button>
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      ) : (
+        <p>Нет новых заказов.</p>
+      )}
+
+      {/* Кнопка для просмотра всех заказов */}
+      <Button onClick={() => navigate(ALL_ORDERS_ROUTE)}>Посмотреть все заказы</Button>
 
       {/* Список всех пользователей */}
       <h3>Список всех пользователей</h3>

@@ -1,14 +1,19 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import './PaymentPage.css';
 import { QRCodeCanvas } from 'qrcode.react'; // Импортируем QRCodeCanvas
-import { useLocation } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown'; // Импортируем Bootstrap Dropdown
 import DropdownButton from 'react-bootstrap/DropdownButton';
+import { Context } from '../../index'; // Для работы с контекстом
+import { createOrder } from '../../http/orderAPI';
+import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
 
 const PaymentPage = () => {
+    const { thing, user } = useContext(Context);
   const location = useLocation();
   const totalAmountUSD = location.state?.totalAmount || 0;
+  const navigate = useNavigate();
 
   // Адреса кошельков для разных криптовалют
   const wallets = {
@@ -75,6 +80,16 @@ const PaymentPage = () => {
     return (totalAmountUSD / rate).toFixed(6); // Считаем сумму в криптовалюте
   };
 
+  const handleConfirmPayment = async () => {
+    try {
+      await createOrder(thing.basket); // Передаем содержимое корзины для создания заказа
+      thing.resetBasket(); // Очищаем корзину после успешного создания заказа
+      navigate(USER_ACCOUNT_ROUTE); // Перенаправляем на страницу аккаунта
+    } catch (error) {
+      console.error('Ошибка при создании заказа:', error);
+    }
+  };
+
   return (
     <div className="payment-page">
       <div className="payment-details">
@@ -117,7 +132,9 @@ const PaymentPage = () => {
           <p>Адрес кошелька для {wallets[selectedCrypto].currency}: {wallets[selectedCrypto].address}</p>
           
         </div>
-
+        <button className="btn btn-primary" onClick={handleConfirmPayment}>
+          Подтвердить оплату
+        </button>
        
         <p style={{ color: "gray", fontSize: "0.9em" }}>
           Курс криптовалют обновляется каждые 2 минуты. Пожалуйста, убедитесь, что оплата произведена с актуальным курсом.
