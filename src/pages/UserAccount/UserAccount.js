@@ -6,12 +6,31 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
 import { RETURN_PAGE } from '../../utils/consts';
 import { useNavigate } from 'react-router-dom';
+import Offcanvas from 'react-bootstrap/Offcanvas';
+import Button from 'react-bootstrap/Button';
+import { createReturn } from '../../http/orderAPI';
 
 const UserAccount = observer(() => {
     const { user } = useContext(Context);
     const [loading, setLoading] = useState(true);
     const [userInfo, setUserInfo] = useState(null);
     const navigate = useNavigate();
+    const [show, setShow] = useState(false); // Управление Offcanvas
+    const [selectedOrder, setSelectedOrder] = useState(null); // Выбранный заказ
+    const [selectedItems, setSelectedItems] = useState([]); // Выбранные товары
+    const [reasons, setReasons] = useState({}); // Причины возврата для товаров
+    const [confirmationMessage, setConfirmationMessage] = useState('');
+
+    const handleClose = () => {
+        setShow(false);
+        setConfirmationMessage(''); // Сбрасываем сообщение после закрытия
+    };
+    const handleShow = (order) => {
+        setSelectedOrder(order);
+        setSelectedItems([]);
+        setReasons({});
+        setShow(true);
+    };
 
     useEffect(() => {
         const loadUserInfo = async () => {
@@ -26,6 +45,37 @@ const UserAccount = observer(() => {
         };
         loadUserInfo();
     }, []);
+
+    const handleItemSelect = (itemId) => {
+        setSelectedItems((prev) =>
+            prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId]
+        );
+    };
+
+    const handleReasonChange = (itemId, reason) => {
+        setReasons((prev) => ({
+            ...prev,
+            [itemId]: reason,
+        }));
+    };
+
+    const handleSubmit = async () => {
+        try {
+            for (const itemId of selectedItems) {
+                await createReturn({
+                    orderThingId: itemId,
+                    reason: reasons[itemId] || '', // Причина возврата
+                });
+            }
+            setConfirmationMessage('Возврат оформлен и находится на рассмотрении');
+            setTimeout(() => {
+                handleClose(); // Закрываем Offcanvas через 3 секунды
+            }, 3000); // Задержка в 3 секунды
+        } catch (e) {
+            console.error('Ошибка при создании возврата:', e);
+            alert('Возникла ошибка при оформлении возврата');
+        }
+    };
 
     if (loading) {
         return <Spinner animation="border" />;
@@ -55,9 +105,9 @@ const UserAccount = observer(() => {
                                 ))}
                             </ul>
                             Общая стоимость: {order.totalPrice}
-                            <button onClick={() => navigate(`${RETURN_PAGE}?orderId=${order.id}`)}>
+                            <Button variant="primary" onClick={() => handleShow(order)}>
                                 Оформить возврат
-                            </button>
+                            </Button>
                         </ListGroup.Item>
                     ))}
                 </ListGroup>
@@ -80,6 +130,42 @@ const UserAccount = observer(() => {
             ) : (
                 <p>У вас нет возвратов.</p>
             )}
+
+<Offcanvas show={show} onHide={handleClose} placement="bottom">
+                <Offcanvas.Header closeButton>
+                    <Offcanvas.Title>Оформить возврат</Offcanvas.Title>
+                </Offcanvas.Header>
+                <Offcanvas.Body>
+                    {selectedOrder && (
+                        <>
+                            <h4>Заказ №{selectedOrder.id}</h4>
+                            <ul>
+                                {selectedOrder.order_things.map(item => (
+                                    <li key={item.id}>
+                                        <input
+                                            type="checkbox"
+                                            checked={selectedItems.includes(item.id)}
+                                            onChange={() => handleItemSelect(item.id)}
+                                        />
+                                        {item.thing.name} — {item.thing.price} руб.
+                                        {selectedItems.includes(item.id) && (
+                                            <textarea
+                                                placeholder="Причина возврата"
+                                                value={reasons[item.id] || ''}
+                                                onChange={(e) => handleReasonChange(item.id, e.target.value)}
+                                                style={{ display: 'block', marginTop: '10px' }}
+                                            />
+                                        )}
+                                    </li>
+                                ))}
+                            </ul>
+                            <Button onClick={handleSubmit} disabled={selectedItems.length === 0}>
+                                Оформить возврат
+                            </Button>
+                        </>
+                    )}
+                </Offcanvas.Body>
+            </Offcanvas>
         </div>
     );
 });
