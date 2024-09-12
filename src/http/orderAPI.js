@@ -52,3 +52,28 @@ export const createReturn = async (returnData) => {
     const { data } = await $authHost.post('/api/return', returnData);
     return data;
 };
+
+// Получение возвратов со статусом pending
+export const fetchPendingReturns = async () => {
+    const { data } = await $authHost.get('api/return/all?status=pending');
+    return data;
+};
+
+// Получение всех возвратов
+export const fetchAllReturns = async () => {
+    const { data } = await $authHost.get('/api/return/all');
+    return data;
+};
+
+
+// Подтверждение возврата
+export const approveReturn = async (returnId) => {
+    const { data } = await $authHost.put(`api/return/approve/${returnId}`);
+    return data;
+};
+
+// Отклонение возврата
+export const rejectReturn = async (returnId) => {
+    const { data } = await $authHost.put(`api/return/reject/${returnId}`);
+    return data;
+};

@@ -11,14 +11,16 @@ import { observer } from 'mobx-react-lite';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import { ALL_ORDERS_ROUTE, ALL_USERS_ROUTE } from '../../utils/consts'; // Импортируем новый маршрут для всех заказов
+import { ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, ALL_USERS_ROUTE } from '../../utils/consts'; // Импортируем новый маршрут для всех заказов
 import { fetchNewOrders, confirmOrder, rejectOrder } from '../../http/orderAPI'; // Импортируем API для работы с заказами
+import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/orderAPI';
 
 const Admin = observer(() => {
   const [brandVisible, setBrandVisible] = useState(false);
   const [typeVisible, setTypeVisible] = useState(false);
   const [modelVisible, setModelVisible] = useState(false);
   const [storyVisible, setStoryVisible] = useState(false);
+  const [pendingReturns, setPendingReturns] = useState([]);
 
   const { user } = useContext(Context);
   const [email, setEmail] = useState('');
@@ -34,6 +36,19 @@ const Admin = observer(() => {
     loadUsers(); // Загружаем список всех пользователей при первом рендере
     loadNewOrders()
   }, []);
+
+  useEffect(() => {
+    loadPendingReturns();
+  }, []);
+
+  const loadPendingReturns = async () => {
+    try {
+        const returns = await fetchPendingReturns();
+        setPendingReturns(returns);
+    } catch (error) {
+        console.error('Ошибка при загрузке возвратов:', error);
+    }
+  };
 
   const loadUsers = async () => {
     await user.fetchAllUsers();
@@ -112,6 +127,24 @@ const Admin = observer(() => {
     }
   };
 
+  const handleApproveReturn = async (returnId) => {
+    try {
+        await approveReturn(returnId);
+        loadPendingReturns(); // Перезагружаем список после подтверждения
+    } catch (error) {
+        console.error('Ошибка при подтверждении возврата:', error);
+    }
+  };
+
+  const handleRejectReturn = async (returnId) => {
+    try {
+        await rejectReturn(returnId);
+        loadPendingReturns(); // Перезагружаем список после отклонения
+    } catch (error) {
+        console.error('Ошибка при отклонении возврата:', error);
+    }
+  };
+
   return (
     <div className={'container'}>
       <h2>Панель администратора</h2>
@@ -153,6 +186,8 @@ const Admin = observer(() => {
         )}
 
         <button onClick={() => handleSearch(email)}>Найти пользователя</button>
+
+        <Button onClick={() => navigate(ALL_USERS_ROUTE)}>Посмотреть всех пользователей</Button>
         
         {searchResult && (
           <div className="search-result">
@@ -192,11 +227,30 @@ const Admin = observer(() => {
         <p>Нет новых заказов.</p>
       )}
 
-      {/* Кнопка для просмотра всех заказов */}
       <Button onClick={() => navigate(ALL_ORDERS_ROUTE)}>Посмотреть все заказы</Button>
-      <Button onClick={() => navigate(ALL_USERS_ROUTE)}>Посмотреть всех пользователей</Button>
-
       
+
+      <h3>Возвраты на рассмотрении</h3>
+            {pendingReturns.length > 0 ? (
+                <ListGroup>
+                    {pendingReturns.map(returnItem => (
+                        <ListGroup.Item key={returnItem.id}>
+                            Возврат №{returnItem.id}, Товар: {returnItem.order_thing.thing.name}, Пользователь: {returnItem.user.email}
+                            <p>Причина: {returnItem.reason}</p>
+                            <Button variant="success" onClick={() => handleApproveReturn(returnItem.id)}>
+                                Подтвердить
+                            </Button>
+                            <Button variant="danger" onClick={() => handleRejectReturn(returnItem.id)}>
+                                Отклонить
+                            </Button>
+                        </ListGroup.Item>
+                    ))}
+                </ListGroup>
+            ) : (
+                <p>Нет возвратов на рассмотрении.</p>
+            )}
+
+            <Button onClick={() => navigate(ALL_RETURNS_ROUTE)}>Посмотреть все возвраты</Button>
 
       {/* Модальное окно для подтверждения удаления */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
