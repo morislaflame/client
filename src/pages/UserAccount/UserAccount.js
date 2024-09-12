@@ -4,11 +4,14 @@ import { observer } from 'mobx-react-lite';
 import { fetchMyInfo } from '../../http/userAPI'; // Метод для получения информации о пользователе
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
+import { RETURN_PAGE } from '../../utils/consts';
+import { useNavigate } from 'react-router-dom';
 
 const UserAccount = observer(() => {
     const { user } = useContext(Context);
     const [loading, setLoading] = useState(true);
     const [userInfo, setUserInfo] = useState(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const loadUserInfo = async () => {
@@ -52,6 +55,9 @@ const UserAccount = observer(() => {
                                 ))}
                             </ul>
                             Общая стоимость: {order.totalPrice}
+                            <button onClick={() => navigate(`${RETURN_PAGE}?orderId=${order.id}`)}>
+                                Оформить возврат
+                            </button>
                         </ListGroup.Item>
                     ))}
                 </ListGroup>

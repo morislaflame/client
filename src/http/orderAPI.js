@@ -20,8 +20,8 @@ export const fetchNewOrders = async () => {
 };
 
 // Получение всех возвратов пользователя
-export const fetchUserReturns = async () => {
-    const { data } = await $authHost.get('api/returns/my-returns');
+export const fetchUserReturns = async (userId) => {
+    const { data } = await $authHost.get(`api/return/user/${userId}`);
     return data;
 };
 
@@ -39,5 +39,16 @@ export const confirmOrder = async (orderId) => {
 // Отклонение заказа администратором
 export const rejectOrder = async (orderId) => {
     const { data } = await $authHost.put(`api/order/reject/${orderId}`);
+    return data;
+};
+
+export const fetchOrderDetails = async (orderId) => {
+    const { data } = await $authHost.get(`api/order/${orderId}`);
+    return data;
+};
+
+// Создание возврата
+export const createReturn = async (returnData) => {
+    const { data } = await $authHost.post('/api/return', returnData);
     return data;
 };
