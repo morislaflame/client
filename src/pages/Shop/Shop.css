@@ -20,10 +20,14 @@
     width: 100%;
     padding: 0 calc(var(--index) * 10);
     height: calc(var(--index) * 10);
-    margin: 0 auto; /* Центрируем блок относительно родителя */
+    margin: 0 calc(var(--index) * 1); /* Центрируем блок относительно родителя */
     /* background-color: black; */
     z-index: 10;
+    /* border-bottom: 1px solid #7f7e7e66;
+    border-top: 1px solid #7f7e7e66; */
 }
+
+
 
 .filters.pinned {
     position: relative;

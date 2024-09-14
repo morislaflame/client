@@ -13,6 +13,7 @@ import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import ScrollTrigger from 'gsap/src/ScrollTrigger';
+import { NavLink } from 'react-router-dom';
 
 const Shop = observer(() => {
   const {thing} = useContext(Context)
@@ -41,8 +42,17 @@ const Shop = observer(() => {
 
   return (
     <div className='main-shop'>
+      
       <StorySlider/>
-      <div className='filters'><SideBar/></div>
+      <div className='filters'>
+        <SideBar/>
+        <div className='shop-warnings'>
+          
+          {/* <div className='telegram-int'>
+            Fully integrated with Telegram
+          </div> */}
+        </div>
+      </div>
       <div className={'mainlist'}>
       <ThingList/>
       <Pages/>

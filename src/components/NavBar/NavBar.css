@@ -8,6 +8,7 @@
     width: 100%;
     --bs-navbar-padding-x: calc(var(--index) * 0.8);
     --bs-navbar-padding-y: calc(var(--index) * 0.8);
+    
 }
 
 .navbar-brand {
@@ -26,4 +27,8 @@
 .navbar-toggler:focus {
     box-shadow: none;
     background: radial-gradient(ellipse at center, rgb(0 0 0 / 0%), #00000036);
+}
+
+.nav-link {
+    padding: calc(var(--index) * 0.7) 0;
 }

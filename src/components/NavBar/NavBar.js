@@ -8,7 +8,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaUser } from 'react-icons/fa'; // Импорт иконки пользователя
-import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE } from '../../utils/consts'; // Добавляем USER_ACCOUNT_ROUTE
+import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE, PRIVACY_ROUTE } from '../../utils/consts'; // Добавляем USER_ACCOUNT_ROUTE
 import './NavBar.css';
 import { FaTelegram } from "react-icons/fa6";
 
@@ -68,13 +68,16 @@ const NavBar = observer(() => {
                     <Navbar.Collapse id="navbarScroll">
                         <Nav
                             className="me-auto my-2 my-lg-0"
-                            style={{ maxHeight: '120px' }}
+                            style={{ maxHeight: '160px' }}
                             navbarScroll
+
                         >
                             <Nav.Link href='https://t.me/themodelshotel' style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'black' }}>
                                 <FaTelegram /> Us in Telegram
                             </Nav.Link>
                             <Nav.Link href="/shop">Store</Nav.Link>
+                            <Nav.Link href="/privacy">Privacy Policy</Nav.Link>
+                            <Nav.Link href="/terms">Terms Of Service</Nav.Link>
                         </Nav>
                         <Form className="d-flex" style={{ justifyContent: 'flex-end' }}>
                             {/* Кнопка "Админка", показывается только если роль ADMIN */}
