@@ -7,7 +7,7 @@ import MyButton from '../components/MyButton/MyButton';
 import MySecondBtn from '../components/MySecondBtn/MySecondBtn';
 import MymIcon from '../icons/Mym.png';
 import FanslyIcon from '../icons/fansly.png';
-import OnlyIcon from '../icons/onlyfans.png'
+import OnlyIcon from '../icons/onlyfans.png';
 
 const Basket = () => {
   const [basket, setBasket] = useState([]);
@@ -19,31 +19,31 @@ const Basket = () => {
     1: { color: '#008ccf' },  // Стиль для бренда с id: 1
     2: { color: '#1fa7df' },   // Стиль для бренда с id: 2
     3: { color: '#e8642c' }
-};
+  };
 
-// Иконки для брендов
-const brandIcons = {
+  // Иконки для брендов
+  const brandIcons = {
     1: OnlyIcon,  // URL для иконки бренда с id: 1
     2: FanslyIcon,   // URL для иконки бренда с id: 2
     3: MymIcon
-};
+  };
 
   useEffect(() => {
     fetchBasket().then(data => {
-      setBasket(data.basket_things || []);
-      calculateTotalAmount(data.basket_things || []);
+      setBasket(data.items || []); // Изменено: получаем данные из ключа items
+      calculateTotalAmount(data.items || []); // Изменено: передаем актуальные данные для расчета
     });
   }, []);
 
   const calculateTotalAmount = (basketItems) => {
-    const total = basketItems.reduce((sum, item) => sum + item.thing.price, 0);
+    const total = basketItems.reduce((sum, item) => sum + item.price, 0); // Изменено: берем цену из нового объекта
     setTotalAmount(total);
   };
 
   const handleRemove = async (thingId) => {
     try {
       await thing.removeFromBasket(thingId); // Удаляем через ThingStore для синхронизации
-      const updatedBasket = basket.filter(item => item.thingId !== thingId);
+      const updatedBasket = basket.filter(item => item.id !== thingId); // Изменено: удаляем по полю id
       setBasket(updatedBasket);
       calculateTotalAmount(updatedBasket);
     } catch (error) {
@@ -75,41 +75,37 @@ const brandIcons = {
       
       <div className="basket-items">
         {basket.map(item => (
-          <div key={item.thing.id} className="basket-item">
-            <img src={process.env.REACT_APP_API_URL + item.thing.images[0].img} alt={item.thing.name} className="basket-item-img" />
+          <div key={item.id} className="basket-item">
+            <img src={process.env.REACT_APP_API_URL + item.images[0].img} alt={item.name} className="basket-item-img" />
             <div className="basket-item-info">
               <div className='info-brand'>
                 <div className="brands-basket">
-                {thing.brands && thing.brands.length > 0 ? (
-                        thing.brands.map(brand => (
-                            <div 
-                                key={brand.id} 
-                                style={brandStyles[brand.id] || { color: 'black' }}  // Применяем стиль, если он есть
-                                className="brand-item-basket"
-                            >
-                                {brandIcons[brand.id] && (
-                                    <img 
-                                        src={brandIcons[brand.id]} 
-                                        alt={`${brand.name} icon`} 
-                                        className="brands-icons-basket"
-                                    />
-                                )}
-                                {/* {brand.name} */}
-                            </div>
-                        ))
-                    ) : (
-                        <div>Unknown Brand</div>
-                    )}
+                  {thing.brands && thing.brands.length > 0 ? (
+                    thing.brands.map(brand => (
+                      <div 
+                        key={brand.id} 
+                        style={brandStyles[brand.id] || { color: 'black' }}  // Применяем стиль, если он есть
+                        className="brand-item-basket"
+                      >
+                        {brandIcons[brand.id] && (
+                          <img 
+                            src={brandIcons[brand.id]} 
+                            alt={`${brand.name} icon`} 
+                            className="brands-icons-basket"
+                          />
+                        )}
+                      </div>
+                    ))
+                  ) : (
+                    <div>Unknown Brand</div>
+                  )}
                 </div>
                 <div className='items-name-price'>
-                  <span className="basket-item-name">{item.thing.name}</span>
-                  <span className="basket-item-name">{item.thing.ofverif}</span>
-                  <span className="basket-item-name">{item.thing.socialmedia}</span>
-                  <span className="basket-item-price">${item.thing.price}</span>
+                  <span className="basket-item-name">{item.name}</span>
+                  <span className="basket-item-price">${item.price}</span> {/* Изменено: берем цену из объекта item */}
                 </div>
               </div>
-            
-              <button onClick={() => handleRemove(item.thingId)} className="basket-item-remove">Remove</button>
+              <button onClick={() => handleRemove(item.id)} className="basket-item-remove">Remove</button> {/* Изменено: используем item.id */}
             </div>
           </div>
         ))}
@@ -118,7 +114,6 @@ const brandIcons = {
       <div className="basket-total">
         <h3>Total amount: ${totalAmount}</h3>
         <MyButton className="pay-button" text={'Go to payment'} onClick={handlePayment}></MyButton>
-        
       </div>
     </div>
   );

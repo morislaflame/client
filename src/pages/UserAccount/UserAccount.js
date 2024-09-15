@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { fetchMyInfo } from '../../http/userAPI'; // Метод для получения информации о пользователе
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
-import { RETURN_PAGE } from '../../utils/consts';
+import { EXCHANGE_ROUTE, RETURN_PAGE } from '../../utils/consts';
 import { useNavigate } from 'react-router-dom';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Button from 'react-bootstrap/Button';
@@ -77,6 +77,10 @@ const UserAccount = observer(() => {
         }
     };
 
+    const handleExchangeRequest = (item) => {
+        navigate(EXCHANGE_ROUTE.replace(':orderThingId', item.id), { state: { orderThingId: item.id } });
+    };
+
     if (loading) {
         return <Spinner animation="border" />;
     }
@@ -101,6 +105,13 @@ const UserAccount = observer(() => {
                                 {order.order_things.map(item => (
                                     <li key={item.id}>
                                         Товар: {item.thing.name}, Цена: {item.thing.price}
+                                        <Button
+                                            variant="primary"
+                                            onClick={() => handleExchangeRequest(item)}
+                                            style={{ marginLeft: '10px' }}
+                                        >
+                                            Запросить обмен
+                                        </Button>
                                     </li>
                                 ))}
                             </ul>
@@ -131,7 +142,7 @@ const UserAccount = observer(() => {
                 <p>У вас нет возвратов.</p>
             )}
 
-<Offcanvas show={show} onHide={handleClose} placement="bottom">
+            <Offcanvas show={show} onHide={handleClose} placement="bottom">
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title>Оформить возврат</Offcanvas.Title>
                 </Offcanvas.Header>
