@@ -14,6 +14,7 @@ import { useNavigate } from 'react-router-dom';
 import { ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, ALL_USERS_ROUTE } from '../../utils/consts'; // Импортируем новый маршрут для всех заказов
 import { fetchNewOrders, confirmOrder, rejectOrder } from '../../http/orderAPI'; // Импортируем API для работы с заказами
 import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/orderAPI';
+import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../http/exchangeAPI'; // Импортируем API для обменов
 
 const Admin = observer(() => {
   const [brandVisible, setBrandVisible] = useState(false);
@@ -30,7 +31,57 @@ const Admin = observer(() => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null); // Храним пользователя, которого нужно удалить
   const [newOrders, setNewOrders] = useState([]);
+  const [exchangeRequests, setExchangeRequests] = useState([]);
   const navigate = useNavigate();
+
+  useEffect(() => {
+    loadExchangeRequests(); // Загружаем все запросы на обмен при загрузке страницы
+  }, []);
+
+  const loadExchangeRequests = async () => {
+    try {
+      const exchanges = await fetchAllExchangeRequests();
+      setExchangeRequests(exchanges);
+    } catch (error) {
+      console.error('Ошибка при загрузке запросов на обмен:', error);
+    }
+  };
+
+  const handleApproveExchange = async (exchangeRequestId) => {
+    try {
+      await approveExchangeRequest(exchangeRequestId);
+      loadExchangeRequests(); // Перезагружаем запросы после подтверждения
+    } catch (error) {
+      console.error('Ошибка при подтверждении обмена:', error);
+    }
+  };
+
+  const handleRejectExchange = async (exchangeRequestId) => {
+    try {
+      await rejectExchangeRequest(exchangeRequestId);
+      loadExchangeRequests(); // Перезагружаем запросы после отклонения
+    } catch (error) {
+      console.error('Ошибка при отклонении обмена:', error);
+    }
+  };
+
+  const handleConfirmPayment = async (exchangeRequestId) => {
+    try {
+      await confirmPayment(exchangeRequestId);
+      loadExchangeRequests(); // Перезагружаем запросы после подтверждения доплаты
+    } catch (error) {
+      console.error('Ошибка при подтверждении доплаты:', error);
+    }
+  };
+
+  const handleConfirmRefund = async (exchangeRequestId) => {
+    try {
+      await confirmRefund(exchangeRequestId);
+      loadExchangeRequests(); // Перезагружаем запросы после подтверждения возврата разницы
+    } catch (error) {
+      console.error('Ошибка при подтверждении возврата разницы:', error);
+    }
+  };
 
   useEffect(() => {
     loadUsers(); // Загружаем список всех пользователей при первом рендере
@@ -252,6 +303,46 @@ const Admin = observer(() => {
 
             <Button onClick={() => navigate(ALL_RETURNS_ROUTE)}>Посмотреть все возвраты</Button>
 
+            <h3>Запросы на обмен (pending)</h3>
+      {exchangeRequests.length > 0 ? (
+        <ListGroup>
+          {exchangeRequests.map((exchange) => (
+            <ListGroup.Item key={exchange.id}>
+              <p>Запрос №{exchange.id}, Пользователь: {exchange.user.email}</p>
+              <p>
+                Текущий товар: {exchange.order_thing.thing.name}, Цена: {exchange.order_thing.thing.price}
+              </p>
+              <p>
+                Новый товар: {exchange.NewThing.name}, Цена: {exchange.NewThing.price}
+              </p>
+              <p>Разница в цене: {exchange.priceDifference > 0 ? `Доплата ${exchange.priceDifference}₽` : `Возврат ${Math.abs(exchange.priceDifference)}₽`}</p>
+              
+              {/* Кнопки для подтверждения и отклонения обмена */}
+              <Button variant="success" onClick={() => handleApproveExchange(exchange.id)}>
+                Подтвердить обмен
+              </Button>
+              <Button variant="danger" onClick={() => handleRejectExchange(exchange.id)} style={{ marginLeft: '10px' }}>
+                Отклонить обмен
+              </Button>
+
+              {/* Кнопки для подтверждения доплаты или возврата разницы */}
+              {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
+                <Button variant="info" onClick={() => handleConfirmPayment(exchange.id)} style={{ marginLeft: '10px' }}>
+                  Подтвердить доплату
+                </Button>
+              )}
+              {exchange.priceDifference < 0 && !exchange.refundProcessed && (
+                <Button variant="warning" onClick={() => handleConfirmRefund(exchange.id)} style={{ marginLeft: '10px' }}>
+                  Подтвердить возврат разницы
+                </Button>
+              )}
+            </ListGroup.Item>
+          ))}
+        </ListGroup>
+      ) : (
+        <p>Нет запросов на обмен.</p>
+      )}
+
       {/* Модальное окно для подтверждения удаления */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
         <Modal.Header closeButton>
@@ -274,3 +365,11 @@ const Admin = observer(() => {
 });
 
 export default Admin;
+
+
+
+
+
+
+
+

@@ -1,12 +1,14 @@
 import React, { useContext, useEffect } from 'react';
 import { Context } from '../../index';
 import Button from 'react-bootstrap/Button';
+import Container from 'react-bootstrap/Container';
+import Form from 'react-bootstrap/Form';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaUser } from 'react-icons/fa'; // Импорт иконки пользователя
-import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE } from '../../utils/consts'; // Добавляем USER_ACCOUNT_ROUTE
+import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE, PRIVACY_ROUTE } from '../../utils/consts'; // Добавляем USER_ACCOUNT_ROUTE
 import './NavBar.css';
 import { FaTelegram } from "react-icons/fa6";
 
@@ -35,22 +37,18 @@ const NavBar = observer(() => {
                             className='shopping-card'
                             variant="outline-dark"
                             onClick={() => navigate(BASKET_ROUTE)}
-                            style={{ position: 'relative' }} // Для позиционирования значка количества товаров
                         >
                             <FaShoppingCart size={24} />
                             {thing.basket.length > 0 && (
                                 <span
                                     style={{
                                         position: 'absolute',
-                                        top: '-8px',
-                                        right: '-8px',
+                                        top: '1px',
                                         backgroundColor: 'red',
                                         color: 'white',
                                         borderRadius: '50%',
-                                        padding: '4px 8px',
+                                        padding: '1px 6px',
                                         fontSize: '12px',
-                                        fontWeight: 'bold',
-                                        lineHeight: '1',
                                     }}
                                 >
                                     {thing.basket.length}
@@ -72,6 +70,7 @@ const NavBar = observer(() => {
                             className="me-auto my-2 my-lg-0"
                             style={{ maxHeight: '160px' }}
                             navbarScroll
+
                         >
                             <Nav.Link href='https://t.me/themodelshotel' style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'black' }}>
                                 <FaTelegram /> Us in Telegram
@@ -80,7 +79,8 @@ const NavBar = observer(() => {
                             <Nav.Link href="/privacy">Privacy Policy</Nav.Link>
                             <Nav.Link href="/terms">Terms Of Service</Nav.Link>
                         </Nav>
-                        <div className="d-flex" style={{ justifyContent: 'flex-end' }}>
+                        <Form className="d-flex" style={{ justifyContent: 'flex-end' }}>
+                            {/* Кнопка "Админка", показывается только если роль ADMIN */}
                             {user.user.role === 'ADMIN' && (
                                 <Button
                                     variant="outline-danger"
@@ -95,7 +95,7 @@ const NavBar = observer(() => {
                                 onClick={logOut}>
                                 Выйти
                             </Button>
-                        </div>
+                        </Form>
                     </Navbar.Collapse>
                 </div>
             ) : (
