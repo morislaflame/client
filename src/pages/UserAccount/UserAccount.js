@@ -1,14 +1,15 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
-import { fetchMyInfo } from '../../http/userAPI'; // Метод для получения информации о пользователе
+import { fetchMyInfo } from '../../http/userAPI';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Spinner from 'react-bootstrap/Spinner';
-import { EXCHANGE_ROUTE, RETURN_PAGE } from '../../utils/consts';
+import { EXCHANGE_ROUTE } from '../../utils/consts';
 import { useNavigate } from 'react-router-dom';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Button from 'react-bootstrap/Button';
 import { createReturn } from '../../http/orderAPI';
+import styles from './UserAccount.module.css'
 
 const UserAccount = observer(() => {
     const { user } = useContext(Context);
@@ -36,6 +37,7 @@ const UserAccount = observer(() => {
         const loadUserInfo = async () => {
             try {
                 const data = await fetchMyInfo();
+                console.log('Fetched user data:', data); // Добавьте этот лог
                 setUserInfo(data);
             } catch (e) {
                 console.error('Ошибка при загрузке данных пользователя:', e);
@@ -45,6 +47,7 @@ const UserAccount = observer(() => {
         };
         loadUserInfo();
     }, []);
+    
 
     const handleItemSelect = (itemId) => {
         setSelectedItems((prev) =>
@@ -81,6 +84,8 @@ const UserAccount = observer(() => {
         navigate(EXCHANGE_ROUTE.replace(':orderThingId', item.id), { state: { orderThingId: item.id } });
     };
 
+    
+
     if (loading) {
         return <Spinner animation="border" />;
     }
@@ -90,11 +95,16 @@ const UserAccount = observer(() => {
     }
 
     return (
-        <div className="container">
-            <h2>Личный кабинет</h2>
-            <p>Email: {userInfo.email}</p>
-            <p>Роль: {userInfo.role}</p>
-
+        <div className={styles.useraccount}>
+            <div className={styles.topic}>
+                <h2>Личный кабинет</h2>
+                <div className={styles.userinfo}>
+                    <p>Email: {userInfo.email}</p>
+                    <p>Роль: {userInfo.role}</p>
+                </div>
+            </div>
+            
+            <div className={styles.orders}>
             <h3>Мои заказы</h3>
             {userInfo.orders.length > 0 ? (
                 <ListGroup>
@@ -102,20 +112,38 @@ const UserAccount = observer(() => {
                         <ListGroup.Item key={order.id}>
                             Заказ №{order.id}, Статус: {order.status}
                             <ul>
-                                {order.order_things.map(item => (
-                                    <li key={item.id}>
-                                        Товар: {item.thing.name}, Цена: {item.thing.price}
-                                        <Button
-                                            variant="primary"
-                                            onClick={() => handleExchangeRequest(item)}
-                                            style={{ marginLeft: '10px' }}
-                                        >
-                                            Запросить обмен
-                                        </Button>
-                                    </li>
-                                ))}
+                                {order.order_things.map(item => {
+                                    // Проверяем, есть ли уже запрос на обмен для этого OrderThing
+                                    const hasExchangeRequest = item.thing.exchangeRequests && item.thing.exchangeRequests.length > 0;
+
+                                    return (
+                                        <li key={item.id}>
+                                            Товар: {item.thing.name}, Цена: {item.thing.price} руб.
+                                            {/* Условное отображение кнопки "Запросить обмен" */}
+                                            {item.thing.ownerId === userInfo.id && (
+                                                hasExchangeRequest ? (
+                                                    <Button
+                                                        variant="secondary"
+                                                        disabled
+                                                        style={{ marginLeft: '10px' }}
+                                                    >
+                                                        Обмен запрошен
+                                                    </Button>
+                                                ) : (
+                                                    <Button
+                                                        variant="primary"
+                                                        onClick={() => handleExchangeRequest(item)}
+                                                        style={{ marginLeft: '10px' }}
+                                                    >
+                                                        Запросить обмен
+                                                    </Button>
+                                                )
+                                            )}
+                                        </li>
+                                    );
+                                })}
                             </ul>
-                            Общая стоимость: {order.totalPrice}
+                            Общая стоимость: {order.totalPrice} руб.
                             <Button variant="primary" onClick={() => handleShow(order)}>
                                 Оформить возврат
                             </Button>
@@ -125,7 +153,9 @@ const UserAccount = observer(() => {
             ) : (
                 <p>У вас нет заказов.</p>
             )}
-
+            </div>
+            
+            <div className={styles.returns}>
             <h3>Мои возвраты</h3>
             {userInfo.returns.length > 0 ? (
                 <ListGroup>
@@ -133,7 +163,7 @@ const UserAccount = observer(() => {
                         <ListGroup.Item key={returnItem.id}>
                             Возврат №{returnItem.id}, Статус: {returnItem.status}
                             <ul>
-                                <li>Товар: {returnItem.order_thing.thing.name}, Цена: {returnItem.order_thing.thing.price}</li>
+                                <li>Товар: {returnItem.order_thing.thing.name}, Цена: {returnItem.order_thing.thing.price} руб.</li>
                             </ul>
                         </ListGroup.Item>
                     ))}
@@ -141,6 +171,8 @@ const UserAccount = observer(() => {
             ) : (
                 <p>У вас нет возвратов.</p>
             )}
+            </div>
+            
 
             <Offcanvas show={show} onHide={handleClose} placement="bottom">
                 <Offcanvas.Header closeButton>
@@ -173,6 +205,7 @@ const UserAccount = observer(() => {
                             <Button onClick={handleSubmit} disabled={selectedItems.length === 0}>
                                 Оформить возврат
                             </Button>
+                            {confirmationMessage && <p>{confirmationMessage}</p>}
                         </>
                     )}
                 </Offcanvas.Body>

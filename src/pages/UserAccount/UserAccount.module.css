@@ -1,0 +1,43 @@
+:root {
+    --index: calc(1vw + 1vh);
+}
+
+
+.useraccount {
+    padding: calc(var(--index) * 2);
+    background: linear-gradient(to bottom, black, #130133, black);
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: calc(var(--index) * 2);
+}
+
+.topic {
+    text-align: center;
+}
+
+.userinfo {
+    padding: calc(var(--index) * 2);
+    background-color: white;
+    border-radius: calc(var(--index) * 1);
+    color: black;
+    font-weight: 500;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: calc(var(--index) * 1);
+}
+
+.userinfo p {
+    margin: 0;
+}
+
+.orders h3 {
+    text-align: center;
+}
+
+.list-group {
+    border-radius: calc(var(--index) * 1);
+}

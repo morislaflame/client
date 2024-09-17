@@ -1,3 +1,5 @@
+// http/exchangeAPI.js
+
 import { $authHost } from "./index";
 
 // Создание запроса на обмен
@@ -6,15 +8,15 @@ export const createExchangeRequest = async (orderThingId, newThingId, userCommen
     return data;
 };
 
-// Получение всех запросов пользователя на обмен
-export const fetchUserExchangeRequests = async () => {
-    const { data } = await $authHost.get('api/exchange/my-requests');
+// Получение всех запросов на обмен (для администраторов)
+export const fetchAllExchangeRequests = async (status) => {
+    const { data } = await $authHost.get('api/exchange', { params: { status } });
     return data;
 };
 
-// Получение всех запросов на обмен (для администратора)
-export const fetchAllExchangeRequests = async () => {
-    const { data } = await $authHost.get('api/exchange');
+// Получение запросов на обмен текущего пользователя
+export const fetchUserExchangeRequests = async () => {
+    const { data } = await $authHost.get('api/exchange/my-requests');
     return data;
 };
 
@@ -30,13 +32,13 @@ export const rejectExchangeRequest = async (exchangeRequestId) => {
     return data;
 };
 
-// Подтверждение доплаты (для администратора)
+// Подтверждение доплаты
 export const confirmPayment = async (exchangeRequestId) => {
     const { data } = await $authHost.put(`api/exchange/confirm-payment/${exchangeRequestId}`);
     return data;
 };
 
-// Подтверждение возврата разницы в цене (для администратора)
+// Подтверждение возврата разницы
 export const confirmRefund = async (exchangeRequestId) => {
     const { data } = await $authHost.put(`api/exchange/confirm-refund/${exchangeRequestId}`);
     return data;

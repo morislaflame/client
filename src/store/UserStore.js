@@ -1,17 +1,21 @@
-import {makeAutoObservable, action} from "mobx";
-import { fetchUsers, getUserByEmail, changeUserRole, deleteUser, getUserById } from "../http/userAPI";
+import {makeAutoObservable, action, runInAction } from "mobx";
+import { fetchUsers, getUserByEmail, changeUserRole, deleteUser, getUserById, fetchMyInfo } from "../http/userAPI";
+
+import { fetchUserExchangeRequests, createExchangeRequest } from "../http/exchangeAPI"; // Добавьте необходимые методы
 
 export default class UserStore {
     constructor() {
         this._isAuth = false
         this._user = {}
         this._users = [];
+        this._exchangeRequests = []; // Добавляем состояние для запросов на обмен
         makeAutoObservable(this, 
             {
                 setUsers: action,
                 fetchAllUsers: action,
                 updateUserRole: action,
-                removeUser: action
+                removeUser: action,
+                setExchangeRequests: action, // Метод для установки запросов
             }
         )
     }
@@ -29,6 +33,10 @@ export default class UserStore {
         this._users = users;
     }
 
+    setExchangeRequests(exchangeRequests) {
+        this._exchangeRequests = exchangeRequests;
+    }
+
     logout() {
         console.log("Logging out");  // Логируем выход из аккаунта
         this._isAuth = false;
@@ -42,6 +50,30 @@ export default class UserStore {
             this.setUsers(users);
         } catch (error) {
             console.error("Error fetching all users:", error);
+        }
+    }
+
+    async fetchExchangeRequests() {
+        try {
+            const exchangeRequests = await fetchUserExchangeRequests();
+            runInAction(() => {
+                this.setExchangeRequests(exchangeRequests);
+            });
+        } catch (error) {
+            console.error("Error fetching exchange requests:", error);
+        }
+    }
+
+    async createExchangeRequest(orderThingId, newThingId, userComment) {
+        try {
+            const exchangeRequest = await createExchangeRequest(orderThingId, newThingId, userComment);
+            runInAction(() => {
+                this._exchangeRequests.push(exchangeRequest);
+            });
+            return exchangeRequest;
+        } catch (error) {
+            console.error("Error creating exchange request:", error);
+            throw error;
         }
     }
 
@@ -83,10 +115,12 @@ export default class UserStore {
         }
     }
 
-    
-
     get users() {
         return this._users;
+    }
+
+    get exchangeRequests() {
+        return this._exchangeRequests;
     }
 
     get isAuth() {

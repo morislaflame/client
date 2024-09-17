@@ -1,3 +1,5 @@
+// components/Basket/Basket.js
+
 import React, { useEffect, useState, useContext } from 'react';
 import './Basket.css';
 import { fetchBasket, removeFromBasket, clearBasket } from '../http/basketAPI';
@@ -8,6 +10,7 @@ import MySecondBtn from '../components/MySecondBtn/MySecondBtn';
 import MymIcon from '../icons/Mym.png';
 import FanslyIcon from '../icons/fansly.png';
 import OnlyIcon from '../icons/onlyfans.png';
+import ListGroup from 'react-bootstrap/ListGroup'; // Добавляем импорт ListGroup
 
 const Basket = () => {
   const [basket, setBasket] = useState([]);
@@ -29,21 +32,29 @@ const Basket = () => {
   };
 
   useEffect(() => {
-    fetchBasket().then(data => {
-      setBasket(data.items || []); // Изменено: получаем данные из ключа items
-      calculateTotalAmount(data.items || []); // Изменено: передаем актуальные данные для расчета
-    });
+    loadBasket();
   }, []);
 
+  const loadBasket = async () => {
+    try {
+      const data = await fetchBasket();
+      setBasket(data.items || []);
+      calculateTotalAmount(data.items || []);
+    } catch (error) {
+      console.error('Ошибка при загрузке корзины:', error);
+      alert('Не удалось загрузить корзину.');
+    }
+  };
+
   const calculateTotalAmount = (basketItems) => {
-    const total = basketItems.reduce((sum, item) => sum + item.price, 0); // Изменено: берем цену из нового объекта
+    const total = basketItems.reduce((sum, item) => sum + item.price, 0);
     setTotalAmount(total);
   };
 
   const handleRemove = async (thingId) => {
     try {
-      await thing.removeFromBasket(thingId); // Удаляем через ThingStore для синхронизации
-      const updatedBasket = basket.filter(item => item.id !== thingId); // Изменено: удаляем по полю id
+      await removeFromBasket(thingId); // Удаляем через API
+      const updatedBasket = basket.filter(item => item.id !== thingId);
       setBasket(updatedBasket);
       calculateTotalAmount(updatedBasket);
     } catch (error) {
@@ -53,7 +64,7 @@ const Basket = () => {
 
   const handleClearBasket = async () => {
     try {
-      await thing.clearBasket(); // Очищаем через ThingStore для синхронизации
+      await clearBasket(); // Очищаем через API
       setBasket([]);
       setTotalAmount(0);
     } catch (error) {
@@ -80,8 +91,8 @@ const Basket = () => {
             <div className="basket-item-info">
               <div className='info-brand'>
                 <div className="brands-basket">
-                  {thing.brands && thing.brands.length > 0 ? (
-                    thing.brands.map(brand => (
+                  {item.brands && item.brands.length > 0 ? (
+                    item.brands.map(brand => (
                       <div 
                         key={brand.id} 
                         style={brandStyles[brand.id] || { color: 'black' }}  // Применяем стиль, если он есть
@@ -102,10 +113,16 @@ const Basket = () => {
                 </div>
                 <div className='items-name-price'>
                   <span className="basket-item-name">{item.name}</span>
-                  <span className="basket-item-price">${item.price}</span> {/* Изменено: берем цену из объекта item */}
+                  {/* Отображаем оригинальную цену только если она отличается от текущей */}
+                  {item.originalPrice && item.price !== item.originalPrice && (
+                    <span className="basket-item-original-price" style={{ textDecoration: 'line-through', color: 'grey' }}>
+                      ${item.originalPrice}
+                    </span>
+                  )}
+                  <span className="basket-item-price">${item.price}</span>
                 </div>
               </div>
-              <button onClick={() => handleRemove(item.id)} className="basket-item-remove">Remove</button> {/* Изменено: используем item.id */}
+              <button onClick={() => handleRemove(item.id)} className="basket-item-remove">Remove</button>
             </div>
           </div>
         ))}
