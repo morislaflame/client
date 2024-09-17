@@ -9,7 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import Button from 'react-bootstrap/Button';
 import { createReturn } from '../../http/orderAPI';
-import styles from './UserAccount.module.css'
+import styles from './UserAccount.module.css';
+import { GiHighHeel } from "react-icons/gi";
+import MyButton from '../../components/MyButton/MyButton';
 
 const UserAccount = observer(() => {
     const { user } = useContext(Context);
@@ -107,18 +109,22 @@ const UserAccount = observer(() => {
             <div className={styles.orders}>
             <h3>Мои заказы</h3>
             {userInfo.orders.length > 0 ? (
-                <ListGroup>
+                <div className={styles.order_list}>
                     {userInfo.orders.map(order => (
-                        <ListGroup.Item key={order.id}>
-                            Заказ №{order.id}, Статус: {order.status}
-                            <ul>
+                        <div className={styles.order_item} key={order.id}>
+                            <div className={styles.order_status}><span>Order №{order.id}</span> <span>Status: {order.status}</span></div> 
+                            <div className={styles.ladies}>
                                 {order.order_things.map(item => {
                                     // Проверяем, есть ли уже запрос на обмен для этого OrderThing
                                     const hasExchangeRequest = item.thing.exchangeRequests && item.thing.exchangeRequests.length > 0;
 
                                     return (
-                                        <li key={item.id}>
-                                            Товар: {item.thing.name}, Цена: {item.thing.price} руб.
+                                        <div className={styles.name_price} key={item.id}>
+                                            <div className={styles.name_heel}>
+                                                <GiHighHeel />
+                                                model:<b>{item.thing.name}</b>
+                                            </div> 
+                                            <span>${item.thing.price}</span> 
                                             {/* Условное отображение кнопки "Запросить обмен" */}
                                             {item.thing.ownerId === userInfo.id && (
                                                 hasExchangeRequest ? (
@@ -130,26 +136,27 @@ const UserAccount = observer(() => {
                                                         Обмен запрошен
                                                     </Button>
                                                 ) : (
-                                                    <Button
+                                                    <MyButton
                                                         variant="primary"
                                                         onClick={() => handleExchangeRequest(item)}
-                                                        style={{ marginLeft: '10px' }}
+                                                        
+                                                        text={''}
                                                     >
-                                                        Запросить обмен
-                                                    </Button>
+                                                        
+                                                    </MyButton>
                                                 )
                                             )}
-                                        </li>
+                                        </div>
                                     );
                                 })}
-                            </ul>
-                            Общая стоимость: {order.totalPrice} руб.
-                            <Button variant="primary" onClick={() => handleShow(order)}>
+                            </div>
+                            <div className={styles.total_price}>Total Price: ${order.totalPrice} </div>
+                            <Button variant="dark" onClick={() => handleShow(order)}>
                                 Оформить возврат
                             </Button>
-                        </ListGroup.Item>
+                        </div>
                     ))}
-                </ListGroup>
+                </div>
             ) : (
                 <p>У вас нет заказов.</p>
             )}
@@ -158,16 +165,22 @@ const UserAccount = observer(() => {
             <div className={styles.returns}>
             <h3>Мои возвраты</h3>
             {userInfo.returns.length > 0 ? (
-                <ListGroup>
+                <div className={styles.order_list}>
                     {userInfo.returns.map(returnItem => (
-                        <ListGroup.Item key={returnItem.id}>
-                            Возврат №{returnItem.id}, Статус: {returnItem.status}
-                            <ul>
-                                <li>Товар: {returnItem.order_thing.thing.name}, Цена: {returnItem.order_thing.thing.price} руб.</li>
-                            </ul>
-                        </ListGroup.Item>
+                        <div className={styles.order_item} key={returnItem.id}>
+                            <div className={styles.order_status}> <span>Возврат №{returnItem.id}</span> <span>Статус: {returnItem.status}</span> </div>
+                            <div className={styles.ladies}>
+                            <div className={styles.name_price}>
+                                <div className={styles.name_heel}>
+                                    <GiHighHeel />
+                                    model: {returnItem.order_thing.thing.name}
+                                </div> 
+                                <span>${returnItem.order_thing.thing.price}</span>
+                            </div>
+                            </div>
+                        </div>
                     ))}
-                </ListGroup>
+                </div>
             ) : (
                 <p>У вас нет возвратов.</p>
             )}
