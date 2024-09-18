@@ -11,7 +11,7 @@
     flex-direction: column;
     justify-content: center; /* Горизонтальное центрирование */
     min-height: 100vh; /* Устанавливаем высоту main на 100% высоты окна */
-    background: black; /* Цвет фона main для наглядности */
+    background-color: #030107; /* Цвет фона main для наглядности */
     font-family: "Montserrat", sans-serif;
     
   }
@@ -46,7 +46,7 @@
     display: flex; /* Горизонтальное центрирование контента внутри container */
     align-items: center; /* Вертикальное центрирование контента внутри container */
     flex-direction: column;
-    background-color: black;
+    /* background-color: black; */
     z-index: 10;
     color: white;
     text-align: center;
@@ -70,9 +70,9 @@
     }
   
     .mainArticle {
-      background-color: rgba(0, 0, 0, 0);
+      background: linear-gradient(to bottom, #030107, #090118, black);
       width: 100%;
-      margin-top: calc(var(--index) * 3);
+      padding-top: calc(var(--index) * 3);
     }
 
     .mainArticle h1 {

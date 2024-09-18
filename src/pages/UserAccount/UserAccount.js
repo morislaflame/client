@@ -189,7 +189,7 @@ const UserAccount = observer(() => {
 
             <Offcanvas show={show} onHide={handleClose} placement="bottom">
                 <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>Оформить возврат</Offcanvas.Title>
+                    <Offcanvas.Title className={styles.offcanv_header}>Оформить возврат</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
                     {selectedOrder && (

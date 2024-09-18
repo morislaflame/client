@@ -73,7 +73,7 @@ const Basket = () => {
   };
 
   if (basket.length === 0) {
-    return <div className="basket-empty">Ваша корзина пуста</div>;
+    return <div className="basket-empty">Your Cart Is Empty</div>;
   }
 
   const handlePayment = () => {

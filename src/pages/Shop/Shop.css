@@ -9,7 +9,7 @@
     min-height: fit-content;
     overflow: hidden;
     min-height: 100vh;
-    background: linear-gradient(to bottom, black, #130035, black);
+    background: linear-gradient(to bottom, #030107, #130035, #030107);
 }
 
 .pin-spacer {

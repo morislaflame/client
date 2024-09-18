@@ -9,6 +9,9 @@
     --bs-navbar-padding-x: calc(var(--index) * 0.8);
     --bs-navbar-padding-y: calc(var(--index) * 0.8);
     
+    
+    background-color:#030107 !important;
+
 }
 
 .navbar-brand {
@@ -21,7 +24,7 @@
 }
 
 .navbar-toggler {
-    border: var(--bs-border-width) solid black;
+    border: var(--bs-border-width) solid white;
 }
 
 .navbar-toggler:focus {
@@ -31,4 +34,9 @@
 
 .nav-link {
     padding: calc(var(--index) * 0.7) 0;
+    color: rgb(255 255 255 / 90%);
 }
+
+/* [data-bs-theme=] .navbar-toggler-icon {
+
+} */

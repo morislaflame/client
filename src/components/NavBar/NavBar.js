@@ -25,7 +25,7 @@ const NavBar = observer(() => {
     };
 
     return (
-        <Navbar expand="lg" className="bg-body-tertiary" style={{ justifyContent: 'center' }}>
+        <Navbar bg="dark" data-bs-theme="dark" expand="lg" className="bg-body-tertiary" style={{ justifyContent: 'center' }}>
             {user.isAuth ? (
                 <div className='navbar'>
                     <Navbar.Brand href="/">Model's Hotel</Navbar.Brand>
@@ -33,7 +33,7 @@ const NavBar = observer(() => {
                     <div className='menu'>
                         <Button
                             className='shopping-cart'
-                            variant="outline-dark"
+                            variant="outline-light"
                             onClick={() => navigate(BASKET_ROUTE)}
                             style={{ position: 'relative' }} // Для позиционирования значка количества товаров
                         >
@@ -59,21 +59,21 @@ const NavBar = observer(() => {
                         </Button>
                         <Button
                             className='user-account'
-                            variant="outline-dark"
+                            variant="outline-light"
                             onClick={() => navigate(USER_ACCOUNT_ROUTE)} // Переход на страницу аккаунта пользователя
                         >
                             <FaUser size={24} />
                         </Button>
-                        <Navbar.Toggle aria-controls="navbarScroll" />
+                        <Navbar.Toggle aria-controls="navbarScroll" data-bs-theme="light" />
                     </div>
                     
                     <Navbar.Collapse id="navbarScroll">
                         <Nav
                             className="me-auto my-2 my-lg-0"
-                            style={{ maxHeight: '160px' }}
+                            style={{ maxHeight: '160px', color: 'white' }}
                             navbarScroll
                         >
-                            <Nav.Link href='https://t.me/themodelshotel' style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'black' }}>
+                            <Nav.Link href='https://t.me/themodelshotel' style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'white' }}>
                                 <FaTelegram /> Us in Telegram
                             </Nav.Link>
                             <Nav.Link href="/shop">Store</Nav.Link>

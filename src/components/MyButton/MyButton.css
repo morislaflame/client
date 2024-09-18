@@ -18,7 +18,7 @@
 
 .my-button {
     padding: calc(var(--index) * 1) calc(var(--index) * 4);
-    background-color: #5800f4;
+    background-color:#3c03a3;
     color: #fff;
     border-style: solid;
     border-color: #fedada;
