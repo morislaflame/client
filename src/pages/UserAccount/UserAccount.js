@@ -104,7 +104,7 @@ const UserAccount = observer(() => {
 
                             return (
                                 <div className={styles.thing_item} key={thing.id}>
-                                    <div className={styles.thing_info}>
+                                    
                                         <div className={styles.thing_image}>
                                             {thing.images && thing.images.length > 0 && (
                                                 <img src={process.env.REACT_APP_API_URL + thing.images[0].image} alt={thing.name} />
@@ -134,7 +134,7 @@ const UserAccount = observer(() => {
                                                 )}
                                             </div>
                                         </div>
-                                    </div>
+                                    
                                 </div>
                             );
                         })}
@@ -167,31 +167,13 @@ const UserAccount = observer(() => {
                                                     модель:<b>{item.thing.name}</b>
                                                 </div>
                                                 <span>${item.thing.price}</span>
-                                                {item.thing.ownerId === userInfo.id && (
-                                                    hasExchangeRequest ? (
-                                                        <Button
-                                                            variant="secondary"
-                                                            disabled
-                                                            style={{ marginLeft: '10px' }}
-                                                        >
-                                                            Обмен запрошен
-                                                        </Button>
-                                                    ) : (
-                                                        <MyButton
-                                                            variant="primary"
-                                                            onClick={() => handleExchangeRequest(item)}
-                                                            text="Запросить обмен"
-                                                        />
-                                                    )
-                                                )}
+                                                
                                             </div>
                                         );
                                     })}
                                 </div>
                                 <div className={styles.total_price}>Итого: ${order.totalPrice} </div>
-                                <Button variant="dark" onClick={() => handleShow(order)}>
-                                    Оформить возврат
-                                </Button>
+                                
                             </div>
                         ))}
                     </div>
