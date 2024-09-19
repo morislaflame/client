@@ -1,3 +1,5 @@
+// UserAccount.js
+
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
@@ -18,16 +20,17 @@ const UserAccount = observer(() => {
     const [loading, setLoading] = useState(true);
     const [userInfo, setUserInfo] = useState(null);
     const navigate = useNavigate();
-    const [show, setShow] = useState(false); // Управление Offcanvas
-    const [selectedOrder, setSelectedOrder] = useState(null); // Выбранный заказ
-    const [selectedItems, setSelectedItems] = useState([]); // Выбранные товары
-    const [reasons, setReasons] = useState({}); // Причины возврата для товаров
+    const [show, setShow] = useState(false);
+    const [selectedOrder, setSelectedOrder] = useState(null);
+    const [selectedItems, setSelectedItems] = useState([]);
+    const [reasons, setReasons] = useState({});
     const [confirmationMessage, setConfirmationMessage] = useState('');
 
     const handleClose = () => {
         setShow(false);
-        setConfirmationMessage(''); // Сбрасываем сообщение после закрытия
+        setConfirmationMessage('');
     };
+
     const handleShow = (order) => {
         setSelectedOrder(order);
         setSelectedItems([]);
@@ -39,7 +42,7 @@ const UserAccount = observer(() => {
         const loadUserInfo = async () => {
             try {
                 const data = await fetchMyInfo();
-                console.log('Fetched user data:', data); // Добавьте этот лог
+                console.log('Получены данные пользователя:', data);
                 setUserInfo(data);
             } catch (e) {
                 console.error('Ошибка при загрузке данных пользователя:', e);
@@ -49,7 +52,6 @@ const UserAccount = observer(() => {
         };
         loadUserInfo();
     }, []);
-    
 
     const handleItemSelect = (itemId) => {
         setSelectedItems((prev) =>
@@ -69,13 +71,13 @@ const UserAccount = observer(() => {
             for (const itemId of selectedItems) {
                 await createReturn({
                     orderThingId: itemId,
-                    reason: reasons[itemId] || '', // Причина возврата
+                    reason: reasons[itemId] || '',
                 });
             }
             setConfirmationMessage('Возврат оформлен и находится на рассмотрении');
             setTimeout(() => {
-                handleClose(); // Закрываем Offcanvas через 3 секунды
-            }, 3000); // Задержка в 3 секунды
+                handleClose();
+            }, 3000);
         } catch (e) {
             console.error('Ошибка при создании возврата:', e);
             alert('Возникла ошибка при оформлении возврата');
@@ -85,8 +87,6 @@ const UserAccount = observer(() => {
     const handleExchangeRequest = (item) => {
         navigate(EXCHANGE_ROUTE.replace(':orderThingId', item.id), { state: { orderThingId: item.id } });
     };
-
-    
 
     if (loading) {
         return <Spinner animation="border" />;
@@ -105,88 +105,126 @@ const UserAccount = observer(() => {
                     <p>Роль: {userInfo.role}</p>
                 </div>
             </div>
-            
+
+            {/* Раздел заказов */}
             <div className={styles.orders}>
-            <h3>Мои заказы</h3>
-            {userInfo.orders.length > 0 ? (
-                <div className={styles.order_list}>
-                    {userInfo.orders.map(order => (
-                        <div className={styles.order_item} key={order.id}>
-                            <div className={styles.order_status}><span>Order №{order.id}</span> <span>Status: {order.status}</span></div> 
-                            <div className={styles.ladies}>
-                                {order.order_things.map(item => {
-                                    // Проверяем, есть ли уже запрос на обмен для этого OrderThing
-                                    const hasExchangeRequest = item.thing.exchangeRequests && item.thing.exchangeRequests.length > 0;
+                <h3>Мои заказы</h3>
+                {userInfo.orders.length > 0 ? (
+                    <div className={styles.order_list}>
+                        {userInfo.orders.map(order => (
+                            <div className={styles.order_item} key={order.id}>
+                                <div className={styles.order_status}><span>Заказ №{order.id}</span> <span>Статус: {order.status}</span></div>
+                                <div className={styles.ladies}>
+                                    {order.order_things.map(item => {
+                                        const hasExchangeRequest = userInfo.exchangeRequests?.some(
+                                            exchange => exchange.oldThingId === item.thing.id && exchange.status === 'pending'
+                                        );
 
-                                    return (
-                                        <div className={styles.name_price} key={item.id}>
-                                            <div className={styles.name_heel}>
-                                                <GiHighHeel />
-                                                model:<b>{item.thing.name}</b>
-                                            </div> 
-                                            <span>${item.thing.price}</span> 
-                                            {/* Условное отображение кнопки "Запросить обмен" */}
-                                            {item.thing.ownerId === userInfo.id && (
-                                                hasExchangeRequest ? (
-                                                    <Button
-                                                        variant="secondary"
-                                                        disabled
-                                                        style={{ marginLeft: '10px' }}
-                                                    >
-                                                        Обмен запрошен
-                                                    </Button>
-                                                ) : (
-                                                    <MyButton
-                                                        variant="primary"
-                                                        onClick={() => handleExchangeRequest(item)}
-                                                        
-                                                        text={''}
-                                                    >
-                                                        
-                                                    </MyButton>
-                                                )
-                                            )}
-                                        </div>
-                                    );
-                                })}
+                                        return (
+                                            <div className={styles.name_price} key={item.id}>
+                                                <div className={styles.name_heel}>
+                                                    <GiHighHeel />
+                                                    модель:<b>{item.thing.name}</b>
+                                                </div>
+                                                <span>${item.thing.price}</span>
+                                                {item.thing.ownerId === userInfo.id && (
+                                                    hasExchangeRequest ? (
+                                                        <Button
+                                                            variant="secondary"
+                                                            disabled
+                                                            style={{ marginLeft: '10px' }}
+                                                        >
+                                                            Обмен запрошен
+                                                        </Button>
+                                                    ) : (
+                                                        <MyButton
+                                                            variant="primary"
+                                                            onClick={() => handleExchangeRequest(item)}
+                                                            text="Запросить обмен"
+                                                        />
+                                                    )
+                                                )}
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                                <div className={styles.total_price}>Итого: ${order.totalPrice} </div>
+                                <Button variant="dark" onClick={() => handleShow(order)}>
+                                    Оформить возврат
+                                </Button>
                             </div>
-                            <div className={styles.total_price}>Total Price: ${order.totalPrice} </div>
-                            <Button variant="dark" onClick={() => handleShow(order)}>
-                                Оформить возврат
-                            </Button>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <p>У вас нет заказов.</p>
-            )}
+                        ))}
+                    </div>
+                ) : (
+                    <p>У вас нет заказов.</p>
+                )}
             </div>
-            
+
+            {/* Раздел возвратов */}
             <div className={styles.returns}>
-            <h3>Мои возвраты</h3>
-            {userInfo.returns.length > 0 ? (
-                <div className={styles.order_list}>
-                    {userInfo.returns.map(returnItem => (
-                        <div className={styles.order_item} key={returnItem.id}>
-                            <div className={styles.order_status}> <span>Возврат №{returnItem.id}</span> <span>Статус: {returnItem.status}</span> </div>
-                            <div className={styles.ladies}>
-                            <div className={styles.name_price}>
-                                <div className={styles.name_heel}>
-                                    <GiHighHeel />
-                                    model: {returnItem.order_thing.thing.name}
-                                </div> 
-                                <span>${returnItem.order_thing.thing.price}</span>
+                <h3>Мои возвраты</h3>
+                {userInfo.returns.length > 0 ? (
+                    <div className={styles.order_list}>
+                        {userInfo.returns.map(returnItem => (
+                            <div className={styles.order_item} key={returnItem.id}>
+                                <div className={styles.order_status}> <span>Возврат №{returnItem.id}</span> <span>Статус: {returnItem.status}</span> </div>
+                                <div className={styles.ladies}>
+                                    <div className={styles.name_price}>
+                                        <div className={styles.name_heel}>
+                                            <GiHighHeel />
+                                            модель: {returnItem.order_thing.thing.name}
+                                        </div>
+                                        <span>${returnItem.order_thing.thing.price}</span>
+                                    </div>
+                                </div>
                             </div>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            ) : (
-                <p>У вас нет возвратов.</p>
-            )}
+                        ))}
+                    </div>
+                ) : (
+                    <p>У вас нет возвратов.</p>
+                )}
             </div>
-            
 
+            {/* Раздел запросов на обмен */}
+            <div className={styles.exchanges}>
+                <h3>Мои запросы на обмен</h3>
+                {userInfo.exchangeRequests && userInfo.exchangeRequests.length > 0 ? (
+                    <div className={styles.exchange_list}>
+                        {userInfo.exchangeRequests.map(exchange => (
+                            <div className={styles.exchange_item} key={exchange.id}>
+                                <div className={styles.exchange_status}>
+                                    <span>Обмен №{exchange.id}</span>
+                                    <span>Статус: {exchange.status}</span>
+                                </div>
+                                <div className={styles.exchange_details}>
+                                    <div>
+                                        <strong>Старый товар:</strong> {exchange.OldThing.name} - ${exchange.OldThing.price}
+                                    </div>
+                                    <div>
+                                        <strong>Новый товар:</strong> {exchange.NewThing.name} - ${exchange.NewThing.price}
+                                    </div>
+                                    <div>
+                                        <strong>Разница в цене:</strong> ${exchange.priceDifference}
+                                    </div>
+                                    {exchange.status === 'pending' && (
+                                        <p>Ваш запрос на обмен находится на рассмотрении.</p>
+                                    )}
+                                    {exchange.status === 'approved' && (
+                                        <p>Ваш запрос на обмен одобрен.</p>
+                                    )}
+                                    {exchange.status === 'rejected' && (
+                                        <p>Ваш запрос на обмен отклонен.</p>
+                                    )}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                ) : (
+                    <p>У вас нет запросов на обмен.</p>
+                )}
+            </div>
+
+            {/* Offcanvas для возвратов */}
             <Offcanvas show={show} onHide={handleClose} placement="bottom">
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title className={styles.offcanv_header}>Оформить возврат</Offcanvas.Title>

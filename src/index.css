@@ -23,3 +23,7 @@ code {
 /* .modal-content {
   flex-direction: column-reverse;
 } */
+
+iframe {
+  display: none;
+}
