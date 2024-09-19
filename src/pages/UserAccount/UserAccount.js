@@ -111,9 +111,17 @@ const UserAccount = observer(() => {
                                             )}
                                         </div>
                                         <div className={styles.thing_details}>
-                                            <h5>{thing.name}</h5>
-                                            <p>Цена: ${thing.price}</p>
-                                            <div className={styles.thing_buttons}>
+                                            <div className={styles.name_price}>
+                                                <span>{thing.name}</span>
+                                                <span>${thing.price}</span>
+                                            </div>
+                                            <div style={{
+                                                display:'flex',
+                                                alignItems:'center',
+                                                width:'100%',
+                                                flexDirection:'column',
+                                                gap:16
+                                            }}>
                                                 {hasExchangeRequest ? (
                                                     <Button variant="secondary" disabled>
                                                         Обмен запрошен
@@ -124,7 +132,9 @@ const UserAccount = observer(() => {
                                                     </Button>
                                                 )}
                                                 {hasReturnRequest ? (
-                                                    <Button variant="secondary" disabled>
+                                                    <Button
+                                                    style={{width:'100%'}}
+                                                    variant="secondary" disabled>
                                                         Возврат оформлен
                                                     </Button>
                                                 ) : (
