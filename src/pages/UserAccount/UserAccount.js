@@ -1,15 +1,14 @@
 // UserAccount.js
 
+// UserAccount.js
+
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
 import { fetchMyInfo } from '../../http/userAPI';
-import ListGroup from 'react-bootstrap/ListGroup';
-import Spinner from 'react-bootstrap/Spinner';
+import { Spinner, Button, Offcanvas } from 'react-bootstrap';
 import { EXCHANGE_ROUTE } from '../../utils/consts';
 import { useNavigate } from 'react-router-dom';
-import Offcanvas from 'react-bootstrap/Offcanvas';
-import Button from 'react-bootstrap/Button';
 import { createReturn } from '../../http/orderAPI';
 import styles from './UserAccount.module.css';
 import { GiHighHeel } from "react-icons/gi";
@@ -21,20 +20,18 @@ const UserAccount = observer(() => {
     const [userInfo, setUserInfo] = useState(null);
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
-    const [selectedOrder, setSelectedOrder] = useState(null);
-    const [selectedItems, setSelectedItems] = useState([]);
-    const [reasons, setReasons] = useState({});
+    const [selectedThing, setSelectedThing] = useState(null); // Выбранный товар для возврата
+    const [reason, setReason] = useState('');
     const [confirmationMessage, setConfirmationMessage] = useState('');
 
     const handleClose = () => {
         setShow(false);
         setConfirmationMessage('');
+        setReason('');
     };
 
-    const handleShow = (order) => {
-        setSelectedOrder(order);
-        setSelectedItems([]);
-        setReasons({});
+    const handleShow = (thing) => {
+        setSelectedThing(thing);
         setShow(true);
     };
 
@@ -53,27 +50,12 @@ const UserAccount = observer(() => {
         loadUserInfo();
     }, []);
 
-    const handleItemSelect = (itemId) => {
-        setSelectedItems((prev) =>
-            prev.includes(itemId) ? prev.filter((id) => id !== itemId) : [...prev, itemId]
-        );
-    };
-
-    const handleReasonChange = (itemId, reason) => {
-        setReasons((prev) => ({
-            ...prev,
-            [itemId]: reason,
-        }));
-    };
-
-    const handleSubmit = async () => {
+    const handleSubmitReturn = async () => {
         try {
-            for (const itemId of selectedItems) {
-                await createReturn({
-                    orderThingId: itemId,
-                    reason: reasons[itemId] || '',
-                });
-            }
+            await createReturn({
+                thingId: selectedThing.id,
+                reason: reason || '',
+            });
             setConfirmationMessage('Возврат оформлен и находится на рассмотрении');
             setTimeout(() => {
                 handleClose();
@@ -84,8 +66,8 @@ const UserAccount = observer(() => {
         }
     };
 
-    const handleExchangeRequest = (item) => {
-        navigate(EXCHANGE_ROUTE.replace(':orderThingId', item.id), { state: { orderThingId: item.id } });
+    const handleExchangeRequest = (thing) => {
+        navigate(EXCHANGE_ROUTE.replace(':thingId', thing.id), { state: { thingId: thing.id } });
     };
 
     if (loading) {
@@ -105,6 +87,64 @@ const UserAccount = observer(() => {
                     <p>Роль: {userInfo.role}</p>
                 </div>
             </div>
+
+            {/* Товары пользователя */}
+            <div className={styles.my_things}>
+                <h3>Мои товары</h3>
+                {userInfo.ownedThings && userInfo.ownedThings.length > 0 ? (
+                    <div className={styles.things_list}>
+                        {userInfo.ownedThings.map(thing => {
+                            const hasExchangeRequest = userInfo.exchangeRequests?.some(
+                                exchange => exchange.oldThingId === thing.id && exchange.status === 'pending'
+                            );
+
+                            const hasReturnRequest = userInfo.returns?.some(
+                                returnItem => returnItem.thingId === thing.id && returnItem.status === 'pending'
+                            );
+
+                            return (
+                                <div className={styles.thing_item} key={thing.id}>
+                                    <div className={styles.thing_info}>
+                                        <div className={styles.thing_image}>
+                                            {thing.images && thing.images.length > 0 && (
+                                                <img src={process.env.REACT_APP_API_URL + thing.images[0].image} alt={thing.name} />
+                                            )}
+                                        </div>
+                                        <div className={styles.thing_details}>
+                                            <h5>{thing.name}</h5>
+                                            <p>Цена: ${thing.price}</p>
+                                            <div className={styles.thing_buttons}>
+                                                {hasExchangeRequest ? (
+                                                    <Button variant="secondary" disabled>
+                                                        Обмен запрошен
+                                                    </Button>
+                                                ) : (
+                                                    <Button variant="primary" onClick={() => handleExchangeRequest(thing)}>
+                                                        Запросить обмен
+                                                    </Button>
+                                                )}
+                                                {hasReturnRequest ? (
+                                                    <Button variant="secondary" disabled>
+                                                        Возврат оформлен
+                                                    </Button>
+                                                ) : (
+                                                    <Button variant="danger" onClick={() => handleShow(thing)}>
+                                                        Оформить возврат
+                                                    </Button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            );
+                        })}
+                    </div>
+                ) : (
+                    <p>У вас нет приобретенных товаров.</p>
+                )}
+            </div>
+
+
 
             {/* Раздел заказов */}
             <div className={styles.orders}>
@@ -172,9 +212,9 @@ const UserAccount = observer(() => {
                                     <div className={styles.name_price}>
                                         <div className={styles.name_heel}>
                                             <GiHighHeel />
-                                            модель: {returnItem.order_thing.thing.name}
+                                            модель: {returnItem.thing.name}
                                         </div>
-                                        <span>${returnItem.order_thing.thing.price}</span>
+                                        <span>${returnItem.thing.price}</span>
                                     </div>
                                 </div>
                             </div>
@@ -224,36 +264,22 @@ const UserAccount = observer(() => {
                 )}
             </div>
 
-            {/* Offcanvas для возвратов */}
             <Offcanvas show={show} onHide={handleClose} placement="bottom">
                 <Offcanvas.Header closeButton>
                     <Offcanvas.Title className={styles.offcanv_header}>Оформить возврат</Offcanvas.Title>
                 </Offcanvas.Header>
                 <Offcanvas.Body>
-                    {selectedOrder && (
+                    {selectedThing && (
                         <>
-                            <h4>Заказ №{selectedOrder.id}</h4>
-                            <ul>
-                                {selectedOrder.order_things.map(item => (
-                                    <li key={item.id}>
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedItems.includes(item.id)}
-                                            onChange={() => handleItemSelect(item.id)}
-                                        />
-                                        {item.thing.name} — {item.thing.price} руб.
-                                        {selectedItems.includes(item.id) && (
-                                            <textarea
-                                                placeholder="Причина возврата"
-                                                value={reasons[item.id] || ''}
-                                                onChange={(e) => handleReasonChange(item.id, e.target.value)}
-                                                style={{ display: 'block', marginTop: '10px' }}
-                                            />
-                                        )}
-                                    </li>
-                                ))}
-                            </ul>
-                            <Button onClick={handleSubmit} disabled={selectedItems.length === 0}>
+                            <h4>{selectedThing.name}</h4>
+                            <p>Цена: ${selectedThing.price}</p>
+                            <textarea
+                                placeholder="Причина возврата"
+                                value={reason}
+                                onChange={(e) => setReason(e.target.value)}
+                                style={{ width: '100%', minHeight: '100px', marginBottom: '10px' }}
+                            />
+                            <Button onClick={handleSubmitReturn}>
                                 Оформить возврат
                             </Button>
                             {confirmationMessage && <p>{confirmationMessage}</p>}
@@ -266,3 +292,8 @@ const UserAccount = observer(() => {
 });
 
 export default UserAccount;
+
+
+
+
+

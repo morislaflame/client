@@ -12,7 +12,7 @@ const ExchangePage = observer(() => {
     const [selectedThingId, setSelectedThingId] = useState(null);
     const [userComment, setUserComment] = useState('');
     const navigate = useNavigate();
-    const { orderThingId } = useParams(); // Получаем ID товара из заказа, который меняют
+    const { thingId } = useParams(); // Получаем ID товара, который меняют
 
     useEffect(() => {
         fetchThings(null, null, 1, 20).then(data => {
@@ -26,9 +26,9 @@ const ExchangePage = observer(() => {
             return;
         }
         try {
-            await createExchangeRequest(orderThingId, selectedThingId, userComment);
+            await createExchangeRequest(thingId, selectedThingId, userComment);
             alert('Запрос на обмен успешно отправлен.');
-            navigate('/my-orders'); // Перенаправляем на страницу заказов
+            navigate('/account'); // Перенаправляем на страницу аккаунта пользователя
         } catch (e) {
             alert('Ошибка при создании запроса на обмен.');
         }

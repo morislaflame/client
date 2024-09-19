@@ -43,13 +43,13 @@ const Admin = observer(() => {
 
   const loadPendingExchanges = async () => {
     try {
-      const exchanges = await fetchAllExchangeRequests();
-      const pending = exchanges.filter(exchange => exchange.status === 'pending');
-      setPendingExchanges(pending);
+      const exchanges = await fetchAllExchangeRequests('pending');
+      setPendingExchanges(exchanges);
     } catch (error) {
       console.error('Ошибка при загрузке обменов:', error);
     }
   };
+  
 
   const loadPendingReturns = async () => {
     try {
@@ -283,7 +283,7 @@ const Admin = observer(() => {
         <ListGroup>
           {pendingReturns.map(returnItem => (
             <ListGroup.Item key={returnItem.id}>
-              Возврат №{returnItem.id}, Товар: {returnItem.order_thing.thing.name}, Пользователь: {returnItem.user.email}
+              Возврат №{returnItem.id}, Товар: {returnItem.thing.name}, Пользователь: {returnItem.user.email}
               <p>Причина: {returnItem.reason}</p>
               <Button variant="success" onClick={() => handleApproveReturn(returnItem.id)}>
                 Подтвердить
@@ -298,6 +298,7 @@ const Admin = observer(() => {
         <p>Нет возвратов на рассмотрении.</p>
       )}
 
+
       <Button onClick={() => navigate(ALL_RETURNS_ROUTE)}>Посмотреть все возвраты</Button>
 
       {/* Секция с обменами */}
@@ -307,7 +308,7 @@ const Admin = observer(() => {
           {pendingExchanges.map(exchange => (
             <ListGroup.Item key={exchange.id}>
               Обмен №{exchange.id}, Пользователь: {exchange.user.email}
-              <p>Исходный товар: {exchange.order_thing.thing.name} (${exchange.order_thing.thing.price})</p>
+              <p>Исходный товар: {exchange.OldThing.name} (${exchange.OldThing.price})</p>
               <p>Новый товар: {exchange.NewThing.name} (${exchange.NewThing.price})</p>
               <p>Комментарий пользователя: {exchange.userComment}</p>
               <p>Разница в цене: {exchange.priceDifference > 0 ? `+${exchange.priceDifference}` : exchange.priceDifference} руб.</p>
@@ -334,6 +335,7 @@ const Admin = observer(() => {
       ) : (
         <p>Нет обменов на рассмотрении.</p>
       )}
+
 
       <Button onClick={() => navigate(ALL_ORDERS_ROUTE)}>Посмотреть все обмены</Button> {/* Возможно, создать отдельный маршрут */}
     
