@@ -3,13 +3,13 @@
   }
 
 .card_list {
-    width: 50%;
+    width: 100%;
 }
 
 @media (max-width: 600px) {
     .card_list {
-        width: 50%;
-        padding: calc(var(--index) * 0.6);
+        width: 100%;
+        
     }
   }
 
@@ -19,7 +19,7 @@
     cursor: pointer; 
     padding: calc(var(--index) * 0.7); 
     display: flex;
-    /* flex-direction: column; */
+    flex-direction: column;
     align-items: center;
     border-style: solid;
     /* border-color: #fedada; */
@@ -37,7 +37,7 @@
     object-position: center; /* Центрирует изображение в контейнере */
 }
 
-.brand-item {
+.brand_item {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -52,7 +52,7 @@
 }
 
 
-.brand-icon {
+.brand_icon {
     width: calc(var(--index) * 2); /* Ширина иконки */
     height: auto; /* Высота иконки */
 }
@@ -69,7 +69,7 @@
     padding: calc(var(--index) * 1) calc(var(--index) * 0.7) 0 calc(var(--index) * 0.7);
 }
 
-.thing-all {
+.thing_all {
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -84,7 +84,7 @@
     font-size: calc(var(--index) * 2);
 }
 
-.thing-info {
+.thing_info {
     font-size: calc(var(--index) * 1.2);
     color: #b3b2b2;
     display: flex;
@@ -95,11 +95,11 @@
     padding: calc(var(--index) * 0.6) 0;
 }
 
-.thing-price {
+.thing_price {
     font-weight: 500;
 }
 
-.thing-info div b {
+.thing_info div b {
     font-weight: 500;
 }
 

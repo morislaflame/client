@@ -18,7 +18,7 @@
 
 .my-button {
     padding: calc(var(--index) * 1) calc(var(--index) * 4);
-    background-color:#3c03a3;
+    background-color:#5b04f5;
     color: #fff;
     border-style: solid;
     border-color: #fedada;
@@ -30,7 +30,7 @@
         0 0 15px #5b04f582;
     cursor: pointer;
     border-width: 1px;
-    font-size: calc(var(--index) * 1.7);
+    font-size: calc(var(--index) * 1.5);
     font-weight: 500;
   }
   

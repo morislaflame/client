@@ -7,4 +7,5 @@
     display: flex;
     flex-wrap: wrap;
     padding: calc(var(--index) * 0.6);
+    width: 100%;
 }

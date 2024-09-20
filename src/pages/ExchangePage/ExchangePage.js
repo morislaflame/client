@@ -6,6 +6,7 @@ import { fetchThings } from '../../http/thingAPI';
 import Button from 'react-bootstrap/Button';
 import { createExchangeRequest } from '../../http/exchangeAPI';
 import { useNavigate, useParams } from 'react-router-dom';
+import styles from './ExchangePage.module.css';
 
 const ExchangePage = observer(() => {
     const { thing } = useContext(Context);
@@ -35,8 +36,9 @@ const ExchangePage = observer(() => {
     };
 
     return (
-        <div>
+        <div className={styles.exchange_page}>
             <h2>Выберите товар для обмена</h2>
+            <div className={'mainlist'}>
             <ThingListForExchange onSelectThing={setSelectedThingId} />
             <textarea 
                 placeholder="Комментарий"
@@ -45,13 +47,15 @@ const ExchangePage = observer(() => {
                 style={{ width: '100%', marginTop: '20px' }}
             />
             <Button 
-                variant="primary" 
+                variant="dark" 
                 onClick={handleSubmitExchange} 
                 disabled={!selectedThingId}
                 style={{ marginTop: '20px' }}
             >
                 Отправить запрос на обмен
             </Button>
+            </div>
+            
         </div>
     );
 });

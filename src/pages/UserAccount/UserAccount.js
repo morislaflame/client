@@ -1,6 +1,4 @@
-// UserAccount.js
 
-// UserAccount.js
 
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../index';
@@ -12,7 +10,14 @@ import { useNavigate } from 'react-router-dom';
 import { createReturn } from '../../http/orderAPI';
 import styles from './UserAccount.module.css';
 import { GiHighHeel } from "react-icons/gi";
-import MyButton from '../../components/MyButton/MyButton';
+import { Dropdown, Menu, Space } from 'antd';
+import { DownOutlined } from '@ant-design/icons';
+import { message } from 'antd';
+import { LiaExchangeAltSolid } from "react-icons/lia";
+import { IoReturnDownBackOutline } from "react-icons/io5";
+import { IoIosArrowDropleft } from "react-icons/io";
+
+
 
 const UserAccount = observer(() => {
     const { user } = useContext(Context);
@@ -23,6 +28,8 @@ const UserAccount = observer(() => {
     const [selectedThing, setSelectedThing] = useState(null); // Выбранный товар для возврата
     const [reason, setReason] = useState('');
     const [confirmationMessage, setConfirmationMessage] = useState('');
+    const [dropdownOpen, setDropdownOpen] = useState(false);
+
 
     const handleClose = () => {
         setShow(false);
@@ -34,6 +41,11 @@ const UserAccount = observer(() => {
         setSelectedThing(thing);
         setShow(true);
     };
+
+    const handleDropdownVisibleChange = (flag) => {
+        setDropdownOpen(flag);
+    };
+    
 
     useEffect(() => {
         const loadUserInfo = async () => {
@@ -50,25 +62,57 @@ const UserAccount = observer(() => {
         loadUserInfo();
     }, []);
 
+    const handleMenuClick = (action, thing) => {
+        if (action === 'exchange') {
+            handleExchangeRequest(thing);
+        } else if (action === 'return') {
+            handleShow(thing);
+        }
+    };
+    
+
     const handleSubmitReturn = async () => {
         try {
             await createReturn({
                 thingId: selectedThing.id,
                 reason: reason || '',
             });
-            setConfirmationMessage('Возврат оформлен и находится на рассмотрении');
+            setConfirmationMessage('The refund has been processed and is pending');
             setTimeout(() => {
                 handleClose();
             }, 3000);
         } catch (e) {
-            console.error('Ошибка при создании возврата:', e);
-            alert('Возникла ошибка при оформлении возврата');
+            console.error('Error when creating a return:', e);
+            message.error('Error when creating a return')
         }
     };
 
     const handleExchangeRequest = (thing) => {
         navigate(EXCHANGE_ROUTE.replace(':thingId', thing.id), { state: { thingId: thing.id } });
     };
+
+    const getDropdownMenu = (thing, hasExchangeRequest, hasReturnRequest) => (
+        <Menu>
+            <Menu.Item
+                key="exchange"
+                icon={<LiaExchangeAltSolid />}
+                disabled={hasExchangeRequest}
+                onClick={() => handleMenuClick('exchange', thing)}
+            >
+                {hasExchangeRequest ? 'Обмен запрошен' : 'Запросить обмен'}
+            </Menu.Item>
+            <Menu.Item
+                key="return"
+                icon={<IoReturnDownBackOutline />}
+                disabled={hasReturnRequest}
+                onClick={() => handleMenuClick('return', thing)}
+            >
+                {hasReturnRequest ? 'Возврат оформлен' : 'Оформить возврат'}
+            </Menu.Item>
+        </Menu>
+    );
+    
+    
 
     if (loading) {
         return <Spinner animation="border" />;
@@ -89,70 +133,63 @@ const UserAccount = observer(() => {
             </div>
 
             {/* Товары пользователя */}
-            <div className={styles.my_things}>
-                <h3>Мои товары</h3>
-                {userInfo.ownedThings && userInfo.ownedThings.length > 0 ? (
-                    <div className={styles.things_list}>
-                        {userInfo.ownedThings.map(thing => {
-                            const hasExchangeRequest = userInfo.exchangeRequests?.some(
-                                exchange => exchange.oldThingId === thing.id && exchange.status === 'pending'
-                            );
+<div className={styles.my_things}>
+    <h3>Мои товары</h3>
+    {userInfo.ownedThings && userInfo.ownedThings.length > 0 ? (
+        <div className={styles.things_list}>
+            {userInfo.ownedThings.map(thing => {
+                const hasExchangeRequest = userInfo.exchangeRequests?.some(
+                    exchange => exchange.oldThingId === thing.id && exchange.status === 'pending'
+                );
 
-                            const hasReturnRequest = userInfo.returns?.some(
-                                returnItem => returnItem.thingId === thing.id && returnItem.status === 'pending'
-                            );
+                const hasReturnRequest = userInfo.returns?.some(
+                    returnItem => returnItem.thingId === thing.id && returnItem.status === 'pending'
+                );
 
-                            return (
-                                <div className={styles.thing_item} key={thing.id}>
-                                    
-                                        <div className={styles.thing_image}>
-                                            {thing.images && thing.images.length > 0 && (
-                                                <img src={process.env.REACT_APP_API_URL + thing.images[0].image} alt={thing.name} />
-                                            )}
-                                        </div>
-                                        <div className={styles.thing_details}>
-                                            <div className={styles.name_price}>
-                                                <span>{thing.name}</span>
-                                                <span>${thing.price}</span>
-                                            </div>
-                                            <div style={{
-                                                display:'flex',
-                                                alignItems:'center',
-                                                width:'100%',
-                                                flexDirection:'column',
-                                                gap:16
-                                            }}>
-                                                {hasExchangeRequest ? (
-                                                    <Button variant="secondary" disabled>
-                                                        Обмен запрошен
-                                                    </Button>
-                                                ) : (
-                                                    <Button variant="primary" onClick={() => handleExchangeRequest(thing)}>
-                                                        Запросить обмен
-                                                    </Button>
-                                                )}
-                                                {hasReturnRequest ? (
-                                                    <Button
-                                                    style={{width:'100%'}}
-                                                    variant="secondary" disabled>
-                                                        Возврат оформлен
-                                                    </Button>
-                                                ) : (
-                                                    <Button variant="danger" onClick={() => handleShow(thing)}>
-                                                        Оформить возврат
-                                                    </Button>
-                                                )}
-                                            </div>
-                                        </div>
-                                    
+                return (
+                    <div className={styles.thing_item} key={thing.id}>
+                        <div className={styles.thing_image}>
+                            {thing.images && thing.images.length > 0 && (
+                                <img 
+                                    src={`${process.env.REACT_APP_API_URL}/${thing.images[0].img}`} 
+                                    alt={thing.name} 
+                                    className={styles.thing_image}
+                                    onError={(e) => { e.target.src = '/path/to/default/image.jpg'; }}
+                                />
+                            )}
+                        </div>
+                        <div className={styles.thing_details}>
+                            <div className={styles.name_price}>
+                                <div className={styles.name_heel}>
+                                <GiHighHeel /><span>{thing.name}</span>
                                 </div>
-                            );
-                        })}
+                                <span>${thing.price}</span>
+                            </div>
+                            <div className={styles.dropdownmenusection}>
+                                <Dropdown 
+                                    overlay={getDropdownMenu(thing, hasExchangeRequest, hasReturnRequest)} 
+                                    trigger={['click']}
+                                    onVisibleChange={handleDropdownVisibleChange}
+                                    visible={dropdownOpen}
+                                >
+                                    <div className={styles.dropdownmenu}>
+                                        <a onClick={e => e.preventDefault()} className={styles.dropdownTrigger}>
+                                            Действия 
+                                            <IoIosArrowDropleft className={`${styles.rotateIcon} ${dropdownOpen ? styles.open : ''}`} />
+                                        </a>
+                                    </div>
+                                </Dropdown>
+                            </div>
+                        </div>
                     </div>
-                ) : (
-                    <p>У вас нет приобретенных товаров.</p>
-                )}
-            </div>
+                );
+            })}
+        </div>
+    ) : (
+        <p>У вас нет приобретенных товаров.</p>
+    )}
+</div>
+
 
 
 

@@ -1,7 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import TypeBar from '../../components/TypeBar/TypeBar';
 import './Shop.css'
-import BrandBar from '../../components/BrandBar/BrandBar';
 import ThingList from '../../components/ThingList';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
@@ -14,6 +12,7 @@ import { gsap } from "gsap";
 import { useGSAP } from "@gsap/react";
 import ScrollTrigger from 'gsap/src/ScrollTrigger';
 import { NavLink } from 'react-router-dom';
+import { FloatButton } from "antd";
 
 const Shop = observer(() => {
   const {thing} = useContext(Context)
@@ -58,6 +57,9 @@ const Shop = observer(() => {
       <Pages/>
       </div>
       <FaqAccordion/>
+      <FloatButton.BackTop 
+        style={{backgroundColor: '#5b04f5'}}
+      />
     </div>
   );
 });

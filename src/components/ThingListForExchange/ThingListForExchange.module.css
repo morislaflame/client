@@ -1,0 +1,23 @@
+.thing_list {
+    display: flex;
+    flex-wrap: wrap;
+    padding: calc(var(--index) * 0.6);
+    width: 100%;
+}
+
+.thing_item {
+    display: flex;
+    flex-direction: column;
+    width: 50%;
+    padding: calc(var(--index) * 0.2);
+    
+}
+
+.thing_item_button {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to bottom, #030107, #130035, #030107);
+    gap: calc(var(--index) * 1);
+    padding: calc(var(--index) * 0.6);
+    border-radius: calc(var(--index) * 0.7);
+}

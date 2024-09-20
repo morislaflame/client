@@ -3,7 +3,8 @@ import React, { useContext, useState } from "react";
 import { Context } from "../../index";
 import ThingItem from "../ThingItem/ThingItem";
 import Button from "react-bootstrap/Button";
-import './ThingListForExchange.css';
+import styles from './ThingListForExchange.module.css';
+import ThingItemForExchange from "../ThingItemForExchange/ThingItemForExchange";
 
 const ThingListForExchange = observer(({ onSelectThing }) => {
     const { thing } = useContext(Context);
@@ -15,16 +16,18 @@ const ThingListForExchange = observer(({ onSelectThing }) => {
     };
 
     return (
-        <div className="thing-list">
+        <div className={styles.thing_list}>
             {thing.things.map(t => (
-                <div key={t.id} className="thing-item">
-                    <ThingItem thing={t} />
-                    <Button 
-                        variant={selectedThingId === t.id ? 'success' : 'primary'}
-                        onClick={() => handleSelect(t.id)}
-                    >
-                        {selectedThingId === t.id ? 'Выбрано' : 'Выбрать'}
-                    </Button>
+                <div key={t.id} className={styles.thing_item}>
+                    <div className={styles.thing_item_button}>
+                        <ThingItemForExchange thing={t} />
+                        <Button 
+                            variant={selectedThingId === t.id ? 'success' : 'primary'}
+                            onClick={() => handleSelect(t.id)}
+                        >
+                            {selectedThingId === t.id ? 'Выбрано' : 'Выбрать'}
+                        </Button>
+                    </div>
                 </div>
             ))}
         </div>

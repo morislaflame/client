@@ -27,7 +27,17 @@
     border-top: 1px solid #7f7e7e66; */
 }
 
-
+:where(.css-dev-only-do-not-override-qnu6hi).ant-float-btn-default .ant-float-btn-body {
+    background-color: #5b04f5;
+    border-style: solid;
+    border-color: #fedada;
+    border-width: 1px;
+    box-shadow: 
+        0 0 2px #5b04f582, 
+        0 0 5px #5b04f582, 
+        0 0 10px #5b04f582, 
+        0 0 15px #5b04f582;
+}
 
 .filters.pinned {
     position: relative;

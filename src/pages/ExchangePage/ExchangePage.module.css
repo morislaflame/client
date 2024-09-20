@@ -1,0 +1,16 @@
+.exchange_page {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: fit-content;
+    overflow: hidden;
+    min-height: 100vh;
+    background-color: #030107;
+    /* background: linear-gradient(to bottom, #030107, #130035, #030107); */
+}
+
+.exchange_page h2 {
+    color: #ffffffd9;
+    margin-top: calc(var(--index) * 0.6);
+    margin-bottom: 0;
+}
