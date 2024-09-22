@@ -54,3 +54,7 @@ export const deleteUser = async (userId) => {
     return data;
 };
 
+export const fetchUserPromoCodes = async () => {
+    const { data } = await $authHost.get('api/user/promoCodes');
+    return data;
+}

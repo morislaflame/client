@@ -16,6 +16,18 @@ export const removeFromBasket = async (thingId) => {
 }
 
 export const clearBasket = async () => {
-    const { data } = await $authHost.delete('api/basket/clear');
+    const { data } = await $authHost.post('api/basket/clear');
+    return data;
+}
+
+// Новый метод для применения промокода
+export const applyPromoCode = async (code) => {
+    const { data } = await $authHost.post('api/basket/applyPromoCode', { code });
+    return data;
+}
+
+// Новый метод для удаления промокода
+export const removePromoCode = async () => {
+    const { data } = await $authHost.post('api/basket/removePromoCode');
     return data;
 }

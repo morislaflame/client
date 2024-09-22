@@ -1,19 +1,22 @@
+// components/PaymentPage/PaymentPage.js
+
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import './PaymentPage.css';
-import { QRCodeCanvas } from 'qrcode.react'; // Импортируем QRCodeCanvas
-import { useLocation, useNavigate } from 'react-router-dom';
-import Dropdown from 'react-bootstrap/Dropdown'; // Импортируем Bootstrap Dropdown
+import { QRCodeCanvas } from 'qrcode.react';
+import { useNavigate } from 'react-router-dom';
+import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
-import { Context } from '../../index'; // Для работы с контекстом
+import { Context } from '../../index';
 import { createOrder } from '../../http/orderAPI';
 import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
 
 const PaymentPage = () => {
-    const { thing, user } = useContext(Context);
-  const location = useLocation();
-  const totalAmountUSD = location.state?.totalAmount || 0;
+  const { thing } = useContext(Context);
   const navigate = useNavigate();
+
+  // Получаем общую сумму заказа из MobX хранилища, учитывая скидку
+  const totalAmountUSD = thing.totalPrice || 0;
 
   // Адреса кошельков для разных криптовалют
   const wallets = {
@@ -62,7 +65,7 @@ const PaymentPage = () => {
   };
 
   useEffect(() => {
-    fetchCryptoRates(); // Вызов функции для получения данных при загрузке страницы
+    fetchCryptoRates();
 
     // Устанавливаем интервал для обновления данных каждые 2 минуты
     const interval = setInterval(() => {
@@ -82,8 +85,10 @@ const PaymentPage = () => {
 
   const handleConfirmPayment = async () => {
     try {
-      await createOrder(thing.basket); // Передаем содержимое корзины для создания заказа
-      thing.resetBasket(); // Очищаем корзину после успешного создания заказа
+      // Создаем заказ
+      await createOrder();
+      // Очищаем корзину после успешного создания заказа
+      await thing.clearBasket();
       navigate(USER_ACCOUNT_ROUTE); // Перенаправляем на страницу аккаунта
     } catch (error) {
       console.error('Ошибка при создании заказа:', error);
@@ -95,9 +100,9 @@ const PaymentPage = () => {
       <div className="payment-details">
         <h3>Сумма к оплате: {totalAmountUSD} USD</h3>
 
-        {/* Селектор для выбора криптовалюты с использованием Bootstrap Dropdown */}
+        {/* Селектор для выбора криптовалюты */}
         <div className="selector-pay">
-          <label htmlFor="cryptoSelect">Choose a cryptocurrency for payment:</label>
+          <label htmlFor="cryptoSelect">Выберите криптовалюту для оплаты:</label>
           <DropdownButton
             id="dropdown-cryptoSelect"
             title={` ${wallets[selectedCrypto].currency}`}
@@ -114,7 +119,7 @@ const PaymentPage = () => {
 
         {/* Отображение QR-кода и суммы для выбранной криптовалюты */}
         <div className="crypto-payment">
-        <h4>
+          <h4>
             Сумма: {convertAmountForCrypto(wallets[selectedCrypto].currency)}{" "}
             {wallets[selectedCrypto].currency}
           </h4>
@@ -128,14 +133,14 @@ const PaymentPage = () => {
               />
             </div>
           </div>
-          
+
           <p>Адрес кошелька для {wallets[selectedCrypto].currency}: {wallets[selectedCrypto].address}</p>
-          
+
         </div>
         <button className="btn btn-primary" onClick={handleConfirmPayment}>
           Подтвердить оплату
         </button>
-       
+
         <p style={{ color: "gray", fontSize: "0.9em" }}>
           Курс криптовалют обновляется каждые 2 минуты. Пожалуйста, убедитесь, что оплата произведена с актуальным курсом.
         </p>
