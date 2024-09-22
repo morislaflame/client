@@ -58,7 +58,7 @@ const Shop = observer(() => {
       </div>
       <FaqAccordion/>
       <FloatButton.BackTop 
-        style={{backgroundColor: '#5b04f5'}}
+        type='dark'
       />
     </div>
   );

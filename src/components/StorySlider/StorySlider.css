@@ -39,7 +39,7 @@
     object-fit: cover; 
     object-position: center; 
     padding: 3px;
-    border: 2px solid #1f054a;
+    border: 2px solid #7f7e7e66;
   }
   
   .story-card p {
@@ -107,4 +107,8 @@
     --bs-progress-bar-color: #7f7e7e66;
     --bs-progress-bg: #7f7e7e66;
     width: 90%;
+  }
+
+  .modal.show .modal-dialog {
+    margin: 0;
   }

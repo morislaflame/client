@@ -34,7 +34,7 @@ const App = observer(() => {
     <BrowserRouter>
         <NavBar />
         <AppRouter />
-        <Chat/>
+        {/* <Chat/> */}
     </BrowserRouter>
   );
 });
