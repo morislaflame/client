@@ -44,9 +44,6 @@ const UserAccount = observer(() => {
         setShow(true);
     };
 
-    const handleDropdownVisibleChange = (flag) => {
-        setDropdownOpen(flag);
-    };
     
 
     useEffect(() => {
@@ -175,8 +172,7 @@ const UserAccount = observer(() => {
                                             <Dropdown 
                                                 overlay={getDropdownMenu(thing, hasExchangeRequest, hasReturnRequest)} 
                                                 trigger={['click']}
-                                                onVisibleChange={handleDropdownVisibleChange}
-                                                visible={dropdownOpen}
+                                                
                                             >
                                                 <div className={styles.dropdownmenu}>
                                                     <div onClick={e => e.preventDefault()} className={styles.dropdownTrigger}>
