@@ -1,18 +1,18 @@
+// components/ThingListForExchange/ThingListForExchange.js
+
 import { observer } from "mobx-react-lite";
-import React, { useContext, useState } from "react";
+import React, { useContext } from "react";
 import { Context } from "../../index";
-import ThingItem from "../ThingItem/ThingItem";
 import Button from "react-bootstrap/Button";
 import styles from './ThingListForExchange.module.css';
 import ThingItemForExchange from "../ThingItemForExchange/ThingItemForExchange";
 
-const ThingListForExchange = observer(({ onSelectThing }) => {
+const ThingListForExchange = observer(({ selectedThingId, onSelectThing }) => {
     const { thing } = useContext(Context);
-    const [selectedThingId, setSelectedThingId] = useState(null);
 
     const handleSelect = (thingId) => {
-        setSelectedThingId(thingId);
-        onSelectThing(thingId); // Передаем выбранный товар родителю
+        const newSelectedThingId = selectedThingId === thingId ? null : thingId;
+        onSelectThing(newSelectedThingId); // Передаем выбранный товар родителю
     };
 
     return (

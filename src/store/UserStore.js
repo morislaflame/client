@@ -8,14 +8,20 @@ export default class UserStore {
         this._isAuth = false
         this._user = {}
         this._users = [];
-        this._exchangeRequests = []; // Добавляем состояние для запросов на обмен
+        this._exchangeRequests = [];
+        this._userInfo = null
+        this._loading = true
         makeAutoObservable(this, 
             {
                 setUsers: action,
                 fetchAllUsers: action,
                 updateUserRole: action,
                 removeUser: action,
-                setExchangeRequests: action, // Метод для установки запросов
+                setExchangeRequests: action, 
+                loadUserInfo: action,
+                updateUserInfo: action,
+                setUserInfo: action,
+                setLoading: action,
             }
         )
     }
@@ -37,6 +43,13 @@ export default class UserStore {
         this._exchangeRequests = exchangeRequests;
     }
 
+    setUserInfo(userInfo) {
+        this._userInfo = userInfo;
+    }
+    setLoading(loading) {
+        this._loading = loading;
+    }
+
     logout() {
         console.log("Logging out");  // Логируем выход из аккаунта
         this._isAuth = false;
@@ -51,6 +64,28 @@ export default class UserStore {
         } catch (error) {
             console.error("Error fetching all users:", error);
         }
+    }
+
+    // Метод для загрузки информации о пользователе
+    async loadUserInfo() {
+        this.setLoading(true);
+        try {
+            const data = await fetchMyInfo(); // Предполагается, что у вас есть этот API вызов
+            runInAction(() => {
+                this._userInfo = data;
+                this.setLoading(false);
+            });
+        } catch (error) {
+            console.error('Ошибка при загрузке информации о пользователе:', error);
+            runInAction(() => {
+                this.setLoading(false);
+            });
+        }
+    }
+
+    // Метод для обновления информации о пользователе после действия
+    updateUserInfo(updatedData) {
+        this._userInfo = { ...this._userInfo, ...updatedData };
     }
 
     async fetchExchangeRequests() {
@@ -130,4 +165,15 @@ export default class UserStore {
     get user() {
         return this._user
     }
+
+    get userInfo() {
+        return this._userInfo;
+    }
+    get loading() {
+        return this._loading;
+    }
 }
+
+
+
+

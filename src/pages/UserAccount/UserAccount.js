@@ -1,37 +1,27 @@
+// components/UserAccount/UserAccount.js
+
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
-import { fetchMyInfo } from '../../http/userAPI';
 import { Spinner, Button, Offcanvas } from 'react-bootstrap';
-import { EXCHANGE_ROUTE } from '../../utils/consts';
 import { useNavigate } from 'react-router-dom';
 import { createReturn } from '../../http/orderAPI';
 import styles from './UserAccount.module.css';
 import { GiHighHeel } from "react-icons/gi";
-import { Dropdown, Menu, Space } from 'antd';
-import { DownOutlined } from '@ant-design/icons';
-import { message } from 'antd';
+import { Dropdown, Menu, message } from 'antd';
 import { LiaExchangeAltSolid } from "react-icons/lia";
 import { IoReturnDownBackOutline } from "react-icons/io5";
-import { IoIosArrowDropleft } from "react-icons/io";
-import { FcApproval } from "react-icons/fc";
-import { FcCancel } from "react-icons/fc";
-import { FcClock } from "react-icons/fc";
-import { FcOk } from "react-icons/fc";
-
-
+import { FcCancel, FcClock, FcOk } from "react-icons/fc";
+import { SlOptions } from "react-icons/sl";
 
 const UserAccount = observer(() => {
     const { user } = useContext(Context);
-    const [loading, setLoading] = useState(true);
-    const [userInfo, setUserInfo] = useState(null);
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [selectedThing, setSelectedThing] = useState(null); // Выбранный товар для возврата
     const [reason, setReason] = useState('');
     const [confirmationMessage, setConfirmationMessage] = useState('');
-    const [dropdownOpen, setDropdownOpen] = useState(false);
-
+    const [openDropdowns, setOpenDropdowns] = useState({});
 
     const handleClose = () => {
         setShow(false);
@@ -44,31 +34,28 @@ const UserAccount = observer(() => {
         setShow(true);
     };
 
-    
+    const handleDropdownVisibleChange = (flag, thingId) => {
+        setOpenDropdowns(prevState => ({
+            ...prevState,
+            [thingId]: flag,
+        }));
+    };
 
     useEffect(() => {
-        const loadUserInfo = async () => {
-            try {
-                const data = await fetchMyInfo();
-                console.log('Получены данные пользователя:', data);
-                setUserInfo(data);
-            } catch (e) {
-                console.error('Ошибка при загрузке данных пользователя:', e);
-            } finally {
-                setLoading(false);
-            }
-        };
-        loadUserInfo();
-    }, []);
+        user.loadUserInfo();
+    }, [user]);
 
-    const handleMenuClick = (action, thing) => {
+    const handleMenuClick = (action, thingItem) => {
         if (action === 'exchange') {
-            handleExchangeRequest(thing);
+            handleExchangeRequest(thingItem);
         } else if (action === 'return') {
-            handleShow(thing);
+            handleShow(thingItem);
         }
     };
-    
+
+    const handleExchangeRequest = (thingItem) => {
+        navigate(`/exchange/${thingItem.id}`); // Перенаправляем на страницу обмена, передавая ID товара
+    };
 
     const handleSubmitReturn = async () => {
         try {
@@ -76,48 +63,44 @@ const UserAccount = observer(() => {
                 thingId: selectedThing.id,
                 reason: reason || '',
             });
-            setConfirmationMessage('The refund has been processed and is pending');
+            await user.loadUserInfo(); // Заново загружаем информацию о пользователе
+            message.success('Возврат оформлен и находится в обработке');
             setTimeout(() => {
                 handleClose();
             }, 3000);
         } catch (e) {
-            console.error('Error when creating a return:', e);
-            message.error('Error when creating a return')
+            console.error('Ошибка при создании возврата:', e);
+            message.error('Ошибка при создании возврата');
         }
     };
+    
 
-    const handleExchangeRequest = (thing) => {
-        navigate(EXCHANGE_ROUTE.replace(':thingId', thing.id), { state: { thingId: thing.id } });
-    };
-
-    const getDropdownMenu = (thing, hasExchangeRequest, hasReturnRequest) => (
+    const getDropdownMenu = (thingItem, hasExchangeRequest, hasReturnRequest) => (
         <Menu>
             <Menu.Item
                 key="exchange"
                 icon={<LiaExchangeAltSolid />}
                 disabled={hasExchangeRequest}
-                onClick={() => handleMenuClick('exchange', thing)}
+                onClick={() => handleMenuClick('exchange', thingItem)}
             >
-                {hasExchangeRequest ? 'Exchange requested' : 'Request an exchange'}
+                {hasExchangeRequest ? 'Запрос на обмен отправлен' : 'Запросить обмен'}
             </Menu.Item>
             <Menu.Item
                 key="return"
                 icon={<IoReturnDownBackOutline />}
                 disabled={hasReturnRequest}
-                onClick={() => handleMenuClick('return', thing)}
+                onClick={() => handleMenuClick('return', thingItem)}
             >
-                {hasReturnRequest ? 'The return is processed' : 'Make a refund'}
+                {hasReturnRequest ? 'Возврат в обработке' : 'Оформить возврат'}
             </Menu.Item>
         </Menu>
     );
-    
-    
 
-    if (loading) {
+    if (user.loading) {
         return <Spinner animation="border" />;
     }
 
-    if (!userInfo) {
+    if (!user.userInfo) {
         return <p>Не удалось загрузить информацию о пользователе.</p>;
     }
 
@@ -127,57 +110,57 @@ const UserAccount = observer(() => {
             <div className={styles.topic}>
                 <h2>Личный кабинет</h2>
                 <div className={styles.userinfo}>
-                    
-                        <p>Email: {userInfo.email}</p>
-                        <p>Роль: {userInfo.role}</p>
-                    
+                    <p>Email: {user.userInfo.email}</p>
+                    <p>Роль: {user.userInfo.role}</p>
                 </div>
             </div>
 
             {/* Товары пользователя */}
             <div className={styles.my_things}>
-                <h3>My models</h3>
-                {userInfo.ownedThings && userInfo.ownedThings.length > 0 ? (
+                <h3>Мои модели</h3>
+                {user.userInfo.ownedThings && user.userInfo.ownedThings.length > 0 ? (
                     <div className={styles.things_list}>
-                        {userInfo.ownedThings.map(thing => {
-                            const hasExchangeRequest = userInfo.exchangeRequests?.some(
-                                exchange => exchange.oldThingId === thing.id && exchange.status === 'pending'
+                        {user.userInfo.ownedThings.map(thingItem => {
+                            const hasExchangeRequest = user.userInfo.exchangeRequests?.some(
+                                exchange => exchange.oldThingId === thingItem.id && exchange.status === 'pending'
                             );
 
-                            const hasReturnRequest = userInfo.returns?.some(
-                                returnItem => returnItem.thingId === thing.id && returnItem.status === 'pending'
+                            const hasReturnRequest = user.userInfo.returns?.some(
+                                returnItem => returnItem.thingId === thingItem.id && returnItem.status === 'pending'
                             );
 
                             return (
-                                <div className={styles.thing_item} key={thing.id}>
-                                    <div className={styles.thing_image}>
-                                        {thing.images && thing.images.length > 0 && (
-                                            <img 
-                                                src={`${process.env.REACT_APP_API_URL}/${thing.images[0].img}`} 
-                                                alt={thing.name} 
+                                <div className={styles.thing_item} key={thingItem.id}>
+                                    <div className={styles.thing_image_wrapper}>
+                                        {thingItem.images && thingItem.images.length > 0 && (
+                                            <img
+                                                src={`${process.env.REACT_APP_API_URL}/${thingItem.images[0].img}`}
+                                                alt={thingItem.name}
                                                 className={styles.thing_image}
                                                 onError={(e) => { e.target.src = '/path/to/default/image.jpg'; }}
                                             />
                                         )}
                                     </div>
                                     <div className={styles.thing_details}>
-                                        
                                         <div className={styles.name_price}>
                                             <div className={styles.name_heel}>
-                                            <GiHighHeel /><span>{thing.name}</span>
+                                                <GiHighHeel /><span>{thingItem.name}</span>
                                             </div>
-                                            <span>${thing.price}</span>
+                                            <span>${thingItem.price}</span>
                                         </div>
                                         <div className={styles.dropdownmenusection}>
-                                            <Dropdown 
-                                                overlay={getDropdownMenu(thing, hasExchangeRequest, hasReturnRequest)} 
+                                            <Dropdown
+                                                overlay={getDropdownMenu(thingItem, hasExchangeRequest, hasReturnRequest)}
                                                 trigger={['click']}
-                                                
+                                                onVisibleChange={(flag) => handleDropdownVisibleChange(flag, thingItem.id)}
+                                                visible={openDropdowns[thingItem.id] || false}
                                             >
                                                 <div className={styles.dropdownmenu}>
                                                     <div onClick={e => e.preventDefault()} className={styles.dropdownTrigger}>
-                                                        <span>Actions</span>
-                                                        <IoIosArrowDropleft className={`${styles.rotateIcon} ${dropdownOpen ? styles.open : ''}`} />
+                                                        <span>Действия</span>
+                                                        <SlOptions
+                                                            className={`${styles.rotateIcon} ${openDropdowns[thingItem.id] ? styles.open : ''}`}
+                                                        />
                                                     </div>
                                                 </div>
                                             </Dropdown>
@@ -188,46 +171,42 @@ const UserAccount = observer(() => {
                         })}
                     </div>
                 ) : (
-                    <p>You don't have any purchased models.</p>
+                    <p>У вас нет купленных моделей.</p>
                 )}
             </div>
+
             {/* Раздел заказов */}
             <div className={styles.orders}>
-                <h3>My orders</h3>
-                {userInfo.orders.length > 0 ? (
+                <h3>Мои заказы</h3>
+                {user.userInfo.orders && user.userInfo.orders.length > 0 ? (
                     <div className={styles.order_list}>
-                        {userInfo.orders.map(order => (
+                        {user.userInfo.orders.map(order => (
                             <div className={styles.order_item} key={order.id}>
-                                <div className={styles.order_status}><span>Order №{order.id}</span> <span>{order.status}</span></div>
+                                <div className={styles.order_status}>
+                                    <span>Заказ №{order.id}</span> <span>{order.status}</span>
+                                </div>
                                 <div className={styles.order_details}>
                                     <div className={styles.ladies}>
-                                        {order.order_things.map(item => {
-                                            // const hasExchangeRequest = userInfo.exchangeRequests?.some(
-                                            //     exchange => exchange.oldThingId === item.thing.id && exchange.status === 'pending'
-                                            // );
-
-                                            return (
-                                                <div className={styles.name_price} key={item.id}>
-                                                    <div className={styles.name_heel}>
-                                                        <GiHighHeel />
-                                                        model:<b>{item.thing.name}</b>
-                                                    </div>
-                                                    <span>${item.thing.price}</span>
-                                                    
+                                        {order.order_things.map(item => (
+                                            <div className={styles.name_price} key={item.id}>
+                                                <div className={styles.name_heel}>
+                                                    <GiHighHeel />
+                                                    модель: <b>{item.thing.name}</b>
                                                 </div>
-                                            );
-                                        })}
+                                                <span>${item.thing.price}</span>
+                                            </div>
+                                        ))}
                                     </div>
-                                    <div className={styles.total_price}>Total: ${order.totalPrice} </div>
+                                    <div className={styles.total_price}>Итого: ${order.totalPrice} </div>
                                     <div className={styles.mini_status}>
                                         {order.status === 'created' && (
-                                            <div className={styles.approved}><FcClock style={{color: 'black'}} /><p>Your order is pending confirmation</p></div>
+                                            <div className={styles.approved}><FcClock style={{ color: 'black' }} /><p>Ваш заказ ожидает подтверждения</p></div>
                                         )}
                                         {order.status === 'paid' && (
-                                            <div className={styles.approved}><FcOk /><p>Your order has been paid</p></div>
+                                            <div className={styles.approved}><FcOk /><p>Ваш заказ оплачен</p></div>
                                         )}
                                         {order.status === 'rejected' && (
-                                            <div className={styles.approved}><FcCancel /><p>Your order has been rejected</p></div>
+                                            <div className={styles.approved}><FcCancel /><p>Ваш заказ отклонен</p></div>
                                         )}
                                     </div>
                                 </div>
@@ -235,23 +214,25 @@ const UserAccount = observer(() => {
                         ))}
                     </div>
                 ) : (
-                    <p>You have no orders.</p>
+                    <p>У вас нет заказов.</p>
                 )}
             </div>
 
             {/* Раздел возвратов */}
             <div className={styles.returns}>
-                <h3>My Returns</h3>
-                {userInfo.returns.length > 0 ? (
+                <h3>Мои возвраты</h3>
+                {user.userInfo.returns && user.userInfo.returns.length > 0 ? (
                     <div className={styles.order_list}>
-                        {userInfo.returns.map(returnItem => (
+                        {user.userInfo.returns.map(returnItem => (
                             <div className={styles.order_item} key={returnItem.id}>
-                                <div className={styles.order_status}> <span>Return №{returnItem.id}</span> <span>{returnItem.status}</span> </div>
+                                <div className={styles.order_status}>
+                                    <span>Возврат №{returnItem.id}</span> <span>{returnItem.status}</span>
+                                </div>
                                 <div className={styles.ladies}>
                                     <div className={styles.name_price}>
                                         <div className={styles.name_heel}>
                                             <GiHighHeel />
-                                            model: {returnItem.thing.name}
+                                            модель: {returnItem.thing.name}
                                         </div>
                                         <span>${returnItem.thing.price}</span>
                                     </div>
@@ -260,43 +241,43 @@ const UserAccount = observer(() => {
                         ))}
                     </div>
                 ) : (
-                    <p>You have no returns.</p>
+                    <p>У вас нет возвратов.</p>
                 )}
             </div>
 
             {/* Раздел запросов на обмен */}
             <div className={styles.exchanges}>
-                <h3>My exchanges</h3>
-                {userInfo.exchangeRequests && userInfo.exchangeRequests.length > 0 ? (
+                <h3>Мои обмены</h3>
+                {user.userInfo.exchangeRequests && user.userInfo.exchangeRequests.length > 0 ? (
                     <div className={styles.exchange_list}>
-                        {userInfo.exchangeRequests.map(exchange => (
+                        {user.userInfo.exchangeRequests.map(exchange => (
                             <div className={styles.exchange_item} key={exchange.id}>
                                 <div className={styles.exchange_status}>
-                                    <span>Exchange №{exchange.id}</span>
+                                    <span>Обмен №{exchange.id}</span>
                                     <span> {exchange.status}</span>
                                 </div>
                                 <div className={styles.exchange_details}>
                                     <div className={styles.old_new}>
                                         <div className={styles.old_new_names}>
-                                            <div><strong>Swapped:</strong></div> {exchange.OldThing.name} - ${exchange.OldThing.price}
+                                            <div><strong>Обменяно:</strong></div> {exchange.OldThing.name} - ${exchange.OldThing.price}
                                         </div>
                                         <div className={styles.old_new_names}>
-                                            <div><strong>For:</strong></div> {exchange.NewThing.name} - ${exchange.NewThing.price}
+                                            <div><strong>На:</strong></div> {exchange.NewThing.name} - ${exchange.NewThing.price}
                                         </div>
                                     </div>
-                                    
+
                                     <div>
-                                        <strong>Price difference:</strong> ${exchange.priceDifference}
+                                        <strong>Разница в цене:</strong> ${exchange.priceDifference}
                                     </div>
                                     <div className={styles.mini_status}>
                                         {exchange.status === 'pending' && (
-                                            <p>Your exchange request is pending.</p>
+                                            <p>Ваш запрос на обмен находится в обработке.</p>
                                         )}
                                         {exchange.status === 'approved' && (
-                                            <div className={styles.approved}><FcOk /><p>Your exchange request has been approved.</p></div>
+                                            <div className={styles.approved}><FcOk /><p>Ваш запрос на обмен одобрен.</p></div>
                                         )}
                                         {exchange.status === 'rejected' && (
-                                            <div className={styles.approved}><FcCancel /><p>Your exchange request has been declined.</p></div>
+                                            <div className={styles.approved}><FcCancel /><p>Ваш запрос на обмен отклонен.</p></div>
                                         )}
                                     </div>
                                 </div>
@@ -336,8 +317,3 @@ const UserAccount = observer(() => {
 });
 
 export default UserAccount;
-
-
-
-
-
