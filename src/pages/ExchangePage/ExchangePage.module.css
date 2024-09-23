@@ -14,3 +14,43 @@
     margin-top: calc(var(--index) * 0.6);
     margin-bottom: 0;
 }
+
+.selection {
+    background-color: #111111c4;
+    color: white;
+    padding: calc(var(--index) * 1.5);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    gap: calc(var(--index) * 1);
+    align-items: center;
+    border-radius: calc(var(--index) * 1);
+    border-bottom: 1px solid #7f7e7e66;
+    border-top: 1px solid #aaa9a9b5;
+    box-shadow: 
+        0 0 2px black, 
+        0 0 5px #000000a3, 
+        0 0 10px #000000a3;
+}
+
+.selection textarea {
+    border-radius: calc(var(--index) * 1);
+    padding: calc(var(--index) * 1);
+}
+
+.button {
+    --bs-btn-bg: #063dc233;
+    --bs-btn-border-color: #2506c2;
+    --bs-btn-hover-color: #fff;
+    --bs-btn-hover-bg: #0045c8;
+    --bs-btn-hover-border-color: #2506c2;
+    --bs-btn-focus-shadow-rgb: 66, 70, 73;
+    --bs-btn-active-color: #fff;
+    --bs-btn-active-bg: #0045c8;
+    --bs-btn-active-border-color: #2506c2;
+    --bs-btn-active-shadow: inset 0 3px 5px rgba(0, 0, 0, 0.125);
+    --bs-btn-disabled-color: #fff;
+    --bs-btn-disabled-bg: #212529;
+    --bs-btn-disabled-border-color: #212529;
+}

@@ -18,21 +18,17 @@
 
 .my-button {
     padding: calc(var(--index) * 1) calc(var(--index) * 4);
-    background-color: #111111c4;
+    background-color: #4805ca;
     color: #fff;
-    /* border-style: solid;
-    border-color: #fedada; */
+    border-style: solid;
+    border-color: #fedada;
     border-radius: calc(var(--index) * 1);
-    
-    border: 0;
-    border-bottom: 1px solid #7f7e7e66; 
-     border-top: 1px solid #aaa9a9b5;
     box-shadow: 
         0 0 2px black, 
         0 0 5px #000000a3, 
         0 0 10px #000000a3;
     cursor: pointer;
-     
+     border-width: 1px;
     font-size: calc(var(--index) * 1.5);
     font-weight: 500;
   }

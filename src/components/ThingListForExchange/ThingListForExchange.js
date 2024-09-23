@@ -24,6 +24,7 @@ const ThingListForExchange = observer(({ selectedThingId, onSelectThing }) => {
                         <Button 
                             variant={selectedThingId === t.id ? 'success' : 'primary'}
                             onClick={() => handleSelect(t.id)}
+                            className={styles.button}
                         >
                             {selectedThingId === t.id ? 'Выбрано' : 'Выбрать'}
                         </Button>

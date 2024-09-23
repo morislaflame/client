@@ -14,6 +14,7 @@ import MymIcon from '../../icons/Mym.png';
 import FanslyIcon from '../../icons/fansly.png';
 import OnlyIcon from '../../icons/onlyfans.png';
 import { observer } from 'mobx-react-lite';
+import { message } from 'antd';
 
 const ThingPage = observer(() => {
   const [thing, setThing] = useState({ info: [], images: [] });
@@ -30,10 +31,10 @@ const ThingPage = observer(() => {
   const handleAddToBasket = async () => {
     try {
       await thingStore.addToBasket(id);
-      alert('Товар добавлен в корзину!');
+      message.success('Added to cart');
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
-      alert('Ошибка при добавлении товара в корзину: ' + errorMessage);
+      message.error('Error adding to cart' + errorMessage);
     }
   };
 

@@ -10,6 +10,7 @@ import { createExchangeRequest } from '../../http/exchangeAPI';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './ExchangePage.module.css';
 import { message } from 'antd';
+import { ExchangeOffcanvas, ExchangeOffcanvasBody, ExchangeOffcanvasHeader } from '../../components/StyledComponents';
 
 const ExchangePage = observer(() => {
     const { thing, user } = useContext(Context);
@@ -32,17 +33,17 @@ const ExchangePage = observer(() => {
 
     const handleSubmitExchange = async () => {
         if (!selectedThingId) {
-            message.warning('Выберите товар для обмена.');
+            message.warning('Select a model to exchange');
             return;
         }
         try {
             await createExchangeRequest(thingId, selectedThingId, userComment);
+            message.success('Exchange request successfully sent');
             await user.loadUserInfo(); // Заново загружаем информацию о пользователе
-            message.success('Запрос на обмен успешно отправлен.');
             navigate('/account'); // Перенаправляем на страницу аккаунта пользователя
         } catch (e) {
-            console.error('Ошибка при создании запроса на обмен:', e);
-            message.error('Ошибка при создании запроса на обмен.');
+            console.error('Error when creating an exchange request:', e);
+            message.error('Error when creating an exchange request');
         }
     };
     
@@ -55,34 +56,44 @@ const ExchangePage = observer(() => {
 
     return (
         <div className={styles.exchange_page}>
-            <h2>Выберите товар для обмена</h2>
+            <h2>Select a Model to Exchange</h2>
             <div className={'mainlist'}>
                 <ThingListForExchange selectedThingId={selectedThingId} onSelectThing={setSelectedThingId} />
             </div>
 
-            <Offcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="bottom">
-                <Offcanvas.Header closeButton>
-                    <Offcanvas.Title>Подтвердите запрос на обмен</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
+            <ExchangeOffcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="bottom">
+                <ExchangeOffcanvasHeader>
+                    <Offcanvas.Title>Confirm exchange request</Offcanvas.Title>
+                </ExchangeOffcanvasHeader>
+                <ExchangeOffcanvasBody>
+                <div className={styles.selection}>
                     <div>
-                        <p>Вы выбрали товар для обмена.</p>
+                        <p>Describe the reason</p>
                         {/* Здесь можно добавить информацию о выбранном товаре */}
                     </div>
                     <textarea 
-                        placeholder="Комментарий"
+                        placeholder="Comment"
                         value={userComment}
                         onChange={(e) => setUserComment(e.target.value)}
                         style={{ width: '100%', minHeight: '100px', marginBottom: '20px' }}
                     />
+                </div>
                     <Button 
                         variant="dark" 
                         onClick={handleSubmitExchange} 
-                    >
-                        Отправить запрос на обмен
+                        style={{
+                            display: 'flex',
+                            width: '100%',
+                            justifyContent: 'center',
+                            alignItems: 'center',
+                            gap: '7px',
+                            
+                        }} className={styles.button}>
+                    
+                    Send an exchange request
                     </Button>
-                </Offcanvas.Body>
-            </Offcanvas>
+                </ExchangeOffcanvasBody>
+            </ExchangeOffcanvas>
         </div>
     );
 });
