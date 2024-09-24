@@ -1,11 +1,16 @@
-import React, { useEffect, useState, useRef } from 'react';
-import { fetchStories } from '../../http/storyAPI';
+// src/components/StorySlider/StorySlider.js
+
+import React, { useEffect, useState, useRef, useContext } from 'react';
+import { fetchStories, deleteStory } from '../../http/storyAPI';
 import './StorySlider.css';
 import Carousel from 'react-bootstrap/Carousel';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import CloseButton from 'react-bootstrap/CloseButton';
 import ProgressBar from 'react-bootstrap/ProgressBar';
+import { Context } from '../../index';
+import { message } from 'antd';
+import VideoPlayer from '../VideoPlayer/VideoPlayer';
 
 const StorySlider = () => {
   const [stories, setStories] = useState([]);
@@ -14,52 +19,83 @@ const StorySlider = () => {
   const [progress, setProgress] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef(null);
+  const { user } = useContext(Context);
 
   useEffect(() => {
-    fetchStories().then(data => setStories(data));
+    loadStories();
   }, []);
+
+  const loadStories = () => {
+    fetchStories().then((data) => setStories(data));
+  };
 
   const handleStoryClick = (story) => {
     setSelectedStory(story);
     setModalShow(true);
-    setProgress(0); // Сброс прогресса
-    startTimer();   // Запуск таймера
+    setProgress(0);
+    setIsPaused(false);
+    startTimer();
   };
 
   const handleClose = () => {
     setModalShow(false);
     setSelectedStory(null);
-    clearTimer(); // Остановка таймера при закрытии модального окна
+    clearTimer();
   };
 
   const startTimer = () => {
-    setIsPaused(false);
     if (timerRef.current) {
       clearInterval(timerRef.current);
     }
     timerRef.current = setInterval(() => {
       setProgress((prev) => {
         if (prev >= 100) {
-          handleClose(); // Закрыть окно, когда прогресс достигнет 100%
+          handleClose();
           return 0;
         }
-        return prev + 100 / (5 * 10); // Прогресс на 6 секунд
+        return prev + 100 / (10 * 10);
       });
-    }, 100); // Обновление прогресса каждые 0.1 сек
+    }, 100);
   };
 
-  const togglePause = () => {
-    setIsPaused((prev) => !prev);
-    if (!isPaused) {
-      clearInterval(timerRef.current); // Остановка таймера
-    } else {
-      startTimer(); // Возобновление таймера
+  const pauseTimer = () => {
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+    }
+    setIsPaused(true);
+  };
+
+  const resumeTimer = () => {
+    if (isPaused) {
+      startTimer();
+      setIsPaused(false);
     }
   };
 
   const clearTimer = () => {
     if (timerRef.current) {
       clearInterval(timerRef.current);
+    }
+  };
+
+  const handleDeleteStory = (id) => {
+    deleteStory(id)
+      .then(() => {
+        message.success('История удалена');
+        loadStories();
+      })
+      .catch((error) => {
+        const errorMessage = error.response?.data?.message || error.message;
+        message.error('Ошибка при удалении истории: ' + errorMessage);
+      });
+  };
+
+  // Обработчик клика по изображению
+  const handleImageClick = () => {
+    if (isPaused) {
+      resumeTimer();
+    } else {
+      pauseTimer();
     }
   };
 
@@ -75,8 +111,14 @@ const StorySlider = () => {
           <Carousel.Item key={idx}>
             <div className="story-group">
               {group.map((story) => (
-                <div key={story.id} className="story-card" onClick={() => handleStoryClick(story)}>
-                  <img src={`${process.env.REACT_APP_API_URL}${story.img}`} alt={story.title} />
+                <div key={story.id} className="story-card">
+                  <img
+                    src={`${process.env.REACT_APP_API_URL}${story.coverImg}`}
+                    alt={story.title}
+                    onClick={() => handleStoryClick(story)}
+                    loading="lazy"
+                  />
+                  
                 </div>
               ))}
             </div>
@@ -85,27 +127,36 @@ const StorySlider = () => {
       </Carousel>
 
       <Modal show={modalShow} onHide={handleClose} centered>
-        <div className='story-top'>
-          
+        <div className="story-top">
           <ProgressBar now={progress} />
           <Modal.Header data-bs-theme="dark">
-            <CloseButton onClick={handleClose}/>
+            <CloseButton onClick={handleClose} />
           </Modal.Header>
         </div>
-        <Modal.Body className='story' onClick={togglePause}> 
+        <Modal.Body className="story">
           {selectedStory && (
-            <img
-              src={`${process.env.REACT_APP_API_URL}${selectedStory.img}`}
-              alt={selectedStory.title}
-              className="modal-img"
-            />
+            <>
+              {selectedStory.video ? (
+                <VideoPlayer
+                  videoSrc={`${process.env.REACT_APP_API_URL}${selectedStory.video}`}
+                  pauseTimer={pauseTimer}
+                  resumeTimer={resumeTimer}
+                />
+              ) : (
+                <img
+                  src={`${process.env.REACT_APP_API_URL}${selectedStory.img}`}
+                  alt={selectedStory.title}
+                  className="modal-img"
+                  loading="lazy"
+                  onClick={handleImageClick}
+                />
+              )}
+            </>
           )}
-          {/* Прогресс-бар */}
-          
         </Modal.Body>
-        <Modal.Header>
+        <Modal.Footer>
           <Modal.Title>{selectedStory && selectedStory.title}</Modal.Title>
-        </Modal.Header>
+        </Modal.Footer>
       </Modal>
     </div>
   );

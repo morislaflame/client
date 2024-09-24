@@ -106,6 +106,7 @@
     --bs-progress-bar-bg: white;
     --bs-progress-bar-color: #7f7e7e66;
     --bs-progress-bg: #7f7e7e66;
+    --bs-progress-bar-transition: width 0.1s ease;
     width: 90%;
   }
 
