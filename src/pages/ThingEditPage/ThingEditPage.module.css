@@ -1,0 +1,18 @@
+.edit_page {
+    display: flex;
+    flex-direction: column;
+    padding: calc(var(--index) * 1);
+}
+
+.photo {
+    width: 30%;
+}
+
+.photos {
+    border-radius: calc(var(--index) * 1) calc(var(--index) * 1) ;
+    display: block;
+    width: 100%;
+    height: calc(var(--index) * 20);
+    object-fit: cover; /* Масштабирует изображение, заполняя контейнер, сохраняя пропорции */
+    object-position: center; /* Центрирует изображение в контейнере */
+}

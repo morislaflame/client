@@ -15,3 +15,4 @@ export const ALL_USERS_ROUTE = '/admin/users';
 export const ALL_RETURNS_ROUTE = '/admin/returns';
 export const EXCHANGE_ROUTE = '/exchange/:thingId';
 export const ALL_EXCHANGES_ROUTE = '/admin/exchanges'; // Добавляем маршрут для просмотра всех обменов администратором
+export const EDIT_THING_ROUTE = '/admin/edit-thing';

@@ -1,25 +1,26 @@
+// В файле ThingPage.js
+
 import React, { useEffect, useState, useContext } from 'react';
 import './ThingPage.css';
 import Carousel from 'react-bootstrap/Carousel';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import { fetchOneThing } from '../../http/thingAPI';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import StorySlider from '../../components/StorySlider/StorySlider';
 import { Context } from '../../index';
-import { FaShoppingCart } from 'react-icons/fa';
+import { FaShoppingCart, FaEdit } from 'react-icons/fa';
 import { Button } from 'react-bootstrap';
-import { BASKET_ROUTE } from '../../utils/consts';
-import { useNavigate } from 'react-router-dom';
-import MymIcon from '../../icons/Mym.png';
-import FanslyIcon from '../../icons/fansly.png';
-import OnlyIcon from '../../icons/onlyfans.png';
+import { BASKET_ROUTE, EDIT_THING_ROUTE } from '../../utils/consts';
 import { observer } from 'mobx-react-lite';
 import { message } from 'antd';
+import OnlyIcon from '../../icons/onlyfans.png';
+import MymIcon from '../../icons/Mym.png'
+import FanslyIcon from '../../icons/fansly.png'
 
 const ThingPage = observer(() => {
-  const [thing, setThing] = useState({ info: [], images: [] });
+  const [thing, setThing] = useState({ info: {}, images: [], brands: [], type: {} });
   const { id } = useParams();
-  const { thing: thingStore } = useContext(Context);
+  const { thing: thingStore, user } = useContext(Context);
 
   const navigate = useNavigate();
 
@@ -31,15 +32,18 @@ const ThingPage = observer(() => {
   const handleAddToBasket = async () => {
     try {
       await thingStore.addToBasket(id);
-      message.success('Added to cart');
+      message.success('Товар добавлен в корзину');
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
-      message.error('Error adding to cart' + errorMessage);
+      message.error('Ошибка при добавлении в корзину: ' + errorMessage);
     }
   };
 
   // Проверяем, находится ли товар в корзине
   const isInBasket = thingStore.isItemInBasket(id);
+
+  // Проверяем, является ли пользователь администратором
+  const isAdmin = user.isAuth && user.user.role === 'ADMIN';
 
   const brandStyles = {
     1: { color: '#008ccf' },
@@ -61,7 +65,7 @@ const ThingPage = observer(() => {
 
   return (
     <div className={'thing-content'}>
-      <StorySlider/>
+      <StorySlider />
       <div className='name'>
         <h2 className={'topic'}>{thing.name}</h2>
       </div>
@@ -79,28 +83,28 @@ const ThingPage = observer(() => {
             ))}
           </Carousel>
         </div>
-        
+
         <div className='description'>
           <div className="brands">
-              {thing.brands && thing.brands.length > 0 ? (
-                      thing.brands.map(brand => (
-                          <div 
-                              key={brand.id} 
-                              style={brandStyles[brand.id] || { color: 'black' }}
-                              className="brand-item"
-                          >
-                              {brandIcons[brand.id] && (
-                                  <img 
-                                      src={brandIcons[brand.id]} 
-                                      alt={`${brand.name} icon`} 
-                                      className="brands-icons"
-                                  />
-                              )}
-                          </div>
-                      ))
-                  ) : (
-                      <div>Unknown Brand</div>
+            {thing.brands && thing.brands.length > 0 ? (
+              thing.brands.map(brand => (
+                <div
+                  key={brand.id}
+                  style={brandStyles[brand.id] || { color: 'black' }}
+                  className="brand-item"
+                >
+                  {brandIcons[brand.id] && (
+                    <img
+                      src={brandIcons[brand.id]}
+                      alt={`${brand.name} icon`}
+                      className="brands-icons"
+                    />
                   )}
+                </div>
+              ))
+            ) : (
+              <div>Unknown Brand</div>
+            )}
           </div>
           {/* Отображение типа товара */}
           <div className="thing-type">
@@ -110,40 +114,28 @@ const ThingPage = observer(() => {
                   <span className="type-icon">{typeIcons[thing.type.id]}</span>
                 )}
                 <div className='info-str'><span>Origin:</span> <div>{thing.type.name}</div></div>
+              </div>
+            )}
           </div>
-          )}
-        </div>
-          {thing.info.map((info, index) =>
-            <div key={info.id} className='des_str'>
-              
-              <div className='info-str'><span>Age:</span> <div>{info.age}</div></div>
-              
-              <div className='info-str'><span>Smartphone:</span> <div>{info.smartphone}</div></div>
-              
-              <div className='info-str'><span>% For Her:</span> <div>{info.percent}</div></div>
-              
-              <div className='info-str'><span>Time Per Day:</span> <div>{info.time}</div></div>
-              
-              <div className='info-str'><span>English Skills:</span> <div>{info.english}</div></div>
-              
-              <div className='info-str'><span>Content:</span> <div>{info.content}</div></div>
-            
-              <div className='info-str'><span>When She Can Start:</span> <div>{info.start}</div></div>
-              
-              <div className='info-str'><span>Social Media Set Up:</span> <div>{info.socialmedia}</div></div>
-              
-              <div className='info-str'><span>Willing To Do TikTok:</span> <div>{info.tiktok}</div></div>
-              
-              <div className='info-str'><span>Does She Need Any Countries Blocked:</span> <div>{info.cblocked}</div></div>
-              
-              <div className='info-str'><span>OF Verified:</span> <div>{info.ofverif}</div></div>
-              
-              <div className='info-str'><span>Contract Signed:</span> <div>{info.contract}</div></div>
+          {thing.info && (
+            <div className='des_str'>
+              <div className='info-str'><span>Age:</span> <div>{thing.info.age}</div></div>
+              <div className='info-str'><span>Smartphone:</span> <div>{thing.info.smartphone}</div></div>
+              <div className='info-str'><span>% For Her:</span> <div>{thing.info.percent}</div></div>
+              <div className='info-str'><span>Time Per Day:</span> <div>{thing.info.time}</div></div>
+              <div className='info-str'><span>English Skills:</span> <div>{thing.info.english}</div></div>
+              <div className='info-str'><span>Content:</span> <div>{thing.info.content}</div></div>
+              <div className='info-str'><span>When She Can Start:</span> <div>{thing.info.start}</div></div>
+              <div className='info-str'><span>Social Media Set Up:</span> <div>{thing.info.socialmedia}</div></div>
+              <div className='info-str'><span>Willing To Do TikTok:</span> <div>{thing.info.tiktok}</div></div>
+              <div className='info-str'><span>Does She Need Any Countries Blocked:</span> <div>{thing.info.cblocked}</div></div>
+              <div className='info-str'><span>OF Verified:</span> <div>{thing.info.ofverif}</div></div>
+              <div className='info-str'><span>Contract Signed:</span> <div>{thing.info.contract}</div></div>
             </div>
           )}
         </div>
       </div>
-      
+
       <div className='price-n-buy'>
         <span className='price'>${thing.price}</span>
         <div className='add-to-card'>
@@ -154,13 +146,26 @@ const ThingPage = observer(() => {
             className='shopping-card'
             variant="outline-dark"
             onClick={() => navigate(BASKET_ROUTE)}
-            style={{height: '100%' }}
+            style={{ height: '100%' }}
           >
             <FaShoppingCart size={28} />
           </Button>
         </div>
       </div>
-      <FaqAccordion className='accord'/>
+
+      {/* Кнопка редактирования для администратора */}
+      {isAdmin && (
+        <div className='admin-actions'>
+          <Button
+            variant="primary"
+            onClick={() => navigate(`${EDIT_THING_ROUTE}/${thing.id}`)}
+          >
+            <FaEdit /> Редактировать товар
+          </Button>
+        </div>
+      )}
+
+      <FaqAccordion className='accord' />
     </div>
   );
 });

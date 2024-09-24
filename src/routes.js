@@ -19,7 +19,8 @@ import {
     ALL_ORDERS_ROUTE, 
     ALL_USERS_ROUTE, 
     ALL_RETURNS_ROUTE, 
-    EXCHANGE_ROUTE, 
+    EXCHANGE_ROUTE,
+    EDIT_THING_ROUTE, 
 } from "./utils/consts";
 import Main from "./pages/Main/Main";
 import TermsOfService from "./pages/TermsOfService/TermsOfService";
@@ -31,6 +32,9 @@ import AllOrdersPage from "./pages/AllOrdersPage/AllOrdersPage";
 import AllUsersPage from "./pages/AllUsersPage/AllUsersPage";
 import AllReturnsPage from "./pages/AllReturnPage/AllReturnPage";
 import ExchangePage from "./pages/ExchangePage/ExchangePage";
+import ThingEditPage from "./pages/ThingEditPage/ThingEditPage"; // Добавьте эту строку
+
+
 
 
 export const authRoutes = (user) => {
@@ -76,6 +80,10 @@ export const authRoutes = (user) => {
         routes.push({
             path: ALL_RETURNS_ROUTE, // Добавляем маршрут для всех возвратов
             Component: <AllReturnsPage />
+        });
+        routes.push({
+            path: EDIT_THING_ROUTE + '/:id', // Добавляем маршрут для всех возвратов
+            Component: <ThingEditPage />
         });
     } else {
         console.log("User is not admin");

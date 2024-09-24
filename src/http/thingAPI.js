@@ -1,29 +1,29 @@
 import { $authHost, $host } from "./index";
 
 export const createType = async (type) => {
-    const {data} = await $authHost.post('api/type', type)
-    return data
-}
+    const { data } = await $authHost.post('api/type', type);
+    return data;
+};
 
 export const fetchTypes = async () => {
-    const {data} = await $host.get('api/type')
-    return data
-}
+    const { data } = await $host.get('api/type');
+    return data;
+};
 
 export const createBrand = async (brand) => {
-    const {data} = await $authHost.post('api/brand', brand)
-    return data
-}
+    const { data } = await $authHost.post('api/brand', brand);
+    return data;
+};
 
-export const fetchBrands = async (typeId, brandId, page, limit = 5) => {
-    const {data} = await $host.get('api/brand')
-    return data
-}
+export const fetchBrands = async () => {
+    const { data } = await $host.get('api/brand');
+    return data;
+};
 
 export const createThing = async (thing) => {
-    const {data} = await $authHost.post('api/thing', thing)
-    return data
-}
+    const { data } = await $authHost.post('api/thing', thing);
+    return data;
+};
 
 export const fetchThings = async (typeId, brandIds, page, limit = 6, minPrice, maxPrice) => {
     console.log("Fetching things with params:", { typeId, brandIds, page, limit, minPrice, maxPrice });
@@ -38,7 +38,6 @@ export const fetchThings = async (typeId, brandIds, page, limit = 6, minPrice, m
     }
 };
 
-
 // Добавляем метод для получения диапазона цен всех товаров
 export const fetchPriceRange = async () => {
     const { data } = await $host.get('api/thing/price-range');
@@ -46,13 +45,17 @@ export const fetchPriceRange = async () => {
 };
 
 export const fetchOneThing = async (id) => {
-    const {data} = await $host.get('api/thing/' + id)
-    return data
-}
-
-
+    const { data } = await $host.get('api/thing/' + id);
+    return data;
+};
 
 export const addToBasket = async (thingId) => {
-    const {data} = await $authHost.post('api/basket/add', { thingId });
+    const { data } = await $authHost.post('api/basket/add', { thingId });
     return data;
-}
+};
+
+// Новый метод для обновления товара
+export const updateThing = async (id, thing) => {
+    const { data } = await $authHost.put(`api/thing/${id}`, thing);
+    return data;
+};
