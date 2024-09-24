@@ -98,7 +98,7 @@
 
   .story .modal-img {
     height: 100%;
-    border-radius: calc(var(--index) * 0.5);
+    border-radius: calc(var(--index) * 1);
   }
 
   .progress {
@@ -112,4 +112,5 @@
 
   .modal.show .modal-dialog {
     margin: 0;
+   --bs-modal-footer-border-color: transparent;
   }

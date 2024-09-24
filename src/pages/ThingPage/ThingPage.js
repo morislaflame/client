@@ -10,7 +10,7 @@ import StorySlider from '../../components/StorySlider/StorySlider';
 import { Context } from '../../index';
 import { FaShoppingCart, FaEdit } from 'react-icons/fa';
 import { Button } from 'react-bootstrap';
-import { BASKET_ROUTE, EDIT_THING_ROUTE } from '../../utils/consts';
+import { BASKET_ROUTE, EDIT_THING_ROUTE, SHOP_ROUTE } from '../../utils/consts';
 import { observer } from 'mobx-react-lite';
 import { message } from 'antd';
 import OnlyIcon from '../../icons/onlyfans.png';
@@ -23,6 +23,18 @@ const ThingPage = observer(() => {
   const { thing: thingStore, user } = useContext(Context);
 
   const navigate = useNavigate();
+
+
+
+// В обработчике кнопки "Назад"
+const handleBackClick = () => {
+  if (window.history.length > 1) {
+    navigate(-1);
+  } else {
+    navigate(SHOP_ROUTE);
+  }
+};
+
 
   useEffect(() => {
     fetchOneThing(id).then(data => setThing(data));
@@ -65,6 +77,9 @@ const ThingPage = observer(() => {
 
   return (
     <div className={'thing-content'}>
+      <button className="back-button" onClick={handleBackClick}>
+        Назад
+      </button>
       <StorySlider />
       <div className='name'>
         <h2 className={'topic'}>{thing.name}</h2>

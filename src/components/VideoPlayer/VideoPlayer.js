@@ -50,7 +50,7 @@ const VideoPlayer = ({ videoSrc, pauseTimer, resumeTimer }) => {
   };
 
   return (
-    <div className={styles.video_container}>
+    <div className={styles.video_player}>
       {isLoading && (
         <div className="video-loading-indicator">
           <Spinner animation="border" variant="light" />
