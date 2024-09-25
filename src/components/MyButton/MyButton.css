@@ -18,7 +18,7 @@
 
 .my-button {
     padding: calc(var(--index) * 1) calc(var(--index) * 4);
-    background-color: #4805ca;
+    background: linear-gradient(135deg, #973ce6, #04b2fe);
     color: #fff;
     border-style: solid;
     border-color: #fedada;
@@ -36,3 +36,17 @@
   .my-button:hover {
     background-color: #0056b3 ;
   }
+
+  /* .my-button::before {
+    content: '';
+    background: linear-gradient(135deg, #6253e1, #04befe);
+    position: absolute;
+    inset: 0;
+    opacity: 1;
+    transition: all 0.3s;
+    border-radius: inherit;
+  } */
+
+
+
+  

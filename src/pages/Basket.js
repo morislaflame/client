@@ -10,6 +10,7 @@ import MymIcon from '../icons/Mym.png';
 import FanslyIcon from '../icons/fansly.png';
 import OnlyIcon from '../icons/onlyfans.png';
 import { observer } from 'mobx-react-lite';
+import BackButton from '../components/BackButton/BackButton';
 
 const Basket = observer(() => {
     const { thing } = useContext(Context);
@@ -78,6 +79,7 @@ const Basket = observer(() => {
 
     return (
         <div className="basket-page">
+            <BackButton/>
             <h2>Your cart</h2>
 
             <div className="basket-items">

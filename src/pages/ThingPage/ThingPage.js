@@ -16,6 +16,7 @@ import { message } from 'antd';
 import OnlyIcon from '../../icons/onlyfans.png';
 import MymIcon from '../../icons/Mym.png'
 import FanslyIcon from '../../icons/fansly.png'
+import BackButton from '../../components/BackButton/BackButton';
 
 const ThingPage = observer(() => {
   const [thing, setThing] = useState({ info: {}, images: [], brands: [], type: {} });
@@ -77,9 +78,7 @@ const handleBackClick = () => {
 
   return (
     <div className={'thing-content'}>
-      <button className="back-button" onClick={handleBackClick}>
-        Назад
-      </button>
+      <BackButton/>
       <StorySlider />
       <div className='name'>
         <h2 className={'topic'}>{thing.name}</h2>

@@ -13,6 +13,7 @@ import { FcCancel, FcClock, FcOk } from "react-icons/fc";
 import { SlOptionsVertical } from "react-icons/sl";
 import { CustomOffcanvasHeader, CustomOffcanvas, CustomOffcanvasBody } from '../../components/StyledComponents';
 import { PiKeyReturnFill } from "react-icons/pi";
+import BackButton from '../../components/BackButton/BackButton';
 
 
 
@@ -112,7 +113,7 @@ const UserAccount = observer(() => {
 
     return (
         <div className={styles.useraccount}>
-
+            <BackButton/>
             <div className={styles.topic}>
                 <h2>User Account</h2>
                 <div className={styles.userinfo}>

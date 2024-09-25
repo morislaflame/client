@@ -7,6 +7,7 @@ import { Button, Form } from 'react-bootstrap';
 import { message } from 'antd';
 import { MAIN_ROUTE } from '../../utils/consts';
 import styles from './ThingEditPage.module.css'
+import BackButton from '../../components/BackButton/BackButton';
 
 const ThingEditPage = observer(() => {
   const { id } = useParams();
@@ -132,6 +133,7 @@ const ThingEditPage = observer(() => {
 
   return (
     <div className={styles.edit_page}>
+      <BackButton/>
       <h2>Редактирование товара</h2>
       <Form onSubmit={handleSubmit}>
         <Form.Group controlId='name'>
