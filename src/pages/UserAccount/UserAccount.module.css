@@ -27,6 +27,11 @@
     margin-bottom: 0;
 }
 
+.topic_back {
+    display: flex;
+    justify-content: center;
+}
+
 .userinfo {
     padding: calc(var(--index) * 2);
     

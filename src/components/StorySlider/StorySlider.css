@@ -1,22 +1,22 @@
 /* src/components/StorySlider.css */
 .story-slider {
     width: 100%;
-    margin: calc(var(--index) * 2) 0;
+    margin: calc(var(--index) * 1) 0 calc(var(--index) * 2) 0;
   }
   
   .story-group {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
     gap: calc(var(--index) * 0); /* Расстояние между историями */
   }
 
   .story-slider .carousel-inner {
-    width: 80%;
+    width: 90%;
   }
 
   .carousel {
     display: flex;
-    justify-content: center;
+    justify-content: space-around;
   }
 
   .carousel-item {
@@ -33,13 +33,13 @@
   }
   
   .story-card img {
-    width: calc(var(--index) * 6.3);
-    height: calc(var(--index) * 6.3);
-    border-radius: 20%;
+    width: calc(var(--index) * 6);
+    height: calc(var(--index) * 6);
+    border-radius: 50%;
     object-fit: cover; 
     object-position: center; 
     padding: 3px;
-    border: 2px solid #7f7e7e66;
+    border: 1px solid #5e08ff78;
   }
   
   .story-card p {

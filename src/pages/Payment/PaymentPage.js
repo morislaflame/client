@@ -1,24 +1,34 @@
-// components/PaymentPage/PaymentPage.js
+// src/components/PaymentPage/PaymentPage.js
 
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import './PaymentPage.css';
 import { QRCodeCanvas } from 'qrcode.react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
 import { Context } from '../../index';
 import { createOrder } from '../../http/orderAPI';
+import { createExchangeRequest } from '../../http/exchangeAPI'; // Импортируем функцию для создания запроса на обмен
 import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
 
 const PaymentPage = () => {
   const { thing } = useContext(Context);
   const navigate = useNavigate();
+  const location = useLocation();
 
-  // Получаем общую сумму заказа из MobX хранилища, учитывая скидку
-  const totalAmountUSD = thing.totalPrice || 0;
+  // Проверяем, пришел ли пользователь для доплаты при обмене
+  const isExchangePayment = location.state?.exchange || false;
 
-  // Адреса кошельков для разных криптовалют
+  // Если это доплата при обмене, получаем необходимые данные
+  const exchangeData = isExchangePayment ? location.state : null;
+
+  // Получаем общую сумму заказа
+  const totalAmountUSD = isExchangePayment
+    ? exchangeData.priceDifference
+    : thing.totalPrice || 0;
+
+  // Адреса кошельков для разных криптовалют (оставляем без изменений)
   const wallets = {
     usdt: {
       address: "0x5541a5FD4Cc660F356601DBeCdD2be3e19548095",
@@ -47,7 +57,7 @@ const PaymentPage = () => {
 
   const [selectedCrypto, setSelectedCrypto] = useState('usdt'); // Криптовалюта по умолчанию
 
-  // Функция для получения курса криптовалют с CoinGecko API
+  // Функция для получения курса криптовалют с CoinGecko API (оставляем без изменений)
   const fetchCryptoRates = async () => {
     try {
       const response = await axios.get(
@@ -76,7 +86,7 @@ const PaymentPage = () => {
     return () => clearInterval(interval);
   }, []);
 
-  // Конвертация суммы в зависимости от выбранной криптовалюты
+  // Конвертация суммы в зависимости от выбранной криптовалюты (оставляем без изменений)
   const convertAmountForCrypto = (crypto) => {
     const rate = cryptoRates[crypto];
     if (!rate) return "Загрузка..."; // Если курс еще не загрузился
@@ -85,13 +95,19 @@ const PaymentPage = () => {
 
   const handleConfirmPayment = async () => {
     try {
-      // Создаем заказ
-      await createOrder();
-      // Очищаем корзину после успешного создания заказа
-      await thing.clearBasket();
-      navigate(USER_ACCOUNT_ROUTE); // Перенаправляем на страницу аккаунта
+      if (isExchangePayment) {
+        // Это доплата при обмене
+        const { thingId, selectedThingId, userComment } = exchangeData;
+        await createExchangeRequest(thingId, selectedThingId, userComment);
+        navigate(USER_ACCOUNT_ROUTE); // Перенаправляем на страницу аккаунта
+      } else {
+        // Обычная оплата заказа
+        await createOrder();
+        await thing.clearBasket();
+        navigate(USER_ACCOUNT_ROUTE); // Перенаправляем на страницу аккаунта
+      }
     } catch (error) {
-      console.error('Ошибка при создании заказа:', error);
+      console.error('Ошибка при обработке оплаты:', error);
     }
   };
 

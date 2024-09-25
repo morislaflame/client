@@ -1,7 +1,7 @@
 // components/Basket/Basket.js
 
 import React, { useEffect, useState, useContext } from 'react';
-import './Basket.css';
+import styles from './Basket.module.css'
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../index'; // Убедитесь, что путь корректен
 import MyButton from '../components/MyButton/MyButton';
@@ -78,33 +78,33 @@ const Basket = observer(() => {
     };
 
     return (
-        <div className="basket-page">
+        <div className={styles.basket_page}>
             <BackButton/>
             <h2>Your cart</h2>
 
-            <div className="basket-items">
+            <div className={styles.basket_items}>
                 {thing.basket.map(item => (
-                    <div key={item.id} className="basket-item">
+                    <div key={item.id} className={styles.basket_item}>
                         {item.images && item.images.length > 0 ? (
-                            <img src={process.env.REACT_APP_API_URL + item.images[0].img} alt={item.name} className="basket-item-img" />
+                            <img src={process.env.REACT_APP_API_URL + item.images[0].img} alt={item.name} className={styles.basket_item_img} />
                         ) : (
-                            <img src="/path/to/default/image.png" alt="Нет изображения" className="basket-item-img" />
+                            <img src="/path/to/default/image.png" alt="Нет изображения" className={styles.basket_item_img} />
                         )}
-                        <div className="basket-item-info">
-                            <div className='info-brand'>
-                                <div className="brands-basket">
+                        <div className={styles.basket_item_info}>
+                            <div className={styles.info_brand}>
+                                <div className={styles.brands_basket}>
                                     {item.brands && item.brands.length > 0 ? (
                                         item.brands.map(brand => (
                                             <div
                                                 key={brand.id}
                                                 style={brandStyles[brand.id] || { color: 'black' }}
-                                                className="brand-item-basket"
+                                                className={styles.brand_item_basket}
                                             >
                                                 {brandIcons[brand.id] && (
                                                     <img
                                                         src={brandIcons[brand.id]}
                                                         alt={`${brand.name} icon`}
-                                                        className="brands-icons-basket"
+                                                        className={styles.brands_icons_basket}
                                                     />
                                                 )}
                                             </div>
@@ -113,25 +113,25 @@ const Basket = observer(() => {
                                         <div>Unknown Brand</div>
                                     )}
                                 </div>
-                                <div className='items-name-price'>
-                                    <span className="basket-item-name">{item.name}</span>
+                                <div className={styles.items_name_price}>
+                                    <span className={styles.basket_item_name}>{item.name}</span>
                                     {item.originalPrice && item.price !== item.originalPrice && (
-                                        <span className="basket-item-original-price" style={{ textDecoration: 'line-through', color: 'grey' }}>
+                                        <span className={styles.basket_item_original_price} style={{ textDecoration: 'line-through', color: 'grey' }}>
                                             ${item.originalPrice}
                                         </span>
                                     )}
-                                    <span className="basket-item-price">${item.price}</span>
+                                    <span className={styles.basket_item_price}>${item.price}</span>
                                 </div>
                             </div>
-                            <button onClick={() => handleRemove(item.id)} className="basket-item-remove">Remove</button>
+                            <button onClick={() => handleRemove(item.id)} className={styles.basket_item_remove}>Remove</button>
                         </div>
                     </div>
                 ))}
-                <MySecondBtn className="clear-basket" text={'Clear cart'} onClick={handleClearBasket}></MySecondBtn>
+                <MySecondBtn className={styles.clear_basket} text={'Clear cart'} onClick={handleClearBasket}></MySecondBtn>
             </div>
 
             {/* Promo code section */}
-            <div className="promo-code-section">
+            <div className={styles.promocode_section}>
                 <h3>Apply Promo Code</h3>
                 <input
                     type="text"
@@ -141,7 +141,7 @@ const Basket = observer(() => {
                 />
                 <button onClick={handleApplyPromoCode}>Apply</button>
                 {thing.promoCode && (
-                    <div className="applied-promo-code">
+                    <div className={styles.applied_promocode_}>
                         <p>Applied Promo Code: {thing.promoCode.code}</p>
                         <button onClick={handleRemovePromoCode}>Remove Promo Code</button>
                     </div>
@@ -149,7 +149,7 @@ const Basket = observer(() => {
             </div>
 
             {/* User's personal promo codes */}
-            <div className="user-promo-codes">
+            <div className={styles.user_promocodes}>
                 <h3>Your Promo Codes</h3>
                 {thing.userPromoCodes.length > 0 ? (
                     <ul>
@@ -164,10 +164,10 @@ const Basket = observer(() => {
                 )}
             </div>
 
-            <div className="basket-total">
+            <div className={styles.basket_total}>
                 <h3>Total amount: ${thing.totalPrice}</h3>
                 {thing.discount > 0 && <p>Discount: ${thing.discount}</p>}
-                <MyButton className="pay-button" text={'Go to payment'} onClick={handlePayment}></MyButton>
+                <MyButton className={styles.pay_button} text={'Go to payment'} onClick={handlePayment}></MyButton>
             </div>
         </div>
     );

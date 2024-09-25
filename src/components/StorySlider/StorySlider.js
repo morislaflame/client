@@ -100,13 +100,13 @@ const StorySlider = () => {
   };
 
   const groupedStories = [];
-  for (let i = 0; i < stories.length; i += 3) {
-    groupedStories.push(stories.slice(i, i + 3));
+  for (let i = 0; i < stories.length; i += 4) {
+    groupedStories.push(stories.slice(i, i + 4));
   }
 
   return (
     <div className="story-slider">
-      <Carousel indicators={false} controls={true} interval={null}>
+      <Carousel indicators={false} controls={false} interval={null}>
         {groupedStories.map((group, idx) => (
           <Carousel.Item key={idx}>
             <div className="story-group">

@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { SHOP_ROUTE } from '../../utils/consts';
 import styles from './BackButton.module.css';
 import { HiArrowLongLeft } from "react-icons/hi2";
+import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 
 export default function BackButton() {
@@ -19,7 +20,7 @@ export default function BackButton() {
 
   return (
     <Button type="text" className={styles.backbutton} onClick={handleBackClick}>
-            <HiArrowLongLeft />Back
+            <IoArrowBackCircleSharp />
     </Button>
   )
 }

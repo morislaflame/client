@@ -113,9 +113,9 @@ const UserAccount = observer(() => {
 
     return (
         <div className={styles.useraccount}>
-            <BackButton/>
+            
             <div className={styles.topic}>
-                <h2>User Account</h2>
+            <div className={styles.topic_back}><BackButton/><h2>User Account</h2></div>
                 <div className={styles.userinfo}>
                     <p>Email: {user.userInfo.email}</p>
                     <p>Роль: {user.userInfo.role}</p>

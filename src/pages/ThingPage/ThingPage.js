@@ -78,9 +78,10 @@ const handleBackClick = () => {
 
   return (
     <div className={'thing-content'}>
-      <BackButton/>
-      <StorySlider />
-      <div className='name'>
+      
+      {/* <StorySlider /> */}
+      <div className={'topic_back'}>
+        <BackButton/>
         <h2 className={'topic'}>{thing.name}</h2>
       </div>
       <div className='main-model'>
