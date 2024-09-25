@@ -1,6 +1,6 @@
 .backbutton {
     color: white;
     position: absolute;
-    left: 0;
+    left: 4px;
     font-size: calc(var(--index) * 3);
 }

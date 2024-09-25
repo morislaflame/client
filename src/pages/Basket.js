@@ -79,9 +79,8 @@ const Basket = observer(() => {
 
     return (
         <div className={styles.basket_page}>
-            <BackButton/>
-            <h2>Your cart</h2>
-
+            
+            <div className={styles.topic_back}><BackButton/><h2>Your cart</h2></div>
             <div className={styles.basket_items}>
                 {thing.basket.map(item => (
                     <div key={item.id} className={styles.basket_item}>
@@ -130,39 +129,42 @@ const Basket = observer(() => {
                 <MySecondBtn className={styles.clear_basket} text={'Clear cart'} onClick={handleClearBasket}></MySecondBtn>
             </div>
 
-            {/* Promo code section */}
-            <div className={styles.promocode_section}>
-                <h3>Apply Promo Code</h3>
-                <input
-                    type="text"
-                    value={promoCodeInput}
-                    onChange={(e) => setPromoCodeInput(e.target.value)}
-                    placeholder="Enter promo code"
-                />
-                <button onClick={handleApplyPromoCode}>Apply</button>
-                {thing.promoCode && (
-                    <div className={styles.applied_promocode_}>
-                        <p>Applied Promo Code: {thing.promoCode.code}</p>
-                        <button onClick={handleRemovePromoCode}>Remove Promo Code</button>
-                    </div>
-                )}
-            </div>
+            <div className={styles.promo_code_section}>
+                <div className={styles.promocodes}>
+                    <h3>Apply Promo Code</h3>
+                    <input
+                        type="text"
+                        value={promoCodeInput}
+                        onChange={(e) => setPromoCodeInput(e.target.value)}
+                        placeholder="Enter promo code"
+                        className={styles.apply_promo_input}
+                    />
+                    <button onClick={handleApplyPromoCode}>Apply</button>
+                    {thing.promoCode && (
+                        <div className={styles.applied_promocode_}>
+                            <p>Applied Promo Code: {thing.promoCode.code}</p>
+                            <button onClick={handleRemovePromoCode}>Remove Promo Code</button>
+                        </div>
+                    )}
+                </div>
 
-            {/* User's personal promo codes */}
-            <div className={styles.user_promocodes}>
-                <h3>Your Promo Codes</h3>
-                {thing.userPromoCodes.length > 0 ? (
-                    <ul>
-                        {thing.userPromoCodes.map(promo => (
-                            <li key={promo.id}>
-                                <strong>{promo.code}</strong> - Discount: ${promo.discountValue}
-                            </li>
-                        ))}
-                    </ul>
-                ) : (
-                    <p>You have no promo codes.</p>
-                )}
+                {/* User's personal promo codes */}
+                <div className={styles.user_promocodes}>
+                    <h3>Your Promo Codes</h3>
+                    {thing.userPromoCodes.length > 0 ? (
+                        <ul>
+                            {thing.userPromoCodes.map(promo => (
+                                <li key={promo.id}>
+                                    <strong>{promo.code}</strong> - Discount: ${promo.discountValue}
+                                </li>
+                            ))}
+                        </ul>
+                    ) : (
+                        <p>You have no promo codes.</p>
+                    )}
+                </div>
             </div>
+            
 
             <div className={styles.basket_total}>
                 <h3>Total amount: ${thing.totalPrice}</h3>
