@@ -30,7 +30,7 @@
     cursor: pointer;
      border-width: 1px;
     font-size: calc(var(--index) * 1.5);
-    font-weight: 500;
+    font-weight: 400;
   }
   
   .my-button:hover {

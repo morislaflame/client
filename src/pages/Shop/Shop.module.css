@@ -1,7 +1,4 @@
-
-
-
-.main-shop {
+.main_shop {
     display: flex;
     flex-direction: column;
     min-width: 100vw;
@@ -9,22 +6,25 @@
     min-height: fit-content;
     overflow: hidden;
     min-height: 100vh;
-    background: linear-gradient(to bottom, #030107, #130035, #030107);
+    background-color: #030107;
 }
 
 .pin-spacer {
     display: flex;
 }
 
+.shop_top {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    background: linear-gradient(to top, #130035, #030107);
+}
+
 .filters {
     width: 100%;
     padding: 0 calc(var(--index) * 10);
     height: calc(var(--index) * 10);
-    margin: 0 calc(var(--index) * 1); /* Центрируем блок относительно родителя */
-    /* background-color: black; */
     z-index: 10;
-    /* border-bottom: 1px solid #7f7e7e66;
-    border-top: 1px solid #7f7e7e66; */
 }
 
 :where(.css-dev-only-do-not-override-qnu6hi).ant-float-btn {
@@ -39,7 +39,6 @@
 }
 
 
-
 .filters.pinned {
     position: relative;
     top: 0;
@@ -52,5 +51,6 @@
     width: 100%;
     /* padding: calc(var(--index) * 1); */
     justify-content: center;
-    margin-top: calc(var(--index) * 1.5);
+    /* padding: calc(var(--index) * 1.5); */
+    background: linear-gradient(to bottom, #130035, #030107);
 }

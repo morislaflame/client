@@ -1,5 +1,5 @@
 import React, { useContext, useEffect } from 'react';
-import './Shop.css'
+import styles from './Shop.module.css'
 import ThingList from '../../components/ThingList';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
@@ -40,19 +40,20 @@ const Shop = observer(() => {
   
 
   return (
-    <div className='main-shop'>
-      
-      <StorySlider/>
-      <div className='filters'>
-        <SideBar/>
-        <div className='shop-warnings'>
-          
-          {/* <div className='telegram-int'>
-            Fully integrated with Telegram
+    <div className={styles.main_shop}>
+      <div className={styles.shop_top}>
+        <StorySlider/>
+        <div className={styles.filters}>
+          <SideBar/>
+          {/* <div className='shop-warnings'>
+            <div className='telegram-int'>
+              Fully integrated with Telegram
+            </div>
           </div> */}
         </div>
       </div>
-      <div className={'mainlist'}>
+      
+      <div className={styles.mainlist}>
       <ThingList/>
       <Pages/>
       </div>
