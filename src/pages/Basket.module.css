@@ -47,7 +47,25 @@
     padding: calc(var(--index) * 0.7);
     border-radius: calc(var(--index) * 1);
     cursor: pointer;
+    background: linear-gradient(180deg, #73707d, #110f17);
+  }
+
+  .item_inner {
     background-color: #111111c4;
+    color: white;
+    padding: calc(var(--index) * 1.5);
+    display: flex;
+    gap: 5%;
+    width: 100%;
+    justify-content: space-between;
+    align-items: start;
+    border-radius: calc(var(--index) * 1);
+    border-bottom: 1px solid #7f7e7e66;
+    border-top: 1px solid #aaa9a9b5;
+    box-shadow: 
+        0 0 2px black, 
+        0 0 5px #000000a3, 
+        0 0 10px #000000a3;
   }
 
   .items_name_price {
@@ -61,30 +79,47 @@
     gap: calc(var(--index) * 0.7);
   }
 
+  .thing_info {
+    font-size: calc(var(--index) * 1.2);
+    color: #b3b2b2;
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--index) * 0.6);
+    border-bottom: 1px solid #7f7e7e66;
+    border-top: 1px solid #7f7e7e66;
+    padding: calc(var(--index) * 1) 0;
+}
+
   .info_brand {
     display: flex;
     flex: 1;
+    text-align: center;
   }
 
   .brands_basket {
-    width: calc(var(--index) * 2);
+    width: 100%;
     display: flex;
-    flex-direction: column;
     align-items: center;
-    /* justify-content: center; */
+    justify-content: space-around;
     gap: calc(var(--index) * 0);
     flex-wrap: wrap;
-    padding: calc(var(--index) * 0.2) calc(var(--index) * 0.4);
 }
 
 .brands_icons_basket {
     width: calc(var(--index) * 1.5); /* Ширина иконки */
     height: auto; /* Высота иконки */
 }
+
+.img_brands {
+  display: flex;
+  flex-direction: column;
+  gap: calc(var(--index) * 0.7);
+  width: 40%;
+}
   
   .basket_item_img {
-    width: calc(var(--index) * 12);
-    height: calc(var(--index) * 15);
+    width: 100%;
+    height: calc(var(--index) * 17);
     object-fit: cover;
     border-radius: calc(var(--index) * 0.7);
   }
@@ -93,8 +128,8 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    height: calc(var(--index) * 15);
-    width: 70%;
+    height: auto;
+    width: 55%;
   }
   
   .basket_item_name {
@@ -104,11 +139,11 @@
   
   .basket_item_price {
     font-size: 16px;
-    color: #777;
+    color: white;
   }
   
   .basket_item_remove {
-    background-color: #ff4d4f;
+    background-color: #c20606;
     color: white;
     padding: 5px 10px;
     border: none;

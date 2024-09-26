@@ -1,5 +1,3 @@
-// components/Basket/Basket.js
-
 import React, { useEffect, useState, useContext } from 'react';
 import styles from './Basket.module.css'
 import { useNavigate } from 'react-router-dom';
@@ -11,6 +9,7 @@ import FanslyIcon from '../icons/fansly.png';
 import OnlyIcon from '../icons/onlyfans.png';
 import { observer } from 'mobx-react-lite';
 import BackButton from '../components/BackButton/BackButton';
+import { message } from 'antd';
 
 const Basket = observer(() => {
     const { thing } = useContext(Context);
@@ -26,7 +25,7 @@ const Basket = observer(() => {
         try {
             await thing.removeFromBasket(thingId);
         } catch (error) {
-            alert('Ошибка при удалении товара из корзины: ' + error.message);
+            message.alert('Error when removing an item from the cart: ' + error.message);
         }
     };
 
@@ -34,19 +33,19 @@ const Basket = observer(() => {
         try {
             await thing.clearBasket();
         } catch (error) {
-            alert('Ошибка при очистке корзины: ' + error.message);
+            message.error('Error when clearing the cart: ' + error.message);
         }
     };
 
     const handleApplyPromoCode = async () => {
         if (!promoCodeInput) {
-            alert('Пожалуйста, введите промокод');
+            message.alert('Please enter the promocode');
             return;
         }
 
         const result = await thing.applyPromoCode(promoCodeInput);
         if (!result.success) {
-            alert(result.message || 'Ошибка при применении промокода');
+            message.error(result.message || 'Error when applying promocode');
         } else {
             setPromoCodeInput('');
         }
@@ -84,46 +83,62 @@ const Basket = observer(() => {
             <div className={styles.basket_items}>
                 {thing.basket.map(item => (
                     <div key={item.id} className={styles.basket_item}>
-                        {item.images && item.images.length > 0 ? (
-                            <img src={process.env.REACT_APP_API_URL + item.images[0].img} alt={item.name} className={styles.basket_item_img} />
-                        ) : (
-                            <img src="/path/to/default/image.png" alt="Нет изображения" className={styles.basket_item_img} />
-                        )}
-                        <div className={styles.basket_item_info}>
-                            <div className={styles.info_brand}>
-                                <div className={styles.brands_basket}>
-                                    {item.brands && item.brands.length > 0 ? (
-                                        item.brands.map(brand => (
-                                            <div
-                                                key={brand.id}
-                                                style={brandStyles[brand.id] || { color: 'black' }}
-                                                className={styles.brand_item_basket}
-                                            >
-                                                {brandIcons[brand.id] && (
-                                                    <img
-                                                        src={brandIcons[brand.id]}
-                                                        alt={`${brand.name} icon`}
-                                                        className={styles.brands_icons_basket}
-                                                    />
-                                                )}
-                                            </div>
-                                        ))
-                                    ) : (
-                                        <div>Unknown Brand</div>
-                                    )}
-                                </div>
-                                <div className={styles.items_name_price}>
-                                    <span className={styles.basket_item_name}>{item.name}</span>
-                                    {item.originalPrice && item.price !== item.originalPrice && (
-                                        <span className={styles.basket_item_original_price} style={{ textDecoration: 'line-through', color: 'grey' }}>
-                                            ${item.originalPrice}
-                                        </span>
-                                    )}
-                                    <span className={styles.basket_item_price}>${item.price}</span>
-                                </div>
+                        <div className={styles.item_inner}>
+                            <div className={styles.img_brands}>
+                                {item.images && item.images.length > 0 ? (
+                                    <img src={process.env.REACT_APP_API_URL + item.images[0].img} alt={item.name} className={styles.basket_item_img} />
+                                ) : (
+                                    <img src="/path/to/default/image.png" alt="Нет изображения" className={styles.basket_item_img} />
+                                )}
+                                
+
                             </div>
-                            <button onClick={() => handleRemove(item.id)} className={styles.basket_item_remove}>Remove</button>
+                            
+                            <div className={styles.basket_item_info}>
+                                
+                                <div className={styles.info_brand}>
+                                    
+
+                                    <div className={styles.items_name_price}>
+                                        
+                                        <div className={styles.brands_basket}>
+                                            {item.brands && item.brands.length > 0 ? (
+                                                item.brands.map(brand => (
+                                                    <div
+                                                        key={brand.id}
+                                                        style={brandStyles[brand.id] || { color: 'black' }}
+                                                        className={styles.brand_item_basket}
+                                                    >
+                                                        {brandIcons[brand.id] && (
+                                                            <img
+                                                                src={brandIcons[brand.id]}
+                                                                alt={`${brand.name} icon`}
+                                                                className={styles.brands_icons_basket}
+                                                            />
+                                                        )}
+                                                    </div>
+                                                ))
+                                            ) : (
+                                                <div>Unknown Brand</div>
+                                            )}
+                                        </div>
+                                        <span className={styles.basket_item_name}>{item.name}</span>
+                                        <div className={styles.thing_info}>
+                                            <span className={styles.info}>Start: {item.info.start}</span>
+                                            <span className={styles.info}>Content: {item.info.content}</span>
+                                        </div>
+                                        {item.originalPrice && item.price !== item.originalPrice && (
+                                            <span className={styles.basket_item_original_price} style={{ textDecoration: 'line-through', color: 'grey' }}>
+                                                ${item.originalPrice}
+                                            </span>
+                                        )}
+                                        <span className={styles.basket_item_price}>${item.price}</span>
+                                    </div>
+                                </div>
+                                {/* <button onClick={() => handleRemove(item.id)} className={styles.basket_item_remove}>Remove</button> */}
+                            </div>
                         </div>
+                        
                     </div>
                 ))}
                 <MySecondBtn className={styles.clear_basket} text={'Clear cart'} onClick={handleClearBasket}></MySecondBtn>

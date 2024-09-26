@@ -125,9 +125,9 @@ const handleBackClick = () => {
           <div className="thing-type">
             {thing.type && (
               <div className="type-item">
-                {typeIcons[thing.type.id] && (
+                {/* {typeIcons[thing.type.id] && (
                   <span className="type-icon">{typeIcons[thing.type.id]}</span>
-                )}
+                )} */}
                 <div className='info-str'><span>Origin:</span> <div>{thing.type.name}</div></div>
               </div>
             )}
