@@ -9,10 +9,17 @@
     /* background: linear-gradient(to bottom, #030107, #130035, #030107); */
 }
 
-.exchange_page h2 {
+.topic_back {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    
+  }
+
+  .topic_back h2 {
     color: #ffffffd9;
     margin-top: calc(var(--index) * 0.6);
-    margin-bottom: 0;
+    font-size: calc(var(--index) * 3);
 }
 
 .selection {

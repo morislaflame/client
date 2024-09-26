@@ -12,6 +12,9 @@ import styles from './ExchangePage.module.css';
 import { message } from 'antd';
 import { ExchangeOffcanvas, ExchangeOffcanvasBody, ExchangeOffcanvasHeader } from '../../components/StyledComponents';
 import { PAYMENT_ROUTE } from '../../utils/consts';
+import BackButton from '../../components/BackButton/BackButton';
+import Pages from '../../components/Pages';
+import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 
 const ExchangePage = observer(() => {
     const { thing, user } = useContext(Context);
@@ -95,10 +98,12 @@ const ExchangePage = observer(() => {
 
     return (
         <div className={styles.exchange_page}>
-            <h2>Select a Model to Exchange</h2>
+            <div className={styles.topic_back}><BackButton/><h2>Exchange</h2></div>
             <div className={'mainlist'}>
                 <ThingListForExchange selectedThingId={selectedThingId} onSelectThing={setSelectedThingId} />
+                <Pages/>
             </div>
+            <FaqAccordion/>
 
             <ExchangeOffcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="bottom">
                 <ExchangeOffcanvasHeader>

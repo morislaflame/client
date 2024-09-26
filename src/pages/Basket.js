@@ -61,7 +61,7 @@ const Basket = observer(() => {
     };
 
     if (thing.basket.length === 0) {
-        return <div className="basket-empty">Your Cart Is Empty</div>;
+        return <div className={styles.basket_empty}>Your Cart Is Empty</div>;
     }
 
     // Brand styles and icons

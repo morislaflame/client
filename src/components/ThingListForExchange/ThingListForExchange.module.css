@@ -9,20 +9,23 @@
     display: flex;
     flex-direction: column;
     width: 50%;
-    padding: calc(var(--index) * 0.2);
     
 }
 
 .thing_item_button {
     display: flex;
     flex-direction: column;
-    background: linear-gradient(to bottom, #030107, #130035, #030107);
+    background: #030107;
     gap: calc(var(--index) * 1);
     padding: calc(var(--index) * 0.6);
     border-radius: calc(var(--index) * 0.7);
     height: 100%;
 }
 
-.button {
-    --bs-btn-border-color: #0d6efd;
+.thing_item_button button {
+    background: linear-gradient(150deg, #110f17, #707070d4);
+    border: 0;
+    color: #fff;
+    border-radius: calc(var(--index) * 1);
+    padding: calc(var(--index) * 0.7);
 }

@@ -21,9 +21,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-style: solid;
-    /* border-color: #fedada; */
-    border-radius: calc(var(--index) * 0.7);
+    border-radius: calc(var(--index) * 1);
     cursor: pointer;
     border-width: 1px;
     background-color: #111111c4;
