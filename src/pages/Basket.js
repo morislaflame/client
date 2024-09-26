@@ -153,7 +153,7 @@ const Basket = observer(() => {
 
             <div className={styles.promo_code_section}>
                 <div className={styles.promocodes}>
-                    <h3>Apply Promo Code</h3>
+                    <h3>Apply Promocode</h3>
                     <input
                         type="text"
                         value={promoCodeInput}
@@ -164,7 +164,7 @@ const Basket = observer(() => {
                     <button onClick={handleApplyPromoCode}>Apply</button>
                     {thing.promoCode && (
                         <div className={styles.applied_promocode}>
-                            <p>Applied Promo Code: {thing.promoCode.code}</p>
+                            <p>Applied Promocode: {thing.promoCode.code}</p>
                             <button onClick={handleRemovePromoCode}>Remove Promocode</button>
                         </div>
                     )}
@@ -172,17 +172,20 @@ const Basket = observer(() => {
 
                 {/* User's personal promo codes */}
                 <div className={styles.user_promocodes}>
-                    <h3>Your Promo Codes</h3>
+                    
                     {thing.userPromoCodes.length > 0 ? (
-                        <ul>
-                            {thing.userPromoCodes.map(promo => (
-                                <li key={promo.id}>
-                                    <strong>{promo.code}</strong> - Discount: ${promo.discountValue}
-                                </li>
-                            ))}
-                        </ul>
+                        <div>
+                            <h3>Your Promocodes</h3>
+                            <ul>
+                                {thing.userPromoCodes.map(promo => (
+                                    <li key={promo.id}>
+                                        <strong>{promo.code}</strong> - Discount: ${promo.discountValue}
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     ) : (
-                        <p>You have no promo codes.</p>
+                        <p></p>
                     )}
                 </div>
             </div>
