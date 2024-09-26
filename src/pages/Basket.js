@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styles from './Basket.module.css'
 import { useNavigate } from 'react-router-dom';
-import { Context } from '../index'; // Убедитесь, что путь корректен
+import { Context } from '../index'; 
 import MyButton from '../components/MyButton/MyButton';
 import MySecondBtn from '../components/MySecondBtn/MySecondBtn';
 import MymIcon from '../icons/Mym.png';
@@ -10,6 +10,7 @@ import OnlyIcon from '../icons/onlyfans.png';
 import { observer } from 'mobx-react-lite';
 import BackButton from '../components/BackButton/BackButton';
 import { message } from 'antd';
+import { CgCloseO } from "react-icons/cg";
 
 const Basket = observer(() => {
     const { thing } = useContext(Context);
@@ -83,6 +84,7 @@ const Basket = observer(() => {
             <div className={styles.basket_items}>
                 {thing.basket.map(item => (
                     <div key={item.id} className={styles.basket_item}>
+                        
                         <div className={styles.item_inner}>
                             <div className={styles.img_brands}>
                                 {item.images && item.images.length > 0 ? (
@@ -135,11 +137,16 @@ const Basket = observer(() => {
                                         <span className={styles.basket_item_price}>${item.price}</span>
                                     </div>
                                 </div>
-                                {/* <button onClick={() => handleRemove(item.id)} className={styles.basket_item_remove}>Remove</button> */}
+                                
                             </div>
                         </div>
-                        
-                    </div>
+                        <div onClick={() => handleRemove(item.id)} style={{
+                            height: 'calc(var(--index)* 17)',
+                            display: 'flex',
+                            alignItems: 'center',
+                        }}>
+                            <CgCloseO className={styles.basket_item_remove}/></div>
+                        </div>
                 ))}
                 <MySecondBtn className={styles.clear_basket} text={'Clear cart'} onClick={handleClearBasket}></MySecondBtn>
             </div>
@@ -156,9 +163,9 @@ const Basket = observer(() => {
                     />
                     <button onClick={handleApplyPromoCode}>Apply</button>
                     {thing.promoCode && (
-                        <div className={styles.applied_promocode_}>
+                        <div className={styles.applied_promocode}>
                             <p>Applied Promo Code: {thing.promoCode.code}</p>
-                            <button onClick={handleRemovePromoCode}>Remove Promo Code</button>
+                            <button onClick={handleRemovePromoCode}>Remove Promocode</button>
                         </div>
                     )}
                 </div>

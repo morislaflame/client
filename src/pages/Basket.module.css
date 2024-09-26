@@ -19,6 +19,13 @@
   .topic_back {
     display: flex;
     justify-content: center;
+    align-items: center;
+    
+  }
+
+  .topic_back h2 {
+    font-size: calc(var(--index) * 3);
+    /* margin: 0;s */
   }
   
   .basket_empty {
@@ -43,11 +50,11 @@
     display: flex;
 
     align-items: center;
-    gap: calc(var(--index) * 0.7);
-    padding: calc(var(--index) * 0.7);
+    gap: calc(var(--index) * 0.5);
+    padding: calc(var(--index) * 0.5);
     border-radius: calc(var(--index) * 1);
     cursor: pointer;
-    background: linear-gradient(180deg, #73707d, #110f17);
+    background: linear-gradient(280deg, #c20606d4, #110f17);
   }
 
   .item_inner {
@@ -60,8 +67,8 @@
     justify-content: space-between;
     align-items: start;
     border-radius: calc(var(--index) * 1);
-    border-bottom: 1px solid #7f7e7e66;
-    border-top: 1px solid #aaa9a9b5;
+    border-left: 1px solid #605e5e66;
+    border-right: 1px solid #ad5b5b5e;
     box-shadow: 
         0 0 2px black, 
         0 0 5px #000000a3, 
@@ -87,7 +94,7 @@
     gap: calc(var(--index) * 0.6);
     border-bottom: 1px solid #7f7e7e66;
     border-top: 1px solid #7f7e7e66;
-    padding: calc(var(--index) * 1) 0;
+    padding: calc(var(--index) * 1);
 }
 
   .info_brand {
@@ -143,14 +150,8 @@
   }
   
   .basket_item_remove {
-    background-color: #c20606;
-    color: white;
-    padding: 5px 10px;
-    border: none;
-    border-radius: calc(var(--index) * 0.7);
-    cursor: pointer;
-    /* flex: 1; */
-    height: calc(var(--index) * 4);
+    font-size: calc(var(--index) * 2);
+    font-weight: 600;
   }
   
   .basket_item_remove:hover {
@@ -158,19 +159,6 @@
   }
 
   .promo_code_section {
-    background-color: #111111c4;
-    color: white;
-    padding: calc(var(--index) * 1.5);
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    gap: calc(var(--index) * 1);
-    justify-content: left;
-    align-items: left;
-    border-radius: calc(var(--index) * 1);
-  }
-
-  .promocodes {
     display: flex;
     color: white;
     width: 100%;
@@ -178,15 +166,72 @@
     gap: calc(var(--index) * 0.5);
     justify-content: center;
     align-items: center;
-    background: linear-gradient(150deg, #4805ca, #030107);
+    background: linear-gradient(to bottom, #0672c2, #030107);
     padding: calc(var(--index) * 0.6);
     border-radius: calc(var(--index) * 1);
   }
+
+  .promocodes {
+    background-color: #111111c4;
+    color: white;
+    padding: calc(var(--index) * 1.5);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: calc(var(--index) * 1);
+    justify-content: center;
+    /* align-items: center; */
+    border-radius: calc(var(--index) * 1);
+    border-bottom: 1px solid #7f7e7e66;
+    border-top: 1px solid #aaa9a9b5;
+    box-shadow: 
+        0 0 2px black, 
+        0 0 5px #000000a3, 
+        0 0 10px #000000a3;
+  }
   
   .apply_promo_input {
+    border: 0;
     border-radius: calc(var(--index) * 1);
     padding: calc(var(--index) * 1);
   }
+
+  .promocodes button {
+    background: linear-gradient(150deg, #0689c2d4, #292587);
+    border: 0;
+    /* border: 1px solid #2506c2; */
+    color: #fff;
+    border-radius: calc(var(--index) * 1);
+    padding: calc(var(--index) * 0.7);
+}
+
+.applied_promocode {
+  display: flex;
+  flex-direction: column;
+  /* text-align: center; */
+  gap: calc(var(--index) * 1);
+}
+
+.applied_promocode p {
+  margin: 0;
+}
+
+.applied_promocode button {
+  background: linear-gradient(150deg, #110f17, #707070d4);
+  border: 0;
+  color: #fff;
+  border-radius: calc(var(--index) * 1);
+  padding: calc(var(--index) * 0.7);
+}
+
+.user_promocodes {
+  padding: calc(var(--index) * 0.7);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  justify-content: center;
+  align-items: center;
+}
 
   .basket_total {
     display: flex;

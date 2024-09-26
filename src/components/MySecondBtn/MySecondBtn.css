@@ -12,17 +12,12 @@
 
 
 .my-second-button {
-    padding: calc(var(--index) * 1) calc(var(--index) * 4);
+    padding: calc(var(--index)* 1) calc(var(--index)* 4);
     background-color: white;
-    color: black;
+    background: linear-gradient(150deg, #110f17, #c20606d4);
+    color: white;
     border-style: solid;
-    border-color: #fedada;
-    border-radius: 5px;
-    /* box-shadow: 
-        0 0 2px #f4000082, 
-        0 0 5px #f4000082, 
-        0 0 10px #f4000082, 
-        0 0 15px #f4000082; */
+    border-radius: calc(var(--index)* 1);
     cursor: pointer;
     border-width: 1px;
     font-size: calc(var(--index) * 1.7);
