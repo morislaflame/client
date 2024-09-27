@@ -28,7 +28,7 @@ const PaymentPage = () => {
     ? exchangeData.priceDifference
     : thing.totalPrice || 0;
 
-  // Адреса кошельков для разных криптовалют (оставляем без изменений)
+  // Адреса кошельков для разных криптовалют
   const wallets = {
     usdt: {
       address: "0x5541a5FD4Cc660F356601DBeCdD2be3e19548095",
@@ -56,8 +56,10 @@ const PaymentPage = () => {
   });
 
   const [selectedCrypto, setSelectedCrypto] = useState('usdt'); // Криптовалюта по умолчанию
+  const [cryptoTransactionHash, setCryptoTransactionHash] = useState(''); // Хэш транзакции
+  const [isHashValid, setIsHashValid] = useState(false); // Проверка валидности хэша
 
-  // Функция для получения курса криптовалют с CoinGecko API (оставляем без изменений)
+  // Функция для получения курса криптовалют с CoinGecko API
   const fetchCryptoRates = async () => {
     try {
       const response = await axios.get(
@@ -82,29 +84,41 @@ const PaymentPage = () => {
       fetchCryptoRates();
     }, 120000); // 120000 миллисекунд = 2 минуты
 
-    // Очищаем интервал при размонтировании компонента
-    return () => clearInterval(interval);
+    return () => clearInterval(interval); // Очищаем интервал при размонтировании компонента
   }, []);
 
-  // Конвертация суммы в зависимости от выбранной криптовалюты (оставляем без изменений)
+  // Конвертация суммы в зависимости от выбранной криптовалюты
   const convertAmountForCrypto = (crypto) => {
     const rate = cryptoRates[crypto];
-    if (!rate) return "Загрузка..."; // Если курс еще не загрузился
+    if (!rate) return "Загрузка...";
     return (totalAmountUSD / rate).toFixed(6); // Считаем сумму в криптовалюте
+  };
+
+  // Проверка валидности хэша транзакции (допустим, минимум 10 символов)
+  const handleTransactionHashChange = (e) => {
+    const hash = e.target.value;
+    setCryptoTransactionHash(hash);
+    setIsHashValid(hash.length >= 10); // Проверяем минимальную длину хэша
   };
 
   const handleConfirmPayment = async () => {
     try {
+      const cryptoPaymentAmount = convertAmountForCrypto(wallets[selectedCrypto].currency);
+
       if (isExchangePayment) {
         // Это доплата при обмене
         const { thingId, selectedThingId, userComment } = exchangeData;
         await createExchangeRequest(thingId, selectedThingId, userComment);
-        navigate(USER_ACCOUNT_ROUTE); // Перенаправляем на страницу аккаунта
+        navigate(USER_ACCOUNT_ROUTE);
       } else {
         // Обычная оплата заказа
-        await createOrder();
+        await createOrder({
+          cryptoCurrency: wallets[selectedCrypto].currency,
+          cryptoTransactionHash,
+          cryptoPaymentAmount,
+        });
         await thing.clearBasket();
-        navigate(USER_ACCOUNT_ROUTE); // Перенаправляем на страницу аккаунта
+        navigate(USER_ACCOUNT_ROUTE);
       }
     } catch (error) {
       console.error('Ошибка при обработке оплаты:', error);
@@ -151,9 +165,26 @@ const PaymentPage = () => {
           </div>
 
           <p>Адрес кошелька для {wallets[selectedCrypto].currency}: {wallets[selectedCrypto].address}</p>
-
         </div>
-        <button className="btn btn-primary" onClick={handleConfirmPayment}>
+
+        {/* Поле для ввода хэша транзакции */}
+        <div className="transaction-hash">
+          <label htmlFor="transactionHash">Введите хэш транзакции:</label>
+          <input
+            type="text"
+            id="transactionHash"
+            value={cryptoTransactionHash}
+            onChange={handleTransactionHashChange}
+            placeholder="Введите хэш транзакции"
+          />
+        </div>
+
+        {/* Кнопка подтверждения оплаты */}
+        <button 
+          className="btn btn-primary" 
+          onClick={handleConfirmPayment} 
+          disabled={!isHashValid} // Деактивируем кнопку, если хэш не валидный
+        >
           Подтвердить оплату
         </button>
 

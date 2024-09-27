@@ -262,6 +262,7 @@ const Admin = observer(() => {
           {newOrders.map(order => (
             <ListGroup.Item key={order.id}>
               Заказ №{order.id}, Сумма: {order.totalPrice}$, Пользователь: {order.user.email}, Promocode: {order.promo_code.code} - ${order.promo_code.discountValue}
+              Валюта: {order.cryptoCurrency}, Хэш: {order.cryptoTransactionHash}, Сумма: {order.cryptoPaymentAmount}
               <ul>
                 {order.order_things.map(item => (
                   <li key={item.id}>Товар: {item.thing.name}, Цена: {item.thing.price}</li>

@@ -1,12 +1,12 @@
-// orderAPI.js
-
 import { $authHost } from "./index";
 
-// Создание нового заказа
-export const createOrder = async () => {
-    const { data } = await $authHost.post('api/order');
+
+// Создание нового заказа с криптовалютной информацией
+export const createOrder = async ({ cryptoCurrency, cryptoTransactionHash, cryptoPaymentAmount }) => {
+    const { data } = await $authHost.post('api/order', { cryptoCurrency, cryptoTransactionHash, cryptoPaymentAmount });
     return data;
 };
+
 
 // Получение всех заказов пользователя
 export const fetchUserOrders = async () => {
