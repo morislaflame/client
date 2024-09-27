@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { getUserById } from '../../http/userAPI';
 import ListGroup from 'react-bootstrap/ListGroup';
+import BackButton from '../../components/BackButton/BackButton';
 
 const UserInfoPage = () => {
     const { id } = useParams(); // Получаем id пользователя из URL
@@ -32,7 +33,11 @@ const UserInfoPage = () => {
 
     return (
         <div>
-            <h2>Информация о пользователе</h2>
+            <div className={'topic_back'}>
+                <BackButton/>
+                <h2>User Info</h2>
+            </div>
+            
             <p>Email: {user.email}</p>
             <p>Роль: {user.role}</p>
 
@@ -72,7 +77,7 @@ const UserInfoPage = () => {
                 <ListGroup>
                     {user.returns.map(returnRequest => (
                         <ListGroup.Item key={returnRequest.id}>
-                            Товар: {returnRequest.order_thing.thing.name} — Причина возврата: {returnRequest.reason}
+                            Товар: {returnRequest.thing.name} — Причина возврата: {returnRequest.reason}
                         </ListGroup.Item>
                     ))}
                 </ListGroup>

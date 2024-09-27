@@ -10,7 +10,7 @@ import StorySlider from '../../components/StorySlider/StorySlider';
 import { Context } from '../../index';
 import { FaShoppingCart, FaEdit } from 'react-icons/fa';
 import { Button } from 'react-bootstrap';
-import { BASKET_ROUTE, EDIT_THING_ROUTE, SHOP_ROUTE } from '../../utils/consts';
+import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, SHOP_ROUTE } from '../../utils/consts';
 import { observer } from 'mobx-react-lite';
 import { message } from 'antd';
 import OnlyIcon from '../../icons/onlyfans.png';
@@ -43,13 +43,16 @@ const handleBackClick = () => {
   }, [id, thingStore]);
 
   const handleAddToBasket = async () => {
-    try {
-      await thingStore.addToBasket(id);
-      message.success('Товар добавлен в корзину');
-    } catch (error) {
-      const errorMessage = error.response?.data?.message || error.message;
-      message.error('Ошибка при добавлении в корзину: ' + errorMessage);
-    }
+    if (user.isAuth) {
+      try {
+        await thingStore.addToBasket(id);
+        message.success('Товар добавлен в корзину');
+      } catch (error) {
+        const errorMessage = error.response?.data?.message || error.message;
+        message.error('Ошибка при добавлении в корзину: ' + errorMessage);
+      }
+    } else {navigate(LOGIN_ROUTE)}
+    
   };
 
   // Проверяем, находится ли товар в корзине

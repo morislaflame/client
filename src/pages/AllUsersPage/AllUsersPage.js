@@ -6,6 +6,7 @@ import { observer } from 'mobx-react-lite';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import BackButton from '../../components/BackButton/BackButton';
 
 const AllUsersPage = observer(() => {
   const { user } = useContext(Context);
@@ -67,7 +68,11 @@ const AllUsersPage = observer(() => {
 
   return (
     <div className="container">
-      <h2>Список всех пользователей</h2>
+      <div className={'topic_back'}>
+        <BackButton/>
+        <h2>All Users</h2>
+      </div>
+      
 
       {/* Поиск пользователя по email с автозаполнением */}
       <div className="search-section">

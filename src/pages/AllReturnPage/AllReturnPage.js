@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchAllReturns } from '../../http/orderAPI'; // API для получения всех возвратов
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
+import BackButton from '../../components/BackButton/BackButton';
 
 const AllReturnsPage = () => {
     const [returns, setReturns] = useState([]);
@@ -17,7 +18,7 @@ const AllReturnsPage = () => {
             const data = await fetchAllReturns(); // Используем API для получения всех возвратов
             setReturns(data);
         } catch (error) {
-            console.error('Ошибка при загрузке возвратов:', error);
+            console.error('Error loading returns:', error);
         }
     };
 
@@ -28,7 +29,10 @@ const AllReturnsPage = () => {
 
     return (
         <div className="container">
-            <h2>Все возвраты</h2>
+            <div className={'topic_back'}>
+                <BackButton/>
+                <h2>Все возвраты</h2>
+            </div>
             <Form.Control
                 type="text"
                 placeholder="Поиск по номеру возврата"
@@ -40,7 +44,7 @@ const AllReturnsPage = () => {
                     <ListGroup.Item key={returnItem.id}>
                         Возврат №{returnItem.id}, Статус: {returnItem.status}, Пользователь: {returnItem.user.email}
                         <ul>
-                            <li>Товар: {returnItem.order_thing.thing.name}, Цена: {returnItem.order_thing.thing.price}</li>
+                            <li>Товар: {returnItem.thing.name}, Цена: {returnItem.thing.price}</li>
                             <li>Причина возврата: {returnItem.reason}</li>
                         </ul>
                     </ListGroup.Item>

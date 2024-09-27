@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchAllOrders } from '../../http/orderAPI'; // API для получения всех заказов
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
+import BackButton from '../../components/BackButton/BackButton';
 
 const AllOrdersPage = () => {
     const [orders, setOrders] = useState([]);
@@ -28,7 +29,10 @@ const AllOrdersPage = () => {
 
     return (
         <div className="container">
-            <h2>Все заказы</h2>
+            <div className={'topic_back'}>
+                <BackButton/>
+                <h2>Все заказы</h2>
+            </div>
             <Form.Control
                 type="text"
                 placeholder="Поиск по номеру заказа"
