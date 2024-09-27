@@ -13,9 +13,13 @@ import { useGSAP } from "@gsap/react";
 import ScrollTrigger from 'gsap/src/ScrollTrigger';
 import { NavLink } from 'react-router-dom';
 import { FloatButton } from "antd";
+import { FiExternalLink } from "react-icons/fi";
+import { useNavigate } from 'react-router-dom';
+import { TERMS_ROUTE } from '../../utils/consts';
 
 const Shop = observer(() => {
   const {thing} = useContext(Context)
+  const navigate = useNavigate()
   gsap.registerPlugin(ScrollTrigger);
 
   useEffect(() => {
@@ -45,17 +49,18 @@ const Shop = observer(() => {
         <StorySlider/>
         <div className={styles.filters}>
           <SideBar/>
-          {/* <div className='shop-warnings'>
-            <div className='telegram-int'>
-              Fully integrated with Telegram
-            </div>
-          </div> */}
+          
         </div>
       </div>
       
       <div className={styles.mainlist}>
-      <ThingList/>
-      <Pages/>
+          <ThingList/>
+          <Pages/>
+          <div className={styles.shop_warnings}>
+            <div className={styles.telegram_int} onClick={() => navigate(TERMS_ROUTE)}>
+              7-day warranty <FiExternalLink />
+            </div>
+          </div>
       </div>
       <FaqAccordion/>
       <FloatButton.BackTop 

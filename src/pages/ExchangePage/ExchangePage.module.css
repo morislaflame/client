@@ -22,6 +22,10 @@
     font-size: calc(var(--index) * 3);
 }
 
+.mainlist {
+    width: 100%;
+}
+
 .selection {
     background-color: #111111c4;
     color: white;
@@ -45,6 +49,8 @@
     border-radius: calc(var(--index) * 1);
     padding: calc(var(--index) * 1);
 }
+
+
 
 .button {
     --bs-btn-bg: #063dc233;

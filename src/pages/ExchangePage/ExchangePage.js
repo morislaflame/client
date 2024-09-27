@@ -38,6 +38,15 @@ const ExchangePage = observer(() => {
         });
     }, [thingId]);
 
+    useEffect(() => {
+        // Передаем параметры minPrice и maxPrice из стора
+        const { min, max } = thing.priceRange;
+        fetchThings(thing.selectedType.id, thing.selectedBrands, thing.page, 6, min, max).then(data => {
+          thing.setThings(data.rows);
+          thing.setTotalCount(data.count);
+        });
+      }, [thing.page, thing.selectedType, thing.selectedBrands, thing.priceRange]);
+
     // Отслеживаем изменение выбранного товара и управляем отображением Offcanvas
     useEffect(() => {
         if (selectedThingId) {
@@ -99,7 +108,7 @@ const ExchangePage = observer(() => {
     return (
         <div className={styles.exchange_page}>
             <div className={styles.topic_back}><BackButton/><h2>Exchange</h2></div>
-            <div className={'mainlist'}>
+            <div className={styles.mainlist}>
                 <ThingListForExchange selectedThingId={selectedThingId} onSelectThing={setSelectedThingId} />
                 <Pages/>
             </div>
