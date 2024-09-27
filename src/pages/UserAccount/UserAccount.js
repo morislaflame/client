@@ -205,8 +205,14 @@ const UserAccount = observer(() => {
                                             </div>
                                         ))}
                                     </div>
+                                    {order.promo_code !== null && (
+                                        <div className={styles.promocode_status}>
+                                            Promocode: {order.promo_code.code} ${order.promo_code.discountValue}
+                                        </div>
+                                    )}
                                     <div className={styles.total_price}>Total: ${order.totalPrice} </div>
                                     <div className={styles.mini_status}>
+
                                         {order.status === 'created' && (
                                             <div className={styles.approved}><FcClock style={{ color: 'black' }} /><p>Your order is pending confirmation</p></div>
                                         )}
