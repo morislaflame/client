@@ -231,6 +231,7 @@
   width: 100%;
   justify-content: center;
   align-items: center;
+  text-align: center;
 }
 
   .basket_total {
@@ -242,4 +243,20 @@
     padding: calc(var(--index) * 2);
     gap: calc(var(--index) * 1);
     color: white;
+  }
+
+  .user_promocode_item {
+    background: linear-gradient(150deg, #2ba3d7d4, #ffffff);
+    border: 0;
+    /* border: 1px solid #2506c2; */
+    color: black;
+    border-radius: calc(var(--index) * 1);
+    padding: calc(var(--index) * 1);
+    font-weight: 600;
+    font-size: calc(var(--index) * 1.4);
+    margin-top: calc(var(--index) * 0.7);
+  }
+
+  .user_promocode_item strong {
+    font-weight: 800;
   }

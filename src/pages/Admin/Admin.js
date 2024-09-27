@@ -15,12 +15,14 @@ import { ALL_EXCHANGES_ROUTE, ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, ALL_USERS_ROU
 import { fetchNewOrders, confirmOrder, rejectOrder } from '../../http/orderAPI';
 import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/orderAPI';
 import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../http/exchangeAPI'; // Импортируем API для обменов
+import CreatePromoCode from '../../components/modals/CreatePromoCode';
 
 const Admin = observer(() => {
   const [brandVisible, setBrandVisible] = useState(false);
   const [typeVisible, setTypeVisible] = useState(false);
   const [modelVisible, setModelVisible] = useState(false);
   const [storyVisible, setStoryVisible] = useState(false);
+  const [promoVisible, setPromoVisible] = useState(false);
   const [pendingReturns, setPendingReturns] = useState([]);
   const [pendingExchanges, setPendingExchanges] = useState([]); // Новое состояние для обменов
 
@@ -92,9 +94,6 @@ const Admin = observer(() => {
     }
   };
 
-  const viewUserInfo = (userId) => {
-    navigate(`/user/${userId}`); // Переход на страницу пользователя
-  };
 
   const handleRoleChange = async (userId, currentRole) => {
     const newRole = currentRole === 'USER' ? 'ADMIN' : 'USER'; // Переключаем роль
@@ -202,11 +201,13 @@ const Admin = observer(() => {
         <button onClick={() => setBrandVisible(true)}>Добавить бренд</button>
         <button onClick={() => setModelVisible(true)}>Добавить модель</button>
         <button onClick={() => setStoryVisible(true)}>Добавить историю</button>
+        <button onClick={() => setPromoVisible(true)}>Добавить промокод</button>
       </div>
       <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)} />
       <CreateModel show={modelVisible} onHide={() => setModelVisible(false)} />
       <CreateType show={typeVisible} onHide={() => setTypeVisible(false)} />
       <CreateStory show={storyVisible} onHide={() => setStoryVisible(false)} />
+      <CreatePromoCode show={promoVisible} onHide={() => setPromoVisible(false)}/>
 
       {/* Поиск пользователя по email с автозаполнением */}
       <div className="search-section">
@@ -260,7 +261,7 @@ const Admin = observer(() => {
         <ListGroup>
           {newOrders.map(order => (
             <ListGroup.Item key={order.id}>
-              Заказ №{order.id}, Сумма: {order.totalPrice}$, Пользователь: {order.user.email}
+              Заказ №{order.id}, Сумма: {order.totalPrice}$, Пользователь: {order.user.email}, Promocode: {order.promo_code.code} - ${order.promo_code.discountValue}
               <ul>
                 {order.order_things.map(item => (
                   <li key={item.id}>Товар: {item.thing.name}, Цена: {item.thing.price}</li>

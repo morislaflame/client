@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
-import styles from './Basket.module.css'
+import styles from './Basket.module.css';
 import { useNavigate } from 'react-router-dom';
-import { Context } from '../index'; 
+import { Context } from '../index';
 import MyButton from '../components/MyButton/MyButton';
 import MySecondBtn from '../components/MySecondBtn/MySecondBtn';
 import MymIcon from '../icons/Mym.png';
@@ -16,6 +16,7 @@ const Basket = observer(() => {
     const { thing } = useContext(Context);
     const navigate = useNavigate();
     const [promoCodeInput, setPromoCodeInput] = useState('');
+    const [appliedPromoCode, setAppliedPromoCode] = useState(''); // Состояние для отслеживания примененного промокода
 
     useEffect(() => {
         thing.loadBasket();
@@ -38,22 +39,25 @@ const Basket = observer(() => {
         }
     };
 
-    const handleApplyPromoCode = async () => {
-        if (!promoCodeInput) {
+    const handleApplyPromoCode = async (promoCode) => {
+        const promoCodeToApply = promoCode || promoCodeInput;
+        if (!promoCodeToApply) {
             message.alert('Please enter the promocode');
             return;
         }
 
-        const result = await thing.applyPromoCode(promoCodeInput);
+        const result = await thing.applyPromoCode(promoCodeToApply);
         if (!result.success) {
             message.error(result.message || 'Error when applying promocode');
         } else {
+            setAppliedPromoCode(promoCodeToApply); // Сохраняем примененный промокод
             setPromoCodeInput('');
         }
     };
 
     const handleRemovePromoCode = async () => {
         await thing.removePromoCode();
+        setAppliedPromoCode(''); // Сбрасываем состояние примененного промокода
     };
 
     const handlePayment = () => {
@@ -92,8 +96,6 @@ const Basket = observer(() => {
                                 ) : (
                                     <img src="/path/to/default/image.png" alt="Нет изображения" className={styles.basket_item_img} />
                                 )}
-                                
-
                             </div>
                             
                             <div className={styles.basket_item_info}>
@@ -154,35 +156,43 @@ const Basket = observer(() => {
             <div className={styles.promo_code_section}>
                 <div className={styles.promocodes}>
                     <h3>Apply Promocode</h3>
-                    <input
-                        type="text"
-                        value={promoCodeInput}
-                        onChange={(e) => setPromoCodeInput(e.target.value)}
-                        placeholder="Enter promo code"
-                        className={styles.apply_promo_input}
-                    />
-                    <button onClick={handleApplyPromoCode}>Apply</button>
-                    {thing.promoCode && (
+                    {/* Условие, которое проверяет, применен ли промокод */}
+                    {appliedPromoCode || thing.promoCode ? (
                         <div className={styles.applied_promocode}>
-                            <p>Applied Promocode: {thing.promoCode.code}</p>
-                            <button onClick={handleRemovePromoCode}>Remove Promocode</button>
+                            <p>Promocode: {appliedPromoCode || thing.promoCode.code}</p>
+                            <button onClick={handleRemovePromoCode}>Remove</button>
                         </div>
+                    ) : (
+                        <>
+                            <input
+                                type="text"
+                                value={promoCodeInput}
+                                onChange={(e) => setPromoCodeInput(e.target.value)}
+                                placeholder="Enter promo code"
+                                className={styles.apply_promo_input}
+                            />
+                            <button onClick={() => handleApplyPromoCode()}>Apply</button>
+                        </>
                     )}
                 </div>
 
                 {/* User's personal promo codes */}
                 <div className={styles.user_promocodes}>
-                    
                     {thing.userPromoCodes.length > 0 ? (
                         <div>
-                            <h3>Your Promocodes</h3>
-                            <ul>
+                            <h3>Your Promocodes:</h3>
+                            <div>
                                 {thing.userPromoCodes.map(promo => (
-                                    <li key={promo.id}>
-                                        <strong>{promo.code}</strong> - Discount: ${promo.discountValue}
-                                    </li>
+                                    <button
+                                        key={promo.id}
+                                        onClick={() => handleApplyPromoCode(promo.code)}
+                                        className={styles.user_promocode_item}
+                                        disabled={appliedPromoCode === promo.code} // Блокируем кнопку, если промокод уже применен
+                                    >
+                                        {appliedPromoCode === promo.code ? `${promo.code} applied` : `${promo.code} $${promo.discountValue}`}
+                                    </button>
                                 ))}
-                            </ul>
+                            </div>
                         </div>
                     ) : (
                         <p></p>
