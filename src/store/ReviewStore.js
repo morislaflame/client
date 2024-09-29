@@ -14,28 +14,32 @@ import {
 
 class ReviewStore {
     reviews = [];
-    comments = {}; // { [reviewId]: { items: [], page: 1, limit: 5, totalCount: 0 } }
     reviewPage = 1;
-    reviewLimit = 10;
-    reviewTotalCount = 0;
+    reviewLimit = 5;
     reviewLoading = false;
-    commentLoading = {}; // { [reviewId]: boolean }
-    commentLimit = 5; // Лимит для комментариев
+    hasMoreReviews = true; // Флаг наличия дополнительных отзывов для загрузки
+
+    comments = {}; // { [reviewId]: { items: [], page: 1, limit: 5, loading: false, hasMore: true } }
+    commentLimit = 2;
 
     constructor() {
         makeAutoObservable(this);
     }
 
     // Загрузка отзывов
-    async loadReviews(page = 1, limit = this.reviewLimit) {
+    async loadReviews(page = 1, limit = this.reviewLimit, append = false) {
+        if (this.reviewLoading) return;
         this.reviewLoading = true;
         try {
             const data = await fetchReviews(page, limit);
             runInAction(() => {
-                this.reviews = data.rows;
-                this.reviewTotalCount = data.count;
+                if (append) {
+                    this.reviews = [...this.reviews, ...data.rows];
+                } else {
+                    this.reviews = data.rows;
+                }
                 this.reviewPage = page;
-                this.reviewLimit = limit;
+                this.hasMoreReviews = data.rows.length === limit;
             });
         } catch (error) {
             console.error('Ошибка при загрузке отзывов:', error);
@@ -46,13 +50,19 @@ class ReviewStore {
         }
     }
 
+    // Загрузка дополнительных отзывов (по кнопке "Загрузить ещё")
+    async loadMoreReviews() {
+        if (this.reviewLoading || !this.hasMoreReviews) return;
+        const nextPage = this.reviewPage + 1;
+        await this.loadReviews(nextPage, this.reviewLimit, true);
+    }
+
     // Добавление отзыва
     async addReview(text, rating, images = []) {
         try {
             const newReview = await createReview(text, rating, images);
             runInAction(() => {
                 this.reviews.unshift(newReview);
-                this.reviewTotalCount += 1;
             });
         } catch (error) {
             console.error('Ошибка при создании отзыва:', error);
@@ -81,7 +91,6 @@ class ReviewStore {
             await deleteReview(id);
             runInAction(() => {
                 this.reviews = this.reviews.filter((review) => review.id !== id);
-                this.reviewTotalCount -= 1;
             });
         } catch (error) {
             console.error('Ошибка при удалении отзыва:', error);
@@ -89,25 +98,48 @@ class ReviewStore {
     }
 
     // Загрузка комментариев
-    async loadComments(reviewId, page = 1, limit = this.commentLimit) {
-        this.commentLoading[reviewId] = true;
+    async loadComments(reviewId, page = 1, limit = this.commentLimit, append = false) {
+        if (!this.comments[reviewId]) {
+            this.comments[reviewId] = {
+                items: [],
+                page: 1,
+                limit: this.commentLimit,
+                loading: false,
+                hasMore: true,
+            };
+        }
+
+        if (this.comments[reviewId].loading || !this.comments[reviewId].hasMore) return;
+
+        this.comments[reviewId].loading = true;
         try {
             const data = await fetchCommentsByReview(reviewId, page, limit);
             runInAction(() => {
-                this.comments[reviewId] = {
-                    items: data.rows,
-                    totalCount: data.count,
-                    page,
-                    limit,
-                };
+                if (append) {
+                    this.comments[reviewId].items = [...this.comments[reviewId].items, ...data.rows];
+                } else {
+                    this.comments[reviewId].items = data.rows;
+                }
+                this.comments[reviewId].page = page;
+                this.comments[reviewId].hasMore = data.rows.length === limit;
             });
         } catch (error) {
             console.error('Ошибка при загрузке комментариев:', error);
         } finally {
             runInAction(() => {
-                this.commentLoading[reviewId] = false;
+                this.comments[reviewId].loading = false;
             });
         }
+    }
+
+    // Загрузка дополнительных комментариев (по кнопке "Загрузить ещё")
+    async loadMoreComments(reviewId) {
+        if (!this.comments[reviewId]) {
+            await this.loadComments(reviewId);
+            return;
+        }
+        const nextPage = this.comments[reviewId].page + 1;
+        await this.loadComments(reviewId, nextPage, this.commentLimit, true);
     }
 
     // Добавление комментария
@@ -118,13 +150,13 @@ class ReviewStore {
                 if (!this.comments[reviewId]) {
                     this.comments[reviewId] = {
                         items: [],
-                        totalCount: 0,
                         page: 1,
                         limit: this.commentLimit,
+                        loading: false,
+                        hasMore: true,
                     };
                 }
-                this.comments[reviewId].items.push(newComment);
-                this.comments[reviewId].totalCount += 1;
+                this.comments[reviewId].items.unshift(newComment);
             });
         } catch (error) {
             console.error('Ошибка при создании комментария:', error);
@@ -155,48 +187,10 @@ class ReviewStore {
             runInAction(() => {
                 const commentList = this.comments[reviewId]?.items || [];
                 this.comments[reviewId].items = commentList.filter((comment) => comment.id !== id);
-                this.comments[reviewId].totalCount -= 1;
             });
         } catch (error) {
             console.error('Ошибка при удалении комментария:', error);
         }
-    }
-
-    // Геттеры и сеттеры
-    get page() {
-        return this.reviewPage;
-    }
-
-    get limit() {
-        return this.reviewLimit;
-    }
-
-    get totalCount() {
-        return this.reviewTotalCount;
-    }
-
-    get loading() {
-        return this.reviewLoading;
-    }
-
-    setPage(page) {
-        this.reviewPage = page;
-    }
-
-    setReviewLimit(limit) {
-        this.reviewLimit = limit;
-    }
-
-    setCommentPage(reviewId, page) {
-        if (this.comments[reviewId]) {
-            this.comments[reviewId].page = page;
-        } else {
-            this.comments[reviewId] = { items: [], page, limit: this.commentLimit, totalCount: 0 };
-        }
-    }
-
-    setCommentLimit(limit) {
-        this.commentLimit = limit;
     }
 }
 

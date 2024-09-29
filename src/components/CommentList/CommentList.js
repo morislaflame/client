@@ -4,41 +4,65 @@ import React, { useEffect, useState, useContext } from 'react';
 import { Card, Button, Form, Modal } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
-import CommentPagination from '../Pagination/CommentPagination';
 
-const CommentList = observer(({ reviewId }) => {
-    const { review, user } = useContext(Context);
+const CommentList = observer(({ review }) => {
+    const { review: reviewStore, user } = useContext(Context);
+    const reviewId = review.id;
     const [showCommentModal, setShowCommentModal] = useState(false);
+    const [editMode, setEditMode] = useState(false);
+    const [currentComment, setCurrentComment] = useState(null);
     const [newCommentText, setNewCommentText] = useState('');
     const [commentImages, setCommentImages] = useState([]);
 
-    const commentData = review.comments[reviewId] || {
+    // Получаем данные комментариев для данного отзыва
+    const commentData = reviewStore.comments[reviewId] || {
         items: [],
         page: 1,
-        limit: review.commentLimit,
-        totalCount: 0,
+        limit: reviewStore.commentLimit,
+        loading: false,
+        hasMore: true,
     };
 
     useEffect(() => {
-        review.loadComments(reviewId, commentData.page, commentData.limit);
-    }, [reviewId, commentData.page]);
+        // Загружаем комментарии при монтировании компонента
+        reviewStore.loadComments(reviewId);
+    }, [reviewId]);
 
-    const openCommentModal = () => setShowCommentModal(true);
-    const closeCommentModal = () => setShowCommentModal(false);
+    const openCommentModal = (commentToEdit = null) => {
+        if (commentToEdit) {
+            setEditMode(true);
+            setCurrentComment(commentToEdit);
+            setNewCommentText(commentToEdit.text);
+        } else {
+            setEditMode(false);
+            setNewCommentText('');
+            setCommentImages([]);
+        }
+        setShowCommentModal(true);
+    };
 
-    const handleCreateComment = async () => {
+    const closeCommentModal = () => {
+        setShowCommentModal(false);
+        setCurrentComment(null);
+    };
+
+    const handleCreateOrEditComment = async () => {
         try {
-            await review.addComment(reviewId, newCommentText, commentImages);
+            if (editMode) {
+                await reviewStore.editComment(currentComment.id, reviewId, newCommentText);
+            } else {
+                await reviewStore.addComment(reviewId, newCommentText, commentImages);
+            }
             setNewCommentText('');
             setCommentImages([]);
             closeCommentModal();
         } catch (error) {
-            alert('Ошибка при создании комментария: ' + (error.response?.data?.message || error.message));
+            alert('Ошибка при сохранении комментария: ' + (error.response?.data?.message || error.message));
         }
     };
 
-    const setCommentPage = (page) => {
-        review.setCommentPage(reviewId, page);
+    const loadMoreComments = () => {
+        reviewStore.loadMoreComments(reviewId);
     };
 
     return (
@@ -50,25 +74,32 @@ const CommentList = observer(({ reviewId }) => {
                             <strong>{comment.user.email}</strong>: {comment.text}
                         </Card.Text>
                         {comment.images && comment.images.map((img) => (
-                            <img key={img.id} src={`${process.env.REACT_APP_API_URL}/${img.img}`} alt="Comment" style={{ maxWidth: '100px', marginRight: '10px' }} />
+                            <img
+                                key={img.id}
+                                src={`${process.env.REACT_APP_API_URL}/${img.img}`}
+                                alt="Comment"
+                                style={{ maxWidth: '100px', marginRight: '10px' }}
+                            />
                         ))}
                     </Card.Body>
+                    {(user.user.id === comment.userId || user.user.role === 'ADMIN') && (
+                        <Button variant="link" onClick={() => openCommentModal(comment)}>Редактировать</Button>
+                    )}
                 </Card>
             ))}
-            <CommentPagination
-                totalCount={commentData.totalCount}
-                limit={commentData.limit}
-                page={commentData.page}
-                setPage={setCommentPage}
-            />
+            {commentData.hasMore && (
+                <div className="text-center">
+                    <Button variant="link" onClick={loadMoreComments}>Загрузить ещё комментарии</Button>
+                </div>
+            )}
             {user.isAuth && (
                 <>
-                    <Button variant="link" onClick={openCommentModal}>Оставить комментарий</Button>
+                    <Button variant="link" onClick={() => openCommentModal()}>Оставить комментарий</Button>
 
-                    {/* Модальное окно для создания комментария */}
+                    {/* Модальное окно для создания/редактирования комментария */}
                     <Modal show={showCommentModal} onHide={closeCommentModal}>
                         <Modal.Header closeButton>
-                            <Modal.Title>Написать комментарий</Modal.Title>
+                            <Modal.Title>{editMode ? 'Редактировать комментарий' : 'Написать комментарий'}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Form>
@@ -81,19 +112,23 @@ const CommentList = observer(({ reviewId }) => {
                                         onChange={(e) => setNewCommentText(e.target.value)}
                                     />
                                 </Form.Group>
-                                <Form.Group controlId="formCommentImages">
-                                    <Form.Label>Изображения</Form.Label>
-                                    <Form.Control
-                                        type="file"
-                                        multiple
-                                        onChange={(e) => setCommentImages(Array.from(e.target.files))}
-                                    />
-                                </Form.Group>
+                                {!editMode && (
+                                    <Form.Group controlId="formCommentImages">
+                                        <Form.Label>Изображения</Form.Label>
+                                        <Form.Control
+                                            type="file"
+                                            multiple
+                                            onChange={(e) => setCommentImages(Array.from(e.target.files))}
+                                        />
+                                    </Form.Group>
+                                )}
                             </Form>
                         </Modal.Body>
                         <Modal.Footer>
                             <Button variant="secondary" onClick={closeCommentModal}>Отмена</Button>
-                            <Button variant="primary" onClick={handleCreateComment}>Отправить</Button>
+                            <Button variant="primary" onClick={handleCreateOrEditComment}>
+                                {editMode ? 'Сохранить' : 'Отправить'}
+                            </Button>
                         </Modal.Footer>
                     </Modal>
                 </>
