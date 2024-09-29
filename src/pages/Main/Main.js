@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { SHOP_ROUTE } from '../../utils/consts';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import Reviews from '../../components/Reviews/Reviews';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -108,6 +109,7 @@ export default function Main() {
       <ProductSlider />
       <h2 className='Faq'>FAQ</h2>
       <FaqAccordion />
+      <Reviews/>
     </div>
   );
 }

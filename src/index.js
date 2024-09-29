@@ -5,6 +5,7 @@ import App from './App';
 import reportWebVitals from './reportWebVitals';
 import UserStore from './store/UserStore';
 import ThingStore from './store/ThingsStore';
+import ReviewStore from './store/ReviewStore';
 import { SDKProvider } from '@telegram-apps/sdk-react';
 
 
@@ -16,6 +17,7 @@ root.render(
   <Context.Provider value={{
     user: new UserStore(),
     thing: new ThingStore(),
+    review: new ReviewStore(),
   }}>
     <App />
   </Context.Provider>
