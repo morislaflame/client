@@ -13,6 +13,7 @@ import StarRating from '../StarRating/StarRating';
 import { HiMiniTrash } from "react-icons/hi2";
 import StarRatingInput from '../StarRatingInput/StarRatingInput';
 import ImageUploader from '../ImageUploader/ImageUploader';
+import ExpandableText from '../ExpandableText/ExpandableText';
 
 const Reviews = observer(() => {
     const { review, user } = useContext(Context);
@@ -165,7 +166,7 @@ const Reviews = observer(() => {
                                                 <span> <StarRating rating={rev.rating}/> </span>
                                             </Card.Header>
                                             <Card.Body className={styles.review_body}>
-                                                <Card.Text>{rev.text}</Card.Text>
+                                                <ExpandableText text={rev.text} maxHeight={100} style={{width: '70%'}}/>
                                                 <div className={styles.rev_images}>
                                                     {rev.images && rev.images.map((img) => (
                                                         <img key={img.id} src={`${process.env.REACT_APP_API_URL}/${img.img}`} alt="Review" className={styles.rev_img} />
