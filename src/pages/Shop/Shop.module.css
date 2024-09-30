@@ -33,9 +33,12 @@
 
 .shop_warnings {
     display: flex;
+    flex-direction: column;
     width: 100%;
-    padding: calc(var(--index) * 3) calc(var(--index) * 7) calc(var(--index) * 3);
     justify-content: center;
+    text-align: center;
+    align-items: center;
+    margin: calc(var(--index) * 4) 0;
 }
 
 :where(.css-dev-only-do-not-override-qnu6hi).ant-float-btn {
@@ -54,13 +57,11 @@
 }
 
 .telegram_int {
-    padding: calc(var(--index) * 1) calc(var(--index) * 2);
-    background: linear-gradient(150deg, #0672c2, #071d4a);
+    padding: calc(var(--index) * 1) calc(var(--index) * 3);
+    background: linear-gradient(280deg, #c20606d4, #611b1b);
     color: #fff;
     border: 0;
     border-radius: calc(var(--index) * 1);
-    border-bottom: 1px solid #7f7e7e66;
-    border-top: 1px solid #aaa9a9b5;
     box-shadow: 
         0 0 2px black, 
         0 0 5px #000000a3, 
@@ -72,6 +73,5 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
     gap: calc(var(--index) * 0.5);
 }

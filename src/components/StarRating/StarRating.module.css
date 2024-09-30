@@ -1,0 +1,11 @@
+/* src/components/StarRating/StarRating.module.css */
+.starRating {
+    display: flex;
+    align-items: center;
+  }
+  
+  .star {
+    color: #FFD700; /* Золотой цвет для звезд */
+    margin-right: 2px;
+  }
+  

@@ -1,9 +1,10 @@
-// components/CommentList/CommentList.js
-
 import React, { useEffect, useState, useContext } from 'react';
 import { Card, Button, Form, Modal } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
+import { HiMiniPencilSquare } from "react-icons/hi2";
+import { message } from 'antd';
+import styles from './CommentList.module.css'
 
 const CommentList = observer(({ review }) => {
     const { review: reviewStore, user } = useContext(Context);
@@ -14,7 +15,6 @@ const CommentList = observer(({ review }) => {
     const [newCommentText, setNewCommentText] = useState('');
     const [commentImages, setCommentImages] = useState([]);
 
-    // Получаем данные комментариев для данного отзыва
     const commentData = reviewStore.comments[reviewId] || {
         items: [],
         page: 1,
@@ -24,7 +24,6 @@ const CommentList = observer(({ review }) => {
     };
 
     useEffect(() => {
-        // Загружаем комментарии при монтировании компонента
         reviewStore.loadComments(reviewId);
     }, [reviewId]);
 
@@ -57,7 +56,7 @@ const CommentList = observer(({ review }) => {
             setCommentImages([]);
             closeCommentModal();
         } catch (error) {
-            alert('Ошибка при сохранении комментария: ' + (error.response?.data?.message || error.message));
+            message.error('Error when saving a comment: ' + (error.response?.data?.message || error.message));
         }
     };
 
@@ -66,45 +65,52 @@ const CommentList = observer(({ review }) => {
     };
 
     return (
-        <div>
+        <div className={styles.comments}>
             {commentData.items.map((comment) => (
-                <Card key={comment.id} className="mb-2">
-                    <Card.Body>
-                        <Card.Text>
-                            <strong>{comment.user.email}</strong>: {comment.text}
-                        </Card.Text>
-                        {comment.images && comment.images.map((img) => (
-                            <img
-                                key={img.id}
-                                src={`${process.env.REACT_APP_API_URL}/${img.img}`}
-                                alt="Comment"
-                                style={{ maxWidth: '100px', marginRight: '10px' }}
-                            />
-                        ))}
+                <Card key={comment.id} className={styles.comment_card}>
+                    <Card.Body className={styles.comment_body}>
+                        
+                        
+                            <div className={styles.name_comm}>
+                                <strong>{comment.user.email}</strong> {comment.text}
+                                <div className={styles.rev_images}>
+                                    {comment.images && comment.images.map((img) => (
+                                        <img
+                                            className={styles.rev_img}
+                                            key={img.id}
+                                            src={`${process.env.REACT_APP_API_URL}/${img.img}`}
+                                            alt="Comment"
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        <div className={styles.edit_button}>
+                            {(user.user.id === comment.userId || user.user.role === 'ADMIN') && (
+                                <Button variant="dark" onClick={() => openCommentModal(comment)} style={{borderBottomRightRadius: 'calc(var(--index) * 1)'}}><HiMiniPencilSquare /></Button>
+                            )}
+                        </div>
                     </Card.Body>
-                    {(user.user.id === comment.userId || user.user.role === 'ADMIN') && (
-                        <Button variant="link" onClick={() => openCommentModal(comment)}>Редактировать</Button>
-                    )}
+                    
                 </Card>
             ))}
             {commentData.hasMore && (
                 <div className="text-center">
-                    <Button variant="link" onClick={loadMoreComments}>Загрузить ещё комментарии</Button>
+                    <Button variant="second" onClick={loadMoreComments} className={styles.load_btn}>Load more</Button>
                 </div>
             )}
             {user.isAuth && (
                 <>
-                    <Button variant="link" onClick={() => openCommentModal()}>Оставить комментарий</Button>
+                    <Button variant="dark" onClick={() => openCommentModal()} className={styles.leave_btn}>Leave a comment</Button>
 
                     {/* Модальное окно для создания/редактирования комментария */}
                     <Modal show={showCommentModal} onHide={closeCommentModal}>
                         <Modal.Header closeButton>
-                            <Modal.Title>{editMode ? 'Редактировать комментарий' : 'Написать комментарий'}</Modal.Title>
+                            <Modal.Title>{editMode ? 'Edit comment' : 'Write a comment'}</Modal.Title>
                         </Modal.Header>
                         <Modal.Body>
                             <Form>
                                 <Form.Group controlId="formCommentText">
-                                    <Form.Label>Текст комментария</Form.Label>
+                                    <Form.Label>Comment text</Form.Label>
                                     <Form.Control
                                         as="textarea"
                                         rows={3}
@@ -114,7 +120,7 @@ const CommentList = observer(({ review }) => {
                                 </Form.Group>
                                 {!editMode && (
                                     <Form.Group controlId="formCommentImages">
-                                        <Form.Label>Изображения</Form.Label>
+                                        <Form.Label>Images</Form.Label>
                                         <Form.Control
                                             type="file"
                                             multiple
@@ -127,7 +133,7 @@ const CommentList = observer(({ review }) => {
                         <Modal.Footer>
                             <Button variant="secondary" onClick={closeCommentModal}>Отмена</Button>
                             <Button variant="primary" onClick={handleCreateOrEditComment}>
-                                {editMode ? 'Сохранить' : 'Отправить'}
+                                {editMode ? 'Save' : 'Send'}
                             </Button>
                         </Modal.Footer>
                     </Modal>

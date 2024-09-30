@@ -16,6 +16,7 @@ import { FloatButton } from "antd";
 import { FiExternalLink } from "react-icons/fi";
 import { useNavigate } from 'react-router-dom';
 import { TERMS_ROUTE } from '../../utils/consts';
+import Reviews from '../../components/Reviews/Reviews';
 
 const Shop = observer(() => {
   const {thing} = useContext(Context)
@@ -62,7 +63,9 @@ const Shop = observer(() => {
             </div>
           </div>
       </div>
+      <h2 style={{color: 'white'}}>FAQ</h2>
       <FaqAccordion/>
+      <Reviews/>
       <FloatButton.BackTop 
         type='dark'
       />
