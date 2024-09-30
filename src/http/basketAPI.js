@@ -16,7 +16,7 @@ export const removeFromBasket = async (thingId) => {
 }
 
 export const clearBasket = async () => {
-    const { data } = await $authHost.post('api/basket/clear');
+    const { data } = await $authHost.delete('api/basket/clear');
     return data;
 }
 

@@ -133,3 +133,68 @@
     padding: 0;
     width: 100%;
 }
+
+.rev_modal {
+    display: flex !important;
+    width: 100%;
+    height: 100vh;
+    justify-content: center;
+    align-items: center;
+}
+
+.rev_modal_content {
+    background: linear-gradient(to bottom, #111111, black);
+    min-height: auto;
+}
+
+.rev_modal_header {
+    display: flex;
+    width: 100%;
+    color: white;
+    justify-content: center;
+    padding: calc(var(--index)* 1) calc(var(--index)* 0);
+}
+
+
+.rev_modal_body {
+    color: white;
+}
+
+.rev_form {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--index)* 1);
+}
+
+.rev_modal_input {
+    display: flex;
+    flex-direction: column;
+}
+
+.rev_modal_input textarea {
+    border-radius: calc(var(--index) * 1);
+    padding: calc(var(--index) * 1);
+}
+
+.rev_modal_stars {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    margin: calc(var(--index) * 1) 0;
+}
+
+.save_btn {
+    background: linear-gradient(150deg, #0689c2d4, #292587);
+    border: 0;
+    color: #fff;
+    border-radius: calc(var(--index) * 1);
+    padding: calc(var(--index) * 0.7) calc(var(--index) * 2);
+}
+
+.cancel_btn {
+    background: linear-gradient(150deg, #110f17, #707070d4);
+  border: 0;
+  color: #fff;
+  border-radius: calc(var(--index) * 1);
+  padding: calc(var(--index) * 0.7) calc(var(--index) * 2);
+}

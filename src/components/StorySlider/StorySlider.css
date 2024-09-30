@@ -55,6 +55,8 @@
 
   .modal-dialog {
     width: 100vw;
+    display: flex;
+    justify-content: center;
   }
 
   .modal-dialog-centered {

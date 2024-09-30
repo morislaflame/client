@@ -96,9 +96,6 @@
     background: linear-gradient(to bottom, black, #130035cf);
     color: white;
     border-radius: 0 0 calc(var(--index) * 1) calc(var(--index) * 1);
-    border-bottom: 1px solid #7f7e7e66;
-    border-right: 1px solid #7f7e7e66;
-    border-left: 1px solid #7f7e7e66;
     text-align: center;
 }
 
@@ -111,7 +108,6 @@
     gap: calc(var(--index) * 4);
     flex-wrap: wrap;
     padding: calc(var(--index) * 1.5) calc(var(--index) * 0.7);
-    background-color: black;
 }
 
 .brands-icons {

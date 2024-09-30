@@ -1,0 +1,12 @@
+/* src/components/StarRatingInput/StarRatingInput.module.css */
+
+.starRating {
+    display: flex;
+    flex-direction: row;
+}
+
+.star {
+    cursor: pointer;
+    transition: color 200ms;
+    margin: 0 calc(var(--index) * 0.5);
+}

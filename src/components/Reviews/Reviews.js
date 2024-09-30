@@ -10,6 +10,9 @@ import { HiMiniPencilSquare } from "react-icons/hi2";
 import { message } from 'antd';
 import styles from './Reviews.module.css'
 import StarRating from '../StarRating/StarRating';
+import { HiMiniTrash } from "react-icons/hi2";
+import StarRatingInput from '../StarRatingInput/StarRatingInput';
+import ImageUploader from '../ImageUploader/ImageUploader';
 
 const Reviews = observer(() => {
     const { review, user } = useContext(Context);
@@ -19,6 +22,7 @@ const Reviews = observer(() => {
     const [newReviewText, setNewReviewText] = useState('');
     const [newReviewRating, setNewReviewRating] = useState(5);
     const [reviewImages, setReviewImages] = useState([]);
+    
 
     useEffect(() => {
         review.loadReviews();
@@ -48,8 +52,10 @@ const Reviews = observer(() => {
         try {
             if (editMode) {
                 await review.editReview(currentReview.id, newReviewText, newReviewRating);
+                message.success('Review changed')
             } else {
                 await review.addReview(newReviewText, newReviewRating, reviewImages);
+                message.success('Thanks for your feedback!')
             }
             setNewReviewText('');
             setNewReviewRating(5);
@@ -59,6 +65,19 @@ const Reviews = observer(() => {
             message.error('Error when saving a review: ' + (error.response?.data?.message || error.message));
         }
     };
+
+    const handleDeleteReview = async (id) => {
+        const confirmDelete = window.confirm('Вы уверены, что хотите удалить этот отзыв?');
+        if (confirmDelete) {
+            try {
+                await review.removeReview(id);
+                message.success('Отзыв успешно удален');
+            } catch (error) {
+                message.error('Ошибка при удалении отзыва: ' + (error.response?.data?.message || error.message));
+            }
+        }
+    };
+    
 
     const loadMoreReviews = () => {
         review.loadMoreReviews();
@@ -137,7 +156,10 @@ const Reviews = observer(() => {
                                                 </div>
                                                 <div className={styles.edit_button}>
                                                     {(user.user.id === rev.userId || user.user.role === 'ADMIN') && (
-                                                        <Button variant="dark" onClick={() => openReviewModal(rev)}><HiMiniPencilSquare /></Button>
+                                                        <>
+                                                            <Button variant="dark" onClick={() => openReviewModal(rev)}><HiMiniPencilSquare /></Button>
+                                                            <Button variant="dark" onClick={() => handleDeleteReview(rev.id)}><HiMiniTrash /></Button>
+                                                        </>
                                                     )}
                                                 </div>
                                                 <span> <StarRating rating={rev.rating}/> </span>
@@ -165,50 +187,46 @@ const Reviews = observer(() => {
             </div>
 
             {/* Модальное окно для создания/редактирования отзыва */}
-            <Modal show={showReviewModal} onHide={closeReviewModal}>
-                <Modal.Header closeButton>
-                    <Modal.Title>{editMode ? 'Edit review' : 'Write review'}</Modal.Title>
+            <Modal 
+                className={styles.rev_modal} 
+                dialogClassName={styles.rev_modal_dialog}
+                contentClassName={styles.rev_modal_content}
+                show={showReviewModal} onHide={closeReviewModal}>
+                <Modal.Header className={styles.rev_modal_header}>
+                    <Modal.Title>{editMode ? 'Edit feedback' : 'Write feedback'}</Modal.Title>
                 </Modal.Header>
-                <Modal.Body>
-                    <Form>
-                        <Form.Group controlId="formReviewText">
-                            <Form.Label>Text</Form.Label>
+                <Modal.Body className={styles.rev_modal_body}>
+                    <Form className={styles.rev_form}>
+                        <Form.Group controlId="formReviewRating" className={styles.rev_modal_stars}>
+                            <StarRatingInput rating={newReviewRating} setRating={setNewReviewRating} />
+                        </Form.Group>
+                        <Form.Group controlId="formReviewText" className={styles.rev_modal_input}>
+                            {/* <Form.Label>Text</Form.Label> */}
+                            <div className='skelet'></div>
                             <Form.Control
                                 as="textarea"
+                                placeholder="Your experience using our service"
                                 rows={3}
                                 value={newReviewText}
                                 onChange={(e) => setNewReviewText(e.target.value)}
                             />
                         </Form.Group>
-                        <Form.Group controlId="formReviewRating">
-                            <Form.Label>Evaluation</Form.Label>
-                            <Form.Control
-                                as="select"
-                                value={newReviewRating}
-                                onChange={(e) => setNewReviewRating(e.target.value)}
-                            >
-                                {[5, 4, 3, 2, 1].map((rating) => (
-                                    <option key={rating} value={rating}>{rating}</option>
-                                ))}
-                            </Form.Control>
-                        </Form.Group>
+                        
+
                         {!editMode && (
                             <Form.Group controlId="formReviewImages">
-                                <Form.Label>Images</Form.Label>
-                                <Form.Control
-                                    type="file"
-                                    multiple
-                                    onChange={(e) => setReviewImages(Array.from(e.target.files))}
-                                />
+                                {/* <Form.Label>Images</Form.Label> */}
+                                <ImageUploader images={reviewImages} setImages={setReviewImages} />
                             </Form.Group>
                         )}
+
                     </Form>
                 </Modal.Body>
                 <Modal.Footer>
-                    <Button variant="secondary" onClick={closeReviewModal}>Отмена</Button>
-                    <Button variant="primary" onClick={handleCreateOrEditReview}>
+                    <button onClick={closeReviewModal} className={styles.cancel_btn}>Cancel</button>
+                    <button onClick={handleCreateOrEditReview} className={styles.save_btn}>
                         {editMode ? 'Save' : 'Send'}
-                    </Button>
+                    </button>
                 </Modal.Footer>
             </Modal>
         </div>

@@ -1,6 +1,6 @@
 // src/components/StarRating/StarRating.jsx
 import React from 'react';
-import { FaStar, FaRegStar } from 'react-icons/fa';
+import { MdStar, MdStarBorder } from "react-icons/md";
 import PropTypes from 'prop-types';
 import styles from './StarRating.module.css'; // Создадим CSS модуль для стилизации
 
@@ -10,9 +10,9 @@ const StarRating = ({ rating }) => {
 
   for (let i = 1; i <= totalStars; i++) {
     if (i <= rating) {
-      stars.push(<FaStar key={i} className={styles.star} />);
+      stars.push(<MdStar key={i} className={styles.star} />);
     } else {
-      stars.push(<FaRegStar key={i} className={styles.star} />);
+      stars.push(<MdStarBorder key={i} className={styles.star} />);
     }
   }
 
