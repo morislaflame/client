@@ -327,7 +327,7 @@
   .Faq {
     color: white;
     align-self: center;
-    margin-top: calc(var(--index) * 5);
+    margin-top: calc(var(--index) * 3);
   }
 
   .go-shop {

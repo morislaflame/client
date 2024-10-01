@@ -34,8 +34,11 @@ const PriceSlider = observer(() => {
 
     return (
         <div className="price-slider">
-            <label>Minimum price: {currentPriceRange[0]}</label>
-            <label>Maximum price: {currentPriceRange[1]}</label>
+            <div className='min-max'>
+                <label>Minimum price: {currentPriceRange[0]}</label>
+                <label>Maximum price: {currentPriceRange[1]}</label>
+            </div>
+            
             <Slider
                 range
                 min={minPrice}

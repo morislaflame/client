@@ -22,6 +22,9 @@
     padding: 10px 0;
     background-color: #edf2f4;
     color: black;
+    border-radius: calc(var(--index) * 1);
+    font-size: calc(var(--index) * 1.3);
+    font-weight: 500;
 }
 
 .type_name.selected {
@@ -32,14 +35,13 @@
 .typebar {
     margin: calc(var(--index) * 1) auto;
     padding: calc(var(--index) * 1);
-    background-color: #5b04f582;
+    background: linear-gradient(150deg, #ac57ed91, #6b3ce687);
     border-radius: calc(var(--index) * 1);
     border-color: #fedada;
     box-shadow: 
         0 0 2px #5b04f582, 
         0 0 5px #5b04f582, 
-        0 0 10px #5b04f582, 
-        0 0 15px #5b04f582;
+        0 0 10px #5b04f582;
     width: 100%;
     max-width: 400px;
 }
