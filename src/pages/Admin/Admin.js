@@ -336,66 +336,88 @@ const Admin = observer(() => {
       
 
       {/* Секция с возвратами */}
-      <h3>Возвраты на рассмотрении</h3>
-      {pendingReturns.length > 0 ? (
-        <ListGroup>
-          {pendingReturns.map(returnItem => (
-            <ListGroup.Item key={returnItem.id}>
-              Возврат №{returnItem.id}, Товар: {returnItem.thing.name}, Пользователь: {returnItem.user.email}
-              <p>Причина: {returnItem.reason}</p>
-              <Button variant="success" onClick={() => handleApproveReturn(returnItem.id)}>
-                Подтвердить
-              </Button>
-              <Button variant="danger" onClick={() => handleRejectReturn(returnItem.id)} style={{ marginLeft: '10px' }}>
-                Отклонить
-              </Button>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      ) : (
-        <p>Нет возвратов на рассмотрении.</p>
-      )}
+      <div className={styles.returns}>
+        <h3>Новые возвраты</h3>
+        {pendingReturns.length > 0 ? (
+          <ListGroup style={{width: '100%'}}>
+            {pendingReturns.map(returnItem => (
+              <ListGroup.Item key={returnItem.id} className={styles.return_item}>
+                <div className={styles.return_details}>
+                  <span>Возврат №{returnItem.id}</span>
+                  <span>Модель: <p>{returnItem.thing.name}</p></span>
+                  <span>User: <p>{returnItem.user.email}</p></span>
+                  <span>Причина: <p>{returnItem.reason}</p></span>
+                </div>
+                <div className={styles.confirm_reject}>
+                  <button variant="success" onClick={() => handleApproveReturn(returnItem.id)} className={styles.confirm}>
+                    Подтвердить
+                  </button>
+                  <button variant="danger" onClick={() => handleRejectReturn(returnItem.id)} className={styles.reject}>
+                    Отклонить
+                  </button> 
+                </div>
+                
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        ) : (
+          <p>Нет возвратов на рассмотрении.</p>
+        )}
 
 
-      <Button onClick={() => navigate(ALL_RETURNS_ROUTE)} className={styles.all_btn}>Посмотреть все возвраты</Button>
+        <Button onClick={() => navigate(ALL_RETURNS_ROUTE)} className={styles.all_btn}>Посмотреть все возвраты</Button>
+      </div>
+      
 
       {/* Секция с обменами */}
-      <h3>Обмены на рассмотрении</h3>
-      {pendingExchanges.length > 0 ? (
-        <ListGroup>
-          {pendingExchanges.map(exchange => (
-            <ListGroup.Item key={exchange.id}>
-              Обмен №{exchange.id}, Пользователь: {exchange.user.email}
-              <p>Исходный товар: {exchange.OldThing.name} (${exchange.OldThing.price})</p>
-              <p>Новый товар: {exchange.NewThing.name} (${exchange.NewThing.price})</p>
-              <p>Комментарий пользователя: {exchange.userComment}</p>
-              <p>Разница в цене: {exchange.priceDifference > 0 ? `+${exchange.priceDifference}` : exchange.priceDifference} руб.</p>
-              <Button variant="success" onClick={() => handleApproveExchange(exchange.id)}>
-                Подтвердить обмен
-              </Button>
-              <Button variant="danger" onClick={() => handleRejectExchange(exchange.id)} style={{ marginLeft: '10px' }}>
-                Отклонить обмен
-              </Button>
-              {/* Отметка подтверждения доплаты или возврата */}
-              {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
-                <Button variant="warning" onClick={() => handleConfirmPaymentExchange(exchange.id)} style={{ marginLeft: '10px' }}>
-                  Подтвердить доплату
-                </Button>
-              )}
-              {exchange.priceDifference < 0 && !exchange.refundProcessed && (
-                <Button variant="warning" onClick={() => handleConfirmRefundExchange(exchange.id)} style={{ marginLeft: '10px' }}>
-                  Подтвердить возврат
-                </Button>
-              )}
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      ) : (
-        <p>Нет обменов на рассмотрении.</p>
-      )}
+      <div className={styles.returns}>
+        <h3>Новые обмены</h3>
+        {pendingExchanges.length > 0 ? (
+          <ListGroup style={{width: '100%'}}>
+            {pendingExchanges.map(exchange => (
+              <ListGroup.Item key={exchange.id} className={styles.exhange_item}>
+                <div className={styles.return_details}>
+                  <span>Обмен №{exchange.id}</span>
+                  <span>User: <p>{exchange.user.email}</p></span>
+                  <span>Обмен: <p>{exchange.OldThing.name} (${exchange.OldThing.price})</p> </span> 
+                  <span>На: <p>{exchange.NewThing.name} (${exchange.NewThing.price})</p> </span>  
+                  <span>Причина: <p>{exchange.userComment}</p></span>  
+                  <span>Разница в цене: <p>${exchange.priceDifference > 0 ? `+${exchange.priceDifference}` : exchange.priceDifference}</p></span>
+                </div>
+                
+                <div className={styles.confirm_reject}>
+                  <button onClick={() => handleApproveExchange(exchange.id)} className={styles.confirm}>
+                    Подтвердить
+                  </button>
+                  <button onClick={() => handleRejectExchange(exchange.id)} className={styles.reject}>
+                    Отклонить
+                  </button>
+                </div>
+                
+                {/* Отметка подтверждения доплаты или возврата */}
+                {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
+                  <button variant="warning" onClick={() => handleConfirmPaymentExchange(exchange.id)} className={styles.doplata}>
+                    Подтвердить доплату
+                  </button>
+                )}
+                {exchange.priceDifference < 0 && !exchange.refundProcessed && (
+                  <button variant="warning" onClick={() => handleConfirmRefundExchange(exchange.id)} className={styles.vozvrat}>
+                    Подтвердить возврат
+                  </button>
+                )}
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        ) : (
+          <p>Нет обменов на рассмотрении.</p>
+        )}
+
+        <Button onClick={() => navigate(ALL_EXCHANGES_ROUTE)} className={styles.all_btn}>Посмотреть все обмены</Button>
+      </div>
+      
 
 
-      <Button onClick={() => navigate(ALL_EXCHANGES_ROUTE)} className={styles.all_btn}>Посмотреть все обмены</Button> 
+      
     
       {/* Модальное окно для подтверждения удаления */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
