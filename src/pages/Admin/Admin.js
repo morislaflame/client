@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useContext } from 'react';
-import './Admin.css';
 import CreateBrand from '../../components/modals/CreateBrand';
 import CreateModel from '../../components/modals/CreateModel';
 import CreateType from '../../components/modals/CreateType';
@@ -16,6 +15,7 @@ import { fetchNewOrders, confirmOrder, rejectOrder } from '../../http/orderAPI';
 import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/orderAPI';
 import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../http/exchangeAPI'; // Импортируем API для обменов
 import CreatePromoCode from '../../components/modals/CreatePromoCode';
+import styles from './Admin.module.css'
 
 const Admin = observer(() => {
   const [brandVisible, setBrandVisible] = useState(false);
@@ -192,11 +192,11 @@ const Admin = observer(() => {
   };
 
   return (
-    <div className={'container'}>
-      <h2>Панель администратора</h2>
+    <div className={styles.container}>
+      <h2>Admin panel</h2>
 
       {/* Кнопки для добавления новых элементов */}
-      <div className="admin-buttons">
+      <div className={styles.admin_buttons}>
         <button onClick={() => setTypeVisible(true)}>Добавить тип</button>
         <button onClick={() => setBrandVisible(true)}>Добавить бренд</button>
         <button onClick={() => setModelVisible(true)}>Добавить модель</button>
@@ -210,7 +210,8 @@ const Admin = observer(() => {
       <CreatePromoCode show={promoVisible} onHide={() => setPromoVisible(false)}/>
 
       {/* Поиск пользователя по email с автозаполнением */}
-      <div className="search-section">
+      <div className={styles.search_section}>
+      <h3>Найти пользователя</h3>
         <Form.Group className="mt-3">
           <Form.Control
             type="email"
@@ -235,12 +236,12 @@ const Admin = observer(() => {
           </ListGroup>
         )}
 
-        <button onClick={() => handleSearch(email)}>Найти пользователя</button>
+        <button onClick={() => handleSearch(email)} className={styles.src_btn}>Найти пользователя</button>
 
-        <Button onClick={() => navigate(ALL_USERS_ROUTE)}>Посмотреть всех пользователей</Button>
+        <Button onClick={() => navigate(ALL_USERS_ROUTE)} className={styles.all_btn}>Посмотреть всех пользователей</Button>
 
         {searchResult && (
-          <div className="search-result">
+          <div className={styles.search_result}>
             <p>Пользователь: {searchResult.email}, Роль: {searchResult.role}</p>
             {/* Переключатель для изменения роли */}
             <Form.Check 
@@ -256,28 +257,45 @@ const Admin = observer(() => {
       </div>
 
       {/* Секция с новыми заказами */}
-      <h3>Новые заказы</h3>
-      {newOrders.length > 0 ? (
-        <ListGroup>
-          {newOrders.map(order => (
-            <ListGroup.Item key={order.id}>
-              Заказ №{order.id}, Сумма: {order.totalPrice}$, Пользователь: {order.user.email}, Promocode: {order.promo_code.code} - ${order.promo_code.discountValue}
-              Валюта: {order.cryptoCurrency}, Хэш: {order.cryptoTransactionHash}, Сумма: {order.cryptoPaymentAmount}
-              <ul>
-                {order.order_things.map(item => (
-                  <li key={item.id}>Товар: {item.thing.name}, Цена: {item.thing.price}</li>
-                ))}
-              </ul>
-              <Button variant="success" onClick={() => handleConfirmOrder(order.id)}>Подтвердить</Button>
-              <Button variant="danger" onClick={() => handleRejectOrder(order.id)} style={{ marginLeft: '10px' }}>Отклонить</Button>
-            </ListGroup.Item>
-          ))}
-        </ListGroup>
-      ) : (
-        <p>Нет новых заказов.</p>
-      )}
+      <div className={styles.orders}>
+        <h3>Новые заказы</h3>
+        {newOrders.length > 0 ? (
+          <ListGroup style={{width: '100%'}}>
+            {newOrders.map(order => (
+              <ListGroup.Item key={order.id} className={styles.order_item}>
+                <div className={styles.order_details}>
+                  <span>Заказ №{order.id}</span> 
+                  <span>User: <p>{order.user.email}</p> </span>
+                  {order.promo_code ? (
+                      <span>
+                          Promocode: <p>{order.promo_code.code}</p> - <p>${order.promo_code.discountValue}</p>
+                      </span>
+                  ) : (
+                      <></>
+                  )}
+                  <span>Валюта: <p>{order.cryptoCurrency}</p></span>
+                  <span>Хэш: <p>{order.cryptoTransactionHash}</p> </span>
+                  <span>Сумма: <p>{order.cryptoPaymentAmount}</p></span>
+                </div>
+                
+                  {order.order_things.map(item => (
+                    <span key={item.id} className={styles.name_price}>{item.thing.name} ${item.thing.price}</span>
+                  ))}
+                  <div className={styles.confirm_reject}>
+                    <Button variant="success" onClick={() => handleConfirmOrder(order.id)}>Подтвердить</Button>
+                    <Button variant="danger" onClick={() => handleRejectOrder(order.id)}>Отклонить</Button>
+                  </div>
+                
+              </ListGroup.Item>
+            ))}
+          </ListGroup>
+        ) : (
+          <p>Нет новых заказов.</p>
+        )}
 
-      <Button onClick={() => navigate(ALL_ORDERS_ROUTE)}>Посмотреть все заказы</Button>
+        <Button onClick={() => navigate(ALL_ORDERS_ROUTE)} className={styles.all_btn}>Посмотреть все заказы</Button>
+      </div>
+      
 
       {/* Секция с возвратами */}
       <h3>Возвраты на рассмотрении</h3>
@@ -301,7 +319,7 @@ const Admin = observer(() => {
       )}
 
 
-      <Button onClick={() => navigate(ALL_RETURNS_ROUTE)}>Посмотреть все возвраты</Button>
+      <Button onClick={() => navigate(ALL_RETURNS_ROUTE)} className={styles.all_btn}>Посмотреть все возвраты</Button>
 
       {/* Секция с обменами */}
       <h3>Обмены на рассмотрении</h3>
@@ -339,7 +357,7 @@ const Admin = observer(() => {
       )}
 
 
-      <Button onClick={() => navigate(ALL_EXCHANGES_ROUTE)}>Посмотреть все обмены</Button> 
+      <Button onClick={() => navigate(ALL_EXCHANGES_ROUTE)} className={styles.all_btn}>Посмотреть все обмены</Button> 
     
       {/* Модальное окно для подтверждения удаления */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>

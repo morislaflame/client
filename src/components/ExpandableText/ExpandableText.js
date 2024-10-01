@@ -1,3 +1,4 @@
+// src/components/ExpandableText/ExpandableText.jsx
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styles from './ExpandableText.module.css';
@@ -23,7 +24,7 @@ const ExpandableText = ({ text, maxHeight }) => {
             <div
                 ref={textRef}
                 className={`${styles.text} ${isExpanded ? styles.expanded : ''}`}
-                style={{ maxHeight: isExpanded ? 'none' : `${maxHeight}px` }}
+                style={{ maxHeight: isExpanded ? `${textRef.current.scrollHeight}px` : `${maxHeight}px` }}
             >
                 {text}
             </div>
