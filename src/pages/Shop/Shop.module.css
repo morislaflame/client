@@ -58,7 +58,7 @@
 
 .telegram_int {
     padding: calc(var(--index) * 1) calc(var(--index) * 3);
-    background: linear-gradient(280deg, #c20606d4, #611b1b);
+    background: linear-gradient(150deg, #25232d, #707070d4);
     color: #fff;
     border: 0;
     border-radius: calc(var(--index) * 1);

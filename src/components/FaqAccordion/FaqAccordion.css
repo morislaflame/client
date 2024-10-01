@@ -22,7 +22,7 @@
         
     cursor: pointer;
     border-width: 1px;
-    font-size: calc(var(--index) * 1.5);
+    
     margin-right: 0;
     
 }
@@ -39,4 +39,9 @@
 .accordion-button:not(.collapsed) {
   background-color: #e2e3e5; /* Цвет фона активного заголовка */
   color: #000; /* Цвет текста активного заголовка */
+}
+
+
+.acc_item {
+  font-size: calc(var(--index) * 1.3);
 }

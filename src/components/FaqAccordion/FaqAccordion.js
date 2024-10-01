@@ -16,7 +16,18 @@ const FaqAccordion = () => {
       answer: 'Чтобы сделать заказ, выберите интересующий вас товар, добавьте его в корзину и оформите заказ.',
       imageUrl: '../../../../../server/static/back.jpg',
     },
-    // Добавьте больше вопросов и ответов по необходимости
+    {
+      id: 3,
+      question: 'Дрочишь?',
+      answer: 'Бывает',
+      imageUrl: '../../../../../server/static/back.jpg',
+    },
+    {
+      id: 4,
+      question: 'Можно ли?',
+      answer: 'Смотря что',
+      imageUrl: '../../../../../server/static/back.jpg',
+    },
   ];
 
   return (
@@ -24,7 +35,7 @@ const FaqAccordion = () => {
       {faqItems.map(item => (
         <Accordion.Item eventKey={item.id.toString()} key={item.id}>
           <Accordion.Header>
-            <div className="d-flex align-items-center">
+            <div className="acc_item">
               {/* <Image src={item.imageUrl} roundedCircle className="mr-3" /> */}
               <span>{item.question}</span>
             </div>
