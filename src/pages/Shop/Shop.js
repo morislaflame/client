@@ -17,6 +17,7 @@ import { FiExternalLink } from "react-icons/fi";
 import { useNavigate } from 'react-router-dom';
 import { TERMS_ROUTE } from '../../utils/consts';
 import Reviews from '../../components/Reviews/Reviews';
+import { IoMdLock } from "react-icons/io";
 
 const Shop = observer(() => {
   const {thing} = useContext(Context)
@@ -57,11 +58,25 @@ const Shop = observer(() => {
       <div className={styles.mainlist}>
           <ThingList/>
           <Pages/>
-          <div className={styles.shop_warnings}>
-            <div className={styles.telegram_int} onClick={() => navigate(TERMS_ROUTE)}>
-              7-day warranty <FiExternalLink />
+          {/* <div className={styles.shop_warnings}>
+            <div className={styles.horizontal}>
+                <div className={styles.warranty} onClick={() => navigate(TERMS_ROUTE)}>
+                  <span>7-day warranty</span> <IoMdLock className={styles.btn_icn}/>
+                </div>
+                <div className={styles.s} onClick={() => navigate(TERMS_ROUTE)}>
+                  <span>7-day warranty</span> <IoMdLock className={styles.btn_icn}/>
+                </div>
             </div>
-          </div>
+            <div className={styles.horizontal}>
+                <div className={styles.telegram_int} onClick={() => navigate(TERMS_ROUTE)}>
+                  <span>7-day warranty</span> <IoMdLock className={styles.btn_icn}/>
+                </div>
+                <div className={styles.telegram_int} onClick={() => navigate(TERMS_ROUTE)}>
+                  <span>7-day warranty</span> <IoMdLock className={styles.btn_icn}/>
+                </div>
+            </div>
+          </div> */}
+            
       </div>
       <h2 style={{color: 'white'}}>FAQ</h2>
       <FaqAccordion/>
