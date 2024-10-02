@@ -59,7 +59,7 @@
     padding: calc(var(--index) * 0.5);
     border-width: 2px;
     border-radius: calc(var(--index) * 1);
-    background: linear-gradient(to top, #ad21ec, #030107);
+    background: linear-gradient(to top, #7617a1, #030107);
     width: 90%;
 }
 
@@ -226,7 +226,7 @@ hr {
 }
 
 .warranty {
-    background: linear-gradient(150deg, #110f17, #2e2d2dd4);
+    background: linear-gradient(150deg, #110f17, #2e2d2d);
     border: 0;
     color: #fff;
     border-radius: calc(var(--index) * 1);

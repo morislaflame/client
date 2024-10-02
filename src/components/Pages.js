@@ -16,7 +16,7 @@ const Pages = observer(() => {
 
     return (
         <Pagination 
-            className="mt-5"
+            className="mt-3"
             style={{justifyContent: 'center'}}
         >
             {pages.map(page =>

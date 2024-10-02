@@ -9,7 +9,7 @@
 @media (max-width: 600px) {
     .card_list {
         width: 50%;
-        padding: calc(var(--index) * 0.6);
+        padding: calc(var(--index) * 0.4);
     }
   }
 
@@ -23,7 +23,7 @@
     align-items: center;
     border-style: solid;
     /* border-color: #fedada; */
-    border-radius: calc(var(--index) * 0.7);
+    border-radius: calc(var(--index) * 1);
     cursor: pointer;
     border-width: 1px;
     background-color: #111111c4;
