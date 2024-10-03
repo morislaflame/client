@@ -17,14 +17,13 @@ const NavBar = observer(() => {
 
     useEffect(() => {
         if (user.isAuth) {
-            thing.loadBasket(); // Загружаем корзину только если пользователь авторизован
+            thing.loadBasket(); 
         }
     }, [user.isAuth, thing]);
 
     const logOut = () => {
-        thing.clearBasket(); // Используем метод clearBasket для очистки корзины
-        user.logout(); // Выходим из аккаунта
-        navigate(LOGIN_ROUTE); // Перенаправляем на страницу авторизации
+        user.logout(); 
+        navigate(LOGIN_ROUTE); 
     };
 
     return (

@@ -43,7 +43,7 @@ iframe {
 
 :where(.css-dev-only-do-not-override-qnu6hi).ant-select-filled:not(.ant-select-customize-input) .ant-select-selector {
   background: #11111152;
-  border: calc(var(--index) * 1) solid transparent;
+  border: 1px solid transparent;
   color: rgba(255, 255, 255, 0.562);
   text-align: center;
 }
@@ -54,4 +54,8 @@ iframe {
 
 :where(.css-dev-only-do-not-override-qnu6hi) .ant-select-focused .ant-select-single .ant-select-allow-clear .ant-select-show-search {
   color: black;
+}
+
+:where(.css-dev-only-do-not-override-qnu6hi).ant-select-single.ant-select-show-arrow .ant-select-selection-item, :where(.css-dev-only-do-not-override-qnu6hi).ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+  padding-inline-end: 0;
 }

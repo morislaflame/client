@@ -1,15 +1,14 @@
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
-import './PaymentPage.css';
 import { message, QRCode } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
-import Dropdown from 'react-bootstrap/Dropdown';
-import DropdownButton from 'react-bootstrap/DropdownButton';
+import { Select } from 'antd';
 import { Context } from '../../index';
 import { createOrder } from '../../http/orderAPI';
 import { createExchangeRequest } from '../../http/exchangeAPI'; // Импортируем функцию для создания запроса на обмен
 import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
-import { Typography } from 'antd';
+import styles from './PaymentPage.module.css';
+import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from "react-icons/si";
 
 const PaymentPage = () => {
   const { thing } = useContext(Context);
@@ -27,23 +26,26 @@ const PaymentPage = () => {
     ? exchangeData.priceDifference
     : thing.totalPrice || 0;
 
-  // Адреса кошельков для разных криптовалют
   const wallets = {
     usdt: {
       address: "0x5541a5FD4Cc660F356601DBeCdD2be3e19548095",
       currency: "USDT",
+      icon: <SiTether/>,
     },
     bitcoin: {
       address: "bc1q0jh3phrlml2y3uszj38w33jmrhefydk36ekvv0",
       currency: "BTC",
+      icon: <SiBitcoinsv/>,
     },
     ethereum: {
       address: "0x5541a5FD4Cc660F356601DBeCdD2be3e19548095",
       currency: "ETH",
+      icon: <SiEthereum/>,
     },
     litecoin: {
       address: "ltc1qe6jl3ah8ar586rzjv7lj4aypssx4j6wlscxj2s",
       currency: "LTC",
+      icon: <SiLitecoin/>,
     },
   };
 
@@ -51,11 +53,11 @@ const PaymentPage = () => {
     BTC: null,
     ETH: null,
     LTC: null,
-    USDT: 1, // USDT обычно равен 1 USD
+    USDT: 1, 
   });
 
-  const [selectedCrypto, setSelectedCrypto] = useState('usdt'); // Криптовалюта по умолчанию
-  const [cryptoTransactionHash, setCryptoTransactionHash] = useState(''); // Хэш транзакции
+  const [selectedCrypto, setSelectedCrypto] = useState('usdt'); 
+  const [cryptoTransactionHash, setCryptoTransactionHash] = useState(''); 
   const [isHashValid, setIsHashValid] = useState(false); // Проверка валидности хэша
 
   // Функция для получения курса криптовалют с CoinGecko API
@@ -78,18 +80,18 @@ const PaymentPage = () => {
   useEffect(() => {
     fetchCryptoRates();
 
-    // Устанавливаем интервал для обновления данных каждые 2 минуты
+    // Устанавливаем интервал для обновления данных каждые 15 минут
     const interval = setInterval(() => {
       fetchCryptoRates();
-    }, 120000); // 120000 миллисекунд = 2 минуты
+    }, 900000); 
 
-    return () => clearInterval(interval); // Очищаем интервал при размонтировании компонента
+    return () => clearInterval(interval); 
   }, []);
 
   // Конвертация суммы в зависимости от выбранной криптовалюты
   const convertAmountForCrypto = (crypto) => {
     const rate = cryptoRates[crypto];
-    if (!rate) return "Загрузка...";
+    if (!rate) return "Loading...";
     return (totalAmountUSD / rate).toFixed(6); // Считаем сумму в криптовалюте
   };
 
@@ -120,40 +122,47 @@ const PaymentPage = () => {
         navigate(USER_ACCOUNT_ROUTE);
       }
     } catch (error) {
-      console.error('Ошибка при обработке оплаты:', error);
+      message.error('Error during payment processing:', error)
+      console.error('Error during payment processing:', error);
     }
   };
 
   return (
-    <div className="payment-page">
-      <div className="payment-details">
-        <h3>Сумма к оплате: {totalAmountUSD} USD</h3>
+    <div className={styles.payment_page}>
+      <div className={styles.payment_details}>
+        <h4>Total: {totalAmountUSD} USD</h4>
 
         {/* Селектор для выбора криптовалюты */}
-        <div className="selector-pay">
-          <label htmlFor="cryptoSelect">Выберите криптовалюту для оплаты:</label>
-          <DropdownButton
-            id="dropdown-cryptoSelect"
-            title={` ${wallets[selectedCrypto].currency}`}
-            onSelect={(key) => setSelectedCrypto(key)}
-            variant="dark"
-          >
-            {Object.keys(wallets).map((key) => (
-              <Dropdown.Item key={key} eventKey={key}>
-                {wallets[key].currency}
-              </Dropdown.Item>
-            ))}
-          </DropdownButton>
+        <div className={styles.selector_pay}>
+          <div className={styles.choose_top}>
+            <label htmlFor="cryptoSelect">Choose a cryptocurrency for payment:</label>
+          </div>
+          <Select
+            id="cryptoSelect"
+            value={selectedCrypto}
+            onChange={(value) => setSelectedCrypto(value)}
+            placeholder="Select"
+            suffixIcon={<span/>}
+            options={Object.keys(wallets).map((key) =>({
+              label: (
+                <div className={styles.crypto_selector}>
+                  <span>{wallets[key].currency}</span>
+                  <span>{wallets[key].icon}</span>
+                </div>
+              ),
+              value: key,
+            }))}
+          />
         </div>
 
         {/* Отображение QR-кода и суммы для выбранной криптовалюты */}
-        <div className="crypto-payment">
-          <h4>
-            Сумма: {convertAmountForCrypto(wallets[selectedCrypto].currency)}{" "}
+        <div className={styles.crypto_payment}>
+          <h5>
+            {convertAmountForCrypto(wallets[selectedCrypto].currency)}{" "}
             {wallets[selectedCrypto].currency}
-          </h4>
-          <div className="qr-box">
-            <div className="qr-code">
+          </h5>
+          <div className={styles.qr_box}>
+            <div className={styles.qr_code}>
             <QRCode
               value={`${wallets[selectedCrypto].address}?amount=${convertAmountForCrypto(wallets[selectedCrypto].currency)}`}
               size={256}
@@ -164,52 +173,54 @@ const PaymentPage = () => {
             </div>
           </div>
 
-          <p>
-            Wallet address {wallets[selectedCrypto].currency}:{" "}
+          <div className={styles.address}>
+            <span>Wallet address {wallets[selectedCrypto].currency}:{" "}</span>
             <span
               onClick={() => {
                 navigator.clipboard.writeText(wallets[selectedCrypto].address)
                   .then(() => {
-                    message.success("Codied!");
+                    message.success("Copied!");
                   })
                   .catch((err) => {
                     console.error("Error when copying an address:", err);
                     message.error("Error");
                   });
               }}
-              className="copyableAddress"
+              className={styles.copyable_address}
               title="Click to copy the address"
             >
               {wallets[selectedCrypto].address}
             </span>
-          </p>
+          </div>
 
 
         </div>
 
         {/* Поле для ввода хэша транзакции */}
-        <div className="transaction-hash">
-          <label htmlFor="transactionHash">Введите хэш транзакции:</label>
+        <div className={styles.transaction_hash}>
+          <label htmlFor="transactionHash">After the transfer, insert the transaction hash and click on confirmation</label>
           <input
             type="text"
             id="transactionHash"
             value={cryptoTransactionHash}
             onChange={handleTransactionHashChange}
-            placeholder="Введите хэш транзакции"
-          />
-        </div>
+            placeholder="Enter transaction hash"
 
-        {/* Кнопка подтверждения оплаты */}
+          />
+          {/* Кнопка подтверждения оплаты */}
         <button 
-          className="btn btn-primary" 
+          className={styles.confirm_btn} 
           onClick={handleConfirmPayment} 
           disabled={!isHashValid} // Деактивируем кнопку, если хэш не валидный
         >
-          Подтвердить оплату
+          Confirm payment
         </button>
+        </div>
+
+        
 
         <p style={{ color: "gray", fontSize: "0.9em" }}>
-          Курс криптовалют обновляется каждые 2 минуты. Пожалуйста, убедитесь, что оплата произведена с актуальным курсом.
+          Cryptocurrency exchange rate is updated every 15 minutes. Please make sure that payment is made with the current exchange rate.
         </p>
       </div>
     </div>
