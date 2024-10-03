@@ -271,15 +271,19 @@ const UserAccount = observer(() => {
 
             {/* Раздел заказов */}
             <div className={styles.orders}>
-                <h3>My Orders</h3>
-                <AutoComplete
-                    options={orderOptions}
-                    style={{ marginBottom: '20px', maxWidth: '300px' }}
-                    onSelect={value => setOrderSearch(value)}
-                    onSearch={value => setOrderSearch(value)}
-                    placeholder="Search Order by ID"
-                    allowClear
-                />
+                <div className={styles.order_top}>
+                    <h3>My Orders</h3>
+                    <AutoComplete
+                        options={orderOptions}
+                        onSelect={value => setOrderSearch(value)}
+                        onSearch={value => setOrderSearch(value)}
+                        placeholder="Search Order"
+                        allowClear
+                        variant="filled"
+                        className={styles.search}
+                    />
+                </div>
+                
                 {filteredOrders && filteredOrders.length > 0 ? (
                     <Slider {...sliderSettings} className={styles.slider}>
                         {filteredOrders.map(order => (
@@ -330,15 +334,18 @@ const UserAccount = observer(() => {
 
             {/* Раздел возвратов */}
             <div className={styles.returns}>
+            <div className={styles.order_top}>
                 <h3>My Returns</h3>
                 <AutoComplete
                     options={returnOptions}
-                    style={{ marginBottom: '20px', maxWidth: '300px' }}
                     onSelect={value => setReturnSearch(value)}
                     onSearch={value => setReturnSearch(value)}
-                    placeholder="Search Return by ID"
+                    placeholder="Search Return"
                     allowClear
+                    variant="filled"
+                    className={styles.search}
                 />
+            </div>
                 {filteredReturns && filteredReturns.length > 0 ? (
                     <Slider {...sliderSettings} className={styles.slider}>
                         {filteredReturns.map(returnItem => (
@@ -380,15 +387,18 @@ const UserAccount = observer(() => {
 
             {/* Раздел запросов на обмен */}
             <div className={styles.exchanges}>
+            <div className={styles.order_top}>
                 <h3>My Exchanges</h3>
                 <AutoComplete
                     options={exchangeOptions}
-                    style={{ marginBottom: '20px', maxWidth: '300px' }}
                     onSelect={value => setExchangeSearch(value)}
                     onSearch={value => setExchangeSearch(value)}
-                    placeholder="Search Exchange by ID"
+                    placeholder="Search Exchange"
                     allowClear
+                    variant="filled"
+                    className={styles.search}
                 />
+            </div>
                 {filteredExchanges && filteredExchanges.length > 0 ? (
                     <Slider {...sliderSettings} className={styles.slider}>
                         {filteredExchanges.map(exchange => (

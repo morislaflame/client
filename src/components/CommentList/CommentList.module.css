@@ -77,4 +77,9 @@
 .leave_btn {
     margin-top: calc(var(--index) * 0.7);
     font-size: calc(var(--index) * 1.2);
+    background: linear-gradient(150deg, #110f17, #707070d4);
+    border: 0;
+    color: #fff;
+    border-radius: calc(var(--index) * 1);
+    padding: calc(var(--index) * 0.7);
 }

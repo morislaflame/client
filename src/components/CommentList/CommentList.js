@@ -1,12 +1,10 @@
 import React, { useEffect, useState, useContext } from 'react';
+import { Card, Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { HiMiniPencilSquare, HiMiniTrash } from "react-icons/hi2";
-import { message, Image, Card, Button, Form, Modal, Spin, Upload, Input } from 'antd';
-import { UploadOutlined } from '@ant-design/icons';
+import { message, Image } from 'antd'; // Importing Image from antd
 import styles from './CommentList.module.css';
-
-const { Meta } = Card;
 
 const CommentList = observer(({ review }) => {
     const { review: reviewStore, user } = useContext(Context);
@@ -21,12 +19,8 @@ const CommentList = observer(({ review }) => {
         if (reviewStore && typeof reviewStore.loadComments === 'function') {
             reviewStore.loadComments(reviewId);
         } else {
-            console.error('Метод loadComments не найден в reviewStore');
+            console.error('Method loadComments not found in reviewStore');
         }
-
-        return () => {
-            commentImages.forEach(img => URL.revokeObjectURL(img));
-        };
     }, [reviewId, reviewStore]);
 
     const openCommentModal = (commentToEdit = null) => {
@@ -49,26 +43,26 @@ const CommentList = observer(({ review }) => {
 
     const handleCreateOrEditComment = async () => {
         if (!newCommentText.trim()) {
-            message.warning('Комментарий не может быть пустым.');
+            message.warning('Comment cannot be empty.');
             return;
         }
 
         try {
             if (editMode) {
                 if (typeof reviewStore.editComment === 'function') {
-                    await reviewStore.editComment(currentComment.id, reviewId, newCommentText, commentImages);
-                    message.success('Комментарий успешно изменен');
+                    await reviewStore.editComment(currentComment.id, reviewId, newCommentText);
+                    message.success('Comment successfully edited');
                 } else {
-                    console.error('Метод editComment не найден в reviewStore');
-                    message.error('Ошибка при редактировании комментария.');
+                    console.error('Method editComment not found in reviewStore');
+                    message.error('Error editing comment.');
                 }
             } else {
                 if (typeof reviewStore.addComment === 'function') {
                     await reviewStore.addComment(reviewId, newCommentText, commentImages);
-                    message.success('Спасибо за ваш комментарий!');
+                    message.success('Thank you for your feedback!');
                 } else {
-                    console.error('Метод addComment не найден в reviewStore');
-                    message.error('Ошибка при добавлении комментария.');
+                    console.error('Method addComment not found in reviewStore');
+                    message.error('Error adding comment.');
                 }
             }
             setNewCommentText('');
@@ -76,37 +70,33 @@ const CommentList = observer(({ review }) => {
             closeCommentModal();
         } catch (error) {
             console.error('Error when saving a comment:', error);
-            message.error('Ошибка при сохранении комментария: ' + (error.response?.data?.message || error.message));
+            message.error('Error saving comment: ' + (error.response?.data?.message || error.message));
         }
     };
 
     const handleDeleteComment = async (id) => {
-        Modal.confirm({
-            title: 'Вы уверены, что хотите удалить этот комментарий?',
-            okText: 'Да',
-            cancelText: 'Нет',
-            onOk: async () => {
-                try {
-                    if (typeof reviewStore.removeComment === 'function') {
-                        await reviewStore.removeComment(id);
-                        message.success('Комментарий успешно удален');
-                    } else {
-                        console.error('Метод removeComment не найден в reviewStore');
-                        message.error('Ошибка при удалении комментария.');
-                    }
-                } catch (error) {
-                    console.error('Ошибка при удалении комментария:', error);
-                    message.error('Ошибка при удалении комментария: ' + (error.response?.data?.message || error.message));
+        const confirmDelete = window.confirm('Are you sure you want to delete this comment?');
+        if (confirmDelete) {
+            try {
+                if (typeof reviewStore.removeComment === 'function') {
+                    await reviewStore.removeComment(id);
+                    message.success('Comment successfully deleted');
+                } else {
+                    console.error('Method removeComment not found in reviewStore');
+                    message.error('Error deleting comment.');
                 }
-            },
-        });
+            } catch (error) {
+                console.error('Error deleting comment:', error);
+                message.error('Error deleting comment: ' + (error.response?.data?.message || error.message));
+            }
+        }
     };
 
     const loadMoreComments = () => {
         if (typeof reviewStore.loadMoreComments === 'function') {
             reviewStore.loadMoreComments(reviewId);
         } else {
-            console.error('Метод loadMoreComments не найден в reviewStore');
+            console.error('Method loadMoreComments not found in reviewStore');
         }
     };
 
@@ -119,139 +109,134 @@ const CommentList = observer(({ review }) => {
     };
 
     if (reviewStore.loadingComments && commentData.items.length === 0) {
-        return (
-            <div className={styles.spinner_container}>
-                <Spin tip="Загрузка комментариев..." />
-            </div>
-        );
+        return <Spinner animation="border" />;
     }
 
     return (
         <div className={styles.comments}>
             {commentData.items.map((comment) => (
-                <Card key={comment.id} className={styles.comment_card} hoverable>
-                    <Meta
-                        avatar={<strong>{comment.user.email}</strong>}
-                        title={new Date(comment.createdAt).toLocaleString()}
-                        description={
-                            <div className={styles.comment_content}>
-                                <span className={styles.comment_text}>{comment.text}</span>
-                                {comment.images && comment.images.length > 0 && (
-                                    <div className={styles.rev_images}>
-                                        <Image.PreviewGroup>
-                                            {comment.images.map((img) => (
-                                                <Image
-                                                    key={img.id}
-                                                    src={`${process.env.REACT_APP_API_URL}/${img.img}`}
-                                                    alt="Comment"
-                                                    className={styles.rev_img}
-                                                    width={100}
-                                                    style={{ marginRight: '10px', cursor: 'pointer' }}
-                                                />
-                                            ))}
-                                        </Image.PreviewGroup>
-                                    </div>
+                <Card key={comment.id} className={styles.comment_card}>
+                    <Card.Body className={styles.comment_body}>
+                        <div className={styles.name_comm}>
+                            <strong>{comment.user.email}</strong>
+                            <span className={styles.comment_text}>
+                                {comment.text}
+                            </span>
+                            <div className={styles.rev_images}>
+                                {comment.images && comment.images.length > 0 ? (
+                                    comment.images.map((img) => (
+                                        <Image
+                                            key={img.id}
+                                            src={`${process.env.REACT_APP_API_URL}/${img.img}`}
+                                            alt="Comment"
+                                            className={styles.rev_img}
+                                            width={100}
+                                            style={{ marginRight: '10px', cursor: 'pointer' }}
+                                        />
+                                    ))
+                                ) : (
+                                    <p>No images</p>
                                 )}
                             </div>
-                        }
-                    />
-                    {(user.user.id === comment.userId || user.user.role === 'ADMIN') && (
-                        <div className={styles.action_buttons}>
-                            <Button
-                                type="link"
-                                icon={<HiMiniPencilSquare />}
-                                onClick={() => openCommentModal(comment)}
-                                className={styles.edit_btn}
-                            />
-                            <Button
-                                type="link"
-                                danger
-                                icon={<HiMiniTrash />}
-                                onClick={() => handleDeleteComment(comment.id)}
-                                className={styles.delete_btn}
-                            />
                         </div>
-                    )}
+                        <div className={styles.edit_button}>
+                            {(user.user.id === comment.userId || user.user.role === 'ADMIN') && (
+                                <>
+                                    <Button
+                                        variant="dark"
+                                        onClick={() => openCommentModal(comment)}
+                                        className={styles.edit_btn}
+                                    >
+                                        <HiMiniPencilSquare />
+                                    </Button>
+                                    <Button
+                                        variant="dark"
+                                        onClick={() => handleDeleteComment(comment.id)}
+                                        className={styles.delete_btn}
+                                    >
+                                        <HiMiniTrash />
+                                    </Button>
+                                </>
+                            )}
+                        </div>
+                    </Card.Body>
                 </Card>
             ))}
             {commentData.hasMore && (
                 <div className="text-center">
-                    <Button type="default" onClick={loadMoreComments} className={styles.load_btn}>
-                        Загрузить больше
+                    <Button variant="secondary" onClick={loadMoreComments} className={styles.load_btn}>
+                        Load more
                     </Button>
                 </div>
             )}
             {user.isAuth && (
                 <>
-                    <Button type="primary" onClick={() => openCommentModal()} className={styles.leave_btn}>
-                        Оставить комментарий
+                    <Button variant="dark" onClick={() => openCommentModal()} className={styles.leave_btn}>
+                        Leave a comment
                     </Button>
 
-                    {/* Модальное окно для создания/редактирования комментария */}
+                    {/* Modal window for creating/editing a comment */}
                     <Modal
-                        title={editMode ? 'Редактировать комментарий' : 'Написать комментарий'}
-                        visible={showCommentModal}
-                        onCancel={closeCommentModal}
-                        footer={[
-                            <Button key="back" onClick={closeCommentModal}>
-                                Отмена
-                            </Button>,
-                            <Button key="submit" type="primary" onClick={handleCreateOrEditComment}>
-                                {editMode ? 'Сохранить' : 'Отправить'}
-                            </Button>,
-                        ]}
-                        centered
-                        destroyOnClose
+                        className={styles.rev_modal}
+                        dialogClassName={styles.rev_modal_dialog}
+                        contentClassName={styles.rev_modal_content}
+                        show={showCommentModal}
+                        onHide={closeCommentModal}
                     >
-                        <Form layout="vertical">
-                            <Form.Item label="Текст комментария">
-                                <Input.TextArea
-                                    rows={3}
-                                    value={newCommentText}
-                                    onChange={(e) => setNewCommentText(e.target.value)}
-                                    placeholder="Ваш комментарий..."
-                                />
-                            </Form.Item>
-                            {!editMode && (
-                                <Form.Item label="Изображения">
-                                    <Upload
-                                        listType="picture-card"
-                                        multiple
-                                        beforeUpload={() => false}
-                                        onChange={({ fileList }) => {
-                                            const images = fileList.map(file => {
-                                                if (file.originFileObj) {
-                                                    return URL.createObjectURL(file.originFileObj);
-                                                }
-                                                return file.url;
-                                            });
-                                            setCommentImages(images);
-                                        }}
-                                        accept="image/*"
-                                    >
-                                        {commentImages.length >= 8 ? null : (
-                                            <div>
-                                                <UploadOutlined />
-                                                <div style={{ marginTop: 8 }}>Загрузить</div>
+                        <Modal.Header className={styles.rev_modal_header} closeButton>
+                            <Modal.Title>{editMode ? 'Edit comment' : 'Write a comment'}</Modal.Title>
+                        </Modal.Header>
+                        <Modal.Body className={styles.rev_modal_body}>
+                            <Form className={styles.rev_form}>
+                                <Form.Group controlId="formCommentText" className={styles.rev_modal_input}>
+                                    {/* Optional label or placeholder */}
+                                    <Form.Control
+                                        as="textarea"
+                                        placeholder="Your comment..."
+                                        rows={3}
+                                        value={newCommentText}
+                                        onChange={(e) => setNewCommentText(e.target.value)}
+                                    />
+                                </Form.Group>
+
+                                {!editMode && (
+                                    <Form.Group controlId="formCommentImages">
+                                        {/* Images uploader component or input */}
+                                        {/* If you have an ImageUploader component similar to Reviews, use it here */}
+                                        {/* For now, we can keep the Form.Control for file input */}
+                                        <Form.Control
+                                            type="file"
+                                            multiple
+                                            accept="image/*"
+                                            onChange={(e) => {
+                                                const files = Array.from(e.target.files);
+                                                const images = files.map(file => URL.createObjectURL(file));
+                                                setCommentImages(images);
+                                            }}
+                                        />
+                                        {commentImages.length > 0 && (
+                                            <div className={styles.selected_images}>
+                                                {commentImages.map((img, index) => (
+                                                    <Image
+                                                        key={index}
+                                                        src={img}
+                                                        alt={`Selected ${index + 1}`}
+                                                        width={100}
+                                                        style={{ marginRight: '10px', cursor: 'pointer' }}
+                                                    />
+                                                ))}
                                             </div>
                                         )}
-                                    </Upload>
-                                    {commentImages.length > 0 && (
-                                        <div className={styles.selected_images}>
-                                            {commentImages.map((img, index) => (
-                                                <Image
-                                                    key={index}
-                                                    src={img}
-                                                    alt={`Selected ${index + 1}`}
-                                                    width={100}
-                                                    style={{ marginRight: '10px', cursor: 'pointer' }}
-                                                />
-                                            ))}
-                                        </div>
-                                    )}
-                                </Form.Item>
-                            )}
-                        </Form>
+                                    </Form.Group>
+                                )}
+                            </Form>
+                        </Modal.Body>
+                        <Modal.Footer>
+                            <button onClick={closeCommentModal} className={styles.cancel_btn}>Cancel</button>
+                            <button onClick={handleCreateOrEditComment} className={styles.save_btn}>
+                                {editMode ? 'Save' : 'Send'}
+                            </button>
+                        </Modal.Footer>
                     </Modal>
                 </>
             )}

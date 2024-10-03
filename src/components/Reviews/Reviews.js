@@ -87,7 +87,7 @@ const Reviews = observer(() => {
     }
 
     const sliderSettings = {
-        dots: true,
+        dots: false,
         infinite: false,
         speed: 500,
         slidesToShow: 7,
