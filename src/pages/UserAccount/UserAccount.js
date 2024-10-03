@@ -31,6 +31,10 @@ const UserAccount = observer(() => {
     const [returnSearch, setReturnSearch] = useState('');
     const [exchangeSearch, setExchangeSearch] = useState('');
 
+
+
+
+
     const handleClose = () => {
         setShow(false);
         setConfirmationMessage('');
@@ -194,6 +198,9 @@ const UserAccount = observer(() => {
           )
         : user.userInfo.exchangeRequests;
 
+    const hasReturns = user.userInfo.returns && user.userInfo.returns.length > 0;
+    const hasExchanges = user.userInfo.exchangeRequests && user.userInfo.exchangeRequests.length > 0;
+
     return (
         <div className={styles.useraccount}>
 
@@ -204,7 +211,6 @@ const UserAccount = observer(() => {
                 </div>
                 <div className={styles.userinfo}>
                     <p>Email: {user.userInfo.email}</p>
-                    <p>Роль: {user.userInfo.role}</p>
                 </div>
             </div>
 
@@ -265,7 +271,7 @@ const UserAccount = observer(() => {
                         })}
                     </div>
                 ) : (
-                    <p>You don't have any Models.</p>
+                    <span className={styles.placeholder}>You don't have any Models.</span>
                 )}
             </div>
 
@@ -333,19 +339,20 @@ const UserAccount = observer(() => {
             </div>
 
             {/* Раздел возвратов */}
+            {hasReturns && (
             <div className={styles.returns}>
-            <div className={styles.order_top}>
-                <h3>My Returns</h3>
-                <AutoComplete
-                    options={returnOptions}
-                    onSelect={value => setReturnSearch(value)}
-                    onSearch={value => setReturnSearch(value)}
-                    placeholder="Search Return"
-                    allowClear
-                    variant="filled"
-                    className={styles.search}
-                />
-            </div>
+                <div className={styles.order_top}>
+                    <h3>My Returns</h3>
+                    <AutoComplete
+                        options={returnOptions}
+                        onSelect={value => setReturnSearch(value)}
+                        onSearch={value => setReturnSearch(value)}
+                        placeholder="Search Return"
+                        allowClear
+                        variant="filled"
+                        className={styles.search}
+                    />
+                </div>
                 {filteredReturns && filteredReturns.length > 0 ? (
                     <Slider {...sliderSettings} className={styles.slider}>
                         {filteredReturns.map(returnItem => (
@@ -384,21 +391,24 @@ const UserAccount = observer(() => {
                     <p>У вас нет возвратов с указанным ID.</p>
                 )}
             </div>
+            )}
 
+            
             {/* Раздел запросов на обмен */}
+            {hasExchanges && (
             <div className={styles.exchanges}>
-            <div className={styles.order_top}>
-                <h3>My Exchanges</h3>
-                <AutoComplete
-                    options={exchangeOptions}
-                    onSelect={value => setExchangeSearch(value)}
-                    onSearch={value => setExchangeSearch(value)}
-                    placeholder="Search Exchange"
-                    allowClear
-                    variant="filled"
-                    className={styles.search}
-                />
-            </div>
+                <div className={styles.order_top}>
+                    <h3>My Exchanges</h3>
+                    <AutoComplete
+                        options={exchangeOptions}
+                        onSelect={value => setExchangeSearch(value)}
+                        onSearch={value => setExchangeSearch(value)}
+                        placeholder="Search Exchange"
+                        allowClear
+                        variant="filled"
+                        className={styles.search}
+                    />
+                </div>
                 {filteredExchanges && filteredExchanges.length > 0 ? (
                     <Slider {...sliderSettings} className={styles.slider}>
                         {filteredExchanges.map(exchange => (
@@ -441,6 +451,7 @@ const UserAccount = observer(() => {
                     <p>У вас нет запросов на обмен с указанным ID.</p>
                 )}
             </div>
+            )}
 
             <CustomOffcanvas show={show} onHide={handleClose} placement="bottom">
                 <CustomOffcanvasHeader>

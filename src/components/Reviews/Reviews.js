@@ -183,9 +183,9 @@ const Reviews = observer(() => {
                                             </Card.Body>
                                         </div>
                                         
-                                        <Card.Footer className={styles.rev_footer}>
+                                        {/* <Card.Footer className={styles.rev_footer}>
                                             <CommentList review={rev} />
-                                        </Card.Footer>
+                                        </Card.Footer> */}
                                         
                                     </Card>
                                 </div>
