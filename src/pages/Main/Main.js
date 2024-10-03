@@ -107,9 +107,10 @@ export default function Main() {
         <div className='go-shop'><MyButton text="Go to store" onClick={handleClick} /></div>
       </div>
       <ProductSlider />
+      <Reviews/>
       <h2 className='Faq'>FAQ</h2>
       <FaqAccordion />
-      <Reviews/>
+      
     </div>
   );
 }

@@ -59,9 +59,10 @@ const Shop = observer(() => {
           <ThingList/>
           <Pages/>
       </div>
+      <Reviews/>
       <h2 style={{color: 'white', marginTop: '15px'}}>FAQ</h2>
       <FaqAccordion/>
-      <Reviews/>
+      
       <FloatButton.BackTop 
         type='dark'
       />

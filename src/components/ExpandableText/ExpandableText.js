@@ -30,7 +30,7 @@ const ExpandableText = ({ text, maxHeight }) => {
             </div>
             {isOverflow && (
                 <button className={styles.toggleButton} onClick={toggleExpand}>
-                    {isExpanded ? 'Скрыть отзыв' : 'Показать отзыв полностью'}
+                    {isExpanded ? 'Hide review' : 'Show full review'}
                 </button>
             )}
         </div>

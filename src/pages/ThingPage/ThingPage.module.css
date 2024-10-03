@@ -239,6 +239,6 @@ hr {
 }
 
 .btn_icn {
-    color: green;
+    color: #05ba05;
     font-size: calc(var(--index) * 1.5);
 }
