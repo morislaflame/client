@@ -38,7 +38,9 @@ const ThingPage = observer(() => {
         const errorMessage = error.response?.data?.message || error.message;
         message.error('Error adding to cart: ' + errorMessage);
       }
-    } else {navigate(LOGIN_ROUTE)}
+    } else {
+      navigate(LOGIN_ROUTE)
+    }
     
   };
 
@@ -136,28 +138,31 @@ const ThingPage = observer(() => {
         </div>
       </div>
 
-      <div className={styles.price_n_buy}>
-        <div className={styles.inside}>
-          <span className={styles.price}>${thing.price}</span>
-          <div className={styles.add_to_card}>
-            <button className={styles.buy} onClick={handleAddToBasket} disabled={isInBasket}>
-              {isInBasket ? 'Added' : 'Add to cart'}
-            </button>
-            <Button
-              className={styles.shopping_card}
-              variant="outine-light"
-              onClick={() => navigate(BASKET_ROUTE)}
-              style={{ height: '100%' }}
-            >
-              <FaShoppingCart size={28} />
-            </Button>
+      {/* Условный рендеринг блока price_n_buy */}
+      {thing.status !== 'purchased' && (
+        <div className={styles.price_n_buy}>
+          <div className={styles.inside}>
+            <span className={styles.price}>${thing.price}</span>
+            <div className={styles.add_to_card}>
+              <button className={styles.buy} onClick={handleAddToBasket} disabled={isInBasket}>
+                {isInBasket ? 'Added' : 'Add to cart'}
+              </button>
+              <Button
+                className={styles.shopping_card}
+                variant="outine-light"
+                onClick={() => navigate(BASKET_ROUTE)}
+                style={{ height: '100%' }}
+              >
+                <FaShoppingCart size={28} />
+              </Button>
+            </div>
+          </div>
+          
+          <div className={styles.warranty} onClick={() => navigate(TERMS_ROUTE)}>
+            <span>7-day warranty</span> <IoMdLock className={styles.btn_icn}/>
           </div>
         </div>
-        
-        <div className={styles.warranty} onClick={() => navigate(TERMS_ROUTE)}>
-          <span>7-day warranty</span> <IoMdLock className={styles.btn_icn}/>
-        </div>
-      </div>
+      )}
 
       {/* Кнопка редактирования для администратора */}
       {isAdmin && (
@@ -166,7 +171,7 @@ const ThingPage = observer(() => {
             variant="primary"
             onClick={() => navigate(`${EDIT_THING_ROUTE}/${thing.id}`)}
           >
-            <FaEdit /> Редактировать товар
+            <FaEdit /> Редактировать данные
           </Button>
         </div>
       )}

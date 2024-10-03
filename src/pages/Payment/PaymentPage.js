@@ -1,9 +1,7 @@
-// src/components/PaymentPage/PaymentPage.js
-
 import React, { useState, useEffect, useContext } from "react";
 import axios from "axios";
 import './PaymentPage.css';
-import { QRCodeCanvas } from 'qrcode.react';
+import { message, QRCode } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import Dropdown from 'react-bootstrap/Dropdown';
 import DropdownButton from 'react-bootstrap/DropdownButton';
@@ -11,6 +9,7 @@ import { Context } from '../../index';
 import { createOrder } from '../../http/orderAPI';
 import { createExchangeRequest } from '../../http/exchangeAPI'; // Импортируем функцию для создания запроса на обмен
 import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
+import { Typography } from 'antd';
 
 const PaymentPage = () => {
   const { thing } = useContext(Context);
@@ -155,16 +154,37 @@ const PaymentPage = () => {
           </h4>
           <div className="qr-box">
             <div className="qr-code">
-              <QRCodeCanvas
-                value={`${wallets[selectedCrypto].address}?amount=${convertAmountForCrypto(
-                  wallets[selectedCrypto].currency
-                )}`}
-                size={256}
-              />
+            <QRCode
+              value={`${wallets[selectedCrypto].address}?amount=${convertAmountForCrypto(wallets[selectedCrypto].currency)}`}
+              size={256}
+              style={{ margin: '0 auto' }} 
+              // color={'white'}
+            />
+
             </div>
           </div>
 
-          <p>Адрес кошелька для {wallets[selectedCrypto].currency}: {wallets[selectedCrypto].address}</p>
+          <p>
+            Wallet address {wallets[selectedCrypto].currency}:{" "}
+            <span
+              onClick={() => {
+                navigator.clipboard.writeText(wallets[selectedCrypto].address)
+                  .then(() => {
+                    message.success("Codied!");
+                  })
+                  .catch((err) => {
+                    console.error("Error when copying an address:", err);
+                    message.error("Error");
+                  });
+              }}
+              className="copyableAddress"
+              title="Click to copy the address"
+            >
+              {wallets[selectedCrypto].address}
+            </span>
+          </p>
+
+
         </div>
 
         {/* Поле для ввода хэша транзакции */}

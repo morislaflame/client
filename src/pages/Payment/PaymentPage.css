@@ -25,11 +25,10 @@
   }
   
   .qr-box {
-    padding: calc(var(--index) * 4);
+    padding: calc(var(--index) * 2);
     display: flex;
     justify-content: center;
     align-items: center;
-    width: 100%;
     background-color: white;
     border-radius: calc(var(--index) * 2);
     border-color: #fedada;
@@ -38,6 +37,10 @@
         0 0 5px #2d027982, 
         0 0 10px #2d027982, 
         0 0 15px #4302b682;
+  }
+
+  :where(.css-dev-only-do-not-override-qnu6hi).ant-qrcode {
+    border: 0;
   }
 
 

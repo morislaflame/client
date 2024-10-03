@@ -15,7 +15,6 @@
 .topic {
     font-size: calc(var(--index) * 5.5);
     color: white;
-    margin: 0;
 }
 
 .topic_back {

@@ -396,12 +396,12 @@ const Admin = observer(() => {
                 
                 {/* Отметка подтверждения доплаты или возврата */}
                 {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
-                  <button variant="warning" onClick={() => handleConfirmPaymentExchange(exchange.id)} className={styles.doplata}>
+                  <button onClick={() => handleConfirmPaymentExchange(exchange.id)} className={styles.doplata}>
                     Подтвердить доплату
                   </button>
                 )}
                 {exchange.priceDifference < 0 && !exchange.refundProcessed && (
-                  <button variant="warning" onClick={() => handleConfirmRefundExchange(exchange.id)} className={styles.vozvrat}>
+                  <button onClick={() => handleConfirmRefundExchange(exchange.id)} className={styles.vozvrat}>
                     Подтвердить возврат
                   </button>
                 )}

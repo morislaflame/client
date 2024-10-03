@@ -7,7 +7,7 @@ import CommentList from '../CommentList/CommentList';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { HiMiniPencilSquare } from "react-icons/hi2";
-import { message } from 'antd';
+import { message, Image } from 'antd'; // Импортируем Image из antd
 import styles from './Reviews.module.css'
 import StarRating from '../StarRating/StarRating';
 import { HiMiniTrash } from "react-icons/hi2";
@@ -23,11 +23,10 @@ const Reviews = observer(() => {
     const [newReviewText, setNewReviewText] = useState('');
     const [newReviewRating, setNewReviewRating] = useState(5);
     const [reviewImages, setReviewImages] = useState([]);
-    
 
     useEffect(() => {
         review.loadReviews();
-    }, []);
+    }, [review]);
 
     const openReviewModal = (reviewToEdit = null) => {
         if (reviewToEdit) {
@@ -53,10 +52,10 @@ const Reviews = observer(() => {
         try {
             if (editMode) {
                 await review.editReview(currentReview.id, newReviewText, newReviewRating);
-                message.success('Review changed')
+                message.success('Review changed');
             } else {
                 await review.addReview(newReviewText, newReviewRating, reviewImages);
-                message.success('Thanks for your feedback!')
+                message.success('Thanks for your feedback!');
             }
             setNewReviewText('');
             setNewReviewRating(5);
@@ -78,7 +77,6 @@ const Reviews = observer(() => {
             }
         }
     };
-    
 
     const loadMoreReviews = () => {
         review.loadMoreReviews();
@@ -97,6 +95,8 @@ const Reviews = observer(() => {
         arrows: true,
         centerMode: true,
         centerPadding: "20px",
+        swipeToSlide: true,
+        focusOnSelect: true,
         responsive: [
             {
                 breakpoint: 1024,
@@ -169,7 +169,15 @@ const Reviews = observer(() => {
                                                 <ExpandableText text={rev.text} maxHeight={100} style={{width: '70%'}}/>
                                                 <div className={styles.rev_images}>
                                                     {rev.images && rev.images.map((img) => (
-                                                        <img key={img.id} src={`${process.env.REACT_APP_API_URL}/${img.img}`} alt="Review" className={styles.rev_img} />
+                                                        <Image
+                                                            key={img.id}
+                                                            src={`${process.env.REACT_APP_API_URL}/${img.img}`}
+                                                            alt="Review"
+                                                            className={styles.rev_img}
+                                                            width={100} // Установите подходящий размер
+                                                            style={{ cursor: 'pointer' }}
+                                                            placeholder={<Spinner animation='border'/>}
+                                                        />
                                                     ))}
                                                 </div>
                                             </Card.Body>

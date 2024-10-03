@@ -117,14 +117,15 @@
 .rev_images {
     display: flex;
     gap: calc(var(--index) * 0.6);
-    width: 40%;
+    width: 100%;
 }
 
 .rev_img {
     width: 100%;
+    height: calc(var(--index) * 5);
     border-radius: calc(var(--index) * 0.7);
-    object-fit: cover; /* Масштабирует изображение, заполняя контейнер, сохраняя пропорции */
-    object-position: center; /* Центрирует изображение в контейнере */
+    object-fit: cover;
+    object-position: center;
     margin: 0;
 }
 
