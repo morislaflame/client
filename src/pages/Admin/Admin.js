@@ -292,45 +292,62 @@ const Admin = observer(() => {
         <h3>Новые заказы</h3>
         {newOrders.length > 0 ? (
           <ListGroup style={{width: '100%'}}>
-            {newOrders.map(order => (
-              <ListGroup.Item key={order.id} className={styles.order_item}>
-                <div className={styles.order_details}>
-                  <span>Заказ №{order.id}</span> 
-                  <span>User: <p>{order.user.email}</p> </span>
-                  {order.promo_code ? (
-                      <span>
-                          Promocode: <p>{order.promo_code.code}</p> - <p>${order.promo_code.discountValue}</p>
-                      </span>
-                  ) : (
-                      <></>
-                  )}
-                  <span>Валюта: <p>{order.cryptoCurrency}</p></span>
-                  <span>Хэш: 
-                    <button
-                      className={styles.copyableHash}
-                      onClick={() => copyToClipboard(order.cryptoTransactionHash, order.id)}
-                    >
-                      {order.cryptoTransactionHash}
-                    </button> 
+            {newOrders.map(order => {
+              // Проверка статуса товаров в заказе
+              const hasUnavailableItems = order.order_things.some(item => item.thing.status !== 'available');
+
+              return (
+                <ListGroup.Item key={order.id} className={styles.order_item}>
+                  <div className={styles.order_details}>
+                    <span>Заказ №{order.id}</span> 
+                    <span>User: <p>{order.user.email}</p> </span>
+                    {order.promo_code ? (
+                        <span>
+                            Promocode: <p>{order.promo_code.code}</p> - <p>${order.promo_code.discountValue}</p>
+                        </span>
+                    ) : (
+                        <></>
+                    )}
+                    <span>Валюта: <p>{order.cryptoCurrency}</p></span>
+                    <span>Хэш: 
+                      <button
+                        className={styles.copyableHash}
+                        onClick={() => copyToClipboard(order.cryptoTransactionHash, order.id)}
+                      >
+                        {order.cryptoTransactionHash}
+                      </button> 
                     </span>
-                  <span>Сумма: <p>{order.cryptoPaymentAmount}</p></span>
-                </div>
-                
-                  {order.order_things.map(item => (
-                    <span 
-                      key={item.id} 
-                      className={styles.name_price} 
-                      onClick={() => navigate(THING_ROUTE + "/" + item.thingId)}
-                    >
-                    {item.thing.name} ${item.thing.price}</span>
-                  ))}
-                  <div className={styles.confirm_reject}>
-                    <button onClick={() => handleConfirmOrder(order.id)} className={styles.confirm}>Подтвердить</button>
-                    <button onClick={() => handleRejectOrder(order.id)} className={styles.reject}>Отклонить</button>
+                    <span>Сумма: <p>{order.cryptoPaymentAmount}</p></span>
                   </div>
-                
-              </ListGroup.Item>
-            ))}
+                  
+                    {order.order_things.map(item => (
+                      <span 
+                        key={item.id} 
+                        className={styles.name_price} 
+                        onClick={() => navigate(THING_ROUTE + "/" + item.thingId)}
+                      >
+                      {item.thing.name} ${item.thing.price}</span>
+                    ))}
+                    
+                    {/* Если есть товары с недоступным статусом, отображаем сообщение и отключаем кнопку подтверждения */}
+                    {hasUnavailableItems && (
+                      <p style={{ color: 'red' }}>Некоторые товары в этом заказе недоступны для подтверждения.</p>
+                    )}
+
+                    <div className={styles.confirm_reject}>
+                      <button 
+                        onClick={() => handleConfirmOrder(order.id)} 
+                        className={styles.confirm}
+                        disabled={hasUnavailableItems}
+                      >
+                        Подтвердить
+                      </button>
+                      <button onClick={() => handleRejectOrder(order.id)} className={styles.reject}>Отклонить</button>
+                    </div>
+                  
+                </ListGroup.Item>
+              );
+            })}
           </ListGroup>
         ) : (
           <p>Нет новых заказов.</p>
@@ -379,39 +396,53 @@ const Admin = observer(() => {
         <h3>Новые обмены</h3>
         {pendingExchanges.length > 0 ? (
           <ListGroup style={{width: '100%'}}>
-            {pendingExchanges.map(exchange => (
-              <ListGroup.Item key={exchange.id} className={styles.exhange_item}>
-                <div className={styles.return_details}>
-                  <span>Обмен №{exchange.id}</span>
-                  <span>User: <p>{exchange.user.email}</p></span>
-                  <span>Обмен: <p>{exchange.OldThing.name} (${exchange.OldThing.price})</p> </span> 
-                  <span>На: <p>{exchange.NewThing.name} (${exchange.NewThing.price})</p> </span>  
-                  <span>Причина: <p>{exchange.userComment}</p></span>  
-                  <span>Разница в цене: <p>${exchange.priceDifference > 0 ? `+${exchange.priceDifference}` : exchange.priceDifference}</p></span>
-                </div>
-                
-                <div className={styles.confirm_reject}>
-                  <button onClick={() => handleApproveExchange(exchange.id)} className={styles.confirm}>
-                    Подтвердить
-                  </button>
-                  <button onClick={() => handleRejectExchange(exchange.id)} className={styles.reject}>
-                    Отклонить
-                  </button>
-                </div>
-                
-                {/* Отметка подтверждения доплаты или возврата */}
-                {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
-                  <button onClick={() => handleConfirmPaymentExchange(exchange.id)} className={styles.doplata}>
-                    Подтвердить доплату
-                  </button>
-                )}
-                {exchange.priceDifference < 0 && !exchange.refundProcessed && (
-                  <button onClick={() => handleConfirmRefundExchange(exchange.id)} className={styles.vozvrat}>
-                    Подтвердить возврат
-                  </button>
-                )}
-              </ListGroup.Item>
-            ))}
+            {pendingExchanges.map(exchange => {
+              // Проверка статуса нового товара
+              const isNewThingUnavailable = exchange.NewThing.status !== 'available';
+
+              return (
+                <ListGroup.Item key={exchange.id} className={styles.exhange_item}>
+                  <div className={styles.return_details}>
+                    <span>Обмен №{exchange.id}</span>
+                    <span>User: <p>{exchange.user.email}</p></span>
+                    <span>Обмен: <p>{exchange.OldThing.name} (${exchange.OldThing.price})</p> </span> 
+                    <span>На: <p>{exchange.NewThing.name} (${exchange.NewThing.price})</p> </span>  
+                    <span>Причина: <p>{exchange.userComment}</p></span>  
+                    <span>Разница в цене: <p>${exchange.priceDifference > 0 ? `+${exchange.priceDifference}` : exchange.priceDifference}</p></span>
+                  </div>
+                  
+                  {/* Если новый товар недоступен, отображаем сообщение и отключаем кнопку подтверждения */}
+                  {isNewThingUnavailable && (
+                    <p style={{ color: 'red' }}>Новый товар недоступен для подтверждения обмена.</p>
+                  )}
+
+                  <div className={styles.confirm_reject}>
+                    <button 
+                      onClick={() => handleApproveExchange(exchange.id)} 
+                      className={styles.confirm}
+                      disabled={isNewThingUnavailable}
+                    >
+                      Подтвердить
+                    </button>
+                    <button onClick={() => handleRejectExchange(exchange.id)} className={styles.reject}>
+                      Отклонить
+                    </button>
+                  </div>
+                  
+                  {/* Отметка подтверждения доплаты или возврата */}
+                  {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
+                    <button onClick={() => handleConfirmPaymentExchange(exchange.id)} className={styles.doplata}>
+                      Подтвердить доплату
+                    </button>
+                  )}
+                  {exchange.priceDifference < 0 && !exchange.refundProcessed && (
+                    <button onClick={() => handleConfirmRefundExchange(exchange.id)} className={styles.vozvrat}>
+                      Подтвердить возврат
+                    </button>
+                  )}
+                </ListGroup.Item>
+              );
+            })}
           </ListGroup>
         ) : (
           <p>Нет обменов на рассмотрении.</p>
@@ -422,7 +453,6 @@ const Admin = observer(() => {
       
 
 
-      
     
       {/* Модальное окно для подтверждения удаления */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
