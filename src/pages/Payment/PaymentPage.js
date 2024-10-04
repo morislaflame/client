@@ -110,6 +110,7 @@ const PaymentPage = () => {
         // Это доплата при обмене
         const { thingId, selectedThingId, userComment } = exchangeData;
         await createExchangeRequest(thingId, selectedThingId, userComment);
+        message.success('Await confirmation!')
         navigate(USER_ACCOUNT_ROUTE);
       } else {
         // Обычная оплата заказа
@@ -119,6 +120,7 @@ const PaymentPage = () => {
           cryptoPaymentAmount,
         });
         await thing.clearBasket();
+        message.success('Await confirmation!')
         navigate(USER_ACCOUNT_ROUTE);
       }
     } catch (error) {
@@ -175,7 +177,7 @@ const PaymentPage = () => {
 
           <div className={styles.address}>
             <span>Wallet address {wallets[selectedCrypto].currency}:{" "}</span>
-            <span
+            <button
               onClick={() => {
                 navigator.clipboard.writeText(wallets[selectedCrypto].address)
                   .then(() => {
@@ -190,7 +192,7 @@ const PaymentPage = () => {
               title="Click to copy the address"
             >
               {wallets[selectedCrypto].address}
-            </span>
+            </button>
           </div>
 
 

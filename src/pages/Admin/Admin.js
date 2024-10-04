@@ -10,7 +10,7 @@ import { observer } from 'mobx-react-lite';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import { ALL_EXCHANGES_ROUTE, ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, ALL_USERS_ROUTE, THING_ROUTE } from '../../utils/consts';
+import { ALL_EXCHANGES_ROUTE, ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, ALL_USERS_ROUTE, THING_ROUTE, USERINFO_ROUTE } from '../../utils/consts';
 import { fetchNewOrders, confirmOrder, rejectOrder } from '../../http/orderAPI';
 import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/orderAPI';
 import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../http/exchangeAPI'; // Импортируем API для обменов
@@ -271,10 +271,9 @@ const Admin = observer(() => {
 
         <Button onClick={() => navigate(ALL_USERS_ROUTE)} className={styles.all_btn}>Посмотреть всех пользователей</Button>
 
-        {searchResult && (
+        {/* {searchResult && (
           <div className={styles.search_result}>
             <p>Пользователь: {searchResult.email}, Роль: {searchResult.role}</p>
-            {/* Переключатель для изменения роли */}
             <Form.Check 
               type="switch"
               id={`toggle-role-${searchResult.id}`}
@@ -284,7 +283,7 @@ const Admin = observer(() => {
             />
             <button onClick={() => confirmDeleteUser(searchResult)}>Удалить пользователя</button>
           </div>
-        )}
+        )} */}
       </div>
 
       {/* Секция с новыми заказами */}
@@ -300,7 +299,10 @@ const Admin = observer(() => {
                 <ListGroup.Item key={order.id} className={styles.order_item}>
                   <div className={styles.order_details}>
                     <span>Заказ №{order.id}</span> 
-                    <span>User: <p>{order.user.email}</p> </span>
+                    <span 
+                      onClick={() => navigate(`/user/${order.userId}`)} 
+                      style={{textDecoration: 'underline'}}
+                    >User: <p>{order.user.email}</p> </span>
                     {order.promo_code ? (
                         <span>
                             Promocode: <p>{order.promo_code.code}</p> - <p>${order.promo_code.discountValue}</p>
@@ -366,8 +368,14 @@ const Admin = observer(() => {
               <ListGroup.Item key={returnItem.id} className={styles.return_item}>
                 <div className={styles.return_details}>
                   <span>Возврат №{returnItem.id}</span>
-                  <span>Модель: <p>{returnItem.thing.name}</p></span>
-                  <span>User: <p>{returnItem.user.email}</p></span>
+                  <span 
+                    onClick={() => navigate(THING_ROUTE + "/" + returnItem.thingId)} 
+                    style={{textDecoration: 'underline'}}
+                  >Модель: <p>{returnItem.thing.name}</p></span>
+                  <span
+                    onClick={() => navigate(`/user/${returnItem.userId}`)} 
+                    style={{textDecoration: 'underline'}}
+                  >User: <p>{returnItem.user.email}</p></span>
                   <span>Причина: <p>{returnItem.reason}</p></span>
                 </div>
                 <div className={styles.confirm_reject}>
@@ -404,9 +412,18 @@ const Admin = observer(() => {
                 <ListGroup.Item key={exchange.id} className={styles.exhange_item}>
                   <div className={styles.return_details}>
                     <span>Обмен №{exchange.id}</span>
-                    <span>User: <p>{exchange.user.email}</p></span>
-                    <span>Обмен: <p>{exchange.OldThing.name} (${exchange.OldThing.price})</p> </span> 
-                    <span>На: <p>{exchange.NewThing.name} (${exchange.NewThing.price})</p> </span>  
+                    <span
+                      onClick={() => navigate(`/user/${exchange.userId}`)} 
+                      style={{textDecoration: 'underline'}}
+                    >User: <p>{exchange.user.email}</p></span>
+                    <span
+                      onClick={() => navigate(THING_ROUTE + "/" + exchange.oldThingId)} 
+                      style={{textDecoration: 'underline'}}
+                    >Обмен: <p>{exchange.OldThing.name} (${exchange.OldThing.price})</p> </span> 
+                    <span
+                      onClick={() => navigate(THING_ROUTE + "/" + exchange.newThingId)} 
+                      style={{textDecoration: 'underline'}}
+                    >На: <p>{exchange.NewThing.name} (${exchange.NewThing.price})</p> </span>  
                     <span>Причина: <p>{exchange.userComment}</p></span>  
                     <span>Разница в цене: <p>${exchange.priceDifference > 0 ? `+${exchange.priceDifference}` : exchange.priceDifference}</p></span>
                   </div>
