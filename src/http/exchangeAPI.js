@@ -1,10 +1,9 @@
-// http/exchangeAPI.js
+// exchangeAPI.js
 
 import { $authHost } from "./index";
 
-// Создание запроса на обмен
-export const createExchangeRequest = async (oldThingId, newThingId, userComment) => {
-    const { data } = await $authHost.post('api/exchange', { oldThingId, newThingId, userComment });
+export const createExchangeRequest = async (exchangeData) => {
+    const { data } = await $authHost.post('api/exchange', exchangeData);
     return data;
 };
 
@@ -39,8 +38,9 @@ export const confirmPayment = async (exchangeRequestId) => {
     return data;
 };
 
-// Подтверждение возврата разницы
-export const confirmRefund = async (exchangeRequestId) => {
-    const { data } = await $authHost.patch(`api/exchange/confirm-refund/${exchangeRequestId}`);
+
+export const confirmRefund = async (exchangeRequestId, cryptoTransactionHash) => {
+    const { data } = await $authHost.patch(`api/exchange/confirm-refund/${exchangeRequestId}`, { cryptoTransactionHash });
     return data;
-};
+  };
+  

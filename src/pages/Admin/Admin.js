@@ -16,7 +16,9 @@ import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/ord
 import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../http/exchangeAPI'; // Импортируем API для обменов
 import CreatePromoCode from '../../components/modals/CreatePromoCode';
 import styles from './Admin.module.css'
-import { message } from 'antd';
+import { message, Input } from 'antd';
+
+
 
 const Admin = observer(() => {
   const [brandVisible, setBrandVisible] = useState(false);
@@ -36,6 +38,8 @@ const Admin = observer(() => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null); // Храним пользователя, которого нужно удалить
   const [newOrders, setNewOrders] = useState([]);
+  const [refundTransactionHashes, setRefundTransactionHashes] = useState({});
+
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -199,15 +203,28 @@ const Admin = observer(() => {
   };
 
   const handleConfirmRefundExchange = async (exchangeId) => {
+    const cryptoTransactionHash = refundTransactionHashes[exchangeId];
+    if (!cryptoTransactionHash) {
+      message.warning('Введите хэш транзакции возврата');
+      return;
+    }
+  
     try {
-      await confirmRefund(exchangeId);
-      message.success('Возврат средств подтвержден')
-      loadPendingExchanges(); // Перезагружаем обмены после подтверждения возврата
+      await confirmRefund(exchangeId, cryptoTransactionHash);
+      message.success('Возврат средств подтвержден');
+      // Удаляем хэш из состояния после подтверждения
+      setRefundTransactionHashes(prev => {
+        const newState = { ...prev };
+        delete newState[exchangeId];
+        return newState;
+      });
+      loadPendingExchanges();
     } catch (error) {
-      message.error('Ошибка при подтверждении возврата средств:', error);
+      message.error('Ошибка при подтверждении возврата средств');
       console.error('Ошибка при подтверждении возврата средств:', error);
     }
   };
+  
 
   const copyToClipboard = async (hash, orderId) => {
     try {
@@ -403,39 +420,35 @@ const Admin = observer(() => {
       <div className={styles.returns}>
         <h3>Новые обмены</h3>
         {pendingExchanges.length > 0 ? (
-          <ListGroup style={{width: '100%'}}>
+          <ListGroup style={{ width: '100%' }}>
             {pendingExchanges.map(exchange => {
-              // Проверка статуса нового товара
               const isNewThingUnavailable = exchange.NewThing.status !== 'available';
+              const currentRefundHash = refundTransactionHashes[exchange.id] || '';
 
               return (
                 <ListGroup.Item key={exchange.id} className={styles.exhange_item}>
                   <div className={styles.return_details}>
                     <span>Обмен №{exchange.id}</span>
-                    <span
-                      onClick={() => navigate(`/user/${exchange.userId}`)} 
-                      style={{textDecoration: 'underline'}}
-                    >User: <p>{exchange.user.email}</p></span>
-                    <span
-                      onClick={() => navigate(THING_ROUTE + "/" + exchange.oldThingId)} 
-                      style={{textDecoration: 'underline'}}
-                    >Обмен: <p>{exchange.OldThing.name} (${exchange.OldThing.price})</p> </span> 
-                    <span
-                      onClick={() => navigate(THING_ROUTE + "/" + exchange.newThingId)} 
-                      style={{textDecoration: 'underline'}}
-                    >На: <p>{exchange.NewThing.name} (${exchange.NewThing.price})</p> </span>  
-                    <span>Причина: <p>{exchange.userComment}</p></span>  
+                    <span onClick={() => navigate(`/user/${exchange.userId}`)} style={{ textDecoration: 'underline' }}>
+                      User: <p>{exchange.user.email}</p>
+                    </span>
+                    <span onClick={() => navigate(THING_ROUTE + "/" + exchange.oldThingId)} style={{ textDecoration: 'underline' }}>
+                      Обмен: <p>{exchange.OldThing.name} (${exchange.OldThing.price})</p>
+                    </span>
+                    <span onClick={() => navigate(THING_ROUTE + "/" + exchange.newThingId)} style={{ textDecoration: 'underline' }}>
+                      На: <p>{exchange.NewThing.name} (${exchange.NewThing.price})</p>
+                    </span>
+                    <span>Причина: <p>{exchange.userComment}</p></span>
                     <span>Разница в цене: <p>${exchange.priceDifference > 0 ? `+${exchange.priceDifference}` : exchange.priceDifference}</p></span>
                   </div>
-                  
-                  {/* Если новый товар недоступен, отображаем сообщение и отключаем кнопку подтверждения */}
+
                   {isNewThingUnavailable && (
                     <p style={{ color: 'red' }}>Новый товар недоступен для подтверждения обмена.</p>
                   )}
 
                   <div className={styles.confirm_reject}>
-                    <button 
-                      onClick={() => handleApproveExchange(exchange.id)} 
+                    <button
+                      onClick={() => handleApproveExchange(exchange.id)}
                       className={styles.confirm}
                       disabled={isNewThingUnavailable}
                     >
@@ -445,17 +458,28 @@ const Admin = observer(() => {
                       Отклонить
                     </button>
                   </div>
-                  
-                  {/* Отметка подтверждения доплаты или возврата */}
+
+                  {/* Дополнительные действия для доплаты или возврата */}
                   {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
                     <button onClick={() => handleConfirmPaymentExchange(exchange.id)} className={styles.doplata}>
                       Подтвердить доплату
                     </button>
                   )}
                   {exchange.priceDifference < 0 && !exchange.refundProcessed && (
-                    <button onClick={() => handleConfirmRefundExchange(exchange.id)} className={styles.vozvrat}>
-                      Подтвердить возврат
-                    </button>
+                    <div className={styles.refund_section}>
+                      <Input
+                        placeholder="Введите хэш транзакции возврата"
+                        value={currentRefundHash}
+                        onChange={(e) => {
+                          const newHash = e.target.value;
+                          setRefundTransactionHashes(prev => ({ ...prev, [exchange.id]: newHash }));
+                        }}
+                        style={{ marginBottom: '10px' }}
+                      />
+                      <button onClick={() => handleConfirmRefundExchange(exchange.id)} className={styles.vozvrat}>
+                        Подтвердить возврат
+                      </button>
+                    </div>
                   )}
                 </ListGroup.Item>
               );
@@ -493,3 +517,10 @@ const Admin = observer(() => {
 });
 
 export default Admin;
+
+
+
+
+
+
+

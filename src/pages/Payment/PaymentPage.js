@@ -104,13 +104,20 @@ const PaymentPage = () => {
 
   const handleConfirmPayment = async () => {
     try {
-      const cryptoPaymentAmount = convertAmountForCrypto(wallets[selectedCrypto].currency);
+      const cryptoPaymentAmount = parseFloat(convertAmountForCrypto(wallets[selectedCrypto].currency));
 
       if (isExchangePayment) {
         // Это доплата при обмене
         const { thingId, selectedThingId, userComment } = exchangeData;
-        await createExchangeRequest(thingId, selectedThingId, userComment);
-        message.success('Await confirmation!')
+        await createExchangeRequest({
+          oldThingId: thingId,
+          newThingId: selectedThingId,
+          userComment,
+          cryptoCurrency: wallets[selectedCrypto].currency,
+          cryptoTransactionHash,
+          cryptoPaymentAmount,
+        });
+        message.success('Await confirmation!');
         navigate(USER_ACCOUNT_ROUTE);
       } else {
         // Обычная оплата заказа
@@ -120,11 +127,11 @@ const PaymentPage = () => {
           cryptoPaymentAmount,
         });
         await thing.clearBasket();
-        message.success('Await confirmation!')
+        message.success('Await confirmation!');
         navigate(USER_ACCOUNT_ROUTE);
       }
     } catch (error) {
-      message.error('Error during payment processing:', error)
+      message.error('Error during payment processing');
       console.error('Error during payment processing:', error);
     }
   };
@@ -165,13 +172,11 @@ const PaymentPage = () => {
           </h5>
           <div className={styles.qr_box}>
             <div className={styles.qr_code}>
-            <QRCode
-              value={`${wallets[selectedCrypto].address}?amount=${convertAmountForCrypto(wallets[selectedCrypto].currency)}`}
-              size={256}
-              style={{ margin: '0 auto' }} 
-              // color={'white'}
-            />
-
+              <QRCode
+                value={`${wallets[selectedCrypto].address}?amount=${convertAmountForCrypto(wallets[selectedCrypto].currency)}`}
+                size={256}
+                style={{ margin: '0 auto' }} 
+              />
             </div>
           </div>
 
@@ -194,8 +199,6 @@ const PaymentPage = () => {
               {wallets[selectedCrypto].address}
             </button>
           </div>
-
-
         </div>
 
         {/* Поле для ввода хэша транзакции */}
@@ -207,19 +210,16 @@ const PaymentPage = () => {
             value={cryptoTransactionHash}
             onChange={handleTransactionHashChange}
             placeholder="Enter transaction hash"
-
           />
           {/* Кнопка подтверждения оплаты */}
-        <button 
-          className={styles.confirm_btn} 
-          onClick={handleConfirmPayment} 
-          disabled={!isHashValid} // Деактивируем кнопку, если хэш не валидный
-        >
-          Confirm payment
-        </button>
+          <button 
+            className={styles.confirm_btn} 
+            onClick={handleConfirmPayment} 
+            disabled={!isHashValid} // Деактивируем кнопку, если хэш не валидный
+          >
+            Confirm payment
+          </button>
         </div>
-
-        
 
         <p style={{ color: "gray", fontSize: "0.9em" }}>
           Cryptocurrency exchange rate is updated every 15 minutes. Please make sure that payment is made with the current exchange rate.
