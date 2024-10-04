@@ -207,7 +207,7 @@
 }
 
 .order_item {
-    background-color: #111111c4;
+    background-color: #111111;
     color: white;
     padding: calc(var(--index) * 1);
     display: flex;
@@ -325,7 +325,7 @@
 }
 
 .exchange_item {
-    background-color: #111111c4;
+    background-color: #111111;
     color: white;
     padding: calc(var(--index) * 1.5);
     display: flex;

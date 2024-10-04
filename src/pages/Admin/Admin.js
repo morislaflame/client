@@ -10,7 +10,7 @@ import { observer } from 'mobx-react-lite';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import { ALL_EXCHANGES_ROUTE, ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, ALL_USERS_ROUTE } from '../../utils/consts';
+import { ALL_EXCHANGES_ROUTE, ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, ALL_USERS_ROUTE, THING_ROUTE } from '../../utils/consts';
 import { fetchNewOrders, confirmOrder, rejectOrder } from '../../http/orderAPI';
 import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/orderAPI';
 import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../http/exchangeAPI'; // Импортируем API для обменов
@@ -317,7 +317,12 @@ const Admin = observer(() => {
                 </div>
                 
                   {order.order_things.map(item => (
-                    <span key={item.id} className={styles.name_price}>{item.thing.name} ${item.thing.price}</span>
+                    <span 
+                      key={item.id} 
+                      className={styles.name_price} 
+                      onClick={() => navigate(THING_ROUTE + "/" + item.thingId)}
+                    >
+                    {item.thing.name} ${item.thing.price}</span>
                   ))}
                   <div className={styles.confirm_reject}>
                     <button onClick={() => handleConfirmOrder(order.id)} className={styles.confirm}>Подтвердить</button>

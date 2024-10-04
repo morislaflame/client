@@ -166,6 +166,7 @@
     font-size: calc(var(--index) * 1.5);
     font-weight: 500;
     padding: calc(var(--index) * 0.7);
+    text-decoration: underline;
 }
 
 .confirm_reject {
