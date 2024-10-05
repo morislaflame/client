@@ -276,7 +276,9 @@ const Admin = observer(() => {
                     <span 
                       onClick={() => navigate(`/user/${order.userId}`)} 
                       style={{textDecoration: 'underline'}}
-                    >User: <p>{order.user.email}</p> </span>
+                    >
+                      User: <p>{order.user.email}</p> 
+                    </span>
                     {order.promo_code ? (
                         <span>
                             Promocode: <p>{order.promo_code.code}</p> - <p>${order.promo_code.discountValue}</p>

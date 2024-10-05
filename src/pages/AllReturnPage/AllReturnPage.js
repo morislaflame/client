@@ -3,10 +3,17 @@ import { fetchAllReturns } from '../../http/orderAPI'; // API для получ�
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import BackButton from '../../components/BackButton/BackButton';
+import styles from './AllReturnPage.module.css'
+import { message } from 'antd';
+import { THING_ROUTE } from '../../utils/consts';
+import { useNavigate } from 'react-router-dom';
+
 
 const AllReturnsPage = () => {
     const [returns, setReturns] = useState([]);
     const [searchReturn, setSearchReturn] = useState('');
+
+    const navigate = useNavigate()
 
     useEffect(() => {
         loadReturns();
@@ -28,8 +35,8 @@ const AllReturnsPage = () => {
     );
 
     return (
-        <div className="container">
-            <div className={'topic_back'}>
+        <div className={styles.container}>
+            <div className={styles.topic_back}>
                 <BackButton/>
                 <h2>Все возвраты</h2>
             </div>
@@ -39,17 +46,24 @@ const AllReturnsPage = () => {
                 value={searchReturn}
                 onChange={(e) => setSearchReturn(e.target.value)}
             />
-            <ListGroup>
+            <div className={styles.all_returns}>
                 {filteredReturns.map(returnItem => (
-                    <ListGroup.Item key={returnItem.id}>
-                        Возврат №{returnItem.id}, Статус: {returnItem.status}, Пользователь: {returnItem.user.email}
-                        <ul>
-                            <li>Товар: {returnItem.thing.name}, Цена: {returnItem.thing.price}</li>
-                            <li>Причина возврата: {returnItem.reason}</li>
-                        </ul>
-                    </ListGroup.Item>
+                    <div key={returnItem.id} className={styles.return_item}>
+                    <div className={styles.return_details}>
+                      <span>Возврат №{returnItem.id}</span>
+                      <span 
+                        onClick={() => navigate(THING_ROUTE + "/" + returnItem.thingId)} 
+                        style={{textDecoration: 'underline'}}
+                      >Модель: <p>{returnItem.thing.name}</p></span>
+                      <span
+                        onClick={() => navigate(`/user/${returnItem.userId}`)} 
+                        style={{textDecoration: 'underline'}}
+                      >User: <p>{returnItem.user.email}</p></span>
+                      <span>Причина: <p>{returnItem.reason}</p></span>
+                    </div>
+                  </div>
                 ))}
-            </ListGroup>
+            </div>
         </div>
     );
 };
