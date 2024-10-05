@@ -45,8 +45,8 @@ export const fetchOrderDetails = async (orderId) => {
 };
 
 // Создание запроса на возврат по thingId
-export const createReturn = async ({ thingId, reason }) => {
-    const { data } = await $authHost.post('api/return', { thingId, reason });
+export const createReturn = async ({ thingId, reason, cryptoCurrency, cryptoWalletAddress, refundAmount }) => {
+    const { data } = await $authHost.post('api/return', { thingId, reason, cryptoCurrency, cryptoWalletAddress, refundAmount });
     return data;
 };
 

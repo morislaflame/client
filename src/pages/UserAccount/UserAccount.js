@@ -16,6 +16,8 @@ import { PiKeyReturnFill } from "react-icons/pi";
 import BackButton from '../../components/BackButton/BackButton';
 import Slider from 'react-slick';
 import { THING_ROUTE } from '../../utils/consts';
+import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from "react-icons/si";
+import {Select, Input} from 'antd';
 
 const UserAccount = observer(() => {
     const { user } = useContext(Context);
@@ -25,6 +27,8 @@ const UserAccount = observer(() => {
     const [reason, setReason] = useState('');
     const [confirmationMessage, setConfirmationMessage] = useState('');
     const [openDropdowns, setOpenDropdowns] = useState({});
+    const [cryptoCurrency, setCryptoCurrency] = useState('usdt');
+    const [cryptoWalletAddress, setCryptoWalletAddress] = useState('');
 
     // Состояния для поисковых запросов
     const [orderSearch, setOrderSearch] = useState('');
@@ -70,11 +74,40 @@ const UserAccount = observer(() => {
         navigate(`/exchange/${thingItem.id}`); // Перенаправляем на страницу обмена, передавая ID товара
     };
 
+    const wallets = {
+        usdt: {
+            address: "0x5541a5FD4Cc660F356601DBeCdD2be3e19548095",
+            currency: "USDT",
+            icon: <SiTether/>,
+        },
+        bitcoin: {
+            address: "bc1q0jh3phrlml2y3uszj38w33jmrhefydk36ekvv0",
+            currency: "BTC",
+            icon: <SiBitcoinsv/>,
+        },
+        ethereum: {
+            address: "0x5541a5FD4Cc660F356601DBeCdD2be3e19548095",
+            currency: "ETH",
+            icon: <SiEthereum/>,
+        },
+        litecoin: {
+            address: "ltc1qe6jl3ah8ar586rzjv7lj4aypssx4j6wlscxj2s",
+            currency: "LTC",
+            icon: <SiLitecoin/>,
+        },
+    };
+
+    
+
     const handleSubmitReturn = async () => {
+        const refundAmount = selectedThing.price;
         try {
             await createReturn({
                 thingId: selectedThing.id,
                 reason: reason || '',
+                cryptoCurrency: wallets[cryptoCurrency].currency,
+                cryptoWalletAddress,
+                refundAmount,
             });
             message.success('Await refund confirmation');
             setTimeout(async () => {
@@ -454,6 +487,33 @@ const UserAccount = observer(() => {
                                     value={reason}
                                     onChange={(e) => setReason(e.target.value)}
                                     style={{ width: '100%', minHeight: '100px', marginBottom: '10px' }}
+                                />
+                            </div>
+                            <div className={styles.selector_pay}>
+                                <label htmlFor="cryptoSelect">Choose a cryptocurrency for refund:</label>
+                                <Select
+                                    id="cryptoSelect"
+                                    value={cryptoCurrency}
+                                    onChange={(value) => setCryptoCurrency(value)}
+                                    placeholder="Select"
+                                    options={Object.keys(wallets).map((key) => ({
+                                        label: (
+                                            <div className={styles.crypto_selector}>
+                                                <span>{wallets[key].currency}</span>
+                                                <span>{wallets[key].icon}</span>
+                                            </div>
+                                        ),
+                                        value: key,
+                                    }))}
+                                />
+                            </div>
+                            <div className={styles.wallet_input}>
+                                <label htmlFor="walletAddress">Enter your wallet address:</label>
+                                <Input
+                                    id="walletAddress"
+                                    value={cryptoWalletAddress}
+                                    onChange={(e) => setCryptoWalletAddress(e.target.value)}
+                                    placeholder="Wallet address"
                                 />
                             </div>
 
