@@ -1,7 +1,7 @@
 .container {
     text-align: center;
     padding: calc(var(--index) * 2);
-    background: linear-gradient(to bottom, black, #130133, black);
+    background: linear-gradient(to bottom, #030107, #130133, #030107);
     color: white;
     display: flex;
     flex-direction: column;

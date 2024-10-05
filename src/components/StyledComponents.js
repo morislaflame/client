@@ -9,7 +9,7 @@ export const CustomOffcanvasHeader = styled(Offcanvas.Header)`
     `;
 
 export const CustomOffcanvas = styled(Offcanvas)`
-        --bs-offcanvas-height: 50vh;
+        --bs-offcanvas-height: 68vh;
         background-color: transparent;
     `;
 

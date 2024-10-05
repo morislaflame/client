@@ -247,7 +247,7 @@ const UserAccount = observer(() => {
 
                             return (
                                 <div className={styles.thing_item} key={thingItem.id} >
-                                    <div className={styles.thing_image_wrapper}>
+                                    <div className={styles.thing_image_wrapper} style={{zIndex: '100'}}>
                                         {thingItem.images && thingItem.images.length > 0 && (
                                             <img
                                                 src={`${process.env.REACT_APP_API_URL}/${thingItem.images[0].img}`}
@@ -295,7 +295,7 @@ const UserAccount = observer(() => {
             {/* Раздел заказов */}
             <div className={styles.orders}>
                 <div className={styles.order_top}>
-                    <h3>My Orders</h3>
+                    <h5>My Orders</h5>
                     <AutoComplete
                         options={orderOptions}
                         onSelect={value => setOrderSearch(value)}
@@ -359,7 +359,7 @@ const UserAccount = observer(() => {
             {hasReturns && (
             <div className={styles.returns}>
                 <div className={styles.order_top}>
-                    <h3>My Returns</h3>
+                    <h5>My Returns</h5>
                     <AutoComplete
                         options={returnOptions}
                         onSelect={value => setReturnSearch(value)}
@@ -415,7 +415,7 @@ const UserAccount = observer(() => {
             {hasExchanges && (
             <div className={styles.exchanges}>
                 <div className={styles.order_top}>
-                    <h3>My Exchanges</h3>
+                    <h5>My Exchanges</h5>
                     <AutoComplete
                         options={exchangeOptions}
                         onSelect={value => setExchangeSearch(value)}
@@ -488,14 +488,14 @@ const UserAccount = observer(() => {
                                     onChange={(e) => setReason(e.target.value)}
                                     style={{ width: '100%', minHeight: '100px', marginBottom: '10px' }}
                                 />
-                            </div>
-                            <div className={styles.selector_pay}>
+                                <div className={styles.selector_pay}>
                                 <label htmlFor="cryptoSelect">Choose a cryptocurrency for refund:</label>
                                 <Select
                                     id="cryptoSelect"
                                     value={cryptoCurrency}
                                     onChange={(value) => setCryptoCurrency(value)}
                                     placeholder="Select"
+                                    suffixIcon={<span/>}
                                     options={Object.keys(wallets).map((key) => ({
                                         label: (
                                             <div className={styles.crypto_selector}>
@@ -516,6 +516,8 @@ const UserAccount = observer(() => {
                                     placeholder="Wallet address"
                                 />
                             </div>
+                            </div>
+                            
 
                             <Button onClick={handleSubmitReturn} style={{
                                 display: 'flex',
