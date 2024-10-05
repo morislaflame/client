@@ -7,6 +7,7 @@ import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import BackButton from '../../components/BackButton/BackButton';
+import styles from './AllUsersPage.module.css'
 
 const AllUsersPage = observer(() => {
   const { user } = useContext(Context);
@@ -67,15 +68,13 @@ const AllUsersPage = observer(() => {
   };
 
   return (
-    <div className="container">
-      <div className={'topic_back'}>
+    <div className={styles.container}>
+      <div className={styles.topic_back}>
         <BackButton/>
         <h2>All Users</h2>
       </div>
       
-
-      {/* Поиск пользователя по email с автозаполнением */}
-      <div className="search-section">
+      <div className={styles.search_section}>
         <Form.Group className="mt-3">
           <Form.Control
             type="email"
@@ -85,7 +84,6 @@ const AllUsersPage = observer(() => {
           />
         </Form.Group>
 
-        {/* Показываем подсказки только если есть ввод */}
         {filteredEmails.length > 0 && (
           <ListGroup className="mt-2">
             {filteredEmails.map(user => (
@@ -100,15 +98,15 @@ const AllUsersPage = observer(() => {
           </ListGroup>
         )}
 
-        <button onClick={() => handleSearch(email)}>Найти пользователя</button>
+        <button onClick={() => handleSearch(email)} className={styles.src_btn}>Найти пользователя</button>
       </div>
 
       {/* Список всех пользователей */}
       <h3>Пользователи</h3>
-      <ul>
+      <div className={styles.all_users}>
         {user.users.map((u) => (
-          <li key={u.id}>
-            {u.email} — {u.role}
+          <div key={u.id} className={styles.user}>
+            <span>e-Mail: <strong>{u.email}</strong></span>
             <Form.Check
               type="switch"
               id={`toggle-role-${u.id}`}
@@ -116,11 +114,13 @@ const AllUsersPage = observer(() => {
               checked={u.role === 'ADMIN'}
               onChange={() => handleRoleChange(u.id, u.role)}
             />
-            <button onClick={() => navigate(`/user/${u.id}`)}>Посмотреть</button>
-            <button onClick={() => confirmDeleteUser(u)}>Удалить</button>
-          </li>
+            <div className={styles.buttons}>
+              <button onClick={() => navigate(`/user/${u.id}`)} className={styles.u_info}>Посмотреть</button>
+              <button onClick={() => confirmDeleteUser(u)} className={styles.u_delete}>Удалить</button>
+            </div>
+          </div>
         ))}
-      </ul>
+      </div>
 
       {/* Модальное окно для подтверждения удаления */}
       <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>

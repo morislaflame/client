@@ -9,6 +9,7 @@ import { createExchangeRequest } from '../../http/exchangeAPI'; // Импорт�
 import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
 import styles from './PaymentPage.module.css';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from "react-icons/si";
+import BackButton from "../../components/BackButton/BackButton";
 
 const PaymentPage = () => {
   const { thing } = useContext(Context);
@@ -139,7 +140,7 @@ const PaymentPage = () => {
   return (
     <div className={styles.payment_page}>
       <div className={styles.payment_details}>
-        <h4>Total: {totalAmountUSD} USD</h4>
+      <div className={styles.topic_back}><BackButton/><h4>Total: {totalAmountUSD} USD</h4></div>
 
         {/* Селектор для выбора криптовалюты */}
         <div className={styles.selector_pay}>

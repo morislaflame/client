@@ -65,8 +65,6 @@ const ThingPage = observer(() => {
 
   return (
     <div className={styles.thing_content}>
-      
-      {/* <StorySlider /> */}
       <div className={styles.topic_back}>
         <BackButton/>
         <h2 className={styles.topic}>{thing.name}</h2>

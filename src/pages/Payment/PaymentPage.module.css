@@ -9,6 +9,14 @@
     gap: calc(var(--index) * 2);
   }
 
+  .topic_back {
+    display: flex;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: calc(var(--index) * 1);
+}
+
   .crypto_selector {
     display: flex;
     justify-content: center;
