@@ -5,7 +5,7 @@
 
 .useraccount {
     padding: calc(var(--index) * 2) calc(var(--index) * 0.5);
-    background: radial-gradient(circle at center, #130035, #030107 );
+    background: #030107;
     /* height: 100vh; */
     background-attachment: fixed;
     color: white;

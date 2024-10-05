@@ -31,10 +31,6 @@ const UserAccount = observer(() => {
     const [returnSearch, setReturnSearch] = useState('');
     const [exchangeSearch, setExchangeSearch] = useState('');
 
-
-
-
-
     const handleClose = () => {
         setShow(false);
         setConfirmationMessage('');
@@ -64,7 +60,6 @@ const UserAccount = observer(() => {
             handleShow(thingItem);
         }
 
-        // Закрываем Dropdown после выбора действия
         setOpenDropdowns(prevState => ({
             ...prevState,
             [thingItem.id]: false,
@@ -125,17 +120,6 @@ const UserAccount = observer(() => {
         centerPadding: "20px",
         focusOnSelect: true,
         adaptiveHeight: true,
-        appendDots: dots => (
-            <div
-                style={{
-                    color: 'white',
-                    borderRadius: "10px",
-                    padding: "10px"
-                }}
-            >
-                <ul style={{ margin: "0px" }}> {dots} </ul>
-            </div>
-        ),
         responsive: [
             {
                 breakpoint: 1024,
@@ -210,7 +194,7 @@ const UserAccount = observer(() => {
                     <h2>User Account</h2>
                 </div>
                 <div className={styles.userinfo}>
-                    <p>Email: {user.userInfo.email}</p>
+                    <p>{user.userInfo.email}</p>
                 </div>
             </div>
 
