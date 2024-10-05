@@ -59,15 +59,13 @@
 }
 
 .descript {
-    margin-top: calc(var(--index) * 0);
-    
+    margin-top: calc(var(--index)* 0);
+    width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: calc(var(--index) * 1.2);
+    gap: calc(var(--index)* 2);
     flex-wrap: wrap;
-    
-    padding: calc(var(--index) * 1) calc(var(--index) * 0.7) 0 calc(var(--index) * 0.7);
+    padding: calc(var(--index)* 1) calc(var(--index)* 0.7) calc(var(--index)* 0.7) calc(var(--index)* 0.7);
 }
 
 .thing-all {
@@ -82,7 +80,7 @@
 }
 
 .thingName {
-    font-size: calc(var(--index) * 2);
+    font-size: calc(var(--index) * 1.7);
 }
 
 .thing-info {
@@ -98,6 +96,7 @@
 
 .thing-price {
     font-weight: 500;
+    font-size: calc(var(--index) * 1.5);
 }
 
 .thing-info div b {

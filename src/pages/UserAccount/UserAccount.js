@@ -295,7 +295,7 @@ const UserAccount = observer(() => {
             {/* Раздел заказов */}
             <div className={styles.orders}>
                 <div className={styles.order_top}>
-                    <h5>My Orders</h5>
+                    <h5>Orders</h5>
                     <AutoComplete
                         options={orderOptions}
                         onSelect={value => setOrderSearch(value)}
@@ -359,7 +359,7 @@ const UserAccount = observer(() => {
             {hasReturns && (
             <div className={styles.returns}>
                 <div className={styles.order_top}>
-                    <h5>My Returns</h5>
+                    <h5>Returns</h5>
                     <AutoComplete
                         options={returnOptions}
                         onSelect={value => setReturnSearch(value)}
@@ -415,7 +415,7 @@ const UserAccount = observer(() => {
             {hasExchanges && (
             <div className={styles.exchanges}>
                 <div className={styles.order_top}>
-                    <h5>My Exchanges</h5>
+                    <h5>Exchanges</h5>
                     <AutoComplete
                         options={exchangeOptions}
                         onSelect={value => setExchangeSearch(value)}

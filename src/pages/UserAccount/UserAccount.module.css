@@ -201,6 +201,7 @@
     text-align: center;
     align-items: center;
     height: calc(var(--index) * 2);
+    font-size: calc(var(--index) * 1.3);
 }
 
 .rotateIcon {
@@ -229,7 +230,7 @@
 }
 
 .search {
-    width: calc(var(--index) * 15);
+    width: calc(var(--index) * 13);
     text-align: center;
 }
 

@@ -13,7 +13,7 @@
 }
 
 .topic {
-    font-size: calc(var(--index) * 5.5);
+    font-size: calc(var(--index) * 5);
     color: white;
 }
 
@@ -43,7 +43,7 @@
     border-radius: calc(var(--index) * 1) calc(var(--index) * 1) 0 0;
     display: block;
     width: 100%;
-    height: calc(var(--index) * 50);
+    height: calc(var(--index) * 44);
     object-fit: cover; /* Масштабирует изображение, заполняя контейнер, сохраняя пропорции */
     object-position: center; /* Центрирует изображение в контейнере */
 }
@@ -149,6 +149,7 @@
     padding: calc(var(--index) * 1);
     min-height: calc(var(--index) * 5);
     gap: calc(var(--index) * 1);
+    font-size: calc(var(--index) * 1.4);
 }
 
 .info_str:last-child {
@@ -160,7 +161,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: calc(var(--index) * 1.5);
+    
 }
 
 .info_str div {
