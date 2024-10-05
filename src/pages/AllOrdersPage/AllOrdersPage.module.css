@@ -24,7 +24,7 @@
     flex-direction: column;
     gap: calc(var(--index) * 1);
     justify-content: center;
-    background: linear-gradient(to bottom, #494b4c, #030107);
+    background: linear-gradient(to bottom, #4805ca, #030107);
     padding: calc(var(--index) * 1);
     border-radius: calc(var(--index) * 1);
     font-size: calc(var(--index) * 1.3);

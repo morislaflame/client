@@ -24,7 +24,7 @@
     flex-direction: column;
     gap: calc(var(--index) * 1);
     justify-content: center;
-    background: linear-gradient(to bottom, #494b4c, #030107);
+    background: linear-gradient(to bottom, #c20606, #030107);
     padding: calc(var(--index) * 1);
     border-radius: calc(var(--index) * 1);
     font-size: calc(var(--index) * 1.3);
@@ -47,14 +47,7 @@
     display: flex;
     color: white;
     width: 100%;
-    flex-direction: column;
-    gap: calc(var(--index) * 1);
-    justify-content: center;
-    align-items: center;
-    background: linear-gradient(to bottom, #282829, #030107, #181819);
-    padding: calc(var(--index) * 1);
-    border-radius: calc(var(--index) * 1);
-    border: 0;
+    
 }
 
 .return_details {

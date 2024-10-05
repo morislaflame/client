@@ -40,12 +40,14 @@ const AllReturnsPage = () => {
                 <BackButton/>
                 <h2>Все возвраты</h2>
             </div>
-            <Form.Control
-                type="text"
-                placeholder="Поиск по номеру возврата"
-                value={searchReturn}
-                onChange={(e) => setSearchReturn(e.target.value)}
-            />
+            <div className={styles.search_section}>
+                <Form.Control
+                    type="text"
+                    placeholder="Поиск по номеру возврата"
+                    value={searchReturn}
+                    onChange={(e) => setSearchReturn(e.target.value)}
+                />
+            </div>
             <div className={styles.all_returns}>
                 {filteredReturns.map(returnItem => (
                     <div key={returnItem.id} className={styles.return_item}>

@@ -3,10 +3,15 @@ import { fetchAllExchangeRequests } from '../../http/exchangeAPI';// API для 
 import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import BackButton from '../../components/BackButton/BackButton';
+import styles from './AllExchangesPage.module.css';
+import { useNavigate } from 'react-router-dom';
+import { THING_ROUTE } from '../../utils/consts';
 
 const AllExchangesPage = () => {
     const [exchanges, setExchanges] = useState([]);
     const [searchExchange, setSearchExchange] = useState('');
+
+    const navigate = useNavigate();
 
     useEffect(() => {
         loadExchanges();
@@ -28,30 +33,39 @@ const AllExchangesPage = () => {
     );
 
     return (
-        <div className="container">
-            <div className={'topic_back'}>
+        <div className={styles.container}>
+            <div className={styles.topic_back}>
                 <BackButton/>
                 <h2>Все обмены</h2>
             </div>
-            <Form.Control
-                type="text"
-                placeholder="Поиск по номеру обмена"
-                value={searchExchange}
-                onChange={(e) => setSearchExchange(e.target.value)}
-            />
-            <ListGroup>
+            <div className={styles.search_section}>
+                <Form.Control
+                    type="text"
+                    placeholder="Поиск по номеру обмена"
+                    value={searchExchange}
+                    onChange={(e) => setSearchExchange(e.target.value)}
+                />
+            </div>
+            <div className={styles.all_exchanges}>
                 {filteredExchanges.map(exchangeItem => (
-                    <ListGroup.Item key={exchangeItem.id}>
-                        Обмен №{exchangeItem.id}, Статус: {exchangeItem.status}, Пользователь: {exchangeItem.user.email}
-                        <ul>
-                            <li>Обменял: {exchangeItem.OldThing.name}, Цена: {exchangeItem.OldThing.price}</li>
-                            <li>На: {exchangeItem.NewThing.name}, Цена: {exchangeItem.NewThing.price}</li>
-                            <li>Причина обмена: {exchangeItem.userComment}</li>
-                            <li>Разница в цене: {exchangeItem.priceDifference}</li>
-                        </ul>
-                    </ListGroup.Item>
+                    <div key={exchangeItem.id} className={styles.exhange_item}>
+                        <div className={styles.return_details}>
+                            <span>Обмен №{exchangeItem.id}</span>
+                            <span onClick={() => navigate(`/user/${exchangeItem.userId}`)} style={{ textDecoration: 'underline' }}>
+                            User: <p>{exchangeItem.user.email}</p>
+                            </span>
+                            <span onClick={() => navigate(THING_ROUTE + "/" + exchangeItem.oldThingId)} style={{ textDecoration: 'underline' }}>
+                            Обмен: <p>{exchangeItem.OldThing.name} (${exchangeItem.OldThing.price})</p>
+                            </span>
+                            <span onClick={() => navigate(THING_ROUTE + "/" + exchangeItem.newThingId)} style={{ textDecoration: 'underline' }}>
+                            На: <p>{exchangeItem.NewThing.name} (${exchangeItem.NewThing.price})</p>
+                            </span>
+                            <span>Причина: <p>{exchangeItem.userComment}</p></span>
+                            <span>Разница в цене: <p>${exchangeItem.priceDifference > 0 ? `+${exchangeItem.priceDifference}` : exchangeItem.priceDifference}</p></span>
+                        </div>
+                    </div>
                 ))}
-            </ListGroup>
+            </div>
         </div>
     );
 };
