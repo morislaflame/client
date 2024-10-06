@@ -123,15 +123,28 @@ const Admin = observer(() => {
   };
 
   const handleApproveReturn = async (returnId) => {
+    const cryptoTransactionHash = refundTransactionHashes[returnId];
+    if (!cryptoTransactionHash) {
+      message.warning('Введите хэш транзакции возврата');
+      return;
+    }
+  
     try {
-      await approveReturn(returnId);
-      message.success('Возврат подтвержден')
-      loadPendingReturns(); // Перезагружаем список после подтверждения
+      await approveReturn(returnId, cryptoTransactionHash);
+      message.success('Возврат подтвержден');
+      // Удаляем хэш из состояния после подтверждения
+      setRefundTransactionHashes((prev) => {
+        const newState = { ...prev };
+        delete newState[returnId];
+        return newState;
+      });
+      loadPendingReturns();
     } catch (error) {
-      message.error('Ошибка при подтверждении возврата:', error);
+      message.error('Ошибка при подтверждении возврата');
       console.error('Ошибка при подтверждении возврата:', error);
     }
   };
+  
 
   const handleRejectReturn = async (returnId) => {
     try {
@@ -337,31 +350,37 @@ const Admin = observer(() => {
         <h3>Новые возвраты</h3>
         {pendingReturns.length > 0 ? (
           <ListGroup style={{width: '100%'}}>
-            {pendingReturns.map(returnItem => (
-              <ListGroup.Item key={returnItem.id} className={styles.return_item}>
-                <div className={styles.return_details}>
-                  <span>Возврат №{returnItem.id}</span>
-                  <span 
-                    onClick={() => navigate(THING_ROUTE + "/" + returnItem.thingId)} 
-                    style={{textDecoration: 'underline'}}
-                  >Модель: <p>{returnItem.thing.name}</p></span>
-                  <span
-                    onClick={() => navigate(`/user/${returnItem.userId}`)} 
-                    style={{textDecoration: 'underline'}}
-                  >User: <p>{returnItem.user.email}</p></span>
-                  <span>Причина: <p>{returnItem.reason}</p></span>
-                </div>
-                <div className={styles.confirm_reject}>
-                  <button variant="success" onClick={() => handleApproveReturn(returnItem.id)} className={styles.confirm}>
-                    Подтвердить
-                  </button>
-                  <button variant="danger" onClick={() => handleRejectReturn(returnItem.id)} className={styles.reject}>
-                    Отклонить
-                  </button> 
-                </div>
-                
-              </ListGroup.Item>
-            ))}
+            {pendingReturns.map(returnItem => {
+                const currentRefundHash = refundTransactionHashes[returnItem.id] || '';
+                return (
+                  <ListGroup.Item key={returnItem.id} className={styles.return_item}>
+                    <div className={styles.return_details}>
+                      <span>Возврат №{returnItem.id}</span>
+                      <span onClick={() => navigate(THING_ROUTE + "/" + returnItem.thingId)} style={{ textDecoration: 'underline' }}>Модель: <p>{returnItem.thing.name}</p></span>
+                      <span onClick={() => navigate(`/user/${returnItem.userId}`)} style={{ textDecoration: 'underline' }}>User: <p>{returnItem.user.email}</p></span>
+                      <span>Причина: <p>{returnItem.reason}</p></span>
+                    </div>
+                    <Input
+                      placeholder="Введите хэш транзакции возврата"
+                      value={currentRefundHash}
+                      onChange={(e) => {
+                        const newHash = e.target.value;
+                        setRefundTransactionHashes((prev) => ({ ...prev, [returnItem.id]: newHash }));
+                      }}
+                      style={{ marginBottom: '10px' }}
+                    />
+                    <div className={styles.confirm_reject}>
+                      <button variant="success" onClick={() => handleApproveReturn(returnItem.id)} className={styles.confirm}>
+                        Подтвердить
+                      </button>
+                      <button variant="danger" onClick={() => handleRejectReturn(returnItem.id)} className={styles.reject}>
+                        Отклонить
+                      </button> 
+                    </div>
+                  </ListGroup.Item>
+                );
+              })}
+
           </ListGroup>
         ) : (
           <p>Нет возвратов на рассмотрении.</p>

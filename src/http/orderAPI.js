@@ -69,8 +69,8 @@ export const fetchAllReturns = async () => {
 };
 
 // Подтверждение возврата администратором
-export const approveReturn = async (returnId) => {
-    const { data } = await $authHost.patch(`api/return/approve/${returnId}`);
+export const approveReturn = async (returnId, cryptoTransactionHash) => {
+    const { data } = await $authHost.patch(`api/return/approve/${returnId}`, { cryptoTransactionHash });
     return data;
 };
 
