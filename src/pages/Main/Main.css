@@ -93,6 +93,7 @@
       z-index: -1;
       background: url('../../../../server/static/backtwo.jpg') no-repeat center center;
       background-size: contain; /* Изображение полностью помещается внутри элемента */
+      background-color: black;
     }
   }
 
@@ -180,12 +181,12 @@
     padding: 20px;
     display: flex;
     flex-direction: column;
-    gap: calc(var(--index) * 4);
+    gap: calc(var(--index) * 3);
   }
 
   @media (max-width: 600px) {
     .advantages {
-      padding: calc(var(--index) * 5) 0 calc(var(--index) * 2) 0;
+      padding: calc(var(--index) * 4) 0 calc(var(--index) * 2) 0;
       font-size: calc(var(--index) * 1);
     }
   }
@@ -331,5 +332,8 @@
   }
 
   .go-shop {
-    margin: calc(var(--index) * 2);
+    margin: calc(var(--index)* 2) 0;
+    display: flex;
+    width: 95vw;
+    justify-content: center;
   }

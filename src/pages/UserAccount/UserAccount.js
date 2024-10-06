@@ -326,13 +326,26 @@ const UserAccount = observer(() => {
                                                     <span>${item.thing.price}</span>
                                                 </div>
                                             ))}
-                                        </div>
-                                        {order.promo_code !== null && (
-                                            <div className={styles.promocode_status}>
-                                                Promocode: {order.promo_code.code} ${order.promo_code.discountValue}
+                                            <div className={styles.other_info}>
+                                                {order.promo_code !== null && (
+                                                    <div className={styles.promocode_status}>
+                                                        <span>Promocode:</span> <strong>{order.promo_code.code} ${order.promo_code.discountValue}</strong>
+                                                    </div>
+                                                )}
+                                                <div className={styles.promocode_status}>
+                                                    <span>Currency:</span> <strong>{order.cryptoCurrency}</strong>
+                                                </div>
+                                                <div className={styles.promocode_status}>
+                                                    <span>Amount:</span> <strong>{order.cryptoPaymentAmount}</strong>
+                                                </div>
+                                                <div className={styles.promocode_status}>
+                                                    <span>Hash:</span> <strong>{order.cryptoTransactionHash}</strong>
+                                                </div>
+                                                
                                             </div>
-                                        )}
-                                        <div className={styles.total_price}>Total: ${order.totalPrice} </div>
+                                            <div className={styles.total_price}>Total: ${order.totalPrice} </div>
+                                        </div>
+                                        
                                         <div className={styles.mini_status}>
 
                                             {order.status === 'created' && (
@@ -386,6 +399,17 @@ const UserAccount = observer(() => {
                                                     model: {returnItem.thing.name}
                                                 </div>
                                                 <span>${returnItem.thing.price}</span>
+                                            </div>
+                                            <div className={styles.other_info}>
+                                                <div className={styles.promocode_status}>
+                                                    <span>Currency:</span> <strong>{returnItem.cryptoCurrency}</strong>
+                                                </div>
+                                                <div className={styles.promocode_status}>
+                                                    <span>Amount:</span> <strong>{returnItem.refundAmount}</strong>
+                                                </div>
+                                                <div className={styles.promocode_status}>
+                                                    <span>Hash:</span> <strong>{returnItem.cryptoTransactionHash}</strong>
+                                                </div>
                                             </div>
                                         </div>
                                         <div className={styles.mini_status_return}>
@@ -442,11 +466,23 @@ const UserAccount = observer(() => {
                                             <div className={styles.old_new_names}>
                                                 <div><strong>For:</strong></div> {exchange.NewThing.name} - ${exchange.NewThing.price}
                                             </div>
+                                            <div className={styles.other_info}>
+                                                <div className={styles.promocode_status}>
+                                                    <span>Currency:</span> <strong>{exchange.cryptoCurrency}</strong>
+                                                </div>
+                                                <div className={styles.promocode_status}>
+                                                    <span>Amount:</span> <strong>{exchange.cryptoPaymentAmount}</strong>
+                                                </div>
+                                                <div className={styles.promocode_status}>
+                                                    <span>Hash:</span> <strong>{exchange.cryptoTransactionHash}</strong>
+                                                </div>
+                                            </div>
+                                            <div className={styles.total_price}>
+                                                <strong>Price Difference:</strong> ${exchange.priceDifference}
+                                            </div>
                                         </div>
 
-                                        <div>
-                                            <strong>Price Difference:</strong> ${exchange.priceDifference}
-                                        </div>
+                                        
                                         <div className={styles.mini_status}>
 
                                             {exchange.status === 'pending' && (

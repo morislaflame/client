@@ -39,10 +39,14 @@ const Admin = observer(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    loadUsers(); // Загружаем список всех пользователей при первом рендере
-    loadNewOrders();
-    loadPendingReturns();
-    loadPendingExchanges(); // Загружаем обмены при монтировании
+    const loadAllData = async () => {
+      try {
+        await Promise.all([loadUsers(), loadNewOrders(), loadPendingReturns(), loadPendingExchanges()]);
+      } catch (error) {
+        console.error('Ошибка при загрузке данных:', error);
+      }
+    };
+    loadAllData();
   }, []);
 
   const loadPendingExchanges = async () => {
@@ -64,7 +68,12 @@ const Admin = observer(() => {
   };
 
   const loadUsers = async () => {
-    await user.fetchAllUsers();
+    try {
+      await user.fetchAllUsers();
+    } catch (error) {
+      console.error('Ошибка при загрузке пользователей:', error);
+      message.error('Ошибка при загрузке пользователей');
+    }
   };
 
   const loadNewOrders = async () => {

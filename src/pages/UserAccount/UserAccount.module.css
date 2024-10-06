@@ -226,7 +226,7 @@
     justify-content: space-between;
     align-items: center;
     gap: calc(var(--index) * 1);
-    padding: 0 calc(var(--index)* 3);
+    padding: 0 calc(var(--index)* 2.7);
 }
 
 .search {
@@ -249,13 +249,13 @@
     justify-content: center;
     align-items: center;
     gap: calc(var(--index) * 1);
-    padding: calc(var(--index) * 1);
+    padding: calc(var(--index) * 0.5);
 }
 
 .order_item {
     background-color: #111111;
     color: white;
-    padding: calc(var(--index) * 1);
+    padding: calc(var(--index) * 0.8);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -280,6 +280,7 @@
     justify-content: space-between;
     font-size: calc(var(--index) * 1.2);
     margin-bottom: calc(var(--index) * 0.3);
+    padding: 0 calc(var(--index) * 0.6);
 }
 
 .order_details {
@@ -287,16 +288,15 @@
     color: white;
     width: 100%;
     flex-direction: column;
-    gap: calc(var(--index) * 0.5);
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to bottom, #4805ca, #030107);
-    padding: calc(var(--index) * 0.6);
+    background: linear-gradient(to bottom, #3804a2, #030107);
+    padding: calc(var(--index) * 0.5);
     border-radius: calc(var(--index) * 1);
 }
 
 .ladies {
-    background-color: #111111c4;
+    background-color: #111111eb;
     padding: calc(var(--index) * 0.6);
     border-radius: calc(var(--index) * 1);
     display: flex;
@@ -322,6 +322,16 @@
     /* flex-direction: column; */
     padding: calc(var(--index) * 1) calc(var(--index) * 0.6);
     border-bottom: 1px solid #97959566;
+}
+
+.other_info {
+    display: flex;
+    width: 90%;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding: calc(var(--index) * 1) calc(var(--index) * 0.6);
+    gap: calc(var(--index) * 0.5)
 }
 
 .name_price:last-child {
@@ -373,7 +383,7 @@
 .exchange_item {
     background-color: #111111;
     color: white;
-    padding: calc(var(--index) * 1.5);
+    padding: calc(var(--index)* 0.8);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -398,6 +408,7 @@
     justify-content: space-between;
     font-size: calc(var(--index) * 1.2);
     margin-bottom: calc(var(--index) * 0.3);
+    padding: 0 calc(var(--index) * 0.6);
 }
 
 .exchange_details {
@@ -405,14 +416,11 @@
     color: white;
     width: 100%;
     flex-direction: column;
-    gap: calc(var(--index) * 0.5);
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to bottom, #0672c2, #030107);
-    padding: calc(var(--index) * 0.6);
+    background: linear-gradient(to bottom, #056cb8, #030107);
+    padding: calc(var(--index) * 0.5);
     border-radius: calc(var(--index) * 1);
-    
-    /* #c20606 */
 }
 
 .exchanges {
@@ -427,22 +435,21 @@
     color: white;
     width: 100%;
     flex-direction: column;
-    gap: calc(var(--index) * 0.5);
     justify-content: center;
     align-items: center;
     background: linear-gradient(to bottom, #c20606, #030107);
-    padding: calc(var(--index) * 0.6);
+    padding: calc(var(--index) * 0.5);
     border-radius: calc(var(--index) * 1);
 }
 
 .old_new {
-    background-color: #111111c4;
+    background-color: #111111eb;
     color: white;
-    padding: calc(var(--index) * 1.5);
+    padding: calc(var(--index) * 0.5);
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: calc(var(--index) * 1);
+    gap: calc(var(--index)* 0.5);
     justify-content: center;
     align-items: center;
     border-radius: calc(var(--index) * 1);
@@ -456,20 +463,25 @@
 
 .old_new_names {
     display: flex;
-    width: 100%;
-    justify-content: center;
+    width: 90%;
+    justify-content: space-between;
     gap: calc(var(--index)* 1.5);
+    border-bottom: 1px solid #7f7e7e66;
+    padding: calc(var(--index)* 1) calc(var(--index)* 0.6);
 }
 
 
 
 .mini_status {
     font-size: calc(var(--index) * 1.3);
+    margin-top: calc(var(--index)* 1);
 }
 
 .promocode_status {
-    margin-top: calc(var(--index) * 0.7);
     font-size: calc(var(--index) * 1.3);
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .mini_status_return {

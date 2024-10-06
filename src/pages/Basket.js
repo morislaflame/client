@@ -3,7 +3,6 @@ import styles from './Basket.module.css';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../index';
 import MyButton from '../components/MyButton/MyButton';
-import MySecondBtn from '../components/MySecondBtn/MySecondBtn';
 import MymIcon from '../icons/Mym.png';
 import FanslyIcon from '../icons/fansly.png';
 import OnlyIcon from '../icons/onlyfans.png';
@@ -167,7 +166,7 @@ const Basket = observer(() => {
                         </React.Fragment>
                     );
                 })}
-                <MySecondBtn className={styles.clear_basket} text={'Clear cart'} onClick={handleClearBasket}></MySecondBtn>
+                <button className={styles.clear_basket} onClick={handleClearBasket}>Clear cart</button>
             </div>
 
             <div className={styles.promo_code_section}>
@@ -222,7 +221,7 @@ const Basket = observer(() => {
                 <h3>Total amount: ${thing.totalPrice}</h3>
                 {thing.discount > 0 && <p>Discount: ${thing.discount}</p>}
                 <MyButton 
-                    className={styles.pay_button} 
+                    style={{width: 'calc(var(--index)* 25)'}}
                     text={'Go to payment'} 
                     onClick={handlePayment}
                     disabled={thing.basket.some(item => item.status !== 'available')}
