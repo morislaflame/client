@@ -17,17 +17,16 @@
   }
 
 .mainPhoto {
-    width: 100%; /* Ширина container 50% от main */
-    height: 95vh; /* Высота container 50% от main */
-    background: 
-    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1));
-     /* Полупрозрачный черный фон */
-    background-size: cover; /* Заднее фото покрывает весь контейнер */
-    background-position: center; /* Центрирование заднего фото */
-    display: flex; /* Горизонтальное центрирование контента внутри container */
+    width: 100%;
+    height: 95vh;
+    /* background: 
+    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)); */
+    background-size: cover;
+    background-position: center;
+    display: flex;
     flex-direction: column;
     justify-content: right;
-    align-items: center; /* Вертикальное центрирование контента внутри container */
+    align-items: center;
     z-index: 1 ;
 }
 
@@ -66,7 +65,7 @@
   @media (max-width: 600px) {
     .mainPhoto {
       flex-direction: column;
-      height: calc(var(--index) * 37);
+      height: calc(var(--index) * 39);
     }
   
     .mainArticle {

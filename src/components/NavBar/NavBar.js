@@ -9,7 +9,8 @@ import { FaShoppingCart, FaUserAlt  } from 'react-icons/fa';
 import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE } from '../../utils/consts';
 import './NavBar.css';
 import { FaTelegram } from "react-icons/fa6";
-import styled from 'styled-components'
+import styled from 'styled-components';
+import { Badge } from 'antd';
 
 const NavBar = observer(() => {
     const { user, thing } = useContext(Context);
@@ -40,17 +41,17 @@ const NavBar = observer(() => {
                                 onClick={() => navigate(BASKET_ROUTE)}
                                 style={{ position: 'relative' }}
                             >
-                                <FaShoppingCart size={24} />
+                                <FaShoppingCart />
                                 {thing.basket.length > 0 && (
                                     <span
                                         style={{
                                             position: 'absolute',
                                             top: '-8px',
                                             right: '-8px',
-                                            backgroundColor: 'red',
+                                            backgroundColor: '#d70d0d',
                                             color: 'white',
                                             borderRadius: '50%',
-                                            padding: '4px 6px',
+                                            padding: '3px 6px',
                                             fontSize: '12px',
                                             fontWeight: 'bold',
                                             lineHeight: '1',
@@ -58,6 +59,7 @@ const NavBar = observer(() => {
                                     >
                                         {thing.basket.length}
                                     </span>
+                                    
                                 )}
                             </Button>
                             <Button
@@ -65,7 +67,7 @@ const NavBar = observer(() => {
                                 variant="outline-light"
                                 onClick={() => navigate(USER_ACCOUNT_ROUTE)}
                             >
-                                <FaUserAlt size={24} />
+                                <FaUserAlt />
                             </Button>
                         </>
                     )}

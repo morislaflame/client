@@ -16,6 +16,7 @@
 
 .navbar-brand {
     margin-right: 0;
+    /* font-size: calc(var(--index) * 1.8); */
 }
 
 .menu {
@@ -37,6 +38,18 @@
     color: rgb(255 255 255 / 90%);
 }
 
-/* [data-bs-theme=] .navbar-toggler-icon {
+.shopping-cart {
+    font-size: calc(var(--index) * 2);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 
-} */
+.user-account {
+    font-size: calc(var(--index) * 2);
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
