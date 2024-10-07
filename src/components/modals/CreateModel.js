@@ -8,6 +8,8 @@ import Dropdown from "react-bootstrap/esm/Dropdown";
 import { Context } from "../../index";
 import { createThing, fetchBrands, fetchTypes } from '../../http/thingAPI';
 import { observer } from "mobx-react-lite";
+import { message } from "antd";
+import ImageUploader from "../ImageUploader/ImageUploader";
 
 const CreateModel = observer(({show, onHide}) => {
     const {thing} = useContext(Context);
@@ -50,14 +52,6 @@ const CreateModel = observer(({show, onHide}) => {
         setInfo(prevInfo => prevInfo.map(i => i.number === number ? {...i, [key]: value} : i));
     }
 
-    const selectFiles = e => {
-        setFiles([...files, ...Array.from(e.target.files)]); // Добавление новых файлов к уже существующим
-    };
-
-    const removeFile = (index) => {
-        setFiles(prevFiles => prevFiles.filter((file, i) => i !== index));
-    };
-
     const toggleBrandSelection = (brand) => {
         if (selectedBrands.includes(brand)) {
             setSelectedBrands(prevBrands => prevBrands.filter(b => b.id !== brand.id));
@@ -68,38 +62,40 @@ const CreateModel = observer(({show, onHide}) => {
 
     const addThing = () => {
         if (!name.trim()) {
-            return alert("Введите имя товара!");
+            return message.warning("Введите имя товара!");
         }
     
         // Проверка цены
         if (!price || price <= 0) {
-            return alert("Введите корректную цену товара!");
+            return message.warning("Введите корректную цену товара!");
         }
     
         // Проверка, выбран ли тип
         if (!thing.selectedType.id) {
-            return alert("Выберите тип товара!");
+            return message.warning("Выберите тип товара!");
         }
     
         // Проверка, выбраны ли бренды
         if (selectedBrands.length === 0) {
-            return alert("Выберите хотя бы один бренд!");
+            return message.warning("Выберите хотя бы один бренд!");
         }
     
         // Проверка, загружены ли изображения
         if (files.length === 0) {
-            return alert("Добавьте хотя бы одно изображение!");
+            return message.warning("Добавьте хотя бы одно изображение!");
         }
     
-        // Проверка дополнительной информации (если необходимо, можно сделать обязательные поля)
+        const requiredFields = ['age', 'smartphone', 'percent', 'time', 'english', 'content', 'contract', 'start', 'socialmedia', 'tiktok', 'cblocked', 'ofverif', 'link', 'girlmsg'];
+
         for (let i of info) {
-            if (!i.age.trim() || !i.smartphone.trim() || !i.percent.trim() || !i.time.trim() || 
-                !i.english.trim() || !i.content.trim() || !i.contract.trim() || !i.start.trim() ||
-                !i.socialmedia.trim() || !i.tiktok.trim() || !i.cblocked.trim() || !i.ofverif.trim() ||
-                !i.link.trim() || !i.girlmsg.trim()) {
-                return alert("Заполните все поля информации!");
+            for (let field of requiredFields) {
+                if (!i[field]?.trim()) {
+                    message.warning("Заполните все поля информации!");
+                    return;
+                }
             }
         }
+
 
         const formData = new FormData();
         formData.append('name', name);
@@ -115,6 +111,7 @@ const CreateModel = observer(({show, onHide}) => {
         });
 
         createThing(formData).then(data => onHide());
+        message.success("Модель добавлена!");
     }
 
     return (
@@ -132,7 +129,7 @@ const CreateModel = observer(({show, onHide}) => {
         <Modal.Body>
             <Form>
                 <Dropdown className="mt-1 mb-2">
-                    <Dropdown.Toggle>{thing.selectedType.name || "Выберите тип"}</Dropdown.Toggle>
+                    <Dropdown.Toggle>{thing.selectedType.name || "Выберите страну"}</Dropdown.Toggle>
                     <Dropdown.Menu>
                         {thing.types.map(type => 
                             <Dropdown.Item 
@@ -168,22 +165,9 @@ const CreateModel = observer(({show, onHide}) => {
                     placeholder="Введите цену товара"
                     type="number"
                 />
-                <Form.Control
-                        className="mt-3"
-                        type="file"
-                        onChange={selectFiles}
-                        multiple
-                    />
-                    <div className="mt-3">
-                        <h6>Выбранные изображения:</h6>
-                        {files.map((file, index) => (
-                            <div key={index} className="d-flex justify-content-between align-items-center">
-                                <span>{file.name}</span>
-                                <Button variant="outline-danger" onClick={() => removeFile(index)}>Удалить</Button>
-                            </div>
-                            
-                        ))}
-                    </div>
+
+                <ImageUploader images={files} setImages={setFiles} />
+
                 <Button variant="outline-dark" onClick={addInfo} className="mt-3">Добавить информацию</Button>
                 <hr/>
                 {info.map(i => (

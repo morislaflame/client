@@ -33,13 +33,13 @@
   }
   
   .story-card img {
-    width: calc(var(--index)* 5.5);
-    height: calc(var(--index)* 5.5);
+    width: calc(var(--index)* 5.8);
+    height: calc(var(--index)* 5.8);
     border-radius: 50%;
     object-fit: cover; 
     object-position: center; 
     padding: 3px;
-    border: 1px solid #5e08ff78;
+    border: 1px solid #6109a5c7;
   }
   
   .story-card p {
