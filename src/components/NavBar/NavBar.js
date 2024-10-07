@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaUserAlt  } from 'react-icons/fa';
-import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE } from '../../utils/consts';
+import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE, SHOP_ROUTE, PRIVACY_ROUTE, TERMS_ROUTE, MAIN_ROUTE } from '../../utils/consts';
 import './NavBar.css';
 import { FaTelegram } from "react-icons/fa6";
 import styled from 'styled-components';
@@ -30,7 +30,7 @@ const NavBar = observer(() => {
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className="bg-body-tertiary" style={{ justifyContent: 'center' }}>
             <div className='navbar'>
-                <Navbar.Brand href="/" style={{color: 'white'}}>Model's Hotel</Navbar.Brand>
+                <Navbar.Brand onClick={() => navigate(MAIN_ROUTE)} style={{color: 'white'}}>Model's Hotel</Navbar.Brand>
                 
                 <div className='menu'>
                     {user.isAuth && (
@@ -83,9 +83,9 @@ const NavBar = observer(() => {
                         <Nav.Link href='https://t.me/themodelshotel' style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'white' }}>
                             <FaTelegram /> Us in Telegram
                         </Nav.Link>
-                        <Nav.Link href="/shop" style={{ color: 'white' }}>Store</Nav.Link>
-                        <Nav.Link href="/privacy" style={{ color: 'white' }}>Privacy Policy</Nav.Link>
-                        <Nav.Link href="/terms" style={{ color: 'white' }}>Terms of Service</Nav.Link>
+                        <Nav.Link onClick={() => navigate(SHOP_ROUTE)} style={{ color: 'white' }}>Store</Nav.Link>
+                        <Nav.Link onClick={() => navigate(PRIVACY_ROUTE)} style={{ color: 'white' }}>Privacy Policy</Nav.Link>
+                        <Nav.Link onClick={() => navigate(TERMS_ROUTE)} style={{ color: 'white' }}>Terms of Service</Nav.Link>
                     </Nav>
                     <div className="d-flex" style={{ justifyContent: 'flex-end' }}>
                         {user.isAuth ? (

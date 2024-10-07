@@ -17,12 +17,10 @@
     width: 100%;
     height: 100%;
     cursor: pointer; 
-    padding: calc(var(--index) * 0.7); 
+    padding: calc(var(--index)* 0.8); 
     display: flex;
-    /* flex-direction: column; */
     align-items: center;
     border-style: solid;
-    /* border-color: #fedada; */
     border-radius: calc(var(--index) * 1);
     cursor: pointer;
     border-width: 1px;
@@ -54,7 +52,7 @@
 
 
 .brand-icon {
-    width: calc(var(--index) * 2); /* Ширина иконки */
+    width: calc(var(--index) * 1.8); /* Ширина иконки */
     height: auto; /* Высота иконки */
 }
 
@@ -65,7 +63,7 @@
     justify-content: center;
     gap: calc(var(--index)* 2);
     flex-wrap: wrap;
-    padding: calc(var(--index)* 1) calc(var(--index)* 0.7) calc(var(--index)* 0.7) calc(var(--index)* 0.7);
+    padding: calc(var(--index)* 1.2) calc(var(--index)* 0.7) calc(var(--index)* 0.5) calc(var(--index)* 0.7);
 }
 
 .thing-all {
@@ -84,7 +82,7 @@
 }
 
 .thing-info {
-    font-size: calc(var(--index) * 1.2);
+    font-size: calc(var(--index) * 1.1);
     color: #b3b2b2;
     display: flex;
     flex-direction: column;

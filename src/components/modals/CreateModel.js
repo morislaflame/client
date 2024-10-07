@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
-import { Button, Modal, Form, Input, InputNumber, Select, Row, Col, message } from 'antd';
+import { Button, Modal, Form, Input, InputNumber, Select, Row, Col, message, AutoComplete } from 'antd';
 import { Context } from "../../index";
 import { createThing, fetchBrands, fetchTypes } from '../../http/thingAPI';
 import { observer } from "mobx-react-lite";
@@ -39,8 +39,8 @@ const CreateModel = observer(({ show, onHide }) => {
                 english: '',
                 content: 'All Classic Solo Content',
                 contract: '',
-                start: '',
-                socialmedia: '',
+                start: 'ASAP',
+                socialmedia: 'Need new accounts',
                 tiktok: '',
                 cblocked: '',
                 ofverif: '',
@@ -50,6 +50,8 @@ const CreateModel = observer(({ show, onHide }) => {
             },
         ]);
     };
+
+    
 
     const removeInfo = useCallback((number) => {
         setInfo(prevInfo => prevInfo.filter(i => i.number !== number));
@@ -64,6 +66,11 @@ const CreateModel = observer(({ show, onHide }) => {
     const handleBrandChange = (value) => {
         setSelectedBrands(thing.brands.filter(brand => value.includes(brand.id)));
     };
+
+    const handleTypeSelect = (value, option) => {
+        form.setFieldsValue({ typeId: option.id });
+    };
+    
 
     const addThing = async () => {
         try {
@@ -129,6 +136,12 @@ const CreateModel = observer(({ show, onHide }) => {
         }
     };
 
+    const typeOptions = thing.types.map(type => ({
+        value: type.name,
+        id: type.id,
+    }));
+    
+
     return (
         <Modal
             visible={show}
@@ -140,18 +153,20 @@ const CreateModel = observer(({ show, onHide }) => {
         >
             <Form form={form} layout="vertical">
                 <Form.Item
+                    label="Страна"
                     name="typeId"
-                    label="Выберите страну"
-                    rules={[{ required: true, message: 'Пожалуйста, выберите страну' }]}
+                    rules={[{ required: true, message: 'Пожалуйста, выберите страну!' }]}
                 >
-                    <Select placeholder="Выберите страну">
-                        {thing.types.map(type => (
-                            <Option value={type.id} key={type.id}>
-                                {type.name}
-                            </Option>
-                        ))}
-                    </Select>
+                    <AutoComplete
+                        options={typeOptions}
+                        placeholder="Начните вводить страну"
+                        onSelect={(value, option) => handleTypeSelect(value, option)}
+                        filterOption={(inputValue, option) =>
+                            option.value.toLowerCase().includes(inputValue.toLowerCase())
+                        }
+                    />
                 </Form.Item>
+
                 <Form.Item
                     name="brandIds"
                     label="Выберите платформы"
