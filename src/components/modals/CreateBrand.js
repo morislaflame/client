@@ -1,43 +1,53 @@
 import React, { useState } from "react";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import { Button, Modal, Form, Input, message } from 'antd';
 import { createBrand } from "../../http/thingAPI";
 
-const CreateBrand = ({show, onHide}) => {
-    const [value, setValue] = useState('')
-    const addBrand = () => {
-      createBrand({name: value}).then(data => {
-        setValue('')
-        onHide()
-      })
-    }
+const CreateBrand = ({ show, onHide }) => {
+    const [value, setValue] = useState('');
+
+    const addBrand = async () => {
+        try {
+            if (!value.trim()) {
+                message.warning('Пожалуйста, введите название бренда!');
+                return;
+            }
+            await createBrand({ name: value });
+            setValue('');
+            message.success('Бренд успешно добавлен!');
+            onHide();
+        } catch (error) {
+            message.error('Ошибка при добавлении бренда: ' + (error.response?.data?.message || error.message));
+        }
+    };
 
     return (
         <Modal
-            show={show}
-            onHide={onHide}
-            size="lg"
+            open={show}
+            onCancel={onHide}
+            footer={null}
+            title="Добавить новый бренд"
             centered
         >
-        <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-            Добавить новый бренд
-            </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <Form>
-                <Form.Control
-                    value={value}
-                    onChange={e => setValue(e.target.value)}
-                    placeholder={'Введите название бренда'}
-                />
+            <Form layout="vertical">
+                <Form.Item
+                    label="Название бренда"
+                    rules={[{ required: true, message: 'Пожалуйста, введите название бренда!' }]}
+                >
+                    <Input
+                        value={value}
+                        onChange={e => setValue(e.target.value)}
+                        placeholder="Введите название бренда"
+                    />
+                </Form.Item>
+                <Form.Item>
+                    <Button onClick={onHide} style={{ marginRight: 8 }}>
+                        Закрыть
+                    </Button>
+                    <Button type="primary" onClick={addBrand}>
+                        Добавить
+                    </Button>
+                </Form.Item>
             </Form>
-        </Modal.Body>
-        <Modal.Footer>
-            <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
-            <Button variant="outline-success" onClick={addBrand}>Добавить</Button>
-        </Modal.Footer>
         </Modal>
     );
 };

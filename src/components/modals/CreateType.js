@@ -1,44 +1,54 @@
 import React, { useState } from "react";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import { Button, Modal, Form, Input, message } from 'antd';
 import { createType } from "../../http/thingAPI";
 
-const CreateType = ({show, onHide}) => {
-    const [value, setValue] = useState('')
-    const addType = () => {
-      createType({name: value}).then(data => {
-        setValue('')
-        onHide()
-      })
-    }
+const CreateType = ({ show, onHide }) => {
+    const [value, setValue] = useState('');
+
+    const addType = async () => {
+        try {
+            if (!value.trim()) {
+                message.warning('Пожалуйста, введите название страны!');
+                return;
+            }
+            await createType({ name: value });
+            setValue('');
+            message.success('Страна успешно добавлена!');
+            onHide();
+        } catch (error) {
+            message.error('Ошибка при добавлении страны: ' + (error.response?.data?.message || error.message));
+        }
+    };
 
     return (
         <Modal
-            show={show}
-            onHide={onHide}
-            size="lg"
+            open={show}
+            onCancel={onHide}
+            footer={null}
+            title="Добавить новую страну"
             centered
         >
-      <Modal.Header closeButton>
-        <Modal.Title id="contained-modal-title-vcenter">
-          Добавить новый тип
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        <Form>
-            <Form.Control
-                value={value}
-                onChange={e => setValue(e.target.value)}
-                placeholder={'Введите название типа'}
-            />
-        </Form>
-      </Modal.Body>
-      <Modal.Footer>
-        <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
-        <Button variant="outline-success" onClick={addType}>Добавить</Button>
-      </Modal.Footer>
-    </Modal>
+            <Form layout="vertical">
+                <Form.Item
+                    label="Страна"
+                    rules={[{ required: true, message: 'Пожалуйста, введите страну!' }]}
+                >
+                    <Input
+                        value={value}
+                        onChange={e => setValue(e.target.value)}
+                        placeholder="Введите страну"
+                    />
+                </Form.Item>
+                <Form.Item>
+                    <Button onClick={onHide} style={{ marginRight: 8 }}>
+                        Закрыть
+                    </Button>
+                    <Button type="primary" onClick={addType}>
+                        Добавить
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Modal>
     );
 };
 

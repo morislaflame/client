@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
+import { Button, Modal, Form, Input, Select, Checkbox, InputNumber, message } from 'antd';
 import { createPromoCode, generateOneTimePromoCodes, createPersonalPromoCode } from "../../http/promocodeAPI";
+
+const { Option } = Select;
 
 const CreatePromoCode = ({ show, onHide }) => {
     const [mode, setMode] = useState('create'); // Режим создания промокодов
@@ -24,137 +24,129 @@ const CreatePromoCode = ({ show, onHide }) => {
                 // Создание персонального промокода
                 await createPersonalPromoCode({ code, discountValue, userId });
             }
+            message.success('Промокод успешно создан!');
             onHide(); // Закрываем модальное окно после выполнения действия
         } catch (e) {
             console.error('Ошибка при выполнении операции с промокодом', e);
+            message.error('Ошибка при создании промокода: ' + (e.response?.data?.message || e.message));
         }
     };
 
     return (
         <Modal
-            show={show}
-            onHide={onHide}
-            size="lg"
+            open={show}
+            onCancel={onHide}
+            footer={null}
+            title={
+                mode === 'create' ? 'Создать новый промокод' :
+                mode === 'generate' ? 'Генерация одноразовых промокодов' :
+                mode === 'personal' ? 'Создать персональный промокод' : ''
+            }
             centered
         >
-            <Modal.Header closeButton>
-                <Modal.Title>
-                    {mode === 'create' && 'Создать новый промокод'}
-                    {mode === 'generate' && 'Генерация одноразовых промокодов'}
-                    {mode === 'personal' && 'Создать персональный промокод'}
-                </Modal.Title>
-            </Modal.Header>
-            <Modal.Body>
-                <Form>
-                    <Form.Group controlId="promoCodeForm.Mode">
-                        <Form.Label>Тип промокода</Form.Label>
-                        <Form.Control as="select" value={mode} onChange={e => setMode(e.target.value)}>
-                            <option value="create">Обычный промокод</option>
-                            <option value="generate">Генерация одноразовых промокодов</option>
-                            <option value="personal">Персональный промокод</option>
-                        </Form.Control>
-                    </Form.Group>
+            <Form layout="vertical">
+                <Form.Item label="Тип промокода">
+                    <Select value={mode} onChange={value => setMode(value)}>
+                        <Option value="create">Обычный промокод</Option>
+                        <Option value="generate">Генерация одноразовых промокодов</Option>
+                        <Option value="personal">Персональный промокод</Option>
+                    </Select>
+                </Form.Item>
 
-                    {mode === 'create' && (
-                        <>
-                            <Form.Group controlId="promoCodeForm.Code">
-                                <Form.Label>Код промокода</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={code}
-                                    onChange={e => setCode(e.target.value)}
-                                    placeholder="Введите код промокода"
-                                />
-                            </Form.Group>
+                {mode === 'create' && (
+                    <>
+                        <Form.Item label="Код промокода">
+                            <Input
+                                value={code}
+                                onChange={e => setCode(e.target.value)}
+                                placeholder="Введите код промокода"
+                            />
+                        </Form.Item>
 
-                            <Form.Group controlId="promoCodeForm.DiscountValue">
-                                <Form.Label>Значение скидки</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    value={discountValue}
-                                    onChange={e => setDiscountValue(e.target.value)}
-                                    placeholder="Введите размер скидки"
-                                />
-                            </Form.Group>
+                        <Form.Item label="Значение скидки">
+                            <InputNumber
+                                value={discountValue}
+                                onChange={value => setDiscountValue(value)}
+                                placeholder="Введите размер скидки"
+                                style={{ width: '100%' }}
+                                min={0}
+                            />
+                        </Form.Item>
 
-                            <Form.Group controlId="promoCodeForm.IsOneTime">
-                                <Form.Check
-                                    type="checkbox"
-                                    label="Одноразовый промокод"
-                                    checked={isOneTime}
-                                    onChange={e => setIsOneTime(e.target.checked)}
-                                />
-                            </Form.Group>
-                        </>
-                    )}
+                        <Form.Item>
+                            <Checkbox
+                                checked={isOneTime}
+                                onChange={e => setIsOneTime(e.target.checked)}
+                            >
+                                Одноразовый промокод
+                            </Checkbox>
+                        </Form.Item>
+                    </>
+                )}
 
-                    {mode === 'generate' && (
-                        <>
-                            <Form.Group controlId="promoCodeForm.Count">
-                                <Form.Label>Количество одноразовых промокодов</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    value={count}
-                                    onChange={e => setCount(e.target.value)}
-                                    placeholder="Введите количество"
-                                />
-                            </Form.Group>
+                {mode === 'generate' && (
+                    <>
+                        <Form.Item label="Количество одноразовых промокодов">
+                            <InputNumber
+                                value={count}
+                                onChange={value => setCount(value)}
+                                placeholder="Введите количество"
+                                style={{ width: '100%' }}
+                                min={1}
+                            />
+                        </Form.Item>
 
-                            <Form.Group controlId="promoCodeForm.DiscountValue">
-                                <Form.Label>Значение скидки для всех промокодов</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    value={discountValue}
-                                    onChange={e => setDiscountValue(e.target.value)}
-                                    placeholder="Введите размер скидки"
-                                />
-                            </Form.Group>
-                        </>
-                    )}
+                        <Form.Item label="Значение скидки для всех промокодов">
+                            <InputNumber
+                                value={discountValue}
+                                onChange={value => setDiscountValue(value)}
+                                placeholder="Введите размер скидки"
+                                style={{ width: '100%' }}
+                                min={0}
+                            />
+                        </Form.Item>
+                    </>
+                )}
 
-                    {mode === 'personal' && (
-                        <>
-                            <Form.Group controlId="promoCodeForm.Code">
-                                <Form.Label>Код персонального промокода</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={code}
-                                    onChange={e => setCode(e.target.value)}
-                                    placeholder="Введите код промокода"
-                                />
-                            </Form.Group>
+                {mode === 'personal' && (
+                    <>
+                        <Form.Item label="Код персонального промокода">
+                            <Input
+                                value={code}
+                                onChange={e => setCode(e.target.value)}
+                                placeholder="Введите код промокода"
+                            />
+                        </Form.Item>
 
-                            <Form.Group controlId="promoCodeForm.DiscountValue">
-                                <Form.Label>Значение скидки</Form.Label>
-                                <Form.Control
-                                    type="number"
-                                    value={discountValue}
-                                    onChange={e => setDiscountValue(e.target.value)}
-                                    placeholder="Введите размер скидки"
-                                />
-                            </Form.Group>
+                        <Form.Item label="Значение скидки">
+                            <InputNumber
+                                value={discountValue}
+                                onChange={value => setDiscountValue(value)}
+                                placeholder="Введите размер скидки"
+                                style={{ width: '100%' }}
+                                min={0}
+                            />
+                        </Form.Item>
 
-                            <Form.Group controlId="promoCodeForm.UserId">
-                                <Form.Label>ID пользователя</Form.Label>
-                                <Form.Control
-                                    type="text"
-                                    value={userId}
-                                    onChange={e => setUserId(e.target.value)}
-                                    placeholder="Введите ID пользователя"
-                                />
-                            </Form.Group>
-                        </>
-                    )}
-                </Form>
-            </Modal.Body>
-            <Modal.Footer>
-                <Button variant="secondary" onClick={onHide}>Отмена</Button>
-                <Button variant="primary" onClick={handleSubmit}>
-                    {mode === 'create' && 'Создать'}
-                    {mode === 'generate' && 'Сгенерировать'}
-                    {mode === 'personal' && 'Создать персональный промокод'}
-                </Button>
-            </Modal.Footer>
+                        <Form.Item label="ID пользователя">
+                            <Input
+                                value={userId}
+                                onChange={e => setUserId(e.target.value)}
+                                placeholder="Введите ID пользователя"
+                            />
+                        </Form.Item>
+                    </>
+                )}
+
+                <Form.Item>
+                    <Button onClick={onHide} style={{ marginRight: 8 }}>Отмена</Button>
+                    <Button type="primary" onClick={handleSubmit}>
+                        {mode === 'create' && 'Создать'}
+                        {mode === 'generate' && 'Сгенерировать'}
+                        {mode === 'personal' && 'Создать персональный промокод'}
+                    </Button>
+                </Form.Item>
+            </Form>
         </Modal>
     );
 };

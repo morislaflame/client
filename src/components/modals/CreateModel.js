@@ -144,7 +144,7 @@ const CreateModel = observer(({ show, onHide }) => {
 
     return (
         <Modal
-            visible={show}
+            open={show}
             onCancel={onHide}
             footer={null}
             centered
