@@ -1,287 +1,339 @@
-import React, { useContext, useState, useEffect } from "react";
-import Button from 'react-bootstrap/Button';
-import Modal from 'react-bootstrap/Modal';
-import Form from 'react-bootstrap/Form';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import Dropdown from "react-bootstrap/esm/Dropdown";
+import React, { useContext, useState, useEffect, useCallback } from "react";
+import { Button, Modal, Form, Input, InputNumber, Select, Row, Col, message } from 'antd';
 import { Context } from "../../index";
 import { createThing, fetchBrands, fetchTypes } from '../../http/thingAPI';
 import { observer } from "mobx-react-lite";
-import { message } from "antd";
-import ImageUploader from "../ImageUploader/ImageUploader";
+import ImageUploader from '../ImageUploader/ImageUploader';
 
-const CreateModel = observer(({show, onHide}) => {
-    const {thing} = useContext(Context);
-    const [name, setName] = useState('');
-    const [price, setPrice] = useState(0);
+const { Option } = Select;
+
+const CreateModel = observer(({ show, onHide }) => {
+    const { thing } = useContext(Context);
+    const [form] = Form.useForm();
     const [files, setFiles] = useState([]);
-    const [info, setInfo] = useState([]); // Инициализация как массива
+    const [info, setInfo] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
 
     useEffect(() => {
-        fetchTypes().then(data => thing.setTypes(data));
-        fetchBrands().then(data => thing.setBrands(data));
+        const loadData = async () => {
+            try {
+                const typesData = await fetchTypes();
+                thing.setTypes(typesData);
+                const brandsData = await fetchBrands();
+                thing.setBrands(brandsData);
+            } catch (error) {
+                message.error('Ошибка при загрузке типов и брендов: ' + error.message);
+            }
+        };
+        loadData();
     }, [thing]);
 
     const addInfo = () => {
-        setInfo(prevInfo => [...prevInfo, {
-            age: '', 
-            smartphone: '', 
-            percent: '', 
-            time: '', 
-            english: '', 
-            content: '', 
-            contract: '', 
-            start: '', 
-            socialmedia: '', 
-            tiktok: '', 
-            cblocked: '', 
-            ofverif: '',
-            link: '',
-            girlmsg: '',
-            number: Date.now()
-        }]);
-    }
+        setInfo(prevInfo => [
+            ...prevInfo,
+            {
+                age: '',
+                smartphone: '',
+                percent: '',
+                time: '',
+                english: '',
+                content: 'All Classic Solo Content',
+                contract: '',
+                start: '',
+                socialmedia: '',
+                tiktok: '',
+                cblocked: '',
+                ofverif: '',
+                link: '',
+                girlmsg: '',
+                number: Date.now(),
+            },
+        ]);
+    };
 
-    const removeInfo = (number) => {
+    const removeInfo = useCallback((number) => {
         setInfo(prevInfo => prevInfo.filter(i => i.number !== number));
-    }
+    }, []);
 
-    const changeInfo = (key, value, number) => {
-        setInfo(prevInfo => prevInfo.map(i => i.number === number ? {...i, [key]: value} : i));
-    }
+    const changeInfo = useCallback((key, value, number) => {
+        setInfo(prevInfo =>
+            prevInfo.map(i => (i.number === number ? { ...i, [key]: value } : i))
+        );
+    }, []);
 
-    const toggleBrandSelection = (brand) => {
-        if (selectedBrands.includes(brand)) {
-            setSelectedBrands(prevBrands => prevBrands.filter(b => b.id !== brand.id));
-        } else {
-            setSelectedBrands(prevBrands => [...prevBrands, brand]);
-        }
-    }
+    const handleBrandChange = (value) => {
+        setSelectedBrands(thing.brands.filter(brand => value.includes(brand.id)));
+    };
 
-    const addThing = () => {
-        if (!name.trim()) {
-            return message.warning("Введите имя товара!");
-        }
-    
-        // Проверка цены
-        if (!price || price <= 0) {
-            return message.warning("Введите корректную цену товара!");
-        }
-    
-        // Проверка, выбран ли тип
-        if (!thing.selectedType.id) {
-            return message.warning("Выберите тип товара!");
-        }
-    
-        // Проверка, выбраны ли бренды
-        if (selectedBrands.length === 0) {
-            return message.warning("Выберите хотя бы один бренд!");
-        }
-    
-        // Проверка, загружены ли изображения
-        if (files.length === 0) {
-            return message.warning("Добавьте хотя бы одно изображение!");
-        }
-    
-        const requiredFields = ['age', 'smartphone', 'percent', 'time', 'english', 'content', 'contract', 'start', 'socialmedia', 'tiktok', 'cblocked', 'ofverif', 'link', 'girlmsg'];
+    const addThing = async () => {
+        try {
+            const values = await form.validateFields();
 
-        for (let i of info) {
-            for (let field of requiredFields) {
-                if (!i[field]?.trim()) {
-                    message.warning("Заполните все поля информации!");
-                    return;
+            if (files.length === 0) {
+                return message.warning('Добавьте хотя бы одно изображение!');
+            }
+
+            const requiredFields = [
+                'age',
+                'smartphone',
+                'percent',
+                'time',
+                'english',
+                'content',
+                'contract',
+                'start',
+                'socialmedia',
+                'tiktok',
+                'cblocked',
+                'ofverif',
+                'link',
+                'girlmsg',
+            ];
+
+            for (let i of info) {
+                for (let field of requiredFields) {
+                    if (!i[field]?.toString().trim()) {
+                        message.warning('Заполните все поля информации!');
+                        return;
+                    }
                 }
             }
+
+            const formData = new FormData();
+            formData.append('name', values.name);
+            formData.append('price', values.price);
+            formData.append('typeId', values.typeId);
+            formData.append('info', JSON.stringify(info));
+
+            const brandIds = selectedBrands.map(b => b.id);
+            formData.append('brandIds', JSON.stringify(brandIds));
+
+            files.forEach(file => {
+                formData.append('img', file);
+            });
+
+            await createThing(formData);
+            message.success('Модель успешно добавлена!');
+            onHide();
+            form.resetFields();
+            setFiles([]);
+            setInfo([]);
+            setSelectedBrands([]);
+        } catch (error) {
+            if (error.errorFields) {
+                // Ошибки валидации
+                message.error('Пожалуйста, заполните все обязательные поля!');
+            } else {
+                message.error('Ошибка при добавлении модели: ' + error.message);
+            }
         }
-
-
-        const formData = new FormData();
-        formData.append('name', name);
-        formData.append('price', `${price}`);
-        formData.append('typeId', thing.selectedType.id);
-        formData.append('info', JSON.stringify(info));
-
-        const brandIds = selectedBrands.map(b => b.id);
-        formData.append('brandIds', JSON.stringify(brandIds));
-
-        files.forEach(file => {
-            formData.append('img', file);
-        });
-
-        createThing(formData).then(data => onHide());
-        message.success("Модель добавлена!");
-    }
+    };
 
     return (
         <Modal
-            show={show}
-            onHide={onHide}
-            size="lg"
+            visible={show}
+            onCancel={onHide}
+            footer={null}
             centered
+            title="Добавить новую модель"
+            width={800}
         >
-        <Modal.Header closeButton>
-            <Modal.Title id="contained-modal-title-vcenter">
-            Добавить новую модель
-            </Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-            <Form>
-                <Dropdown className="mt-1 mb-2">
-                    <Dropdown.Toggle>{thing.selectedType.name || "Выберите страну"}</Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        {thing.types.map(type => 
-                            <Dropdown.Item 
-                                onClick={() => thing.setSelectedType(type)} 
-                                key={type.id}>
+            <Form form={form} layout="vertical">
+                <Form.Item
+                    name="typeId"
+                    label="Выберите страну"
+                    rules={[{ required: true, message: 'Пожалуйста, выберите страну' }]}
+                >
+                    <Select placeholder="Выберите страну">
+                        {thing.types.map(type => (
+                            <Option value={type.id} key={type.id}>
                                 {type.name}
-                            </Dropdown.Item>
-                        )}
-                    </Dropdown.Menu>
-                </Dropdown>
-                <Dropdown className="mt-3 mb-2">
-                    <Dropdown.Toggle>{selectedBrands.length > 0 ? selectedBrands.map(b => b.name).join(", ") : "Выберите бренды"}</Dropdown.Toggle>
-                    <Dropdown.Menu>
-                        {thing.brands.map(brand => 
-                            <Dropdown.Item 
-                                onClick={() => toggleBrandSelection(brand)} 
-                                key={brand.id}>
-                                {brand.name} {selectedBrands.includes(brand) ? "(выбрано)" : ""}
-                            </Dropdown.Item>
-                        )}
-                    </Dropdown.Menu>
-                </Dropdown>
-                <Form.Control
-                    value={name}
-                    onChange={e => setName(e.target.value)}
-                    className="mt-3"
-                    placeholder="Введите имя товара"
-                />
-                <Form.Control
-                    value={price}
-                    onChange={e => setPrice(Number(e.target.value))}
-                    className="mt-3"
-                    placeholder="Введите цену товара"
-                    type="number"
-                />
-
-                <ImageUploader images={files} setImages={setFiles} />
-
-                <Button variant="outline-dark" onClick={addInfo} className="mt-3">Добавить информацию</Button>
-                <hr/>
+                            </Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    name="brandIds"
+                    label="Выберите платформы"
+                    rules={[{ required: true, message: 'Пожалуйста, выберите платформы' }]}
+                >
+                    <Select
+                        mode="multiple"
+                        placeholder="Выберите платформы"
+                        onChange={handleBrandChange}
+                    >
+                        {thing.brands.map(brand => (
+                            <Option value={brand.id} key={brand.id}>
+                                {brand.name}
+                            </Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    name="name"
+                    label="Имя Модели"
+                    rules={[{ required: true, message: 'Пожалуйста, введите имя модели' }]}
+                >
+                    <Input placeholder="Введите имя модели" />
+                </Form.Item>
+                <Form.Item
+                    name="price"
+                    label="Цена модели"
+                    rules={[{ required: true, message: 'Пожалуйста, введите цену модели!' }]}
+                >
+                    <InputNumber
+                        placeholder="Введите цену модели"
+                        min={0}
+                        style={{ width: '100%' }}
+                    />
+                </Form.Item>
+                <Form.Item label="Изображения">
+                    <ImageUploader images={files} setImages={setFiles} />
+                </Form.Item>
+                <Button type="dashed" onClick={addInfo} block style={{ marginBottom: '20px' }}>
+                    Добавить информацию
+                </Button>
                 {info.map(i => (
-                    <Row key={i.number} className="mt-3">
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.age}
-                                onChange={e => changeInfo('age', e.target.value, i.number)}
-                                placeholder='Возраст'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.smartphone}
-                                onChange={e => changeInfo('smartphone', e.target.value, i.number)}
-                                placeholder='Смартфон'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.percent}
-                                onChange={e => changeInfo('percent', e.target.value, i.number)}
-                                placeholder='Процент'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.time}
-                                onChange={e => changeInfo('time', e.target.value, i.number)}
-                                placeholder='Время'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.english}
-                                onChange={e => changeInfo('english', e.target.value, i.number)}
-                                placeholder='Уровень английского'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.content}
-                                onChange={e => changeInfo('content', e.target.value, i.number)}
-                                placeholder='Контент'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.contract}
-                                onChange={e => changeInfo('contract', e.target.value, i.number)}
-                                placeholder='Контракт'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.start}
-                                onChange={e => changeInfo('start', e.target.value, i.number)}
-                                placeholder='Дата начала'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.socialmedia}
-                                onChange={e => changeInfo('socialmedia', e.target.value, i.number)}
-                                placeholder='Социальные сети'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.tiktok}
-                                onChange={e => changeInfo('tiktok', e.target.value, i.number)}
-                                placeholder='TikTok'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.cblocked}
-                                onChange={e => changeInfo('cblocked', e.target.value, i.number)}
-                                placeholder='CBlocked'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.ofverif}
-                                onChange={e => changeInfo('ofverif', e.target.value, i.number)}
-                                placeholder='OF Verification'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.link}
-                                onChange={e => changeInfo('link', e.target.value, i.number)}
-                                placeholder='TG Link'
-                            />
-                        </Col>
-                        <Col md={6}>
-                            <Form.Control
-                                value={i.girlmsg}
-                                onChange={e => changeInfo('girlmsg', e.target.value, i.number)}
-                                placeholder='MSG From Girl'
-                            />
-                        </Col>
-                        
-                        <Col md={12}>
-                            <Button variant="outline-danger" onClick={() => removeInfo(i.number)} className="mt-2">Удалить информацию</Button>
-                        </Col>
-                    </Row>
+                    <div key={i.number} style={{ marginBottom: '20px', border: '1px solid #f0f0f0', padding: '10px' }}>
+                        <Row gutter={16}>
+                            <Col span={12}>
+                                <Form.Item label="Возраст">
+                                    <Input
+                                        value={i.age}
+                                        onChange={e => changeInfo('age', e.target.value, i.number)}
+                                        placeholder="Возраст"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label="Смартфон">
+                                    <Input
+                                        value={i.smartphone}
+                                        onChange={e => changeInfo('smartphone', e.target.value, i.number)}
+                                        placeholder="Смартфон"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label="Процент">
+                                    <Input
+                                        value={i.percent}
+                                        onChange={e => changeInfo('percent', e.target.value, i.number)}
+                                        placeholder="Процент"
+                                        addonAfter="%"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label="Время">
+                                    <Input
+                                        value={i.time}
+                                        onChange={e => changeInfo('time', e.target.value, i.number)}
+                                        placeholder="Время"
+                                        addonAfter="hours"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label="Английский">
+                                    <Input
+                                        value={i.english}
+                                        onChange={e => changeInfo('english', e.target.value, i.number)}
+                                        placeholder="Английский"
+                                        addonAfter="/10"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Контент">
+                                    <Input
+                                        value={i.content}
+                                        onChange={e => changeInfo('content', e.target.value, i.number)}
+                                        placeholder="Контент"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Контракт">
+                                    <Input
+                                        value={i.contract}
+                                        onChange={e => changeInfo('contract', e.target.value, i.number)}
+                                        placeholder="Контракт"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Когда начнет">
+                                    <Input
+                                        value={i.start}
+                                        onChange={e => changeInfo('start', e.target.value, i.number)}
+                                        placeholder="Старт"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Соц. сети">
+                                    <Input
+                                        value={i.socialmedia}
+                                        onChange={e => changeInfo('socialmedia', e.target.value, i.number)}
+                                        placeholder="Соц. сети"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="ТикТок">
+                                    <Input
+                                        value={i.tiktok}
+                                        onChange={e => changeInfo('tiktok', e.target.value, i.number)}
+                                        placeholder="ТикТок"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Блок. страны">
+                                    <Input
+                                        value={i.cblocked}
+                                        onChange={e => changeInfo('cblocked', e.target.value, i.number)}
+                                        placeholder="Блок. страны"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="OF верификация">
+                                    <Input
+                                        value={i.ofverif}
+                                        onChange={e => changeInfo('ofverif', e.target.value, i.number)}
+                                        placeholder="OF верификация"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Контакт(ссылка)">
+                                    <Input
+                                        value={i.link}
+                                        onChange={e => changeInfo('link', e.target.value, i.number)}
+                                        placeholder="Контакт(ссылка)"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Сообщение">
+                                    <Input
+                                        value={i.girlmsg}
+                                        onChange={e => changeInfo('girlmsg', e.target.value, i.number)}
+                                        placeholder="Сообщение"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={24}>
+                                <Button
+                                    type="danger"
+                                    onClick={() => removeInfo(i.number)}
+                                    block
+                                >
+                                    Удалить информацию
+                                </Button>
+                            </Col>
+                        </Row>
+                    </div>
                 ))}
+                <Form.Item>
+                    <Button type="primary" onClick={addThing} block>
+                        Добавить
+                    </Button>
+                </Form.Item>
             </Form>
-        </Modal.Body>
-        <Modal.Footer>
-            <Button variant="outline-danger" onClick={onHide}>Закрыть</Button>
-            <Button variant="outline-success" onClick={addThing}>Добавить</Button>
-        </Modal.Footer>
         </Modal>
     );
 });
