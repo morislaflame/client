@@ -3,16 +3,20 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchOneThing, updateThing, fetchTypes, fetchBrands } from '../../http/thingAPI';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
-import { Button, Form } from 'react-bootstrap';
-import { message } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
 import { MAIN_ROUTE } from '../../utils/consts';
-import styles from './ThingEditPage.module.css'
+import styles from './ThingEditPage.module.css';
 import BackButton from '../../components/BackButton/BackButton';
+import { UploadOutlined } from '@ant-design/icons';
+
+const { Option } = Select;
 
 const ThingEditPage = observer(() => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { user, thing: thingStore } = useContext(Context);
+  const { user } = useContext(Context);
+
+  const [form] = Form.useForm();
 
   const [thing, setThing] = useState({
     name: '',
@@ -30,29 +34,30 @@ const ThingEditPage = observer(() => {
 
   useEffect(() => {
     fetchOneThing(id).then(data => {
-      // Извлекаем brandIds из data.brands
-      const brandIds = data.brands ? data.brands.map(brand => brand.id.toString()) : [];
+      const brandIds = data.brands ? data.brands.map(brand => brand.id) : [];
       setThing({ ...data, brandIds });
+      form.setFieldsValue({
+        name: data.name,
+        price: data.price,
+        typeId: data.typeId,
+        brandIds: brandIds,
+        ...data.info,
+      });
     });
     fetchTypes().then(data => setTypes(data));
     fetchBrands().then(data => setBrands(data));
-  }, [id]);
+  }, [id, form]);
 
-  const handleInputChange = (e) => {
-    setThing({ ...thing, [e.target.name]: e.target.value });
+  const handleValuesChange = (changedValues, allValues) => {
+    setThing(prevThing => ({
+      ...prevThing,
+      ...allValues,
+      info: { ...prevThing.info, ...allValues },
+    }));
   };
 
-  const handleInfoChange = (e) => {
-    setThing({ ...thing, info: { ...thing.info, [e.target.name]: e.target.value } });
-  };
-
-  const handleBrandChange = (e) => {
-    const value = Array.from(e.target.selectedOptions, option => option.value);
-    setThing({ ...thing, brandIds: value });
-  };
-
-  const handleImageChange = (e) => {
-    setNewImages(prevImages => [...prevImages, ...Array.from(e.target.files)]);
+  const handleImageChange = ({ fileList }) => {
+    setNewImages(fileList);
   };
 
   const handleRemoveImage = (imageId) => {
@@ -63,41 +68,20 @@ const ThingEditPage = observer(() => {
     });
   };
 
-  const removeNewImage = (index) => {
-    setNewImages(prevImages => prevImages.filter((file, i) => i !== index));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     try {
-      // Проверка полей (можно добавить более подробную валидацию)
-      if (!thing.name.trim()) {
-        return message.error("Введите имя товара!");
-      }
-
-      if (!thing.price || thing.price <= 0) {
-        return message.error("Введите корректную цену товара!");
-      }
-
-      if (!thing.typeId) {
-        return message.error("Выберите тип товара!");
-      }
-
-      if (thing.brandIds.length === 0) {
-        return message.error("Выберите хотя бы один бренд!");
-      }
+      const values = await form.validateFields();
 
       const formData = new FormData();
-
-      formData.append('name', thing.name);
-      formData.append('price', thing.price);
-      formData.append('typeId', thing.typeId);
-      formData.append('brandIds', JSON.stringify(thing.brandIds));
+      formData.append('name', values.name);
+      formData.append('price', values.price);
+      formData.append('typeId', values.typeId);
+      formData.append('brandIds', JSON.stringify(values.brandIds));
       formData.append('info', JSON.stringify(thing.info));
       formData.append('imagesToRemove', JSON.stringify(imagesToRemove));
 
       newImages.forEach(file => {
-        formData.append('img', file);
+        formData.append('img', file.originFileObj);
       });
 
       await updateThing(id, formData);
@@ -133,108 +117,124 @@ const ThingEditPage = observer(() => {
 
   return (
     <div className={styles.edit_page}>
-      <BackButton/>
-      <h2>Редактирование товара</h2>
-      <Form onSubmit={handleSubmit}>
-        <Form.Group controlId='name'>
-          <Form.Label>Название</Form.Label>
-          <Form.Control
-            type='text'
-            name='name'
-            value={thing.name}
-            onChange={handleInputChange}
-          />
-        </Form.Group>
+      <div className={styles.topic_back}>
+        <BackButton />
+        <h2>Редактирование товара</h2>
+      </div>
+      
+      <Form
+        form={form}
+        layout="vertical"
+        onValuesChange={handleValuesChange}
+        onFinish={handleSubmit}
+      >
+        <Form.Item
+          name="name"
+          label="Название"
+          rules={[{ required: true, message: 'Введите имя товара!' }]}
+        >
+          <Input placeholder="Введите название товара" />
+        </Form.Item>
 
-        <Form.Group controlId='price'>
-          <Form.Label>Цена</Form.Label>
-          <Form.Control
-            type='number'
-            name='price'
-            value={thing.price}
-            onChange={handleInputChange}
+        <Form.Item
+          name="price"
+          label="Цена"
+          rules={[{ required: true, message: 'Введите цену товара!' }]}
+        >
+          <InputNumber
+            min={0}
+            placeholder="Введите цену товара"
+            style={{ width: '100%' }}
           />
-        </Form.Group>
+        </Form.Item>
 
-        <Form.Group controlId='typeId'>
-          <Form.Label>Тип</Form.Label>
-          <Form.Control
-            as='select'
-            name='typeId'
-            value={thing.typeId}
-            onChange={handleInputChange}
-          >
-            <option value=''>Выберите тип</option>
+        <Form.Item
+          name="typeId"
+          label="Тип"
+          rules={[{ required: true, message: 'Выберите тип товара!' }]}
+        >
+          <Select placeholder="Выберите тип">
             {types.map(type => (
-              <option key={type.id} value={type.id}>{type.name}</option>
+              <Option key={type.id} value={type.id}>
+                {type.name}
+              </Option>
             ))}
-          </Form.Control>
-        </Form.Group>
+          </Select>
+        </Form.Item>
 
-        <Form.Group controlId='brandIds'>
-          <Form.Label>Бренды</Form.Label>
-          <Form.Control
-            as='select'
-            multiple
-            name='brandIds'
-            value={thing.brandIds}
-            onChange={handleBrandChange}
+        <Form.Item
+          name="brandIds"
+          label="Бренды"
+          rules={[{ required: true, message: 'Выберите хотя бы один бренд!' }]}
+        >
+          <Select
+            mode="multiple"
+            placeholder="Выберите бренды"
+            onChange={(value) =>
+              setThing(prevThing => ({ ...prevThing, brandIds: value }))
+            }
           >
             {brands.map(brand => (
-              <option key={brand.id} value={brand.id}>{brand.name}</option>
+              <Option key={brand.id} value={brand.id}>
+                {brand.name}
+              </Option>
             ))}
-          </Form.Control>
-        </Form.Group>
+          </Select>
+        </Form.Item>
 
         <h3>Информация о товаре</h3>
         {infoFields.map(field => (
-          <Form.Group controlId={field.name} key={field.name}>
-            <Form.Label>{field.label}</Form.Label>
-            <Form.Control
-              as={field.as || 'input'}
-              type='text'
-              name={field.name}
-              value={thing.info[field.name] || ''}
-              onChange={handleInfoChange}
-            />
-          </Form.Group>
+          <Form.Item
+            key={field.name}
+            name={field.name}
+            label={field.label}
+          >
+            {field.as === 'textarea' ? (
+              <Input.TextArea rows={4} placeholder={`Введите ${field.label}`} />
+            ) : (
+              <Input placeholder={`Введите ${field.label}`} />
+            )}
+          </Form.Item>
         ))}
 
         <h3>Изображения</h3>
-        <div className='existing-images'>
+        <div className={styles.existingImages}>
           {thing.images.map(image => (
             <div key={image.id} className={styles.photo}>
-              <img src={process.env.REACT_APP_API_URL + image.img} alt='Текущее изображение' className={styles.photos}/>
-              <Button variant='outline-danger' onClick={() => handleRemoveImage(image.id)}>
+              <img
+                src={process.env.REACT_APP_API_URL + image.img}
+                alt="Текущее изображение"
+                className={styles.photos}
+              />
+              <Button
+                danger
+                onClick={() => handleRemoveImage(image.id)}
+                style={{ marginTop: '10px' }}
+              >
                 Удалить
               </Button>
             </div>
           ))}
         </div>
 
-        <Form.Group controlId='newImages'>
-          <Form.Label>Добавить новые изображения</Form.Label>
-          <Form.Control
-            type='file'
-            name='img'
+        <Form.Item label="Добавить новые изображения">
+          <Upload
+            listType="picture"
             multiple
+            beforeUpload={() => false}
             onChange={handleImageChange}
-          />
-        </Form.Group>
+            fileList={newImages}
+            accept="image/*"
+          >
+            <Button icon={<UploadOutlined />}>Загрузить изображения</Button>
+          </Upload>
+        </Form.Item>
 
-        <div className="mt-3">
-          <h6>Выбранные новые изображения:</h6>
-          {newImages.map((file, index) => (
-            <div key={index} className="d-flex justify-content-between align-items-center">
-              <span>{file.name}</span>
-              <Button variant="outline-danger" onClick={() => removeNewImage(index)}>Удалить</Button>
-            </div>
-          ))}
-        </div>
-
-        <Button variant='primary' type='submit' className="mt-3">
-          Сохранить изменения
-        </Button>
+        <Form.Item>
+          <Button type="primary" htmlType="submit">
+            Сохранить изменения
+          </Button>
+        </Form.Item>
       </Form>
     </div>
   );

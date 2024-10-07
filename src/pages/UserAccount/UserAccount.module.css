@@ -146,7 +146,7 @@
 
 .thing_image {
     width: calc(var(--index) * 8);
-    height: 100%;
+    height: calc(var(--index)* 12);
     object-fit: cover;
     border-radius: calc(var(--index) * 0.7) 0 0 calc(var(--index) * 0.7);
     z-index: 100;
