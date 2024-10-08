@@ -5,15 +5,12 @@ import { Spinner, Button, Offcanvas } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { createReturn } from '../../http/orderAPI';
 import styles from './UserAccount.module.css';
-import { GiHighHeel } from "react-icons/gi";
-import { Dropdown, Menu, message } from 'antd';
+import { Menu, message } from 'antd';
 import { LiaExchangeAltSolid } from "react-icons/lia";
 import { IoReturnDownBackOutline } from "react-icons/io5";
-import { SlOptionsVertical } from "react-icons/sl";
 import { CustomOffcanvasHeader, CustomOffcanvas, CustomOffcanvasBody } from '../../components/StyledComponents';
 import { PiKeyReturnFill } from "react-icons/pi";
 import BackButton from '../../components/BackButton/BackButton';
-import { THING_ROUTE } from '../../utils/consts';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from "react-icons/si";
 import {Select, Input} from 'antd';
 import UserOrders from '../../components/UserComponents/UserOrders';
@@ -44,29 +41,9 @@ const UserAccount = observer(() => {
         setShow(true);
     }, []);
 
-    const handleDropdownVisibleChange = useCallback((flag, thingId) => {
-        setOpenDropdowns(prevState => ({
-            ...prevState,
-            [thingId]: flag,
-        }));
-    }, []);
-
     useEffect(() => {
         user.loadUserInfo();
     }, [user]);
-
-    const handleMenuClick = useCallback((action, thingItem) => {
-        if (action === 'exchange') {
-            handleExchangeRequest(thingItem);
-        } else if (action === 'return') {
-            handleShow(thingItem);
-        }
-
-        setOpenDropdowns(prevState => ({
-            ...prevState,
-            [thingItem.id]: false,
-        }));
-    }, [handleShow]);
 
     const handleExchangeRequest = useCallback((thingItem) => {
         navigate(`/exchange/${thingItem.id}`); // Перенаправляем на страницу обмена, передавая ID товара
@@ -116,27 +93,6 @@ const UserAccount = observer(() => {
             message.error('Error creating a return');
         }
     }, [cryptoCurrency, cryptoWalletAddress, handleClose, reason, selectedThing, user]);
-
-    const getDropdownMenu = useCallback((thingItem, hasExchangeRequest, hasReturnRequest) => (
-        <Menu>
-            <Menu.Item
-                key="exchange"
-                icon={<LiaExchangeAltSolid />}
-                disabled={hasExchangeRequest}
-                onClick={() => handleMenuClick('exchange', thingItem)}
-            >
-                {hasExchangeRequest ? 'Exchange request sent' : 'Request an exchange'}
-            </Menu.Item>
-            <Menu.Item
-                key="return"
-                icon={<IoReturnDownBackOutline />}
-                disabled={hasReturnRequest}
-                onClick={() => handleMenuClick('return', thingItem)}
-            >
-                {hasReturnRequest ? 'Return in processing' : 'Make a refund'}
-            </Menu.Item>
-        </Menu>
-    ), [handleMenuClick]);
 
     const sliderSettings = {
         dots: false,
@@ -193,8 +149,14 @@ const UserAccount = observer(() => {
                 </div>
             </div>
 
-            {/* Товары пользователя */}
-            <UserModels ownedThings={user.userInfo.ownedThings} exchangeRequests={user.userInfo.exchangeRequests} returns={user.userInfo.returns} handleShow={handleShow} />
+            
+            <UserModels 
+                ownedThings={user.userInfo.ownedThings} 
+                exchangeRequests={user.userInfo.exchangeRequests} 
+                returns={user.userInfo.returns} 
+                handleShow={handleShow} 
+                handleExchangeRequest={handleExchangeRequest} // Передаем как пропс
+            />
 
             <UserOrders orders={user.userInfo.orders} sliderSettings={sliderSettings} />
 

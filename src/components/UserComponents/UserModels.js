@@ -11,7 +11,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext } from 'react';
 import { Context } from '../../index';
 
-const MyModels = memo(({ ownedThings, exchangeRequests, returns, handleShow }) => {
+const MyModels = memo(({ ownedThings, exchangeRequests, returns, handleShow, handleExchangeRequest }) => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
   const [openDropdowns, setOpenDropdowns] = useState({});
@@ -25,7 +25,7 @@ const MyModels = memo(({ ownedThings, exchangeRequests, returns, handleShow }) =
 
   const handleMenuClick = useCallback((action, thingItem) => {
     if (action === 'exchange') {
-      navigate(`/exchange/${thingItem.id}`);
+      handleExchangeRequest(thingItem);
     } else if (action === 'return') {
       handleShow(thingItem);
     }
@@ -34,7 +34,7 @@ const MyModels = memo(({ ownedThings, exchangeRequests, returns, handleShow }) =
       ...prevState,
       [thingItem.id]: false,
     }));
-  }, [navigate, handleShow]);
+  }, [handleExchangeRequest, handleShow]);
 
   const getDropdownMenu = useCallback((thingItem, hasExchangeRequest, hasReturnRequest) => (
     <Menu>
