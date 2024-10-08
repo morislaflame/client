@@ -32,7 +32,7 @@ const UserOrders = observer(({ orders, sliderSettings, isAdminView = false }) =>
     <div className={styles.orders}>
       
                 <div className={styles.order_top}>
-                    <h5>{isAdminView ? 'Заказы пользователя' : 'Мои заказы'}</h5>
+                    <h5>Orders</h5>
                     <AutoComplete
                         options={orderOptions}
                         onSelect={value => setOrderSearch(value)}
