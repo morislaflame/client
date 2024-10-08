@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useCallback } from 'react';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
 import { Spinner, Button, Offcanvas } from 'react-bootstrap';
@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { createReturn } from '../../http/orderAPI';
 import styles from './UserAccount.module.css';
 import { GiHighHeel } from "react-icons/gi";
-import { Dropdown, Menu, message } from 'antd'; // Импортируем AutoComplete из antd
+import { Dropdown, Menu, message } from 'antd';
 import { LiaExchangeAltSolid } from "react-icons/lia";
 import { IoReturnDownBackOutline } from "react-icons/io5";
 import { SlOptionsVertical } from "react-icons/sl";
@@ -32,29 +32,29 @@ const UserAccount = observer(() => {
     const [cryptoWalletAddress, setCryptoWalletAddress] = useState('');
 
 
-    const handleClose = () => {
+    const handleClose = useCallback(() => {
         setShow(false);
         setConfirmationMessage('');
         setReason('');
-    };
+    }, []);
 
-    const handleShow = (thing) => {
+    const handleShow = useCallback((thing) => {
         setSelectedThing(thing);
         setShow(true);
-    };
+    }, []);
 
-    const handleDropdownVisibleChange = (flag, thingId) => {
+    const handleDropdownVisibleChange = useCallback((flag, thingId) => {
         setOpenDropdowns(prevState => ({
             ...prevState,
             [thingId]: flag,
         }));
-    };
+    }, []);
 
     useEffect(() => {
         user.loadUserInfo();
     }, [user]);
 
-    const handleMenuClick = (action, thingItem) => {
+    const handleMenuClick = useCallback((action, thingItem) => {
         if (action === 'exchange') {
             handleExchangeRequest(thingItem);
         } else if (action === 'return') {
@@ -65,11 +65,11 @@ const UserAccount = observer(() => {
             ...prevState,
             [thingItem.id]: false,
         }));
-    };
+    }, [handleShow]);
 
-    const handleExchangeRequest = (thingItem) => {
+    const handleExchangeRequest = useCallback((thingItem) => {
         navigate(`/exchange/${thingItem.id}`); // Перенаправляем на страницу обмена, передавая ID товара
-    };
+    }, [navigate]);
 
     const wallets = {
         usdt: {
@@ -94,7 +94,7 @@ const UserAccount = observer(() => {
         },
     };
 
-    const handleSubmitReturn = async () => {
+    const handleSubmitReturn = useCallback(async () => {
         const refundAmount = selectedThing.price;
         try {
             await createReturn({
@@ -114,9 +114,9 @@ const UserAccount = observer(() => {
             console.error('Error creating a return:', e);
             message.error('Error creating a return');
         }
-    };
+    }, [cryptoCurrency, cryptoWalletAddress, handleClose, reason, selectedThing, user]);
 
-    const getDropdownMenu = (thingItem, hasExchangeRequest, hasReturnRequest) => (
+    const getDropdownMenu = useCallback((thingItem, hasExchangeRequest, hasReturnRequest) => (
         <Menu>
             <Menu.Item
                 key="exchange"
@@ -135,7 +135,7 @@ const UserAccount = observer(() => {
                 {hasReturnRequest ? 'Return in processing' : 'Make a refund'}
             </Menu.Item>
         </Menu>
-    );
+    ), [handleMenuClick]);
 
     const sliderSettings = {
         dots: false,
@@ -148,6 +148,7 @@ const UserAccount = observer(() => {
         centerPadding: "20px",
         focusOnSelect: true,
         adaptiveHeight: true,
+        lazyLoad: 'ondemand',
         responsive: [
             {
                 breakpoint: 1024,

@@ -9,20 +9,24 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
+import { useMemo } from 'react';
 
 const UserOrders = observer(({ orders, sliderSettings, isAdminView = false }) => {
     const { user } = useContext(Context);
     const navigate = useNavigate();
     const [orderSearch, setOrderSearch] = useState('');
 
-    const orderOptions = user.userInfo.orders.map(order => ({
-            value: order.id.toString(),
-        }));
-    const filteredOrders = orderSearch
+    const orderOptions = useMemo(() => user.userInfo.orders.map(order => ({
+        value: order.id.toString(),
+    })), [user.userInfo.orders]);
+
+    const filteredOrders = useMemo(() => {
+        return orderSearch
             ? user.userInfo.orders.filter(order =>
                 order.id.toString().includes(orderSearch.trim())
             )
             : user.userInfo.orders;
+    }, [orderSearch, user.userInfo.orders]);
 
     if (!orders || orders.length === 0) {
         return <p>Нет доступных заказов.</p>;
@@ -101,7 +105,7 @@ const UserOrders = observer(({ orders, sliderSettings, isAdminView = false }) =>
                         ))}
                     </Slider>
                 ) : (
-                    <p>У вас нет заказов с указанным ID.</p>
+                    <p>You have no orders with the specified ID.</p>
                 )}
             
     </div>

@@ -9,6 +9,7 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
+import { useMemo } from 'react';
 
 const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) => {
     const [returnSearch, setReturnSearch] = useState('');
@@ -16,17 +17,18 @@ const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) 
     const navigate = useNavigate();
 
 
-    const returnOptions = user.userInfo.returns.map(ret => ({
+    const returnOptions = useMemo(() => user.userInfo.returns.map(ret => ({
         value: ret.id.toString(),
-    }));
+    })), [user.userInfo.returns]);
 
 
-    const filteredReturns = returnSearch
+    const filteredReturns = useMemo(() => {
+        return returnSearch
         ? user.userInfo.returns.filter(ret =>
             ret.id.toString().includes(returnSearch.trim())
           )
         : user.userInfo.returns;
-
+    }, [returnSearch, user.userInfo.returns]);
 
     const hasReturns = user.userInfo.returns && user.userInfo.returns.length > 0;
 
@@ -98,7 +100,7 @@ const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) 
                     ))}
                 </Slider>
             ) : (
-                <p>У вас нет возвратов с указанным ID.</p>
+                <p>You have no returns with the specified ID</p>
             )}
         </div>
         )}

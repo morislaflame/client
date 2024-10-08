@@ -8,21 +8,24 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
+import { useMemo } from 'react';
 
 const UserExchanges = observer(({ exchanges, sliderSettings, isAdminView = false }) => {
     const [exchangeSearch, setExchangeSearch] = useState('');
     const { user } = useContext(Context);
     const navigate = useNavigate();
 
-    const exchangeOptions = user.userInfo.exchangeRequests.map(exchange => ({
+    const exchangeOptions = useMemo(() => user.userInfo.exchangeRequests.map(exchange => ({
         value: exchange.id.toString(),
-    }));
+    })), [user.userInfo.exchangeRequests]);
 
-    const filteredExchanges = exchangeSearch
+    const filteredExchanges = useMemo(() => {
+        return exchangeSearch
         ? user.userInfo.exchangeRequests.filter(exchange =>
             exchange.id.toString().includes(exchangeSearch.trim())
           )
         : user.userInfo.exchangeRequests;
+    }, [exchangeSearch, user.userInfo.exchangeRequests]);
 
     const hasExchanges = user.userInfo.exchangeRequests && user.userInfo.exchangeRequests.length > 0;
 
@@ -93,7 +96,7 @@ const UserExchanges = observer(({ exchanges, sliderSettings, isAdminView = false
                     ))}
                 </Slider>
             ) : (
-                <p>У вас нет запросов на обмен с указанным ID.</p>
+                <p>You have no exchange requests with the specified ID</p>
             )}
         </div>
         )}
