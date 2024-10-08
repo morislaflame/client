@@ -243,9 +243,9 @@ const Admin = observer(() => {
       <div className={styles.admin_buttons}>
         <button onClick={() => setTypeVisible(true)}>Добавить страну</button>
         <button onClick={() => setBrandVisible(true)}>Добавить бренд</button>
-        <button onClick={() => setModelVisible(true)}>Добавить модель</button>
         <button onClick={() => setStoryVisible(true)}>Добавить историю</button>
         <button onClick={() => setPromoVisible(true)}>Добавить промокод</button>
+        <button onClick={() => setModelVisible(true)}>Добавить модель</button>
       </div>
       <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)} />
       <CreateModel show={modelVisible} onHide={() => setModelVisible(false)} />

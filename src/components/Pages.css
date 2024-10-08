@@ -1,22 +1,16 @@
 .pagination {
-    --bs-pagination-padding-x: 0.75rem;
-    --bs-pagination-padding-y: 0.375rem;
-    --bs-pagination-font-size: 1rem;
-    --bs-pagination-color: #8e0dfd;
-    --bs-pagination-bg: var(--bs-body-bg);
-    --bs-pagination-border-width: var(--bs-border-width);
-    --bs-pagination-border-color: var(--bs-border-color);
-    --bs-pagination-border-radius: var(--bs-border-radius);
-    --bs-pagination-hover-color: #ca0ac6;
-    --bs-pagination-hover-bg: var(--bs-tertiary-bg);
-    --bs-pagination-hover-border-color: var(--bs-border-color);
-    --bs-pagination-focus-color: #ae0aca;
-    --bs-pagination-focus-bg: var(--bs-secondary-bg);
-    --bs-pagination-focus-box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, 0.25);
-    --bs-pagination-active-color: #fff;
-    --bs-pagination-active-bg: #8e0dfd;
-    --bs-pagination-active-border-color: #760dfd;
-    --bs-pagination-disabled-color: var(--bs-secondary-color);
-    --bs-pagination-disabled-bg: var(--bs-secondary-bg);
-    --bs-pagination-disabled-border-color: var(--bs-border-color);
+
+}
+
+:where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-prev .ant-pagination-item-link, :where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-next .ant-pagination-item-link {
+    background-color: #111111c4;
+}
+
+:where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-prev button, :where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-next button {
+    color: rgb(255, 255, 255);
+}
+
+:where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-disabled .ant-pagination-item-link, :where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-disabled:hover .ant-pagination-item-link {
+    color: #ffffff61;
+    cursor: not-allowed;
 }
