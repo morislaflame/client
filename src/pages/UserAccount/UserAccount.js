@@ -6,18 +6,19 @@ import { useNavigate } from 'react-router-dom';
 import { createReturn } from '../../http/orderAPI';
 import styles from './UserAccount.module.css';
 import { GiHighHeel } from "react-icons/gi";
-import { Dropdown, Menu, message, AutoComplete } from 'antd'; // Импортируем AutoComplete из antd
+import { Dropdown, Menu, message } from 'antd'; // Импортируем AutoComplete из antd
 import { LiaExchangeAltSolid } from "react-icons/lia";
 import { IoReturnDownBackOutline } from "react-icons/io5";
-import { FcCancel, FcClock, FcOk } from "react-icons/fc";
 import { SlOptionsVertical } from "react-icons/sl";
 import { CustomOffcanvasHeader, CustomOffcanvas, CustomOffcanvasBody } from '../../components/StyledComponents';
 import { PiKeyReturnFill } from "react-icons/pi";
 import BackButton from '../../components/BackButton/BackButton';
-import Slider from 'react-slick';
 import { THING_ROUTE } from '../../utils/consts';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from "react-icons/si";
 import {Select, Input} from 'antd';
+import UserOrders from '../../components/UserComponents/UserOrders';
+import UserReturns from '../../components/UserComponents/UserReturns';
+import UserExchanges from '../../components/UserComponents/UserExchanges';
 
 const UserAccount = observer(() => {
     const { user } = useContext(Context);
@@ -30,10 +31,6 @@ const UserAccount = observer(() => {
     const [cryptoCurrency, setCryptoCurrency] = useState('usdt');
     const [cryptoWalletAddress, setCryptoWalletAddress] = useState('');
 
-    // Состояния для поисковых запросов
-    const [orderSearch, setOrderSearch] = useState('');
-    const [returnSearch, setReturnSearch] = useState('');
-    const [exchangeSearch, setExchangeSearch] = useState('');
 
     const handleClose = () => {
         setShow(false);
@@ -96,8 +93,6 @@ const UserAccount = observer(() => {
             icon: <SiLitecoin/>,
         },
     };
-
-    
 
     const handleSubmitReturn = async () => {
         const refundAmount = selectedThing.price;
@@ -183,41 +178,6 @@ const UserAccount = observer(() => {
         return <p>Failed to upload user information.</p>;
     }
 
-    // Создаем опции для AutoComplete
-    const orderOptions = user.userInfo.orders.map(order => ({
-        value: order.id.toString(),
-    }));
-
-    const returnOptions = user.userInfo.returns.map(ret => ({
-        value: ret.id.toString(),
-    }));
-
-    const exchangeOptions = user.userInfo.exchangeRequests.map(exchange => ({
-        value: exchange.id.toString(),
-    }));
-
-    // Фильтрация данных на основе поисковых запросов
-    const filteredOrders = orderSearch
-        ? user.userInfo.orders.filter(order =>
-            order.id.toString().includes(orderSearch.trim())
-          )
-        : user.userInfo.orders;
-
-    const filteredReturns = returnSearch
-        ? user.userInfo.returns.filter(ret =>
-            ret.id.toString().includes(returnSearch.trim())
-          )
-        : user.userInfo.returns;
-
-    const filteredExchanges = exchangeSearch
-        ? user.userInfo.exchangeRequests.filter(exchange =>
-            exchange.id.toString().includes(exchangeSearch.trim())
-          )
-        : user.userInfo.exchangeRequests;
-
-    const hasReturns = user.userInfo.returns && user.userInfo.returns.length > 0;
-    const hasExchanges = user.userInfo.exchangeRequests && user.userInfo.exchangeRequests.length > 0;
-
     return (
         <div className={styles.useraccount}>
 
@@ -292,219 +252,11 @@ const UserAccount = observer(() => {
                 )}
             </div>
 
-            {/* Раздел заказов */}
-            <div className={styles.orders}>
-                <div className={styles.order_top}>
-                    <h5>Orders</h5>
-                    <AutoComplete
-                        options={orderOptions}
-                        onSelect={value => setOrderSearch(value)}
-                        onSearch={value => setOrderSearch(value)}
-                        placeholder="Search Order"
-                        allowClear
-                        variant="filled"
-                        className={styles.search}
-                    />
-                </div>
-                
-                {filteredOrders && filteredOrders.length > 0 ? (
-                    <Slider {...sliderSettings} className={styles.slider}>
-                        {filteredOrders.map(order => (
-                            <div className={styles.order_list} key={order.id}>
-                                <div className={styles.order_item}>
-                                    <div className={styles.order_status}>
-                                        <span>Order №{order.id}</span>
-                                    </div>
-                                    <div className={styles.order_details}>
-                                        <div className={styles.ladies}>
-                                            {order.order_things.map(item => (
-                                                <div className={styles.name_price} key={item.id}>
-                                                    <div className={styles.name_heel}>
-                                                        <GiHighHeel />
-                                                        model: <b>{item.thing.name}</b>
-                                                    </div>
-                                                    <span>${item.thing.price}</span>
-                                                </div>
-                                            ))}
-                                            <div className={styles.other_info}>
-                                                {order.promo_code !== null && (
-                                                    <div className={styles.promocode_status}>
-                                                        <span>Promocode:</span> <strong>{order.promo_code.code} ${order.promo_code.discountValue}</strong>
-                                                    </div>
-                                                )}
-                                                <div className={styles.promocode_status}>
-                                                    <span>Currency:</span> <strong>{order.cryptoCurrency}</strong>
-                                                </div>
-                                                <div className={styles.promocode_status}>
-                                                    <span>Amount:</span> <strong>{order.cryptoPaymentAmount}</strong>
-                                                </div>
-                                                <div className={styles.promocode_status}>
-                                                    <span>Hash:</span> <strong>{order.cryptoTransactionHash}</strong>
-                                                </div>
-                                                
-                                            </div>
-                                            <div className={styles.total_price}>Total: ${order.totalPrice} </div>
-                                        </div>
-                                        
-                                        <div className={styles.mini_status}>
+            <UserOrders orders={user.userInfo.orders} sliderSettings={sliderSettings} />
 
-                                            {order.status === 'created' && (
-                                                <div className={styles.approved}><FcClock style={{ color: 'black' }} /><p>Your order is pending confirmation</p></div>
-                                            )}
-                                            {order.status === 'paid' && (
-                                                <div className={styles.approved}><FcOk /><span>Successfully paid</span></div>
-                                            )}
-                                            {order.status === 'rejected' && (
-                                                <div className={styles.approved}><FcCancel /><p>The order was rejected</p></div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </Slider>
-                ) : (
-                    <p>У вас нет заказов с указанным ID.</p>
-                )}
-            </div>
+            <UserReturns returns={user.userInfo.returns} sliderSettings={sliderSettings} />
 
-            {/* Раздел возвратов */}
-            {hasReturns && (
-            <div className={styles.returns}>
-                <div className={styles.order_top}>
-                    <h5>Returns</h5>
-                    <AutoComplete
-                        options={returnOptions}
-                        onSelect={value => setReturnSearch(value)}
-                        onSearch={value => setReturnSearch(value)}
-                        placeholder="Search Return"
-                        allowClear
-                        variant="filled"
-                        className={styles.search}
-                    />
-                </div>
-                {filteredReturns && filteredReturns.length > 0 ? (
-                    <Slider {...sliderSettings} className={styles.slider}>
-                        {filteredReturns.map(returnItem => (
-                            <div className={styles.order_list} key={returnItem.id}>
-                                <div className={styles.order_item}>
-                                    <div className={styles.order_status}>
-                                        <span>Return №{returnItem.id}</span>
-                                    </div>
-                                    <div className={styles.return_details}>
-                                        <div className={styles.ladies}>
-                                            <div className={styles.name_price}>
-                                                <div className={styles.name_heel}>
-                                                    <GiHighHeel />
-                                                    model: {returnItem.thing.name}
-                                                </div>
-                                                <span>${returnItem.thing.price}</span>
-                                            </div>
-                                            <div className={styles.other_info}>
-                                                <div className={styles.promocode_status}>
-                                                    <span>Currency:</span> <strong>{returnItem.cryptoCurrency}</strong>
-                                                </div>
-                                                <div className={styles.promocode_status}>
-                                                    <span>Amount:</span> <strong>{returnItem.refundAmount}</strong>
-                                                </div>
-                                                <div className={styles.promocode_status}>
-                                                    <span>Hash:</span> <strong>{returnItem.cryptoTransactionHash}</strong>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div className={styles.mini_status_return}>
-                                            {returnItem.status === 'pending' && (
-                                                <div className={styles.approved}><FcClock style={{ color: 'black' }} /><p>The refund request is being reviewed</p></div>
-                                            )}
-                                            {returnItem.status === 'approved' && (
-                                                <div className={styles.approved}><FcOk /><p>Refund confirmed</p></div>
-                                            )}
-                                            {returnItem.status === 'rejected' && (
-                                                <div className={styles.approved}><FcCancel /><p>Refund denied</p></div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </Slider>
-                ) : (
-                    <p>У вас нет возвратов с указанным ID.</p>
-                )}
-            </div>
-            )}
-
-            
-            {/* Раздел запросов на обмен */}
-            {hasExchanges && (
-            <div className={styles.exchanges}>
-                <div className={styles.order_top}>
-                    <h5>Exchanges</h5>
-                    <AutoComplete
-                        options={exchangeOptions}
-                        onSelect={value => setExchangeSearch(value)}
-                        onSearch={value => setExchangeSearch(value)}
-                        placeholder="Search Exchange"
-                        allowClear
-                        variant="filled"
-                        className={styles.search}
-                    />
-                </div>
-                {filteredExchanges && filteredExchanges.length > 0 ? (
-                    <Slider {...sliderSettings} className={styles.slider}>
-                        {filteredExchanges.map(exchange => (
-                            <div className={styles.order_list} key={exchange.id}>
-                                <div className={styles.exchange_item}>
-                                    <div className={styles.exchange_status}>
-                                        <span>Exchange №{exchange.id}</span>
-                                    </div>
-                                    <div className={styles.exchange_details}>
-                                        <div className={styles.old_new}>
-                                            <div className={styles.old_new_names}>
-                                                <div><strong>Swapped:</strong></div> {exchange.OldThing.name} - ${exchange.OldThing.price}
-                                            </div>
-                                            <div className={styles.old_new_names}>
-                                                <div><strong>For:</strong></div> {exchange.NewThing.name} - ${exchange.NewThing.price}
-                                            </div>
-                                            <div className={styles.other_info}>
-                                                <div className={styles.promocode_status}>
-                                                    <span>Currency:</span> <strong>{exchange.cryptoCurrency}</strong>
-                                                </div>
-                                                <div className={styles.promocode_status}>
-                                                    <span>Amount:</span> <strong>{exchange.cryptoPaymentAmount}</strong>
-                                                </div>
-                                                <div className={styles.promocode_status}>
-                                                    <span>Hash:</span> <strong>{exchange.cryptoTransactionHash}</strong>
-                                                </div>
-                                            </div>
-                                            <div className={styles.total_price}>
-                                                <strong>Price Difference:</strong> ${exchange.priceDifference}
-                                            </div>
-                                        </div>
-
-                                        
-                                        <div className={styles.mini_status}>
-
-                                            {exchange.status === 'pending' && (
-                                                <div className={styles.approved}><FcClock style={{ color: 'black' }} /><p>Your exchange request is being processed</p></div>
-                                            )}
-                                            {exchange.status === 'approved' && (
-                                                <div className={styles.approved}><FcOk /><p>Exchange approved</p></div>
-                                            )}
-                                            {exchange.status === 'rejected' && (
-                                                <div className={styles.approved}><FcCancel /><p>Exchange denied</p></div>
-                                            )}
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        ))}
-                    </Slider>
-                ) : (
-                    <p>У вас нет запросов на обмен с указанным ID.</p>
-                )}
-            </div>
-            )}
+            <UserExchanges exchanges={user.userInfo.exchangeRequests} sliderSettings={sliderSettings} />
 
             <CustomOffcanvas show={show} onHide={handleClose} placement="bottom">
                 <CustomOffcanvasHeader>
@@ -576,3 +328,17 @@ const UserAccount = observer(() => {
 });
 
 export default UserAccount;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
