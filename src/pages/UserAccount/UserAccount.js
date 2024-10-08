@@ -5,9 +5,7 @@ import { Spinner, Button, Offcanvas } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { createReturn } from '../../http/orderAPI';
 import styles from './UserAccount.module.css';
-import { Menu, message } from 'antd';
-import { LiaExchangeAltSolid } from "react-icons/lia";
-import { IoReturnDownBackOutline } from "react-icons/io5";
+import { message } from 'antd';
 import { CustomOffcanvasHeader, CustomOffcanvas, CustomOffcanvasBody } from '../../components/StyledComponents';
 import { PiKeyReturnFill } from "react-icons/pi";
 import BackButton from '../../components/BackButton/BackButton';
@@ -234,17 +232,3 @@ const UserAccount = observer(() => {
 });
 
 export default UserAccount;
-
-
-
-
-
-
-
-
-
-
-
-
-
-

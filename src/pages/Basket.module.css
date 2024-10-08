@@ -10,6 +10,7 @@
     align-items: center;
     gap: calc(var(--index) * 2);
     min-height: 100vh;
+    overflow: hidden;
   }
 
   .basket_page h2 {
