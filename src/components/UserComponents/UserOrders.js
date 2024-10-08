@@ -9,9 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 
-const UserOrders = observer(({ orders, sliderSettings, isAdminView = false }) => {
+const UserOrders = observer(memo(({ orders, sliderSettings, isAdminView = false }) => {
     const { user } = useContext(Context);
     const navigate = useNavigate();
     const [orderSearch, setOrderSearch] = useState('');
@@ -110,6 +110,6 @@ const UserOrders = observer(({ orders, sliderSettings, isAdminView = false }) =>
             
     </div>
   );
-});
+}));
 
 export default UserOrders;

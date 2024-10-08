@@ -9,9 +9,9 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 
-const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) => {
+const UserReturns = observer(memo(({ returns, sliderSettings, isAdminView = false }) => {
     const [returnSearch, setReturnSearch] = useState('');
     const { user } = useContext(Context);
     const navigate = useNavigate();
@@ -106,6 +106,6 @@ const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) 
         )}
     </>
   );
-});
+}));
 
 export default UserReturns;

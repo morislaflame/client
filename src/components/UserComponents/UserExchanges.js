@@ -8,9 +8,9 @@ import { useNavigate } from 'react-router-dom';
 import { useContext, useState } from 'react';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
-import { useMemo } from 'react';
+import { useMemo, memo } from 'react';
 
-const UserExchanges = observer(({ exchanges, sliderSettings, isAdminView = false }) => {
+const UserExchanges = observer(memo(({ exchanges, sliderSettings, isAdminView = false }) => {
     const [exchangeSearch, setExchangeSearch] = useState('');
     const { user } = useContext(Context);
     const navigate = useNavigate();
@@ -102,6 +102,6 @@ const UserExchanges = observer(({ exchanges, sliderSettings, isAdminView = false
         )}
         </>
   );
-});
+}));
 
 export default UserExchanges;
