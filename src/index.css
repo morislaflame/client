@@ -62,5 +62,5 @@ iframe {
 
 .ant-select-show-search:where(.css-dev-only-do-not-override-qnu6hi).ant-select:not(.ant-select-customize-input) .ant-select-selector input {
   display: flex;
-  color: rgba(255, 255, 255, 0.562);
+  color: #6c6868d4;
 }

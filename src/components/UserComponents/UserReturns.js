@@ -11,7 +11,7 @@ import { Context } from '../../index';
 import { AutoComplete } from 'antd';
 import { useMemo, memo } from 'react';
 
-const UserReturns = observer(memo(({ returns, sliderSettings, isAdminView = false }) => {
+const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) => {
     const [returnSearch, setReturnSearch] = useState('');
     const { user } = useContext(Context);
     const navigate = useNavigate();
@@ -106,6 +106,6 @@ const UserReturns = observer(memo(({ returns, sliderSettings, isAdminView = fals
         )}
     </>
   );
-}));
+});
 
 export default UserReturns;

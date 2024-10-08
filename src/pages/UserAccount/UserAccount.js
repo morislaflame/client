@@ -19,6 +19,7 @@ import {Select, Input} from 'antd';
 import UserOrders from '../../components/UserComponents/UserOrders';
 import UserReturns from '../../components/UserComponents/UserReturns';
 import UserExchanges from '../../components/UserComponents/UserExchanges';
+import UserModels from '../../components/UserComponents/UserModels';
 
 const UserAccount = observer(() => {
     const { user } = useContext(Context);
@@ -193,65 +194,7 @@ const UserAccount = observer(() => {
             </div>
 
             {/* Товары пользователя */}
-            <div className={styles.my_things}>
-                <h3>My Models</h3>
-                {user.userInfo.ownedThings && user.userInfo.ownedThings.length > 0 ? (
-                    <div className={styles.things_list}>
-                        {user.userInfo.ownedThings.map(thingItem => {
-                            const hasExchangeRequest = user.userInfo.exchangeRequests?.some(
-                                exchange => exchange.oldThingId === thingItem.id && exchange.status === 'pending'
-                            );
-
-                            const hasReturnRequest = user.userInfo.returns?.some(
-                                returnItem => returnItem.thingId === thingItem.id && returnItem.status === 'pending'
-                            );
-
-                            return (
-                                <div className={styles.thing_item} key={thingItem.id} >
-                                    <div className={styles.thing_image_wrapper} style={{zIndex: '100'}}>
-                                        {thingItem.images && thingItem.images.length > 0 && (
-                                            <img
-                                                src={`${process.env.REACT_APP_API_URL}/${thingItem.images[0].img}`}
-                                                alt={thingItem.name}
-                                                className={styles.thing_image}
-                                                onError={(e) => { e.target.src = '/path/to/default/image.jpg'; }}
-                                                onClick={() => navigate(THING_ROUTE + "/" + thingItem.id)}
-                                            />
-                                        )}
-                                    </div>
-                                    <div className={styles.thing_details}>
-                                        <div className={styles.name_price}>
-                                            <div className={styles.name_heel}>
-                                                <GiHighHeel /><span>{thingItem.name}</span>
-                                            </div>
-                                            <span>${thingItem.price}</span>
-                                        </div>
-                                        <div className={styles.dropdownmenusection}>
-                                            <Dropdown
-                                                overlay={getDropdownMenu(thingItem, hasExchangeRequest, hasReturnRequest)}
-                                                trigger={['click']}
-                                                onVisibleChange={(flag) => handleDropdownVisibleChange(flag, thingItem.id)}
-                                                visible={openDropdowns[thingItem.id] || false}
-                                            >
-                                                <div className={styles.dropdownmenu}>
-                                                    <div onClick={e => e.preventDefault()} className={styles.dropdownTrigger}>
-                                                        <span>Actions</span>
-                                                        <SlOptionsVertical
-                                                            className={`${styles.rotateIcon} ${openDropdowns[thingItem.id] ? styles.open : ''}`}
-                                                        />
-                                                    </div>
-                                                </div>
-                                            </Dropdown>
-                                        </div>
-                                    </div>
-                                </div>
-                            );
-                        })}
-                    </div>
-                ) : (
-                    <span className={styles.placeholder}>You don't have any Models.</span>
-                )}
-            </div>
+            <UserModels ownedThings={user.userInfo.ownedThings} exchangeRequests={user.userInfo.exchangeRequests} returns={user.userInfo.returns} handleShow={handleShow} />
 
             <UserOrders orders={user.userInfo.orders} sliderSettings={sliderSettings} />
 
