@@ -1,13 +1,12 @@
 .offcanvas.offcanvas-top {
     height: 70vh;
-    background: linear-gradient(to bottom, black, #030107);
+    background: radial-gradient(ellipse at right top, #1c051e, black, #1a0734);
     color: white;
 }
 
 .offcanvas-header {
     display: flex;
     justify-content: center;
-    background: linear-gradient(to bottom, black, #000000ab);
 }
 
 .offcanvas-header button{
@@ -15,3 +14,4 @@
     position: absolute;
     right: 0;
 }
+

@@ -18,15 +18,12 @@
 }
 
 .my-button {
-    /* padding: calc(var(--index) * 1) calc(var(--index) * 4); */
     width: 100%;
-    height: calc(var(--index)* 3.9);
+    height: calc(var(--index)* 4);
     background: linear-gradient(150deg, #ac57ed, #6b3ce6);
     color: #fff;
     border: 0;
     border-radius: calc(var(--index) * 1);
-    border-bottom: 1px solid #7f7e7e66;
-    border-top: 1px solid #aaa9a9b5;
     box-shadow: 
         0 0 2px black, 
         0 0 5px #000000a3, 

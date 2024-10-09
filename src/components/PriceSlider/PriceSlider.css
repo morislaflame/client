@@ -11,7 +11,7 @@
     gap: calc(var(--index) * 0.5);
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to bottom, #ac57eda8, #030107);
+    background: linear-gradient(180deg, #ac57ed91, #6b3ce640, rgba(0, 0, 0, 0));
     padding: calc(var(--index) * 2);
     border-radius: calc(var(--index) * 1);
     margin: calc(var(--index) * 0) auto calc(var(--index) * 1) auto;

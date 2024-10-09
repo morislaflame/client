@@ -9,8 +9,6 @@ import { FaShoppingCart, FaUserAlt  } from 'react-icons/fa';
 import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE, SHOP_ROUTE, PRIVACY_ROUTE, TERMS_ROUTE, MAIN_ROUTE } from '../../utils/consts';
 import './NavBar.css';
 import { FaTelegram } from "react-icons/fa6";
-import styled from 'styled-components';
-import { Badge } from 'antd';
 
 const NavBar = observer(() => {
     const { user, thing } = useContext(Context);
