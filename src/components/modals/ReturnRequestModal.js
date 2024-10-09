@@ -1,28 +1,63 @@
-// components/ReturnRequestOffcanvas.js
-import React, { useCallback } from 'react';
-import { Offcanvas, Button } from 'react-bootstrap';
-import { CustomOffcanvasHeader, CustomOffcanvasBody } from './StyledComponents';
+import React, { useState, useCallback } from 'react';
+import { Button, Offcanvas } from 'react-bootstrap';
+import { Input, Select, message } from 'antd';
 import { PiKeyReturnFill } from 'react-icons/pi';
-import { Select, Input, message } from 'antd';
-import styles from './UI.module.css';
+import styles from './ReturnRequestModal.module.css';
+import { observer } from 'mobx-react-lite';
+import { useContext } from 'react';
+import { Context } from '../../index';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from 'react-icons/si';
+import { CustomOffcanvas, ExchangeOffcanvasHeader, CustomOffcanvasBody, CustomOffcanvasHeader } from '../StyledComponents';
 
-const ReturnRequestOffcanvas = ({
-  show,
-  handleClose,
-  selectedThing,
-  wallets,
-  cryptoCurrency,
-  setCryptoCurrency,
-  cryptoWalletAddress,
-  setCryptoWalletAddress,
-  reason,
-  setReason,
-  handleSubmitReturn,
-}) => {
+const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
+  const { return: returnStore } = useContext(Context);
+  const [reason, setReason] = useState('');
+  const [cryptoCurrency, setCryptoCurrency] = useState('usdt');
+  const [cryptoWalletAddress, setCryptoWalletAddress] = useState('');
+
+  const wallets = {
+    usdt: {
+      currency: 'USDT',
+      icon: <SiTether />,
+    },
+    bitcoin: {
+      currency: 'BTC',
+      icon: <SiBitcoinsv />,
+    },
+    ethereum: {
+      currency: 'ETH',
+      icon: <SiEthereum />,
+    },
+    litecoin: {
+      currency: 'LTC',
+      icon: <SiLitecoin />,
+    },
+  };
+
+  const handleSubmitReturn = useCallback(async () => {
+    const refundAmount = selectedThing.price;
+    try {
+      await returnStore.createNewReturn({
+        thingId: selectedThing.id,
+        reason: reason || '',
+        cryptoCurrency: wallets[cryptoCurrency].currency,
+        cryptoWalletAddress,
+        refundAmount,
+      });
+      message.success('Ожидайте подтверждения возврата');
+      setTimeout(() => {
+        handleClose();
+        returnStore.loadUserReturns();
+      }, 3000);
+    } catch (e) {
+      console.error('Ошибка при создании возврата:', e);
+      message.error('Ошибка при создании возврата');
+    }
+  }, [cryptoCurrency, cryptoWalletAddress, handleClose, reason, selectedThing, returnStore]);
+
   return (
-    <Offcanvas show={show} onHide={handleClose} placement="bottom">
-      <CustomOffcanvasHeader>
+    <CustomOffcanvas show={show} onHide={handleClose} placement="bottom">
+      <CustomOffcanvasHeader closeButton>
         <Offcanvas.Title className={styles.offcanv_header}>Запрос на возврат</Offcanvas.Title>
       </CustomOffcanvasHeader>
       <CustomOffcanvasBody>
@@ -86,8 +121,8 @@ const ReturnRequestOffcanvas = ({
           </>
         )}
       </CustomOffcanvasBody>
-    </Offcanvas>
+    </CustomOffcanvas>
   );
-};
+});
 
-export default ReturnRequestOffcanvas;
+export default ReturnRequestModal;

@@ -1,5 +1,5 @@
 import {makeAutoObservable, action, runInAction } from "mobx";
-import { fetchUsers, getUserByEmail, changeUserRole, deleteUser, getUserById, fetchMyInfo } from "../http/userAPI";
+import { fetchUsers, getUserByEmail, changeUserRole, deleteUser, getUserById, fetchMyInfo, fetchMyPurchasedThings } from "../http/userAPI";
 
 import { fetchUserExchangeRequests, createExchangeRequest } from "../http/exchangeAPI"; // Добавьте необходимые методы
 
@@ -11,6 +11,7 @@ export default class UserStore {
         this._exchangeRequests = [];
         this._userInfo = null
         this._loading = true
+        this._purchasedThings = [];
         makeAutoObservable(this, 
             {
                 setUsers: action,
@@ -22,6 +23,7 @@ export default class UserStore {
                 updateUserInfo: action,
                 setUserInfo: action,
                 setLoading: action,
+                loadPurchasedThings: action,
             }
         )
     }
@@ -41,6 +43,10 @@ export default class UserStore {
 
     setExchangeRequests(exchangeRequests) {
         this._exchangeRequests = exchangeRequests;
+    }
+
+    setPurchasedThings(purchasedThings) {
+        this._purchasedThings = purchasedThings;
     }
 
     setUserInfo(userInfo) {
@@ -70,19 +76,34 @@ export default class UserStore {
     async loadUserInfo() {
         this.setLoading(true);
         try {
-            const data = await fetchMyInfo(); // Предполагается, что у вас есть этот API вызов
+            const data = await fetchMyInfo(); 
             runInAction(() => {
                 this._userInfo = data;
                 this.setLoading(false);
             });
         } catch (error) {
-            console.error('Ошибка при загрузке информации о пользователе:', error);
+            console.error('Error loading user info:', error);
             runInAction(() => {
                 this.setLoading(false);
             });
         }
     }
 
+    async loadPurchasedThings() {
+        this.setLoading(true);
+        try {
+          const data = await fetchMyPurchasedThings();
+          runInAction(() => {
+            this._purchasedThings = data;
+            this.setLoading(false);
+          });
+        } catch (error) {
+          console.error('Error loading purchased things:', error);
+          runInAction(() => {
+            this.setLoading(false);
+          });
+        }
+      }
     // Метод для обновления информации о пользователе после действия
     updateUserInfo(updatedData) {
         this._userInfo = { ...this._userInfo, ...updatedData };
@@ -172,8 +193,8 @@ export default class UserStore {
     get loading() {
         return this._loading;
     }
+    get purchasedThings() {
+        return this._purchasedThings;
+      }
 }
-
-
-
 

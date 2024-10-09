@@ -58,3 +58,10 @@ export const fetchUserPromoCodes = async () => {
     const { data } = await $authHost.get('api/user/promoCodes');
     return data;
 }
+
+export const fetchMyPurchasedThings = async () => {
+  const { data } = await $authHost.get('api/user/my-purchased-things');
+  return data;
+};
+
+

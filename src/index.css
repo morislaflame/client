@@ -64,3 +64,10 @@ iframe {
   display: flex;
   color: #6c6868d4;
 }
+
+:where(.css-dev-only-do-not-override-qnu6hi).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+  background: #25252552;
+  border: 0;
+  color: rgb(255 255 255 / 74%);
+  text-align: center;
+}
