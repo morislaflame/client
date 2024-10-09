@@ -8,34 +8,38 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
 
-const UserOrders = observer(({ sliderSettings, isAdminView = false }) => {
+const UserOrders = observer(({ orders, sliderSettings }) => {
   const { order } = useContext(Context); // Access OrderStore from context
   const [orderSearch, setOrderSearch] = useState('');
 
+  const userOrders = orders || order.orders
+
   // Load user orders when component mounts
   useEffect(() => {
+    if (!orders) {
     order.loadUserOrders();
-  }, [order]);
+    }
+  }, [order, orders]);
 
   const orderOptions = useMemo(
     () =>
-      order.orders.map((orderItem) => ({
+      userOrders.map((orderItem) => ({
         value: orderItem.id.toString(),
       })),
-    [order.orders]
+    [userOrders]
   );
 
   const filteredOrders = useMemo(() => {
     return orderSearch
-      ? order.orders.filter((orderItem) => orderItem.id.toString().includes(orderSearch.trim()))
-      : order.orders;
-  }, [orderSearch, order.orders]);
+      ? userOrders.filter((orderItem) => orderItem.id.toString().includes(orderSearch.trim()))
+      : userOrders;
+  }, [orderSearch, userOrders]);
 
-  if (order.loading) {
+  if (order.loading && !orders) {
     return <p>Loading orders...</p>;
   }
 
-  if (!order.orders || order.orders.length === 0) {
+  if (!userOrders || userOrders.length === 0) {
     return <p>You have no orders.</p>;
   }
 
