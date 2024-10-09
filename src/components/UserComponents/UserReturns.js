@@ -1,4 +1,5 @@
 // components/UserReturns.js
+
 import React, { useContext, useEffect, useState, useMemo } from 'react';
 import Slider from 'react-slick';
 import styles from './UserComponents.module.css';
@@ -8,32 +9,37 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
 
-const UserReturns = observer(({ sliderSettings, isAdminView = false }) => {
-  const { return: returnStore } = useContext(Context); // Access ReturnStore from context
+const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) => {
+  const { return: returnStore } = useContext(Context); // Доступ к ReturnStore из контекста
   const [returnSearch, setReturnSearch] = useState('');
 
-  // Load user returns when component mounts
+  // Если пропс returns не передан, загружаем данные из стора
   useEffect(() => {
-    returnStore.loadUserReturns();
-  }, [returnStore]);
+    if (!returns) {
+      returnStore.loadUserReturns();
+    }
+  }, [returnStore, returns]);
+
+  // Используем данные из пропсов или из стора
+  const returnData = returns || returnStore.returns;
 
   const returnOptions = useMemo(
     () =>
-      returnStore.returns.map((ret) => ({
+      returnData.map((ret) => ({
         value: ret.id.toString(),
       })),
-    [returnStore.returns]
+    [returnData]
   );
 
   const filteredReturns = useMemo(() => {
     return returnSearch
-      ? returnStore.returns.filter((ret) => ret.id.toString().includes(returnSearch.trim()))
-      : returnStore.returns;
-  }, [returnSearch, returnStore.returns]);
+      ? returnData.filter((ret) => ret.id.toString().includes(returnSearch.trim()))
+      : returnData;
+  }, [returnSearch, returnData]);
 
-  const hasReturns = returnStore.returns && returnStore.returns.length > 0;
+  const hasReturns = returnData && returnData.length > 0;
 
-  if (returnStore.loading) {
+  if (returnStore.loading && !returns) {
     return <p>Loading returns...</p>;
   }
 
@@ -69,9 +75,9 @@ const UserReturns = observer(({ sliderSettings, isAdminView = false }) => {
                         <div className={styles.name_price}>
                           <div className={styles.name_heel}>
                             <GiHighHeel />
-                            model: {returnItem.thing.name}
+                            model: {returnItem.thing ? returnItem.thing.name : 'Unknown'}
                           </div>
-                          <span>${returnItem.thing.price}</span>
+                          <span>${returnItem.thing ? returnItem.thing.price : 'N/A'}</span>
                         </div>
                         <div className={styles.other_info}>
                           <div className={styles.promocode_status}>

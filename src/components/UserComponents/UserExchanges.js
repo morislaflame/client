@@ -7,34 +7,37 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
 
-const UserExchanges = observer(({ sliderSettings, isAdminView = false }) => {
+const UserExchanges = observer(({ exchanges, sliderSettings }) => {
   const { exchange } = useContext(Context); // Access ExchangeStore from context
   const [exchangeSearch, setExchangeSearch] = useState('');
 
+  const userExchanges = exchanges || exchange.exchangeRequests 
   // Load user exchange requests when component mounts
   useEffect(() => {
-    exchange.loadUserExchangeRequests();
-  }, [exchange]);
+    if (!exchanges) {
+      exchange.loadUserExchangeRequests();
+    }
+  }, [exchange, exchanges]);
 
   const exchangeOptions = useMemo(
     () =>
-      exchange.exchangeRequests.map((exchangeItem) => ({
+      userExchanges.map((exchangeItem) => ({
         value: exchangeItem.id.toString(),
       })),
-    [exchange.exchangeRequests]
+    [userExchanges]
   );
 
   const filteredExchanges = useMemo(() => {
     return exchangeSearch
-      ? exchange.exchangeRequests.filter((exchangeItem) =>
+      ? userExchanges.filter((exchangeItem) =>
           exchangeItem.id.toString().includes(exchangeSearch.trim())
         )
-      : exchange.exchangeRequests;
-  }, [exchangeSearch, exchange.exchangeRequests]);
+      : userExchanges;
+  }, [exchangeSearch, userExchanges]);
 
-  const hasExchanges = exchange.exchangeRequests && exchange.exchangeRequests.length > 0;
+  const hasExchanges = userExchanges && userExchanges.length > 0;
 
-  if (exchange.loading) {
+  if (exchange.loading && !exchanges) {
     return <p>Loading exchanges...</p>;
   }
 
