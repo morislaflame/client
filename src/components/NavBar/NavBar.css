@@ -19,6 +19,10 @@
     /* font-size: calc(var(--index) * 1.8); */
 }
 
+.navbar-brand img {
+    width: calc(var(--index) * 10);
+}
+
 .menu {
     display: flex;
     gap: calc(var(--index) * 1);

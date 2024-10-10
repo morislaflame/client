@@ -9,10 +9,12 @@ import { FaShoppingCart, FaUserAlt  } from 'react-icons/fa';
 import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE, SHOP_ROUTE, PRIVACY_ROUTE, TERMS_ROUTE, MAIN_ROUTE } from '../../utils/consts';
 import './NavBar.css';
 import { FaTelegram } from "react-icons/fa6";
+import EMM from '../../icons/EMM2.png';
 
 const NavBar = observer(() => {
     const { user, thing } = useContext(Context);
     const navigate = useNavigate();
+
 
     useEffect(() => {
         if (user.isAuth) {
@@ -28,7 +30,9 @@ const NavBar = observer(() => {
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className="bg-body-tertiary" style={{ justifyContent: 'center' }}>
             <div className='navbar'>
-                <Navbar.Brand onClick={() => navigate(MAIN_ROUTE)} style={{color: 'white'}}>Model's Hotel</Navbar.Brand>
+                <Navbar.Brand onClick={() => navigate(MAIN_ROUTE)} style={{color: 'white'}}>
+                    <img src={EMM} alt='EMM' />
+                </Navbar.Brand>
                 
                 <div className='menu'>
                     {user.isAuth && (

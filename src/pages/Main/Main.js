@@ -56,7 +56,7 @@ export default function Main() {
       <StorySlider />
       <div className='mainPhoto'>
         <div className='mainArticle'>
-          <h1>THE MODEL'S HOTEL</h1>
+          <h1>EXPRESS MODEL MARKETPLACE</h1>
           <h3>Here you can buy models for OnlyFans and other platforms (please check “platforms available” section)</h3>
         </div>
         <div className='skeleton'></div>
