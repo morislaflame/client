@@ -8,6 +8,7 @@ import { GiHighHeel } from 'react-icons/gi';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
+import CopyableButton from '../CopyableButton/CopyableButton';
 
 const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) => {
   const { return: returnStore } = useContext(Context); // Доступ к ReturnStore из контекста
@@ -86,10 +87,15 @@ const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) 
                           <div className={styles.promocode_status}>
                             <span>Amount:</span> <strong>{returnItem.refundAmount}</strong>
                           </div>
-                          <div className={styles.promocode_status}>
-                            <span>Hash:</span> <strong>{returnItem.cryptoTransactionHash}</strong>
-                          </div>
                         </div>
+                        <div className={styles.hash}>
+                            <span>Transaction Hash:</span> 
+                            <CopyableButton 
+                            value={returnItem.cryptoTransactionHash} 
+                            className={styles.copyable_address}
+                            title='Copy Hash'
+                            />
+                          </div>
                       </div>
                       <div className={styles.mini_status_return}>
                         {returnItem.status === 'pending' && (

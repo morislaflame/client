@@ -6,6 +6,7 @@ import { FcCancel, FcClock, FcOk } from 'react-icons/fc';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
+import CopyableButton from '../CopyableButton/CopyableButton';
 
 const UserExchanges = observer(({ exchanges, sliderSettings }) => {
   const { exchange } = useContext(Context); // Access ExchangeStore from context
@@ -85,10 +86,15 @@ const UserExchanges = observer(({ exchanges, sliderSettings }) => {
                           <div className={styles.promocode_status}>
                             <span>Amount:</span> <strong>{exchangeItem.cryptoPaymentAmount}</strong>
                           </div>
-                          <div className={styles.promocode_status}>
-                            <span>Hash:</span> <strong>{exchangeItem.cryptoTransactionHash}</strong>
-                          </div>
                         </div>
+                        <div className={styles.hash}>
+                            <span>Transaction Hash:</span> 
+                            <CopyableButton 
+                            value={exchangeItem.cryptoTransactionHash} 
+                            className={styles.copyable_address}
+                            title='Copy Hash'
+                            />
+                          </div>
                         <div className={styles.total_price}>
                           <strong>Price Difference:</strong> ${exchangeItem.priceDifference}
                         </div>

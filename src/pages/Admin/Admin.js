@@ -17,6 +17,7 @@ import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest
 import CreatePromoCode from '../../components/modals/CreatePromoCode';
 import styles from './Admin.module.css'
 import { message, Input } from 'antd';
+import CopyableButton from '../../components/CopyableButton/CopyableButton';
 
 const Admin = observer(() => {
   const [brandVisible, setBrandVisible] = useState(false);
@@ -309,16 +310,18 @@ const Admin = observer(() => {
                         <></>
                     )}
                     <span>Валюта: <p>{order.cryptoCurrency}</p></span>
-                    <span>Хэш: 
-                      <button
-                        className={styles.copyableHash}
-                        onClick={() => copyToClipboard(order.cryptoTransactionHash, order.id)}
-                      >
-                        {order.cryptoTransactionHash}
-                      </button> 
-                    </span>
+                    
                     <span>Сумма: <p>{order.cryptoPaymentAmount}</p></span>
                   </div>
+
+                  <div className={styles.hash}>
+                            <span>Transaction Hash:</span> 
+                            <CopyableButton 
+                            value={order.cryptoTransactionHash} 
+                            className={styles.copyable_address}
+                            title='Copy Hash'
+                            />
+                          </div>
                   
                     {order.order_things.map(item => (
                       <span 
@@ -367,8 +370,17 @@ const Admin = observer(() => {
                       <span>Возврат №{returnItem.id}</span>
                       <span onClick={() => navigate(THING_ROUTE + "/" + returnItem.thingId)} style={{ textDecoration: 'underline' }}>Модель: <p>{returnItem.thing.name}</p></span>
                       <span onClick={() => navigate(`/user/${returnItem.userId}`)} style={{ textDecoration: 'underline' }}>User: <p>{returnItem.user.email}</p></span>
-                      <span>Причина: <p>{returnItem.reason}</p></span>
+                      
+                      <span><p>{returnItem.reason}</p></span>
                     </div>
+                    <div className={styles.hash}>
+                        <span>Wallet:</span> 
+                        <CopyableButton 
+                        value={returnItem.cryptoWalletAddress} 
+                        className={styles.copyable_address}
+                        title='Copy Hash'
+                        />
+                      </div>
                     <Input
                       placeholder="Введите хэш транзакции возврата"
                       value={currentRefundHash}
@@ -420,7 +432,7 @@ const Admin = observer(() => {
                     <span onClick={() => navigate(THING_ROUTE + "/" + exchange.newThingId)} style={{ textDecoration: 'underline' }}>
                       На: <p>{exchange.NewThing.name} (${exchange.NewThing.price})</p>
                     </span>
-                    <span>Причина: <p>{exchange.userComment}</p></span>
+                    <span><p>{exchange.userComment}</p></span>
                     <span>Разница в цене: <p>${exchange.priceDifference > 0 ? `+${exchange.priceDifference}` : exchange.priceDifference}</p></span>
                   </div>
 
@@ -443,9 +455,20 @@ const Admin = observer(() => {
 
                   {/* Дополнительные действия для доплаты или возврата */}
                   {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
-                    <button onClick={() => handleConfirmPaymentExchange(exchange.id)} className={styles.doplata}>
+                    <>
+                    
+                    <div className={styles.hash}>
+                    <span>Transaction Hash:</span> 
+                    <CopyableButton 
+                    value={exchange.cryptoTransactionHash} 
+                    className={styles.copyable_address}
+                    title='Copy Hash'
+                    />
+                  </div>
+                  <button onClick={() => handleConfirmPaymentExchange(exchange.id)} className={styles.doplata}>
                       Подтвердить доплату
                     </button>
+                  </>
                   )}
                   {exchange.priceDifference < 0 && !exchange.refundProcessed && (
                     <div className={styles.refund_section}>

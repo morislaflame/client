@@ -8,6 +8,7 @@ import { Context } from '../../index';
 import { message } from 'antd';
 import { THING_ROUTE, ALL_ORDERS_ROUTE } from '../../utils/consts';
 import styles from './AdminComponents.module.css';
+import CopyableButton from '../CopyableButton/CopyableButton';
 
 const NewOrders = observer(() => {
   const { order } = useContext(Context);
@@ -81,14 +82,14 @@ const NewOrders = observer(() => {
                   </span>
                   <span>
                     Хэш:
-                    <button
-                      className={styles.copyableHash}
-                      onClick={() =>
-                        copyToClipboard(orderItem.cryptoTransactionHash, orderItem.id)
-                      }
-                    >
-                      {orderItem.cryptoTransactionHash}
-                    </button>
+                    <div className={styles.hash}>
+                            <span>Transaction Hash:</span> 
+                            <CopyableButton 
+                            value={orderItem.cryptoTransactionHash} 
+                            className={styles.copyable_address}
+                            title='Copy Hash'
+                            />
+                          </div>
                   </span>
                   <span>
                     Сумма: <p>{orderItem.cryptoPaymentAmount}</p>

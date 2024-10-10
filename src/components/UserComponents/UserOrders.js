@@ -7,6 +7,7 @@ import { GiHighHeel } from 'react-icons/gi';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
+import CopyableButton from '../CopyableButton/CopyableButton';
 
 const UserOrders = observer(({ orders, sliderSettings }) => {
   const { order } = useContext(Context); // Access OrderStore from context
@@ -91,10 +92,15 @@ const UserOrders = observer(({ orders, sliderSettings }) => {
                       <div className={styles.promocode_status}>
                         <span>Amount:</span> <strong>{orderItem.cryptoPaymentAmount}</strong>
                       </div>
-                      <div className={styles.promocode_status}>
-                        <span>Hash:</span> <strong>{orderItem.cryptoTransactionHash}</strong>
-                      </div>
                     </div>
+                    <div className={styles.hash}>
+                            <span>Transaction Hash:</span> 
+                            <CopyableButton 
+                            value={orderItem.cryptoTransactionHash} 
+                            className={styles.copyable_address}
+                            title='Copy Hash'
+                            />
+                          </div>
                     <div className={styles.total_price}>Total: ${orderItem.totalPrice} </div>
                   </div>
 

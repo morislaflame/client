@@ -10,6 +10,7 @@ import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
 import styles from './PaymentPage.module.css';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from "react-icons/si";
 import BackButton from "../../components/BackButton/BackButton";
+import CopyableButton from "../../components/CopyableButton/CopyableButton";
 
 const PaymentPage = () => {
   const { thing } = useContext(Context);
@@ -183,22 +184,11 @@ const PaymentPage = () => {
 
           <div className={styles.address}>
             <span>Wallet address {wallets[selectedCrypto].currency}:{" "}</span>
-            <button
-              onClick={() => {
-                navigator.clipboard.writeText(wallets[selectedCrypto].address)
-                  .then(() => {
-                    message.success("Copied!");
-                  })
-                  .catch((err) => {
-                    console.error("Error when copying an address:", err);
-                    message.error("Error");
-                  });
-              }}
-              className={styles.copyable_address}
-              title="Click to copy the address"
-            >
-              {wallets[selectedCrypto].address}
-            </button>
+            <CopyableButton 
+            value={wallets[selectedCrypto].address}
+            className={styles.copyable_address}
+            title="Click to copy"
+            />
           </div>
         </div>
 

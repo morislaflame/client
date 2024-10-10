@@ -139,7 +139,31 @@
     align-items: center;
 }
 
-/* UserAccount.module.css */
+.hash {
+    font-size: calc(var(--index) * 1.4);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: calc(var(--index) * 0.5);
+  }
+
+.copyable_address {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: linear-gradient(150deg, #272525d4, #403d4561, #423f3fd4);
+    border: 0;
+    color: #fff;
+    border-radius: calc(var(--index) * 1);
+    padding: calc(var(--index) * 0.8) calc(var(--index) * 1);
+    font-size: calc(var(--index) * 1);
+  }
+
+  
 
 .dropdownTrigger {
     display: flex;
