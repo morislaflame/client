@@ -3,7 +3,7 @@ import { Card, Button, Form, Modal, Spinner } from 'react-bootstrap';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { HiMiniPencilSquare, HiMiniTrash } from "react-icons/hi2";
-import { message, Image } from 'antd'; // Importing Image from antd
+import { message, Image } from 'antd';
 import styles from './CommentList.module.css';
 
 const CommentList = observer(({ review }) => {

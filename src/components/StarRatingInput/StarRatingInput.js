@@ -1,4 +1,3 @@
-// src/components/StarRatingInput/StarRatingInput.jsx
 import React, { useState } from 'react';
 import { MdStar } from "react-icons/md";
 import PropTypes from 'prop-types';

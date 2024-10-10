@@ -9,7 +9,6 @@ const TypeBar = observer(() => {
     const { thing } = useContext(Context);
     const [searchTerm, setSearchTerm] = useState("");
 
-    // Показываем первые три типа
     const firstThreeTypes = thing.types.slice(0, 3);
 
     // Фильтруем типы по поисковому запросу, но показываем их только если есть ввод
@@ -40,7 +39,6 @@ const TypeBar = observer(() => {
                 ))}
             </ListGroup>
 
-            {/* Поисковая строка для динамической фильтрации типов */}
             <Form.Group className="mt-3">
                 <Form.Control
                     type="text"
@@ -50,7 +48,6 @@ const TypeBar = observer(() => {
                 />
             </Form.Group>
 
-            {/* Показываем типы только если есть ввод */}
             {searchTerm && (
                 <ListGroup className="mt-2">
                     {filteredTypes.map(type => (

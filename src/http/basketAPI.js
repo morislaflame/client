@@ -20,13 +20,11 @@ export const clearBasket = async () => {
     return data;
 }
 
-// Новый метод для применения промокода
 export const applyPromoCode = async (code) => {
     const { data } = await $authHost.post('api/basket/applyPromoCode', { code });
     return data;
 }
 
-// Новый метод для удаления промокода
 export const removePromoCode = async () => {
     const { data } = await $authHost.post('api/basket/removePromoCode');
     return data;

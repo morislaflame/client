@@ -8,10 +8,8 @@ const BrandBar = observer(() => {
 
     const handleBrandClick = (brand) => {
         if (thing.selectedBrands.includes(brand.id)) {
-            // Если бренд уже выбран, удаляем его из массива
             thing.setSelectedBrands(thing.selectedBrands.filter(id => id !== brand.id));
         } else {
-            // Иначе добавляем новый бренд
             thing.setSelectedBrands([...thing.selectedBrands, brand.id]);
         }
     };

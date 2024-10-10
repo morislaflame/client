@@ -1,8 +1,7 @@
-// src/components/StarRating/StarRating.jsx
 import React from 'react';
 import { MdStar, MdStarBorder } from "react-icons/md";
 import PropTypes from 'prop-types';
-import styles from './StarRating.module.css'; // Создадим CSS модуль для стилизации
+import styles from './StarRating.module.css'; 
 
 const StarRating = ({ rating }) => {
   const totalStars = 5;

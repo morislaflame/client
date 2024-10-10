@@ -1,7 +1,6 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { Context } from "../index";
-import Row from "react-bootstrap/esm/Row";
 import ThingItem from "./ThingItem/ThingItem";
 import './ThingList.css'
 

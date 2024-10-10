@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { Spinner, Button, Offcanvas } from 'react-bootstrap';
+import { Offcanvas } from 'react-bootstrap';
 
 export const CustomOffcanvasHeader = styled(Offcanvas.Header)`
         background: linear-gradient(to bottom, #f55d04, #c20606);

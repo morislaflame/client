@@ -67,13 +67,13 @@ const Reviews = observer(() => {
     };
 
     const handleDeleteReview = async (id) => {
-        const confirmDelete = window.confirm('Вы уверены, что хотите удалить этот отзыв?');
+        const confirmDelete = window.confirm('Are you sure you want to delete this review?');
         if (confirmDelete) {
             try {
                 await review.removeReview(id);
-                message.success('Отзыв успешно удален');
+                message.success('Review successfully deleted');
             } catch (error) {
-                message.error('Ошибка при удалении отзыва: ' + (error.response?.data?.message || error.message));
+                message.error('Error deleting a review: ' + (error.response?.data?.message || error.message));
             }
         }
     };
@@ -174,7 +174,7 @@ const Reviews = observer(() => {
                                                             src={`${process.env.REACT_APP_API_URL}/${img.img}`}
                                                             alt="Review"
                                                             className={styles.rev_img}
-                                                            width={100} // Установите подходящий размер
+                                                            width={100}
                                                             style={{ cursor: 'pointer' }}
                                                             placeholder={<Spinner animation='border'/>}
                                                         />
@@ -210,7 +210,6 @@ const Reviews = observer(() => {
                             <StarRatingInput rating={newReviewRating} setRating={setNewReviewRating} />
                         </Form.Group>
                         <Form.Group controlId="formReviewText" className={styles.rev_modal_input}>
-                            {/* <Form.Label>Text</Form.Label> */}
                             <div className='skelet'></div>
                             <Form.Control
                                 as="textarea"
@@ -224,7 +223,6 @@ const Reviews = observer(() => {
 
                         {!editMode && (
                             <Form.Group controlId="formReviewImages">
-                                {/* <Form.Label>Images</Form.Label> */}
                                 <ImageUploader images={reviewImages} setImages={setReviewImages} />
                             </Form.Group>
                         )}

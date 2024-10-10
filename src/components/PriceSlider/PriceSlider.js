@@ -12,7 +12,6 @@ const PriceSlider = observer(() => {
     const [maxPrice, setMaxPrice] = useState(10000);
     const [currentPriceRange, setCurrentPriceRange] = useState([minPrice, maxPrice]);
 
-    // Получаем диапазон цен всех товаров при первом рендере
     useEffect(() => {
         fetchPriceRange().then(data => {
             setMinPrice(data.minPrice);

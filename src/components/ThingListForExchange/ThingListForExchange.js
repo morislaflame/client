@@ -1,9 +1,6 @@
-// components/ThingListForExchange/ThingListForExchange.js
-
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { Context } from "../../index";
-import Button from "react-bootstrap/Button";
 import styles from './ThingListForExchange.module.css';
 import ThingItemForExchange from "../ThingItemForExchange/ThingItemForExchange";
 
@@ -12,7 +9,7 @@ const ThingListForExchange = observer(({ selectedThingId, onSelectThing }) => {
 
     const handleSelect = (thingId) => {
         const newSelectedThingId = selectedThingId === thingId ? null : thingId;
-        onSelectThing(newSelectedThingId); // Передаем выбранный товар родителю
+        onSelectThing(newSelectedThingId); 
     };
 
     return (

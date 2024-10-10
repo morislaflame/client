@@ -59,15 +59,12 @@
     display: flex;
     width: 100%;
     flex-direction: column;
-    /* background: linear-gradient(to bottom, #4805ca, #030107); */
-    /* padding: calc(var(--index) * 0.6); */
     border-radius: calc(var(--index) * 1);
     
 }
 
 .review_top {
     padding: calc(var(--index) * 1.2);
-    /* border-radius: calc(var(--index) * 1) !important; */
     display: flex;
     width: 100%;
     flex-direction: column;

@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { Context } from '../../index';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from 'react-icons/si';
-import { CustomOffcanvas, ExchangeOffcanvasHeader, CustomOffcanvasBody, CustomOffcanvasHeader } from '../StyledComponents';
+import { CustomOffcanvas, CustomOffcanvasBody, CustomOffcanvasHeader } from '../StyledComponents';
 
 const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
   const { return: returnStore } = useContext(Context);
@@ -44,21 +44,21 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
         cryptoWalletAddress,
         refundAmount,
       });
-      message.success('Ожидайте подтверждения возврата');
+      message.success('Await refund confirmation!');
       setTimeout(() => {
         handleClose();
         returnStore.loadUserReturns();
       }, 3000);
     } catch (e) {
-      console.error('Ошибка при создании возврата:', e);
-      message.error('Ошибка при создании возврата');
+      console.error('Error when creating a return:', e);
+      message.error('Error when creating a return');
     }
   }, [cryptoCurrency, cryptoWalletAddress, handleClose, reason, selectedThing, returnStore]);
 
   return (
     <CustomOffcanvas show={show} onHide={handleClose} placement="bottom">
-      <CustomOffcanvasHeader closeButton>
-        <Offcanvas.Title className={styles.offcanv_header}>Запрос на возврат</Offcanvas.Title>
+      <CustomOffcanvasHeader>
+        <Offcanvas.Title className={styles.offcanv_header}>Refund request</Offcanvas.Title>
       </CustomOffcanvasHeader>
       <CustomOffcanvasBody>
         {selectedThing && (
@@ -69,18 +69,18 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
                 <span>${selectedThing.price}</span>
               </div>
               <textarea
-                placeholder="Причина"
+                placeholder="Reason"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 style={{ width: '100%', minHeight: '100px', marginBottom: '10px' }}
               />
               <div className={styles.selector_pay}>
-                <label htmlFor="cryptoSelect">Выберите криптовалюту для возврата:</label>
+                <label htmlFor="cryptoSelect">Select cryptocurrency for refund:</label>
                 <Select
                   id="cryptoSelect"
                   value={cryptoCurrency}
                   onChange={(value) => setCryptoCurrency(value)}
-                  placeholder="Выбрать"
+                  placeholder="Select"
                   suffixIcon={<span />}
                   options={Object.keys(wallets).map((key) => ({
                     label: (
@@ -94,12 +94,12 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
                 />
               </div>
               <div className={styles.wallet_input}>
-                <label htmlFor="walletAddress">Введите адрес вашего кошелька:</label>
+                <label htmlFor="walletAddress">Enter your wallet address:</label>
                 <Input
                   id="walletAddress"
                   value={cryptoWalletAddress}
                   onChange={(e) => setCryptoWalletAddress(e.target.value)}
-                  placeholder="Адрес кошелька"
+                  placeholder="Wallet address"
                 />
               </div>
             </div>
@@ -115,7 +115,7 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
               }}
               className={styles.button}
             >
-              <span>Сделать возврат</span>
+              <span>Make a refund</span>
               <PiKeyReturnFill />
             </Button>
           </>

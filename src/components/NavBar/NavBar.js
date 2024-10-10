@@ -87,12 +87,11 @@ const NavBar = observer(() => {
                         </Nav.Link>
                         <Nav.Link onClick={() => navigate(SHOP_ROUTE)} style={{ color: 'white' }}>Store</Nav.Link>
                         <Nav.Link onClick={() => navigate(PRIVACY_ROUTE)} style={{ color: 'white' }}>Privacy Policy</Nav.Link>
-                        <Nav.Link onClick={() => navigate(TERMS_ROUTE)} style={{ color: 'white' }}>Terms of Service</Nav.Link>
+                        <Nav.Link onClick={() => navigate(TERMS_ROUTE)} style={{ color: 'white' }}>Terms of warranty</Nav.Link>
                     </Nav>
                     <div className="d-flex" style={{ justifyContent: 'flex-end' }}>
                         {user.isAuth ? (
                             <>
-                                {/* Кнопка "Админка", показывается только если роль ADMIN */}
                                 {user.user.role === 'ADMIN' && (
                                     <Button
                                         variant="outline-danger"
@@ -105,12 +104,12 @@ const NavBar = observer(() => {
                                 <Button 
                                     variant="outline-danger" 
                                     onClick={logOut}>
-                                    Выйти
+                                    Logout
                                 </Button>
                             </>
                         ) : (
                             <Button variant="outline-danger" onClick={() => navigate(LOGIN_ROUTE)}>
-                                Авторизация
+                                Authorization
                             </Button>
                         )}
                     </div>

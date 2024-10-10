@@ -1,9 +1,7 @@
-import React, { useRef, useEffect } from 'react';
+import React from 'react';
 import { useNavigate } from "react-router-dom";
-import { gsap } from 'gsap';
 import './ThingItem.css';
 import { THING_ROUTE } from "../../utils/consts";
-import Badge from 'react-bootstrap/Badge';
 import MymIcon from '../../icons/Mym.png';
 import FanslyIcon from '../../icons/fansly.png';
 import OnlyIcon from '../../icons/onlyfans.png'
@@ -11,9 +9,7 @@ import OnlyIcon from '../../icons/onlyfans.png'
 
 const ThingItem = ({thing}) => {
     const navigate = useNavigate();
-    const cardRef = useRef(null);
 
-    // Используем первое изображение из массива images, если оно существует
     const previewImage = thing.images && thing.images.length > 0 ? thing.images[0].img : 'placeholder.png';
 
     const brandStyles = {
@@ -28,32 +24,9 @@ const ThingItem = ({thing}) => {
         3: MymIcon
     };
 
-    useEffect(() => {
-        const card = cardRef.current;
-
-        // Анимация при наведении
-        const hoverAnimation = gsap.to(card, {
-            scale: 1.05,
-            duration: 0.3,
-            paused: true,
-            ease: 'power3.out'
-        });
-
-        const handleMouseEnter = () => hoverAnimation.play();
-        const handleMouseLeave = () => hoverAnimation.reverse();
-
-        card.addEventListener('mouseenter', handleMouseEnter);
-        card.addEventListener('mouseleave', handleMouseLeave);
-
-        return () => {
-            card.removeEventListener('mouseenter', handleMouseEnter);
-            card.removeEventListener('mouseleave', handleMouseLeave);
-        };
-    }, []);
-
     return (
         <div className={'card_list'} onClick={() => navigate(THING_ROUTE + "/" + thing.id)}>
-            <div className={'card'} ref={cardRef}>
+            <div className={'card'}>
                 <img className={'card_img'} src={process.env.REACT_APP_API_URL + previewImage} alt={thing.name}/>
                 <div className="descript">
                     {thing.brands && thing.brands.length > 0 ? (

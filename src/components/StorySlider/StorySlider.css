@@ -1,4 +1,3 @@
-/* src/components/StorySlider.css */
 .story-slider {
     width: 100%;
     margin: 0 0 calc(var(--index) * 2) 0;
@@ -7,7 +6,6 @@
   .story-group {
     display: flex;
     justify-content: space-around;
-    gap: calc(var(--index) * 0); /* Расстояние между историями */
   }
 
   .story-slider .carousel-inner {
@@ -83,7 +81,6 @@
   }
 
   .modal-header {
-    /* position: absolute; */
     z-index: 100;
     border-bottom: 0;
     padding: calc(var(--index) * 1.5) calc(var(--index) * 0);

@@ -1,10 +1,16 @@
 import React from 'react';
 import './TermsOfService.css';
+import BackButton from '../../components/BackButton/BackButton';
+import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from 'react-icons/si';
 
 const TermsOfService = () => {
   return (
     <div className="content">
-      <h1>Warranty terms and conditions</h1>
+      <div className='topic_back'>
+        <BackButton/>
+        <h1>Warranty terms and conditions</h1>
+      </div>
+      
 
       <div className='terms-of-service-content'>
         <div className='terms-of-service-content-eng'>
@@ -46,14 +52,19 @@ const TermsOfService = () => {
               We will hold the money for 14 days to enforce the warranty and refund the buyer within that time frame.
           </p>
 
-          <span>Payment is made via Crypto.</span>
+          <p>For sales and purchasing inquiries please contact <a href='https://t.me/EMM_assessor'>@EMM_assessor</a></p>
+
+          <div style={{display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'center', flexDirection: 'column'}}>
+            Payment is made via Crypto. 
+            <span><SiTether/> <SiBitcoinsv/> <SiEthereum/> <SiLitecoin/></span>
           </div>
+
+        </div>
           
-          <div>👇🏼🇷🇺Translation</div>
+          <div style={{textAlign: 'center'}}>👇🏼🇷🇺Translation</div>
 
         <div className='terms-of-service-content-rus'>
-              <p>По вопросам продаж и покупок обращайтесь к @EMM_assessor</p>
-
+              
               <h2>Условия гарантии и правила:</h2>
 
               <h3>Гарантия действует, если в течение 14 дней:</h3>
@@ -91,7 +102,15 @@ const TermsOfService = () => {
               <p>Мы будем удерживать деньги в течение 14 дней, чтобы обеспечить соблюдение гарантийных 
                 обязательств и вернуть деньги покупателю в течение этого срока.</p>
 
-              <span>Оплата производится через криптовалюту.</span>
+                <p>По вопросам продаж и покупок обращайтесь к <a href='https://t.me/EMM_assessor'>@EMM_assessor</a></p>
+
+                <div style={{display: 'flex', alignItems: 'center', gap: '5px', justifyContent: 'center', flexDirection: 'column'}}>
+                  Оплата производится через криптовалюту. 
+                  <span><SiTether/> <SiBitcoinsv/> <SiEthereum/> <SiLitecoin/></span>
+                </div>
+
+              
+
         </div>
 </div>
     </div>

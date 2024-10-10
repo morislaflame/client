@@ -1,11 +1,8 @@
-// src/components/StorySlider/StorySlider.js
-
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import { fetchStories, deleteStory } from '../../http/storyAPI';
 import './StorySlider.css';
 import Carousel from 'react-bootstrap/Carousel';
 import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import CloseButton from 'react-bootstrap/CloseButton';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { Context } from '../../index';
@@ -90,7 +87,6 @@ const StorySlider = () => {
       });
   };
 
-  // Обработчик клика по изображению
   const handleImageClick = () => {
     if (isPaused) {
       resumeTimer();

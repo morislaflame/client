@@ -157,7 +157,7 @@ const ThingPage = observer(() => {
           </div>
           
           <div className={styles.warranty} onClick={() => navigate(TERMS_ROUTE)}>
-            <span>7-day warranty</span> <IoMdLock className={styles.btn_icn}/>
+            <span>14-days warranty</span> <IoMdLock className={styles.btn_icn}/>
           </div>
         </div>
       )}

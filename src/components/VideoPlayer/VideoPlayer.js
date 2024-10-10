@@ -1,5 +1,3 @@
-// src/components/VideoPlayer/VideoPlayer.js
-
 import React, { useEffect, useRef, useState } from 'react';
 import Spinner from 'react-bootstrap/Spinner';
 import styles from './VideoPlayer.module.css';

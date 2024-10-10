@@ -8,6 +8,7 @@ import { check } from './http/userAPI';
 import Spinner from 'react-bootstrap/Spinner'
 import Chat from './components/ChatForm/ChatForm';
 import { postEvent, retrieveLaunchParams } from '@telegram-apps/sdk-react';
+import Footer from './components/Footer/Footer';
 
 const App = observer(() => {
   const {user} = useContext(Context)
@@ -34,6 +35,7 @@ const App = observer(() => {
     <BrowserRouter>
         <NavBar />
         <AppRouter />
+        {/* <Footer/> */}
         {/* <Chat/> */}
     </BrowserRouter>
   );

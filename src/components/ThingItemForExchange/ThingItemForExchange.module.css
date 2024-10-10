@@ -31,8 +31,8 @@
     width: 100%;
     height: calc(var(--index) * 18);
     border-radius: calc(var(--index) * 0.7);
-    object-fit: cover; /* Масштабирует изображение, заполняя контейнер, сохраняя пропорции */
-    object-position: center; /* Центрирует изображение в контейнере */
+    object-fit: cover; 
+    object-position: center; 
 }
 
 .brand_item {
@@ -40,30 +40,26 @@
     flex-direction: column;
     align-items: center;
     gap: calc(var(--index) * 1);
-    
-    font-size: calc(var(--index) * 1); /* Расстояние между иконкой и текстом */
+    font-size: calc(var(--index) * 1); 
 }
 
 .carousel-item {
     transition: transform .7s cubic-bezier(0.13, 0.98, 0.63, 0.99)
-
 }
 
 
 .brand_icon {
-    width: calc(var(--index) * 2); /* Ширина иконки */
-    height: auto; /* Высота иконки */
+    width: calc(var(--index) * 2); 
+    height: auto; 
 }
 
 .descript {
     margin-top: calc(var(--index) * 0);
-    
     display: flex;
     align-items: center;
     justify-content: center;
     gap: calc(var(--index) * 1.2);
     flex-wrap: wrap;
-    
     padding: calc(var(--index) * 1) calc(var(--index) * 0.7) 0 calc(var(--index) * 0.7);
 }
 

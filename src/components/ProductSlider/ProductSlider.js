@@ -7,7 +7,7 @@ const ProductSlider = () => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
-    fetchThings().then(data => setProducts(data.rows)); // Измените, если структура данных отличается
+    fetchThings().then(data => setProducts(data.rows));
   }, []);
 
   const settings = {
@@ -20,21 +20,21 @@ const ProductSlider = () => {
     autoplaySpeed: 2000,
     responsive: [
       {
-        breakpoint: 1024, // Ширина экрана меньше 1024 пикселей
+        breakpoint: 1024,
         settings: {
-          slidesToShow: 5, // Количество слайдов для экранов среднего размера
+          slidesToShow: 5,
         },
       },
       {
-        breakpoint: 768, // Ширина экрана меньше 768 пикселей
+        breakpoint: 768,
         settings: {
-          slidesToShow: 4, // Количество слайдов для планшетов
+          slidesToShow: 4,
         },
       },
       {
-        breakpoint: 480, // Ширина экрана меньше 480 пикселей
+        breakpoint: 480,
         settings: {
-          slidesToShow: 3, // Количество слайдов для телефонов
+          slidesToShow: 3,
         },
       },
     ],

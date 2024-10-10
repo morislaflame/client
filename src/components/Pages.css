@@ -1,7 +1,3 @@
-.pagination {
-
-}
-
 :where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-prev .ant-pagination-item-link, :where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-next .ant-pagination-item-link {
     background-color: #111111c4;
 }

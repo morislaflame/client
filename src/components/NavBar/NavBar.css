@@ -8,15 +8,12 @@
     width: 100%;
     --bs-navbar-padding-x: calc(var(--index) * 0.8);
     --bs-navbar-padding-y: calc(var(--index) * 0.8);
-    
-    
     background-color:#030107 !important;
 
 }
 
 .navbar-brand {
     margin-right: 0;
-    /* font-size: calc(var(--index) * 1.8); */
 }
 
 .navbar-brand img {
