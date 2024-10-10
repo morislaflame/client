@@ -69,7 +69,7 @@
     }
   
     .mainArticle {
-      background: linear-gradient(to bottom, #030107, #090118, black);
+      background: linear-gradient(to bottom, #030107, #ac57ed0f, black);
       width: 100%;
       padding: calc(var(--index) * 2);
     }
