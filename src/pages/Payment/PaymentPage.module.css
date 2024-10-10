@@ -67,11 +67,6 @@
         0 0 10px #2d027982,
   }
 
-  :where(.css-dev-only-do-not-override-qnu6hi).ant-qrcode {
-    border: 0;
-  }
-
-
   .selector_pay {
     display: flex;
     color: white;

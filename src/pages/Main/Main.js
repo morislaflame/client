@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import './Main.css';
 import ProductSlider from '../../components/ProductSlider/ProductSlider';
 import StorySlider from '../../components/StorySlider/StorySlider';
@@ -6,11 +6,7 @@ import MyButton from '../../components/MyButton/MyButton';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import { useNavigate } from 'react-router-dom';
 import { SHOP_ROUTE } from '../../utils/consts';
-import { gsap } from 'gsap';
-import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import Reviews from '../../components/Reviews/Reviews';
-
-gsap.registerPlugin(ScrollTrigger);
 
 export default function Main() {
   const navigate = useNavigate();
@@ -19,37 +15,6 @@ export default function Main() {
     navigate(SHOP_ROUTE);
   };
 
-  useEffect(() => {
-    // Анимация для .art - движение вправо при скролле вниз
-    gsap.fromTo(
-      ".art",
-      { x: 0 }, // Начальная позиция
-      {
-        x: -10, // Движение вправо на 100 пикселей
-        scrollTrigger: {
-          trigger: ".art",
-          start: "top bottom", // Начинается, когда элемент входит в видимость
-          end: "top top", // Заканчивается, когда элемент достигает верха
-          scrub: true, // Привязываем анимацию к скроллу
-        },
-      }
-    );
-
-    // Анимация для .art2 - движение влево при скролле вниз
-    gsap.fromTo(
-      ".art2",
-      { x: 0 }, // Начальная позиция
-      {
-        x: 10, // Движение влево на 100 пикселей
-        scrollTrigger: {
-          trigger: ".art2",
-          start: "top bottom",
-          end: "top top",
-          scrub: true,
-        },
-      }
-    );
-  }, []);
 
   return (
     <div className='main'>

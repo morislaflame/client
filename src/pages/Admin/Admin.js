@@ -26,13 +26,10 @@ const Admin = observer(() => {
   const [storyVisible, setStoryVisible] = useState(false);
   const [promoVisible, setPromoVisible] = useState(false);
   const [pendingReturns, setPendingReturns] = useState([]);
-  const [pendingExchanges, setPendingExchanges] = useState([]); 
-  const [copiedOrderId, setCopiedOrderId] = useState(null)
+  const [pendingExchanges, setPendingExchanges] = useState([]);
 
   const { user } = useContext(Context);
   const [email, setEmail] = useState('');
-  const [searchResult, setSearchResult] = useState(null);
-  const [allUsers, setAllUsers] = useState([]);
   const [filteredEmails, setFilteredEmails] = useState([]);
   const [newOrders, setNewOrders] = useState([]);
   const [refundTransactionHashes, setRefundTransactionHashes] = useState({});
@@ -223,19 +220,6 @@ const Admin = observer(() => {
       console.error('Ошибка при подтверждении возврата средств:', error);
     }
   };
-  
-  const copyToClipboard = async (hash, orderId) => {
-    try {
-      await navigator.clipboard.writeText(hash);
-      setCopiedOrderId(orderId);
-      message.success('Скопирован');
-      setTimeout(() => {
-        setCopiedOrderId(null);
-      }, 2000);
-    } catch (error) {
-      message.error('Не удалось скопировать' + error)
-    }
-  }
 
   return (
     <div className={styles.container}>
@@ -254,7 +238,6 @@ const Admin = observer(() => {
       <CreateStory show={storyVisible} onHide={() => setStoryVisible(false)} />
       <CreatePromoCode show={promoVisible} onHide={() => setPromoVisible(false)}/>
 
-      {/* Поиск пользователя по email с автозаполнением */}
       <div className={styles.search_section}>
       <h3>Найти пользователя</h3>
         <Form.Group className="mt-3">
@@ -266,7 +249,6 @@ const Admin = observer(() => {
           />
         </Form.Group>
 
-        {/* Показываем подсказки только если есть ввод */}
         {filteredEmails.length > 0 && (
           <ListGroup className="mt-2">
             {filteredEmails.map(user => (
@@ -332,7 +314,6 @@ const Admin = observer(() => {
                       {item.thing.name} ${item.thing.price}</span>
                     ))}
                     
-                    {/* Если есть товары с недоступным статусом, отображаем сообщение и отключаем кнопку подтверждения */}
                     {hasUnavailableItems && (
                       <p style={{ color: 'red' }}>Некоторые товары в этом заказе недоступны для подтверждения.</p>
                     )}
@@ -456,19 +437,18 @@ const Admin = observer(() => {
                   {/* Дополнительные действия для доплаты или возврата */}
                   {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
                     <>
-                    
-                    <div className={styles.hash}>
-                    <span>Transaction Hash:</span> 
-                    <CopyableButton 
-                    value={exchange.cryptoTransactionHash} 
-                    className={styles.copyable_address}
-                    title='Copy Hash'
-                    />
-                  </div>
-                  <button onClick={() => handleConfirmPaymentExchange(exchange.id)} className={styles.doplata}>
-                      Подтвердить доплату
-                    </button>
-                  </>
+                      <div className={styles.hash}>
+                        <span>Transaction Hash:</span> 
+                        <CopyableButton 
+                        value={exchange.cryptoTransactionHash} 
+                        className={styles.copyable_address}
+                        title='Copy Hash'
+                        />
+                      </div>
+                      <button onClick={() => handleConfirmPaymentExchange(exchange.id)} className={styles.doplata}>
+                          Подтвердить доплату
+                      </button>
+                    </>
                   )}
                   {exchange.priceDifference < 0 && !exchange.refundProcessed && (
                     <div className={styles.refund_section}>

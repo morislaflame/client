@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { fetchAllExchangeRequests } from '../../http/exchangeAPI';// API для получения всех возвратов
-import ListGroup from 'react-bootstrap/ListGroup';
+import { fetchAllExchangeRequests } from '../../http/exchangeAPI';
 import Form from 'react-bootstrap/Form';
 import BackButton from '../../components/BackButton/BackButton';
 import styles from './AllExchangesPage.module.css';
@@ -17,7 +16,6 @@ const AllExchangesPage = () => {
         loadExchanges();
     }, []);
 
-    // Функция для загрузки всех возвратов
     const loadExchanges = async () => {
         try {
             const data = await fetchAllExchangeRequests(); 
@@ -27,7 +25,6 @@ const AllExchangesPage = () => {
         }
     };
 
-    // Фильтрация возвратов по номеру возврата
     const filteredExchanges = exchanges.filter(exchangeItem => 
         exchangeItem.id.toString().includes(searchExchange)
     );

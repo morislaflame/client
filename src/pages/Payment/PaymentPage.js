@@ -5,7 +5,7 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import { Select } from 'antd';
 import { Context } from '../../index';
 import { createOrder } from '../../http/orderAPI';
-import { createExchangeRequest } from '../../http/exchangeAPI'; // Импортируем функцию для создания запроса на обмен
+import { createExchangeRequest } from '../../http/exchangeAPI';
 import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
 import styles from './PaymentPage.module.css';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from "react-icons/si";
@@ -81,8 +81,6 @@ const PaymentPage = () => {
 
   useEffect(() => {
     fetchCryptoRates();
-
-    // Устанавливаем интервал для обновления данных каждые 15 минут
     const interval = setInterval(() => {
       fetchCryptoRates();
     }, 900000); 
@@ -90,7 +88,6 @@ const PaymentPage = () => {
     return () => clearInterval(interval); 
   }, []);
 
-  // Конвертация суммы в зависимости от выбранной криптовалюты
   const convertAmountForCrypto = (crypto) => {
     const rate = cryptoRates[crypto];
     if (!rate) return "Loading...";

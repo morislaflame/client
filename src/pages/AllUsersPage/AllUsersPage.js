@@ -14,18 +14,18 @@ const AllUsersPage = observer(() => {
   const [email, setEmail] = useState('');
   const [filteredEmails, setFilteredEmails] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null); // Храним пользователя для удаления
+  const [userToDelete, setUserToDelete] = useState(null); 
   const navigate = useNavigate();
 
   useEffect(() => {
-    loadUsers(); // Загружаем список всех пользователей при первом рендере
+    loadUsers(); 
   }, []);
 
   const loadUsers = async () => {
     await user.fetchAllUsers();
   };
 
-  // Обновляем список подходящих пользователей при изменении введённого email
+ 
   useEffect(() => {
     if (email) {
       const filtered = user.users
@@ -40,7 +40,7 @@ const AllUsersPage = observer(() => {
   const handleSearch = async (email) => {
     const result = await user.searchUserByEmail(email);
     if (result) {
-      navigate(`/user/${result.id}`); // Переход на страницу информации о пользователе
+      navigate(`/user/${result.id}`); 
     }
   };
 
