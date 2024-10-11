@@ -25,6 +25,9 @@ const ThingPage = observer(() => {
 
 
   useEffect(() => {
+    // Прокрутка страницы вверх при монтировании компонента
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+
     fetchOneThing(id).then(data => setThing(data));
     thingStore.loadBasket();
   }, [id, thingStore]);

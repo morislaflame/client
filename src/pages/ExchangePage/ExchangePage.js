@@ -57,6 +57,7 @@ const ExchangePage = observer(() => {
         },
     };
 
+
     // Состояние для курсов криптовалют
     const [cryptoRates, setCryptoRates] = useState({
         BTC: null,
@@ -64,6 +65,7 @@ const ExchangePage = observer(() => {
         LTC: null,
         USDT: 1, 
     });
+
 
     // Функция для получения курсов криптовалют
     const fetchCryptoRates = async () => {
@@ -82,8 +84,14 @@ const ExchangePage = observer(() => {
         }
     };
 
+
     useEffect(() => {
-        fetchThings(null, null, 1, 20).then(data => {
+        const savedPage = sessionStorage.getItem('exchangeCurrentPage');
+        if (savedPage) {
+            thing.setPage(Number(savedPage));
+        }
+
+        fetchThings(null, null, thing.page, 20).then(data => {
             thing.setThings(data.rows);
         });
 
@@ -91,7 +99,7 @@ const ExchangePage = observer(() => {
         fetchOneThing(thingId).then(data => {
             setCurrentThing(data);
         });
-    }, [thingId]);
+    }, [thingId, thing]);
 
     useEffect(() => {
         // Передаем параметры minPrice и maxPrice из стора
@@ -100,6 +108,7 @@ const ExchangePage = observer(() => {
             thing.setThings(data.rows);
             thing.setTotalCount(data.count);
         });
+        sessionStorage.setItem('exchangeCurrentPage', thing.page);
     }, [thing.page, thing.selectedType, thing.selectedBrands, thing.priceRange]);
 
     // Отслеживаем изменение выбранного товара и управляем отображением Offcanvas
@@ -129,6 +138,7 @@ const ExchangePage = observer(() => {
         if (!rate) return "Loading...";
         return (amountUSD / rate).toFixed(6); // Считаем сумму в криптовалюте
     };
+
 
     const handleSubmitExchange = async () => {
         if (!selectedThingId) {
@@ -182,6 +192,7 @@ const ExchangePage = observer(() => {
             }
         }
     };
+
 
     const handleCloseOffcanvas = () => {
         setShowOffcanvas(false);
@@ -276,5 +287,6 @@ const ExchangePage = observer(() => {
         </div>
     );
 });
+
 
 export default ExchangePage;

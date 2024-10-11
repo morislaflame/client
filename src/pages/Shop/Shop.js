@@ -18,13 +18,18 @@ const Shop = observer(() => {
   const {thing} = useContext(Context)
 
   useEffect(() => {
+    const savedPage = sessionStorage.getItem('currentPage');
+    if (savedPage) {
+      thing.setPage(Number(savedPage));
+    }
+
     fetchTypes().then(data => thing.setTypes(data));
     fetchBrands().then(data => thing.setBrands(data));
-    fetchThings(null, null, 1, 20).then(data => {
+    fetchThings(null, null, thing.page, 20).then(data => {
       thing.setThings(data.rows);
       thing.setTotalCount(data.count);
     });
-  }, []);
+  }, [thing]);
 
   useEffect(() => {
     // Передаем параметры minPrice и maxPrice из стора
@@ -33,6 +38,7 @@ const Shop = observer(() => {
       thing.setThings(data.rows);
       thing.setTotalCount(data.count);
     });
+    sessionStorage.setItem('currentPage', thing.page);
   }, [thing.page, thing.selectedType, thing.selectedBrands, thing.priceRange]);  // Добавляем priceRange в зависимости
 
   return (
