@@ -122,13 +122,13 @@ const ThingPage = observer(() => {
               <div className={styles.info_str}><span>Age:</span> <div>{thing.info.age}</div></div>
               <div className={styles.info_str}><span>Smartphone:</span> <div>{thing.info.smartphone}</div></div>
               <div className={styles.info_str}><span>% For Her:</span> <div>{thing.info.percent}</div></div>
-              <div className={styles.info_str}><span>Time Per Day:</span> <div>{thing.info.time}</div></div>
-              <div className={styles.info_str}><span>English Skills:</span> <div>{thing.info.english}</div></div>
+              <div className={styles.info_str}><span>Time Per Day (hours):</span> <div>{thing.info.time}</div></div>
+              <div className={styles.info_str}><span>English Skills (1-10):</span> <div>{thing.info.english}</div></div>
               <div className={styles.info_str}><span>Content:</span> <div>{thing.info.content}</div></div>
-              <div className={styles.info_str}><span>When She Can Start:</span> <div>{thing.info.start}</div></div>
+              <div className={styles.info_str}><span>When Can She Start:</span> <div>{thing.info.start}</div></div>
               <div className={styles.info_str}><span>Social Media Set Up:</span> <div>{thing.info.socialmedia}</div></div>
-              <div className={styles.info_str}><span>Willing To Do TikTok:</span> <div>{thing.info.tiktok}</div></div>
-              <div className={styles.info_str}><span>Does She Need Any Countries Blocked:</span> <div>{thing.info.cblocked}</div></div>
+              <div className={styles.info_str}><span>Comfortable With TikTok:</span> <div>{thing.info.tiktok}</div></div>
+              <div className={styles.info_str}><span>Any Countries Blocked?:</span> <div>{thing.info.cblocked}</div></div>
               <div className={styles.info_str}><span>OF Verified:</span> <div>{thing.info.ofverif}</div></div>
               <div className={styles.info_str}><span>Contract Signed:</span> <div>{thing.info.contract}</div></div>
             </div>
@@ -168,6 +168,7 @@ const ThingPage = observer(() => {
           <Button
             variant="primary"
             onClick={() => navigate(`${EDIT_THING_ROUTE}/${thing.id}`)}
+          
           >
             <FaEdit /> Редактировать данные
           </Button>

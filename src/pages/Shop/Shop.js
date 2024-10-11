@@ -1,15 +1,18 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, Suspense } from 'react';
 import styles from './Shop.module.css'
 import ThingList from '../../components/ThingList';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { fetchBrands, fetchThings, fetchTypes } from '../../http/thingAPI';
 import Pages from '../../components/Pages';
-import SideBar from '../../components/SideBar/SideBar';
 import StorySlider from '../../components/StorySlider/StorySlider';
-import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
-import { FloatButton } from "antd";
+import { FloatButton, Skeleton } from "antd";
 import Reviews from '../../components/Reviews/Reviews';
+
+// Используем React.lazy для ленивой загрузки компонентов
+const SideBar = React.lazy(() => import('../../components/SideBar/SideBar'));
+const FaqAccordion = React.lazy(() => import('../../components/FaqAccordion/FaqAccordion'));
+const ReviewsLazy = React.lazy(() => import('../../components/Reviews/Reviews'));
 
 const Shop = observer(() => {
   const {thing} = useContext(Context)
@@ -17,7 +20,7 @@ const Shop = observer(() => {
   useEffect(() => {
     fetchTypes().then(data => thing.setTypes(data));
     fetchBrands().then(data => thing.setBrands(data));
-    fetchThings(null, null, 1, 6).then(data => {
+    fetchThings(null, null, 1, 20).then(data => {
       thing.setThings(data.rows);
       thing.setTotalCount(data.count);
     });
@@ -26,7 +29,7 @@ const Shop = observer(() => {
   useEffect(() => {
     // Передаем параметры minPrice и maxPrice из стора
     const { min, max } = thing.priceRange;
-    fetchThings(thing.selectedType.id, thing.selectedBrands, thing.page, 6, min, max).then(data => {
+    fetchThings(thing.selectedType.id, thing.selectedBrands, thing.page, 20, min, max).then(data => {
       thing.setThings(data.rows);
       thing.setTotalCount(data.count);
     });
@@ -37,16 +40,20 @@ const Shop = observer(() => {
       <div className={styles.shop_top}>
         <StorySlider/>
         <div className={styles.filters}>
-          <SideBar/>
+          <Suspense fallback={<Skeleton active />}>
+            <SideBar/>
+          </Suspense>
         </div>
       </div>
       <div className={styles.mainlist}>
           <ThingList/>
           <Pages/>
       </div>
-      <Reviews/>
-      <h2 style={{color: 'white', marginTop: '15px'}}>FAQ</h2>
-      <FaqAccordion/>
+      <Suspense fallback={<Skeleton active />}>
+        <Reviews/>
+        <h2 style={{color: 'white', marginTop: '15px'}}>FAQ</h2>
+        <FaqAccordion/>
+      </Suspense>
       <FloatButton.BackTop 
         type='dark'
       />

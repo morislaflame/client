@@ -15,4 +15,4 @@ const ThingList = observer(() => {
     );
 });
 
-export default ThingList;
+export default React.memo(ThingList);

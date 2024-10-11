@@ -96,7 +96,7 @@ const ExchangePage = observer(() => {
     useEffect(() => {
         // Передаем параметры minPrice и maxPrice из стора
         const { min, max } = thing.priceRange;
-        fetchThings(thing.selectedType.id, thing.selectedBrands, thing.page, 6, min, max).then(data => {
+        fetchThings(thing.selectedType.id, thing.selectedBrands, thing.page, 20, min, max).then(data => {
             thing.setThings(data.rows);
             thing.setTotalCount(data.count);
         });

@@ -25,7 +25,7 @@ export const createThing = async (thing) => {
     return data;
 };
 
-export const fetchThings = async (typeId, brandIds, page, limit = 6, minPrice, maxPrice) => {
+export const fetchThings = async (typeId, brandIds, page, limit = 20, minPrice, maxPrice) => {
     console.log("Fetching things with params:", { typeId, brandIds, page, limit, minPrice, maxPrice });
     try {
         const { data } = await $host.get('api/thing', {

@@ -33,17 +33,17 @@ const CreateModel = observer(({ show, onHide }) => {
             ...prevInfo,
             {
                 age: '',
-                smartphone: '',
+                smartphone: 'iPhone',
                 percent: '',
                 time: '',
                 english: '',
                 content: 'All Classic Solo Content',
-                contract: '',
+                contract: 'No',
                 start: 'ASAP',
-                socialmedia: 'Need new accounts',
-                tiktok: '',
-                cblocked: '',
-                ofverif: '',
+                socialmedia: 'Ready to create',
+                tiktok: 'Yes',
+                cblocked: 'CIS countries',
+                ofverif: 'No',
                 link: '',
                 girlmsg: '',
                 number: Date.now(),
@@ -235,7 +235,7 @@ const CreateModel = observer(({ show, onHide }) => {
                                         value={i.percent}
                                         onChange={e => changeInfo('percent', e.target.value, i.number)}
                                         placeholder="Процент"
-                                        addonAfter="%"
+                                        suffix="%"
                                     />
                                 </Form.Item>
                             </Col>
@@ -245,7 +245,7 @@ const CreateModel = observer(({ show, onHide }) => {
                                         value={i.time}
                                         onChange={e => changeInfo('time', e.target.value, i.number)}
                                         placeholder="Время"
-                                        addonAfter="hours"
+                                        suffix="hours"
                                     />
                                 </Form.Item>
                             </Col>
@@ -255,7 +255,7 @@ const CreateModel = observer(({ show, onHide }) => {
                                         value={i.english}
                                         onChange={e => changeInfo('english', e.target.value, i.number)}
                                         placeholder="Английский"
-                                        addonAfter="/10"
+                                        suffix="/10"
                                     />
                                 </Form.Item>
                             </Col><Col span={12}>

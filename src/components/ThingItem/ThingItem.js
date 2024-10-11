@@ -10,6 +10,8 @@ import OnlyIcon from '../../icons/onlyfans.png'
 const ThingItem = ({thing}) => {
     const navigate = useNavigate();
 
+    console.log('Images:', thing.images);
+
     const previewImage = thing.images && thing.images.length > 0 ? thing.images[0].img : 'placeholder.png';
 
     const brandStyles = {
