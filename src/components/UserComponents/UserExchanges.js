@@ -87,14 +87,14 @@ const UserExchanges = observer(({ exchanges, sliderSettings }) => {
                             <span>Amount:</span> <strong>{exchangeItem.cryptoPaymentAmount}</strong>
                           </div>
                         </div>
-                        <div className={styles.hash}>
+                        {exchangeItem.cryptoTransactionHash && (<div className={styles.hash}>
                             <span>Transaction Hash:</span> 
                             <CopyableButton 
                             value={exchangeItem.cryptoTransactionHash} 
                             className={styles.copyable_address}
                             title='Copy Hash'
                             />
-                          </div>
+                          </div>)}
                         <div className={styles.total_price}>
                           <strong>Price Difference:</strong> ${exchangeItem.priceDifference}
                         </div>

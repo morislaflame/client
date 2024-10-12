@@ -88,14 +88,14 @@ const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) 
                             <span>Amount:</span> <b>{returnItem.refundAmount}</b>
                           </div>
                         </div>
-                        <div className={styles.hash}>
+                        {returnItem.cryptoTransactionHash && (<div className={styles.hash}>
                             <span>Transaction Hash:</span> 
                             <CopyableButton 
                             value={returnItem.cryptoTransactionHash} 
                             className={styles.copyable_address}
                             title='Copy Hash'
                             />
-                          </div>
+                          </div>)}
                       </div>
                       <div className={styles.mini_status_return}>
                         {returnItem.status === 'pending' && (
