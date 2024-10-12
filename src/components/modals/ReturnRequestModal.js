@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { Button, Offcanvas } from 'react-bootstrap';
 import { Input, Select, message } from 'antd';
 import { PiKeyReturnFill } from 'react-icons/pi';
@@ -8,12 +8,16 @@ import { useContext } from 'react';
 import { Context } from '../../index';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from 'react-icons/si';
 import { CustomOffcanvas, CustomOffcanvasBody, CustomOffcanvasHeader } from '../StyledComponents';
+import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук
 
 const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
   const { return: returnStore } = useContext(Context);
   const [reason, setReason] = useState('');
   const [cryptoCurrency, setCryptoCurrency] = useState('usdt');
   const [cryptoWalletAddress, setCryptoWalletAddress] = useState('');
+  const [cryptoAmount, setCryptoAmount] = useState(null); // Состояние для суммы в криптовалюте
+
+  const { cryptoRates, fetchCryptoRates } = useCryptoRates();
 
   const wallets = {
     usdt: {
@@ -34,31 +38,49 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
     },
   };
 
+  // Функция для конвертации USD в выбранную криптовалюту
+  const convertUsdToCrypto = useCallback((usdAmount, crypto) => {
+    const rate = cryptoRates[wallets[crypto].currency];
+    if (!rate) return null;
+    return (usdAmount / rate).toFixed(6);
+  }, [cryptoRates, wallets]);
+
+  // Обновляем сумму в криптовалюте при изменении цены или выбранной валюты
+  useEffect(() => {
+    if (selectedThing && selectedThing.price && cryptoCurrency) {
+      const convertedAmount = convertUsdToCrypto(selectedThing.price, cryptoCurrency);
+      setCryptoAmount(convertedAmount);
+    }
+  }, [selectedThing, cryptoCurrency, convertUsdToCrypto]);
+
   const handleSubmitReturn = useCallback(async () => {
-    const refundAmount = selectedThing.price;
+    if (!cryptoAmount) {
+      message.warning('Сумма в выбранной криптовалюте не рассчитана');
+      return;
+    }
     try {
       await returnStore.createNewReturn({
         thingId: selectedThing.id,
         reason: reason || '',
         cryptoCurrency: wallets[cryptoCurrency].currency,
         cryptoWalletAddress,
-        refundAmount,
+        refundAmount: cryptoAmount, // Используем сумму в криптовалюте
       });
-      message.success('Await refund confirmation!');
+      message.success('Ожидайте подтверждения возврата!');
       setTimeout(() => {
         handleClose();
         returnStore.loadUserReturns();
       }, 3000);
     } catch (e) {
-      console.error('Error when creating a return:', e);
-      message.error('Error when creating a return');
+      console.error('Ошибка при создании возврата:', e);
+      message.error('Ошибка при создании возврата');
     }
-  }, [cryptoCurrency, cryptoWalletAddress, handleClose, reason, selectedThing, returnStore]);
+  }, [cryptoAmount, cryptoCurrency, cryptoWalletAddress, handleClose, reason, selectedThing, returnStore, wallets]);
 
   return (
     <CustomOffcanvas show={show} onHide={handleClose} placement="bottom">
       <CustomOffcanvasHeader>
-        <Offcanvas.Title className={styles.offcanv_header}>Refund request</Offcanvas.Title>
+        <Offcanvas.Title className={styles.offcanv_header}>Запрос на возврат</Offcanvas.Title>
       </CustomOffcanvasHeader>
       <CustomOffcanvasBody>
         {selectedThing && (
@@ -69,18 +91,18 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
                 <span>${selectedThing.price}</span>
               </div>
               <textarea
-                placeholder="Reason"
+                placeholder="Причина"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
                 style={{ width: '100%', minHeight: '100px', marginBottom: '10px' }}
               />
               <div className={styles.selector_pay}>
-                <label htmlFor="cryptoSelect">Select cryptocurrency for refund:</label>
+                <label htmlFor="cryptoSelect">Выберите криптовалюту для возврата:</label>
                 <Select
                   id="cryptoSelect"
                   value={cryptoCurrency}
                   onChange={(value) => setCryptoCurrency(value)}
-                  placeholder="Select"
+                  placeholder="Выберите"
                   suffixIcon={<span />}
                   options={Object.keys(wallets).map((key) => ({
                     label: (
@@ -94,14 +116,19 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
                 />
               </div>
               <div className={styles.wallet_input}>
-                <label htmlFor="walletAddress">Enter your wallet address:</label>
+                <label htmlFor="walletAddress">Введите адрес вашего кошелька:</label>
                 <Input
                   id="walletAddress"
                   value={cryptoWalletAddress}
                   onChange={(e) => setCryptoWalletAddress(e.target.value)}
-                  placeholder="Wallet address"
+                  placeholder="Адрес кошелька"
                 />
               </div>
+              {cryptoAmount && (
+                <div className={styles.crypto_amount}>
+                  <span>Сумма в {wallets[cryptoCurrency].currency}: {cryptoAmount}</span>
+                </div>
+              )}
             </div>
 
             <Button
@@ -115,7 +142,7 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
               }}
               className={styles.button}
             >
-              <span>Make a refund</span>
+              <span>Оформить возврат</span>
               <PiKeyReturnFill />
             </Button>
           </>
