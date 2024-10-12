@@ -85,7 +85,7 @@ const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) 
                             <span>Currency:</span> <strong>{returnItem.cryptoCurrency}</strong>
                           </div>
                           <div className={styles.promocode_status}>
-                            <span>Amount:</span> <strong>{returnItem.refundAmount}</strong>
+                            <span>Amount($):</span> <strong>{returnItem.refundAmount}</strong>
                           </div>
                         </div>
                         <div className={styles.hash}>

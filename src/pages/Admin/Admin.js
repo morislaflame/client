@@ -307,7 +307,6 @@ const Admin = observer(() => {
                         <></>
                     )}
                     <span>Валюта: <p>{order.cryptoCurrency}</p></span>
-                    
                     <span>Сумма: <p>{order.cryptoPaymentAmount}</p></span>
                   </div>
 
@@ -319,18 +318,16 @@ const Admin = observer(() => {
                       >
                       {item.thing.name} ${item.thing.price}</span>
                     ))}
-
-                  <div className={styles.hash}>
-                            <span>Transaction Hash:</span> 
-                            <CopyableButton 
-                            value={order.cryptoTransactionHash} 
-                            className={styles.copyable_address}
-                            title='Copy Hash'
-                            />
-                          </div>
-                  
-                    
-                    
+                  <div className={styles.refund_section}>
+                    <div className={styles.hash}>
+                      <span>Transaction Hash:</span> 
+                      <CopyableButton 
+                        value={order.cryptoTransactionHash} 
+                        className={styles.copyable_address}
+                        title='Copy Hash'
+                      />
+                      </div>
+                    </div>
                     {hasUnavailableItems && (
                       <p style={{ color: 'red' }}>Некоторые товары в этом заказе недоступны для подтверждения.</p>
                     )}
@@ -381,11 +378,13 @@ const Admin = observer(() => {
                       <span>Возврат №{returnItem.id}</span>
                       <span onClick={() => navigate(THING_ROUTE + "/" + returnItem.thingId)} style={{ textDecoration: 'underline' }}>Модель: <p>{returnItem.thing.name}</p></span>
                       <span onClick={() => navigate(`/user/${returnItem.userId}`)} style={{ textDecoration: 'underline' }}>User: <p>{returnItem.user.email}</p></span>
-                      <span><p>{returnItem.cryptoCurrency}</p></span>
+                      
                       <span><p>{returnItem.reason}</p></span>
                     </div>
-                    <div className={styles.hash}>
-                        <span>Wallet:</span> 
+                    <div className={styles.refund_section}>
+                      <span className={styles.valuta}>Валюта: <strong>{returnItem.cryptoCurrency}</strong></span>
+                      <div className={styles.hash}>
+                          <span>Wallet:</span> 
                         <CopyableButton 
                         value={returnItem.cryptoWalletAddress} 
                         className={styles.copyable_address}
@@ -399,8 +398,8 @@ const Admin = observer(() => {
                         const newHash = e.target.value;
                         setRefundTransactionHashes((prev) => ({ ...prev, [returnItem.id]: newHash }));
                       }}
-                      style={{ marginBottom: '10px' }}
-                    />
+                      />
+                    </div>
                     <div className={styles.confirm_reject}>
                       <button 
                         variant="success" 
@@ -461,7 +460,6 @@ const Admin = observer(() => {
                     </span>
                     
                     <span>Разница в цене: <p>${exchange.priceDifference > 0 ? `+${exchange.priceDifference}` : exchange.priceDifference}</p></span>
-                    <span>Валюта: <p>{exchange.cryptoCurrency}</p></span>
                     <span><p>{exchange.userComment}</p></span>
                   </div>
 
@@ -469,8 +467,9 @@ const Admin = observer(() => {
                     <p style={{ color: 'red' }}>Новый товар недоступен для подтверждения обмена.</p>
                   )}
 
-{exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
+                  {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
                     <>
+                    <span className={styles.valuta}>Валюта: <strong>{exchange.cryptoCurrency}</strong></span>
                       <div className={styles.hash}>
                         <span>Transaction Hash:</span> 
                         <CopyableButton 
@@ -493,6 +492,7 @@ const Admin = observer(() => {
                   )}
                   {exchange.priceDifference < 0 && !exchange.refundProcessed && (
                     <div className={styles.refund_section}>
+                      <span className={styles.valuta}>Валюта: <strong>{exchange.cryptoCurrency}</strong></span>
                       <div className={styles.hash}>
                         <span>Wallet:</span> 
                         <CopyableButton 
