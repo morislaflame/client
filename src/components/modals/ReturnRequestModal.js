@@ -6,9 +6,9 @@ import styles from './ReturnRequestModal.module.css';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { Context } from '../../index';
-import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from 'react-icons/si';
 import { CustomOffcanvas, CustomOffcanvasBody, CustomOffcanvasHeader } from '../StyledComponents';
-import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук
+import useCryptoRates from '../../hooks/useCryptoRates';
+import { wallets } from '../../utils/cryptoWallets'; 
 
 const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
   const { return: returnStore } = useContext(Context);
@@ -18,25 +18,6 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
   const [cryptoAmount, setCryptoAmount] = useState(null); // Состояние для суммы в криптовалюте
 
   const { cryptoRates, fetchCryptoRates } = useCryptoRates();
-
-  const wallets = {
-    usdt: {
-      currency: 'USDT',
-      icon: <SiTether />,
-    },
-    bitcoin: {
-      currency: 'BTC',
-      icon: <SiBitcoinsv />,
-    },
-    ethereum: {
-      currency: 'ETH',
-      icon: <SiEthereum />,
-    },
-    litecoin: {
-      currency: 'LTC',
-      icon: <SiLitecoin />,
-    },
-  };
 
   // Функция для конвертации USD в выбранную криптовалюту
   const convertUsdToCrypto = useCallback((usdAmount, crypto) => {

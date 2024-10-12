@@ -6,10 +6,10 @@ import { createOrder } from '../../http/orderAPI';
 import { createExchangeRequest } from '../../http/exchangeAPI';
 import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
 import styles from './PaymentPage.module.css';
-import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from "react-icons/si";
 import BackButton from "../../components/BackButton/BackButton";
 import CopyableButton from "../../components/CopyableButton/CopyableButton";
 import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук
+import { wallets } from '../../utils/cryptoWallets'; // Импортируем wallets
 
 const PaymentPage = () => {
   const { thing, exchange } = useContext(Context);
@@ -27,31 +27,6 @@ const PaymentPage = () => {
     ? exchangeData.priceDifference
     : thing.totalPrice || 0;
 
-  // Объект wallets
-  const wallets = {
-    usdt: {
-      address: "0x5541a5FD4Cc660F356601DBeCdD2be3e19548095",
-      currency: "USDT",
-      icon: <SiTether />,
-    },
-    bitcoin: {
-      address: "bc1q0jh3phrlml2y3uszj38w33jmrhefydk36ekvv0",
-      currency: "BTC",
-      icon: <SiBitcoinsv />,
-    },
-    ethereum: {
-      address: "0x5541a5FD4Cc660F356601DBeCdD2be3e19548095",
-      currency: "ETH",
-      icon: <SiEthereum />,
-    },
-    litecoin: {
-      address: "ltc1qe6jl3ah8ar586rzjv7lj4aypssx4j6wlscxj2s",
-      currency: "LTC",
-      icon: <SiLitecoin />,
-    },
-  };
-
-  // Используем хук для получения курсов криптовалют
   const { cryptoRates, fetchCryptoRates } = useCryptoRates();
 
   const [selectedCrypto, setSelectedCrypto] = useState('usdt'); 
