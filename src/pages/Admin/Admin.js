@@ -469,32 +469,7 @@ const Admin = observer(() => {
                     <p style={{ color: 'red' }}>Новый товар недоступен для подтверждения обмена.</p>
                   )}
 
-                  <div className={styles.confirm_reject}>
-                    <button
-                      onClick={() => showConfirm(
-                        'Подтвердите действие',
-                        'Вы уверены, что хотите подтвердить этот обмен?',
-                        () => handleApproveExchange(exchange.id)
-                      )}
-                      className={styles.confirm}
-                      disabled={isNewThingUnavailable}
-                    >
-                      Подтвердить
-                    </button>
-                    <button 
-                      onClick={() => showConfirm(
-                        'Подтвердите действие',
-                        'Вы уверены, что хотите отклонить этот обмен?',
-                        () => handleRejectExchange(exchange.id)
-                      )}
-                      className={styles.reject}
-                    >
-                      Отклонить
-                    </button>
-                  </div>
-
-                  {/* Дополнительные действия для доплаты или возврата */}
-                  {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
+{exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
                     <>
                       <div className={styles.hash}>
                         <span>Transaction Hash:</span> 
@@ -533,7 +508,6 @@ const Admin = observer(() => {
                           const newHash = e.target.value;
                           setRefundTransactionHashes(prev => ({ ...prev, [exchange.id]: newHash }));
                         }}
-                        style={{ marginBottom: '10px' }}
                       />
                       <button 
                         onClick={() => showConfirm(
@@ -547,6 +521,33 @@ const Admin = observer(() => {
                       </button>
                     </div>
                   )}
+
+                  <div className={styles.confirm_reject}>
+                    <button
+                      onClick={() => showConfirm(
+                        'Подтвердите действие',
+                        'Вы уверены, что хотите подтвердить этот обмен?',
+                        () => handleApproveExchange(exchange.id)
+                      )}
+                      className={styles.confirm}
+                      disabled={isNewThingUnavailable}
+                    >
+                      Подтвердить
+                    </button>
+                    <button 
+                      onClick={() => showConfirm(
+                        'Подтвердите действие',
+                        'Вы уверены, что хотите отклонить этот обмен?',
+                        () => handleRejectExchange(exchange.id)
+                      )}
+                      className={styles.reject}
+                    >
+                      Отклонить
+                    </button>
+                  </div>
+
+                  {/* Дополнительные действия для доплаты или возврата */}
+                  
                 </ListGroup.Item>
               );
             })}

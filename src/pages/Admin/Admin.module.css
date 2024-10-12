@@ -1,6 +1,6 @@
 .container {
     text-align: center;
-    padding: calc(var(--index) * 2);
+    padding: calc(var(--index) * 1);
     background: linear-gradient(to bottom, #030107, #130133, #030107);
     color: white;
     display: flex;
@@ -235,7 +235,7 @@
 .return_details {
     background-color: #111111eb;
     color: white;
-    padding: calc(var(--index) * 0.5);
+    padding: calc(var(--index) * 1);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -287,6 +287,7 @@
     padding: calc(var(--index) * 0.5);
     border-radius: calc(var(--index) * 1);
     border: 0;
+    gap: calc(var(--index)* 1);
 }
 
 .doplata {
@@ -310,7 +311,7 @@
     justify-content: center;
     width: 70%;
     color: white;
-    background: linear-gradient(150deg, #110f17, #423f3fd4);
+    background: linear-gradient(150deg, #27262b, #423f3fd4);
     border: 0;
     color: #fff;
     border-radius: calc(var(--index) * 1);
@@ -344,11 +345,11 @@
   .refund_section {
     background-color: #111111eb;
     color: white;
-    padding: calc(var(--index) * 0.5);
+    padding: calc(var(--index) * 1);
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: calc(var(--index)* 0.5);
+    gap: calc(var(--index)* 1);
     justify-content: center;
     align-items: center;
     border-radius: calc(var(--index) * 1);
