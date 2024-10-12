@@ -81,16 +81,16 @@ const UserOrders = observer(({ orders, sliderSettings }) => {
                       {orderItem.promo_code !== null && (
                         <div className={styles.promocode_status}>
                           <span>Promocode:</span>{' '}
-                          <strong>
+                          <b>
                             {orderItem.promo_code.code} ${orderItem.promo_code.discountValue}
-                          </strong>
+                          </b>
                         </div>
                       )}
                       <div className={styles.promocode_status}>
-                        <span>Currency:</span> <strong>{orderItem.cryptoCurrency}</strong>
+                        <span>Currency:</span> <b>{orderItem.cryptoCurrency}</b>
                       </div>
                       <div className={styles.promocode_status}>
-                        <span>Amount:</span> <strong>{orderItem.cryptoPaymentAmount}</strong>
+                        <span>Amount:</span> <b>{orderItem.cryptoPaymentAmount}</b>
                       </div>
                     </div>
                     <div className={styles.hash}>

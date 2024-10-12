@@ -23,7 +23,7 @@ const ThingListForExchange = observer(({ selectedThingId, onSelectThing }) => {
                             onClick={() => handleSelect(t.id)}
                             className={styles.button}
                         >
-                            {selectedThingId === t.id ? 'Выбрано' : 'Выбрать'}
+                            {selectedThingId === t.id ? 'Chosen' : 'Choose'}
                         </button>
                     </div>
                 </div>

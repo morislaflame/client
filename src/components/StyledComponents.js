@@ -10,8 +10,10 @@ export const CustomOffcanvasHeader = styled(Offcanvas.Header)`
 
 export const CustomOffcanvas = styled(Offcanvas)`
     --bs-offcanvas-zindex: 1045;
-    --bs-offcanvas-height: 68vh;
-    --bs-offcanvas-bg: transparent;
+    --bs-offcanvas-height: auto;
+    background: #c20606;
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
     `;
 
 export const CustomOffcanvasBody = styled(Offcanvas.Body)`
@@ -20,7 +22,7 @@ export const CustomOffcanvasBody = styled(Offcanvas.Body)`
         display: flex;
         flex-direction: column;
         gap: 15px;
-        padding: calc(var(--index) * 0.7) calc(var(--index) * 1.5);
+        padding: calc(var(--index)* 0.7) calc(var(--index)* 1) calc(var(--index)* 2);
     `;
 
 
@@ -33,7 +35,9 @@ export const CustomOffcanvasBody = styled(Offcanvas.Body)`
 
 export const ExchangeOffcanvas = styled(Offcanvas)`
         height: auto !important;
-        background-color: transparent;
+        background: #0672c2;
+        border-top-right-radius: 20px;
+        border-top-left-radius: 20px;
     `;
 
 export const ExchangeOffcanvasBody = styled(Offcanvas.Body)`
@@ -41,6 +45,6 @@ export const ExchangeOffcanvasBody = styled(Offcanvas.Body)`
         color: white;
         display: flex;
         flex-direction: column;
-        gap: 15px;
-        padding: calc(var(--index) * 0.7) calc(var(--index) * 1.5);
+        gap: calc(var(--index)* 0.7);
+        padding: calc(var(--index)* 0.7) calc(var(--index)* 1) calc(var(--index)* 2);
     `;

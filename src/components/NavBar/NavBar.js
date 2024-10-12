@@ -79,7 +79,7 @@ const NavBar = observer(() => {
                 <Navbar.Collapse id="navbarScroll">
                     <Nav
                         className="me-auto my-2 my-lg-0"
-                        style={{ maxHeight: '160px', color: 'white' }}
+                        style={{ maxHeight: '165px', color: 'white' }}
                         navbarScroll
                     >
                         <Nav.Link href='https://t.me/themodelshotel' style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'white' }}>

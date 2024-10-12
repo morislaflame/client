@@ -164,24 +164,18 @@ const ExchangePage = observer(() => {
                 <ExchangeOffcanvasBody>
                     <div className={styles.selection}>
                         <div>
-                            <p>Describe the reason</p>
+                            <span>Describe the reason</span>
                         </div>
                         <textarea
                             placeholder="Comment"
                             value={userComment}
                             onChange={(e) => setUserComment(e.target.value)}
-                            style={{ width: '100%', minHeight: '100px', marginBottom: '20px' }}
+                            style={{ width: '100%', minHeight: '80px', fontSize: 'calc(var(--index) * 1.4)'}}
                         />
-                    </div>
-
-                    {selectedThing && currentThing && selectedThing.price - currentThing.price < 0 && (
+                        {selectedThing && currentThing && selectedThing.price - currentThing.price < 0 && (
                         // Если требуется возврат средств, показываем дополнительные поля
-                        <div className={styles.refund_details}>
-                            <h5>
-                                You will receive a refund of ${Math.abs(selectedThing.price - currentThing.price)} (
-                                {convertAmountForCrypto(wallets[cryptoCurrency].currency, Math.abs(selectedThing.price - currentThing.price))} {wallets[cryptoCurrency].currency}
-                                )
-                            </h5>
+                        <>
+                            
                             <div className={styles.selector_pay}>
                                 <label htmlFor="cryptoSelect">Cryptocurrency for refund:</label>
                                 <Select
@@ -200,8 +194,12 @@ const ExchangePage = observer(() => {
                                     }))}
                                 />
                             </div>
+                            <div className={styles.crypto_amount}>
+                                <span>Price difference: ${Math.abs(selectedThing.price - currentThing.price)}</span>
+                                <b>{convertAmountForCrypto(wallets[cryptoCurrency].currency, Math.abs(selectedThing.price - currentThing.price))} {wallets[cryptoCurrency].currency}</b>
+                            </div>
                             <div className={styles.wallet_input}>
-                                <label htmlFor="walletAddress">Enter your wallet address:</label>
+                                <label htmlFor="walletAddress">Wallet:</label>
                                 <Input
                                     id="walletAddress"
                                     value={cryptoWalletAddress}
@@ -209,8 +207,11 @@ const ExchangePage = observer(() => {
                                     placeholder="Wallet address"
                                 />
                             </div>
-                        </div>
+                        </>
                     )}
+                    </div>
+
+                    
 
                     <Button
                         variant="dark"
@@ -221,6 +222,7 @@ const ExchangePage = observer(() => {
                             justifyContent: 'center',
                             alignItems: 'center',
                             gap: '7px',
+                            fontSize: 'calc(var(--index) * 1.4)',
                         }}
                         className={styles.button}
                     >

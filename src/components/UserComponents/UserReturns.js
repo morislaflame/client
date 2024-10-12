@@ -76,16 +76,16 @@ const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) 
                         <div className={styles.name_price}>
                           <div className={styles.name_heel}>
                             <GiHighHeel />
-                            model: {returnItem.thing ? returnItem.thing.name : 'Unknown'}
+                            model: <b>{returnItem.thing ? returnItem.thing.name : 'Unknown'}</b>
                           </div>
                           <span>${returnItem.thing ? returnItem.thing.price : 'N/A'}</span>
                         </div>
                         <div className={styles.other_info}>
                           <div className={styles.promocode_status}>
-                            <span>Currency:</span> <strong>{returnItem.cryptoCurrency}</strong>
+                            <span>Currency:</span> <b>{returnItem.cryptoCurrency}</b>
                           </div>
                           <div className={styles.promocode_status}>
-                            <span>Amount($):</span> <strong>{returnItem.refundAmount}</strong>
+                            <span>Amount:</span> <b>{returnItem.refundAmount}</b>
                           </div>
                         </div>
                         <div className={styles.hash}>

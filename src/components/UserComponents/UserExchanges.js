@@ -69,15 +69,15 @@ const UserExchanges = observer(({ exchanges, sliderSettings }) => {
                       <div className={styles.old_new}>
                         <div className={styles.old_new_names}>
                           <div>
-                            <strong>Swapped:</strong>
+                            Swapped:
                           </div>{' '}
-                          {exchangeItem.OldThing.name} - ${exchangeItem.OldThing.price}
+                          <b>{exchangeItem.OldThing.name} - ${exchangeItem.OldThing.price}</b>
                         </div>
                         <div className={styles.old_new_names}>
                           <div>
-                            <strong>For:</strong>
+                            For:
                           </div>{' '}
-                          {exchangeItem.NewThing.name} - ${exchangeItem.NewThing.price}
+                          <b>{exchangeItem.NewThing.name} - ${exchangeItem.NewThing.price}</b>
                         </div>
                         <div className={styles.other_info}>
                           <div className={styles.promocode_status}>

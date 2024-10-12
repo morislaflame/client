@@ -70,7 +70,7 @@
     text-align: center;
     padding: calc(var(--index) * 0.6);
     gap: calc(var(--index) * 0.6);
-    width: 80%;
+    width: 90%;
     color: white;
 }
 
@@ -90,7 +90,6 @@
 }
 
 .thing-price {
-    font-weight: 500;
     font-size: calc(var(--index) * 1.5);
 }
 

@@ -49,18 +49,18 @@
 
 
 .brand_icon {
-    width: calc(var(--index) * 2); 
+    width: calc(var(--index) * 1.8); 
     height: auto; 
 }
 
 .descript {
-    margin-top: calc(var(--index) * 0);
+    margin-top: calc(var(--index)* 0);
+    width: 100%;
     display: flex;
-    align-items: center;
     justify-content: center;
-    gap: calc(var(--index) * 1.2);
+    gap: calc(var(--index)* 2);
     flex-wrap: wrap;
-    padding: calc(var(--index) * 1) calc(var(--index) * 0.7) 0 calc(var(--index) * 0.7);
+    padding: calc(var(--index)* 1.2) calc(var(--index)* 0.7) calc(var(--index)* 0.5) calc(var(--index)* 0.7);
 }
 
 .thing_all {
@@ -70,16 +70,16 @@
     text-align: center;
     padding: calc(var(--index) * 0.6);
     gap: calc(var(--index) * 0.6);
-    width: 80%;
+    width: 90%;
     color: white;
 }
 
 .thingName {
-    font-size: calc(var(--index) * 2);
+    font-size: calc(var(--index) * 1.7);
 }
 
 .thing_info {
-    font-size: calc(var(--index) * 1.2);
+    font-size: calc(var(--index) * 1.1);
     color: #b3b2b2;
     display: flex;
     flex-direction: column;
@@ -90,7 +90,7 @@
 }
 
 .thing_price {
-    font-weight: 500;
+    font-size: calc(var(--index) * 1.5);
 }
 
 .thing_info div b {

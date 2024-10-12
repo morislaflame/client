@@ -70,10 +70,15 @@ iframe {
   border: 0;
   color: rgb(255 255 255 / 74%);
   text-align: center;
+  font-size: calc(var(--index) * 1.2);
 }
 
 :where(.css-dev-only-do-not-override-qnu6hi).ant-select:hover .ant-select-clear {
   opacity: 1;
   background: #fff0;
   color: rgb(255 255 255 / 74%);
+}
+
+b, strong {
+  font-weight: bold;
 }

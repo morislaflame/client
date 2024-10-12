@@ -36,7 +36,7 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
 
   const handleSubmitReturn = useCallback(async () => {
     if (!cryptoAmount) {
-      message.warning('Сумма в выбранной криптовалюте не рассчитана');
+      message.warning('The amount in the selected cryptocurrency is not calculated');
       return;
     }
     try {
@@ -47,21 +47,21 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
         cryptoWalletAddress,
         refundAmount: cryptoAmount, // Используем сумму в криптовалюте
       });
-      message.success('Ожидайте подтверждения возврата!');
+      message.success('Wait for return confirmation!');
       setTimeout(() => {
         handleClose();
         returnStore.loadUserReturns();
       }, 3000);
     } catch (e) {
-      console.error('Ошибка при создании возврата:', e);
-      message.error('Ошибка при создании возврата');
+      console.error('Error creating return:', e);
+      message.error('Error creating return');
     }
   }, [cryptoAmount, cryptoCurrency, cryptoWalletAddress, handleClose, reason, selectedThing, returnStore, wallets]);
 
   return (
     <CustomOffcanvas show={show} onHide={handleClose} placement="bottom">
       <CustomOffcanvasHeader>
-        <Offcanvas.Title className={styles.offcanv_header}>Запрос на возврат</Offcanvas.Title>
+        <Offcanvas.Title className={styles.offcanv_header}>Refund Request</Offcanvas.Title>
       </CustomOffcanvasHeader>
       <CustomOffcanvasBody>
         {selectedThing && (
@@ -72,18 +72,18 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
                 <span>${selectedThing.price}</span>
               </div>
               <textarea
-                placeholder="Причина"
+                placeholder="Reason"
                 value={reason}
                 onChange={(e) => setReason(e.target.value)}
-                style={{ width: '100%', minHeight: '100px', marginBottom: '10px' }}
+                style={{ width: '100%', minHeight: '80px' }}
               />
               <div className={styles.selector_pay}>
-                <label htmlFor="cryptoSelect">Выберите криптовалюту для возврата:</label>
+                <label htmlFor="cryptoSelect">Select cryptocurrency:</label>
                 <Select
                   id="cryptoSelect"
                   value={cryptoCurrency}
                   onChange={(value) => setCryptoCurrency(value)}
-                  placeholder="Выберите"
+                  placeholder="Select"
                   suffixIcon={<span />}
                   options={Object.keys(wallets).map((key) => ({
                     label: (
@@ -96,20 +96,21 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
                   }))}
                 />
               </div>
+              {cryptoAmount && (
+                <div className={styles.crypto_amount}>
+                  <span>Amount in {wallets[cryptoCurrency].currency}: </span><b>{cryptoAmount}</b>
+                </div>
+              )}
               <div className={styles.wallet_input}>
-                <label htmlFor="walletAddress">Введите адрес вашего кошелька:</label>
+                <label htmlFor="walletAddress">Wallet</label>
                 <Input
                   id="walletAddress"
                   value={cryptoWalletAddress}
                   onChange={(e) => setCryptoWalletAddress(e.target.value)}
-                  placeholder="Адрес кошелька"
+                  placeholder="Wallet address"
                 />
               </div>
-              {cryptoAmount && (
-                <div className={styles.crypto_amount}>
-                  <span>Сумма в {wallets[cryptoCurrency].currency}: {cryptoAmount}</span>
-                </div>
-              )}
+              
             </div>
 
             <Button
@@ -123,7 +124,7 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
               }}
               className={styles.button}
             >
-              <span>Оформить возврат</span>
+              <span>Request Refund</span>
               <PiKeyReturnFill />
             </Button>
           </>
