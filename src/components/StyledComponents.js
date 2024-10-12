@@ -32,7 +32,7 @@ export const CustomOffcanvasBody = styled(Offcanvas.Body)`
     `;
 
 export const ExchangeOffcanvas = styled(Offcanvas)`
-        --bs-offcanvas-height: 52vh;
+        height: auto !important;
         background-color: transparent;
     `;
 

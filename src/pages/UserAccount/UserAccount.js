@@ -76,7 +76,7 @@ const UserAccount = observer(() => {
       <div className={styles.topic}>
         <div className={styles.topic_back}>
           <BackButton />
-          <h2>Личный кабинет</h2>
+          <h2>Account</h2>
         </div>
         <div className={styles.userinfo}>
           <p>{user.user.email}</p> {/* Предполагается, что user.user содержит информацию о пользователе */}

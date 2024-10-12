@@ -99,7 +99,7 @@
     gap: calc(var(--index) * 1);
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to bottom, #4805ca, #030107);
+    background: linear-gradient(to bottom, #3804a2, #030107);
     padding: calc(var(--index) * 1);
     border-radius: calc(var(--index) * 1);
     border: 0;
@@ -339,4 +339,12 @@
     border-radius: calc(var(--index) * 1);
     padding: calc(var(--index) * 0.8) calc(var(--index) * 1);
     font-size: calc(var(--index) * 1);
+  }
+
+  .refund_section {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: calc(var(--index) * 1);
+    align-items: center;
   }

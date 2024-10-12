@@ -7,7 +7,6 @@ import { Context } from '../../index';
 import ThingListForExchange from '../../components/ThingListForExchange/ThingListForExchange';
 import { fetchThings, fetchOneThing } from '../../http/thingAPI';
 import { Button, Offcanvas } from 'react-bootstrap';
-import { createExchangeRequest } from '../../http/exchangeAPI';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './ExchangePage.module.css';
 import { message, Select, Input } from 'antd'; // Импортируем необходимые компоненты
@@ -19,7 +18,7 @@ import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from "react-icons/si";
 
 const ExchangePage = observer(() => {
-    const { thing, user } = useContext(Context);
+    const { thing, user, exchange } = useContext(Context); // Используем exchange из контекста
     const [selectedThingId, setSelectedThingId] = useState(null);
     const [userComment, setUserComment] = useState('');
     const [showOffcanvas, setShowOffcanvas] = useState(false);
@@ -91,15 +90,12 @@ const ExchangePage = observer(() => {
             thing.setPage(Number(savedPage));
         }
 
-        fetchThings(null, null, thing.page, 20).then(data => {
-            thing.setThings(data.rows);
-        });
-
-        // Загружаем текущий товар пользователя
         fetchOneThing(thingId).then(data => {
             setCurrentThing(data);
         });
-    }, [thingId, thing]);
+
+        exchange.loadUserExchangeRequests(); // Загрузка запросов на обмен пользователя
+    }, [thingId, thing, exchange]);
 
     useEffect(() => {
         // Передаем параметры minPrice и maxPrice из стора
@@ -175,7 +171,7 @@ const ExchangePage = observer(() => {
             const cryptoPaymentAmount = parseFloat(convertAmountForCrypto(wallets[cryptoCurrency].currency, refundAmountUSD));
 
             try {
-                await createExchangeRequest({
+                await exchange.createNewExchangeRequest({
                     oldThingId: thingId,
                     newThingId: selectedThingId,
                     userComment,
@@ -184,7 +180,7 @@ const ExchangePage = observer(() => {
                     cryptoPaymentAmount, // Передаем сумму в выбранной криптовалюте
                 });
                 message.success('Exchange request successfully sent');
-                await user.loadUserInfo(); // Заново загружаем информацию о пользователе
+                exchange.loadUserExchangeRequests(); // Заново загружаем запросы на обмен
                 navigate('/account'); // Перенаправляем на страницу аккаунта пользователя
             } catch (e) {
                 console.error('Error when creating an exchange request:', e);
@@ -237,7 +233,7 @@ const ExchangePage = observer(() => {
                                 )
                             </h5>
                             <div className={styles.selector_pay}>
-                                <label htmlFor="cryptoSelect">Choose a cryptocurrency for refund:</label>
+                                <label htmlFor="cryptoSelect">Cryptocurrency for refund:</label>
                                 <Select
                                     id="cryptoSelect"
                                     value={cryptoCurrency}

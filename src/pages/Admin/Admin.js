@@ -452,6 +452,14 @@ const Admin = observer(() => {
                   )}
                   {exchange.priceDifference < 0 && !exchange.refundProcessed && (
                     <div className={styles.refund_section}>
+                      <div className={styles.hash}>
+                        <span>Wallet:</span> 
+                        <CopyableButton 
+                        value={exchange.cryptoWalletAddress} 
+                        className={styles.copyable_address}
+                        title='Copy Hash'
+                        />
+                      </div>
                       <Input
                         placeholder="Введите хэш транзакции возврата"
                         value={currentRefundHash}
