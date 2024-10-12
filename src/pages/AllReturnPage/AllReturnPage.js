@@ -66,21 +66,22 @@ const AllReturnsPage = () => {
                             >
                                 User: <p>{returnItem.user.email}</p>
                             </span>
-                            <span>Причина: <p>{returnItem.reason}</p></span>
+                            <span><p>{returnItem.reason}</p></span>
                             
                             {/* Добавленные криптовалютные поля */}
                             <span>Валюта: <p>{returnItem.cryptoCurrency}</p></span>
                             <span>Сумма возврата: <p>{returnItem.refundAmount}</p></span>
-                            <div className={styles.hash}>
-                            <span>
-                                Хэш транзакции: </span>
-                                <CopyableButton 
-                                    value={returnItem.cryptoTransactionHash} 
-                                    className={styles.copyable_address}
-                                    title='Скопировать Хэш транзакции'
-                                />
-                            
-                            </div>
+                            {returnItem.cryptoTransactionHash && (
+                                <div className={styles.hash}>
+                                    <span>
+                                        Хэш транзакции: </span>
+                                    <CopyableButton 
+                                        value={returnItem.cryptoTransactionHash} 
+                                        className={styles.copyable_address}
+                                        title='Скопировать Хэш транзакции'
+                                    />
+                                </div>  
+                            )}
                             {/* Отображение статуса возврата с иконками */}
                             <span>
                                 {returnItem.status === 'pending' && (

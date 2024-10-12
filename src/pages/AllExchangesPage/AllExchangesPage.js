@@ -5,6 +5,8 @@ import BackButton from '../../components/BackButton/BackButton';
 import styles from './AllExchangesPage.module.css';
 import { useNavigate } from 'react-router-dom';
 import { THING_ROUTE } from '../../utils/consts';
+import CopyableButton from '../../components/CopyableButton/CopyableButton'; // Импортируем CopyableButton
+import { FcCancel, FcClock, FcOk } from 'react-icons/fc'; // Импортируем иконки
 
 const AllExchangesPage = () => {
     const [exchanges, setExchanges] = useState([]);
@@ -57,8 +59,40 @@ const AllExchangesPage = () => {
                             <span onClick={() => navigate(THING_ROUTE + "/" + exchangeItem.newThingId)} style={{ textDecoration: 'underline' }}>
                             На: <p>{exchangeItem.NewThing.name} (${exchangeItem.NewThing.price})</p>
                             </span>
-                            <span>Причина: <p>{exchangeItem.userComment}</p></span>
+                            <span><p>{exchangeItem.userComment}</p></span>
                             <span>Разница в цене: <p>${exchangeItem.priceDifference > 0 ? `+${exchangeItem.priceDifference}` : exchangeItem.priceDifference}</p></span>
+
+                            <span>Валюта: <p>{exchangeItem.cryptoCurrency}</p></span>
+                            <span>Сумма: <p>{exchangeItem.cryptoPaymentAmount}</p></span>
+                            {exchangeItem.cryptoTransactionHash && (
+                                <div className={styles.hash}>
+                                    <span>Хэш транзакции: </span>
+                                    <CopyableButton 
+                                        value={exchangeItem.cryptoTransactionHash} 
+                                        className={styles.copyable_address}
+                                        title='Скопировать Хэш транзакции'
+                                    />
+                                </div>
+                            )}
+
+                            {/* Отображение статуса обмена с иконками */}
+                            <span>
+                                {exchangeItem.status === 'pending' && (
+                                    <span className={styles.status}>
+                                        <FcClock /> В ожидании
+                                    </span>
+                                )}
+                                {exchangeItem.status === 'approved' && (
+                                    <span className={styles.status}>
+                                        <FcOk /> Одобрен
+                                    </span>
+                                )}
+                                {exchangeItem.status === 'rejected' && (
+                                    <span className={styles.status}>
+                                        <FcCancel /> Отклонен
+                                    </span>
+                                )}
+                            </span>
                         </div>
                     </div>
                 ))}

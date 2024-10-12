@@ -1,6 +1,6 @@
 .container {
     text-align: center;
-    padding: calc(var(--index) * 2);
+    padding: calc(var(--index) * 1);
     background: linear-gradient(to bottom, black, #130133, black);
     color: white;
     display: flex;
@@ -92,3 +92,33 @@
 .return_details p {
     margin: 0;
 }
+
+.hash {
+    font-size: calc(var(--index) * 1.2);
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    gap: calc(var(--index) * 0.5);
+  }
+
+  .hash span {
+    font-size: calc(var(--index) * 0.9) !;
+    padding: 0;
+  }
+
+.copyable_address {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    background: linear-gradient(150deg, #272525d4, #403d4561, #423f3fd4);
+    border: 0;
+    color: #fff;
+    border-radius: calc(var(--index) * 0.5);
+    padding: calc(var(--index) * 0.5);
+    font-size: calc(var(--index) * 0.9);
+    gap: calc(var(--index)* 0.5);
+  }
