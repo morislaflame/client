@@ -1,3 +1,5 @@
+// client/src/pages/AllReturnPage/AllReturnPage.js
+
 import React, { useState, useEffect } from 'react';
 import { fetchAllReturns } from '../../http/orderAPI'; 
 import Form from 'react-bootstrap/Form';
@@ -5,7 +7,8 @@ import BackButton from '../../components/BackButton/BackButton';
 import styles from './AllReturnPage.module.css'
 import { THING_ROUTE } from '../../utils/consts';
 import { useNavigate } from 'react-router-dom';
-
+import CopyableButton from '../../components/CopyableButton/CopyableButton'; // Импортируем CopyableButton
+import { FcCancel, FcClock, FcOk } from 'react-icons/fc'; // Импортируем иконки
 
 const AllReturnsPage = () => {
     const [returns, setReturns] = useState([]);
@@ -23,7 +26,7 @@ const AllReturnsPage = () => {
             const data = await fetchAllReturns(); // Используем API для получения всех возвратов
             setReturns(data);
         } catch (error) {
-            console.error('Error loading returns:', error);
+            console.error('Ошибка при загрузке возвратов:', error);
         }
     };
 
@@ -49,19 +52,55 @@ const AllReturnsPage = () => {
             <div className={styles.all_returns}>
                 {filteredReturns.map(returnItem => (
                     <div key={returnItem.id} className={styles.return_item}>
-                    <div className={styles.return_details}>
-                      <span>Возврат №{returnItem.id}</span>
-                      <span 
-                        onClick={() => navigate(THING_ROUTE + "/" + returnItem.thingId)} 
-                        style={{textDecoration: 'underline'}}
-                      >Модель: <p>{returnItem.thing.name}</p></span>
-                      <span
-                        onClick={() => navigate(`/user/${returnItem.userId}`)} 
-                        style={{textDecoration: 'underline'}}
-                      >User: <p>{returnItem.user.email}</p></span>
-                      <span>Причина: <p>{returnItem.reason}</p></span>
+                        <div className={styles.return_details}>
+                            <span>Возврат №{returnItem.id}</span>
+                            <span 
+                                onClick={() => navigate(THING_ROUTE + "/" + returnItem.thingId)} 
+                                style={{textDecoration: 'underline'}}
+                            >
+                                Модель: <p>{returnItem.thing.name}</p>
+                            </span>
+                            <span
+                                onClick={() => navigate(`/user/${returnItem.userId}`)} 
+                                style={{textDecoration: 'underline'}}
+                            >
+                                User: <p>{returnItem.user.email}</p>
+                            </span>
+                            <span>Причина: <p>{returnItem.reason}</p></span>
+                            
+                            {/* Добавленные криптовалютные поля */}
+                            <span>Валюта: <p>{returnItem.cryptoCurrency}</p></span>
+                            <span>Сумма возврата: <p>{returnItem.refundAmount}</p></span>
+                            <div className={styles.hash}>
+                            <span>
+                                Хэш транзакции: </span>
+                                <CopyableButton 
+                                    value={returnItem.cryptoTransactionHash} 
+                                    className={styles.copyable_address}
+                                    title='Скопировать Хэш транзакции'
+                                />
+                            
+                            </div>
+                            {/* Отображение статуса возврата с иконками */}
+                            <span>
+                                {returnItem.status === 'pending' && (
+                                    <span className={styles.status}>
+                                        <FcClock /> В ожидании
+                                    </span>
+                                )}
+                                {returnItem.status === 'approved' && (
+                                    <span className={styles.status}>
+                                        <FcOk /> Одобрен
+                                    </span>
+                                )}
+                                {returnItem.status === 'rejected' && (
+                                    <span className={styles.status}>
+                                        <FcCancel /> Отклонен
+                                    </span>
+                                )}
+                            </span>
+                        </div>
                     </div>
-                  </div>
                 ))}
             </div>
         </div>
