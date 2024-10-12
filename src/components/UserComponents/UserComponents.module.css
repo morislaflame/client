@@ -49,7 +49,7 @@
     align-items: center;
     padding: calc(var(--index) * 1) calc(var(--index) * 0.6);
     border-bottom: 1px solid #97959566;
-    font-size: calc(var(--index)* 1.3);
+    font-size: calc(var(--index)* 1.4);
 }
 
 .name_heel {
@@ -319,7 +319,7 @@
     gap: calc(var(--index) * 0.5);  
     margin-top: calc(var(--index) * 0.5);
     margin-bottom: calc(var(--index) * 0.5);
-    font-size: calc(var(--index)* 1.2);
+    font-size: calc(var(--index)* 1.3);
 }
 
 .returns h3 {
@@ -436,7 +436,7 @@
     gap: calc(var(--index)* 1.5);
     border-bottom: 1px solid #7f7e7e66;
     padding: calc(var(--index)* 0.8) calc(var(--index)* 0.6);
-    font-size: calc(var(--index)* 1.3);
+    font-size: calc(var(--index)* 1.4);
 }
 
 

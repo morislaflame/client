@@ -1,5 +1,3 @@
-// src/pages/ExchangePage/ExchangePage.js
-
 import React, { useContext, useEffect, useState } from 'react';
 import axios from 'axios'; // Импортируем axios
 import { observer } from 'mobx-react-lite';
@@ -30,8 +28,9 @@ const ExchangePage = observer(() => {
     const [selectedThing, setSelectedThing] = useState(null); // Выбранный для обмена товар
 
     // Новые состояния для криптовалюты и адреса кошелька
-    const [cryptoCurrency, setCryptoCurrency] = useState('usdt');
+    const [cryptoCurrency, setCryptoCurrency] = useState(Object.keys(wallets)[0] || 'usdt');
     const [cryptoWalletAddress, setCryptoWalletAddress] = useState('');
+    const [cryptoPaymentAmount, setCryptoPaymentAmount] = useState(0);
 
     // Используем хук для получения курсов криптовалют
     const { cryptoRates, fetchCryptoRates } = useCryptoRates();
@@ -75,8 +74,11 @@ const ExchangePage = observer(() => {
 
     // Получаем курсы криптовалют, когда требуется возврат средств
     useEffect(() => {
-        if (showOffcanvas && selectedThing && currentThing && selectedThing.price - currentThing.price < 0) {
-            fetchCryptoRates();
+        if (showOffcanvas && selectedThing && currentThing) {
+            const priceDiff = selectedThing.price - currentThing.price;
+            if (priceDiff < 0) {
+                fetchCryptoRates();
+            }
         }
     }, [showOffcanvas, selectedThing, currentThing, fetchCryptoRates]);
 
@@ -94,7 +96,7 @@ const ExchangePage = observer(() => {
         }
 
         if (!currentThing || !selectedThing) {
-            message.error('Error loading item information');
+            message.error('Error loading model information');
             return;
         }
 
@@ -111,15 +113,15 @@ const ExchangePage = observer(() => {
                     priceDifference,
                 },
             });
-        } else {
-            // Доплата не требуется или пользователь ожидает возврат средств
+        } else if (priceDifference < 0) {
+            // Требуется возврат средств
             if (!cryptoWalletAddress) {
                 message.warning('Please enter your wallet address');
                 return;
             }
 
             const refundAmountUSD = Math.abs(priceDifference);
-            const cryptoPaymentAmount = parseFloat(convertAmountForCrypto(wallets[cryptoCurrency].currency, refundAmountUSD));
+            const cryptoPayment = parseFloat(convertAmountForCrypto(wallets[cryptoCurrency].currency, refundAmountUSD));
 
             try {
                 await exchange.createNewExchangeRequest({
@@ -128,7 +130,29 @@ const ExchangePage = observer(() => {
                     userComment,
                     cryptoCurrency: wallets[cryptoCurrency].currency,
                     cryptoWalletAddress,
-                    cryptoPaymentAmount, // Передаем сумму в выбранной криптовалюте
+                    cryptoPaymentAmount: cryptoPayment, // Передаем сумму в выбранной криптовалюте
+                });
+                message.success('Exchange request successfully sent');
+                exchange.loadUserExchangeRequests(); // Заново загружаем запросы на обмен
+                navigate('/account'); // Перенаправляем на страницу аккаунта пользователя
+            } catch (e) {
+                console.error('Error when creating an exchange request:', e);
+                message.error('Error when creating an exchange request');
+            }
+        } else {
+            // Товары имеют одинаковую цену
+            setCryptoCurrency(Object.keys(wallets)[0] || 'usdt');
+            setCryptoWalletAddress('');
+            setCryptoPaymentAmount(0);
+
+            try {
+                await exchange.createNewExchangeRequest({
+                    oldThingId: thingId,
+                    newThingId: selectedThingId,
+                    userComment,
+                    cryptoCurrency: wallets[cryptoCurrency].currency,
+                    cryptoWalletAddress: '',
+                    cryptoPaymentAmount: 0,
                 });
                 message.success('Exchange request successfully sent');
                 exchange.loadUserExchangeRequests(); // Заново загружаем запросы на обмен
@@ -144,8 +168,9 @@ const ExchangePage = observer(() => {
         setShowOffcanvas(false);
         setSelectedThingId(null);
         setUserComment('');
-        setCryptoCurrency('usdt');
+        setCryptoCurrency(Object.keys(wallets)[0] || 'usdt');
         setCryptoWalletAddress('');
+        setCryptoPaymentAmount(0);
     };
 
     return (
@@ -175,7 +200,6 @@ const ExchangePage = observer(() => {
                         {selectedThing && currentThing && selectedThing.price - currentThing.price < 0 && (
                         // Если требуется возврат средств, показываем дополнительные поля
                         <>
-                            
                             <div className={styles.selector_pay}>
                                 <label htmlFor="cryptoSelect">Cryptocurrency for refund:</label>
                                 <Select
@@ -208,10 +232,8 @@ const ExchangePage = observer(() => {
                                 />
                             </div>
                         </>
-                    )}
+                        )}
                     </div>
-
-                    
 
                     <Button
                         variant="dark"
