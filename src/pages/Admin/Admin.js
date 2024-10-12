@@ -16,8 +16,10 @@ import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/ord
 import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../http/exchangeAPI'; // Импортируем API для обменов
 import CreatePromoCode from '../../components/modals/CreatePromoCode';
 import styles from './Admin.module.css'
-import { message, Input } from 'antd';
+import { message, Input, Modal as AntdModal } from 'antd';
 import CopyableButton from '../../components/CopyableButton/CopyableButton';
+
+const { confirm } = AntdModal;
 
 const Admin = observer(() => {
   const [brandVisible, setBrandVisible] = useState(false);
@@ -35,6 +37,7 @@ const Admin = observer(() => {
   const [refundTransactionHashes, setRefundTransactionHashes] = useState({});
 
   const navigate = useNavigate();
+
 
   useEffect(() => {
     const loadAllData = async () => {
@@ -83,6 +86,7 @@ const Admin = observer(() => {
     }
   };
 
+
   // Обновляем список подходящих пользователей при изменении введённого email
   useEffect(() => {
     if (email) {
@@ -107,24 +111,35 @@ const Admin = observer(() => {
     setFilteredEmails([]); // Очищаем список подсказок
   };
 
+  const showConfirm = (title, content, onOk) => {
+    confirm({
+      title,
+      content,
+      onOk,
+      okText: 'Да',
+      cancelText: 'Нет',
+    });
+  };
+
   const handleConfirmOrder = async (orderId) => {
     try {
       await confirmOrder(orderId);
-      message.success('Заказ подтвержден')
+      message.success('Заказ подтвержден');
       loadNewOrders(); // Перезагружаем новые заказы после подтверждения
     } catch (error) {
-      message.error('Ошибка при подтверждении заказа:', error);
+      message.error('Ошибка при подтверждении заказа');
       console.error('Ошибка при подтверждении заказа:', error);
     }
   };
 
+
   const handleRejectOrder = async (orderId) => {
     try {
       await rejectOrder(orderId);
-      message.success('Заказ отклонен')
+      message.success('Заказ отклонен');
       loadNewOrders(); // Перезагружаем новые заказы после отклонения
     } catch (error) {
-      message.error('Ошибка при отклонении заказа:', error);
+      message.error('Ошибка при отклонении заказа');
       console.error('Ошибка при отклонении заказа:', error);
     }
   };
@@ -156,10 +171,10 @@ const Admin = observer(() => {
   const handleRejectReturn = async (returnId) => {
     try {
       await rejectReturn(returnId);
-      message.success('Возврат отклонен')
+      message.success('Возврат отклонен');
       loadPendingReturns(); // Перезагружаем список после отклонения
     } catch (error) {
-      message.error('Ошибка при отклонении возврата:', error);
+      message.error('Ошибка при отклонении возврата');
       console.error('Ошибка при отклонении возврата:', error);
     }
   };
@@ -168,10 +183,10 @@ const Admin = observer(() => {
   const handleApproveExchange = async (exchangeId) => {
     try {
       await approveExchangeRequest(exchangeId);
-      message.success('Обмен подтвержден')
+      message.success('Обмен подтвержден');
       loadPendingExchanges(); // Перезагружаем обмены после подтверждения
     } catch (error) {
-      message.error('Ошибка при подтверждении обмена:', error);
+      message.error('Ошибка при подтверждении обмена');
       console.error('Ошибка при подтверждении обмена:', error);
     }
   };
@@ -179,10 +194,10 @@ const Admin = observer(() => {
   const handleRejectExchange = async (exchangeId) => {
     try {
       await rejectExchangeRequest(exchangeId);
-      message.success('Обмен отклонен')
+      message.success('Обмен отклонен');
       loadPendingExchanges(); // Перезагружаем обмены после отклонения
     } catch (error) {
-      message.error('Ошибка при отклонении обмена:', error);
+      message.error('Ошибка при отклонении обмена');
       console.error('Ошибка при отклонении обмена:', error);
     }
   };
@@ -190,10 +205,10 @@ const Admin = observer(() => {
   const handleConfirmPaymentExchange = async (exchangeId) => {
     try {
       await confirmPayment(exchangeId);
-      message.success('Доплата подтверждена')
+      message.success('Доплата подтверждена');
       loadPendingExchanges(); // Перезагружаем обмены после подтверждения доплаты
     } catch (error) {
-      message.error('Ошибка при подтверждении доплаты:', error);
+      message.error('Ошибка при подтверждении доплаты');
       console.error('Ошибка при подтверждении доплаты:', error);
     }
   };
@@ -223,7 +238,7 @@ const Admin = observer(() => {
 
   return (
     <div className={styles.container}>
-      <h2>Admin panel</h2>
+      <h2>Admin панель</h2>
 
       <div className={styles.admin_buttons}>
         <button onClick={() => setTypeVisible(true)}>Добавить страну</button>
@@ -296,6 +311,15 @@ const Admin = observer(() => {
                     <span>Сумма: <p>{order.cryptoPaymentAmount}</p></span>
                   </div>
 
+                  {order.order_things.map(item => (
+                      <span 
+                        key={item.id} 
+                        className={styles.name_price} 
+                        onClick={() => navigate(THING_ROUTE + "/" + item.thingId)}
+                      >
+                      {item.thing.name} ${item.thing.price}</span>
+                    ))}
+
                   <div className={styles.hash}>
                             <span>Transaction Hash:</span> 
                             <CopyableButton 
@@ -305,27 +329,33 @@ const Admin = observer(() => {
                             />
                           </div>
                   
-                    {order.order_things.map(item => (
-                      <span 
-                        key={item.id} 
-                        className={styles.name_price} 
-                        onClick={() => navigate(THING_ROUTE + "/" + item.thingId)}
-                      >
-                      {item.thing.name} ${item.thing.price}</span>
-                    ))}
+                    
                     
                     {hasUnavailableItems && (
                       <p style={{ color: 'red' }}>Некоторые товары в этом заказе недоступны для подтверждения.</p>
                     )}
                     <div className={styles.confirm_reject}>
                       <button 
-                        onClick={() => handleConfirmOrder(order.id)} 
+                        onClick={() => showConfirm(
+                          'Подтвердите действие',
+                          'Вы уверены, что хотите подтвердить этот заказ?',
+                          () => handleConfirmOrder(order.id)
+                        )} 
                         className={styles.confirm}
                         disabled={hasUnavailableItems}
                       >
                         Подтвердить
                       </button>
-                      <button onClick={() => handleRejectOrder(order.id)} className={styles.reject}>Отклонить</button>
+                      <button 
+                        onClick={() => showConfirm(
+                          'Подтвердите действие',
+                          'Вы уверены, что хотите отклонить этот заказ?',
+                          () => handleRejectOrder(order.id)
+                        )} 
+                        className={styles.reject}
+                      >
+                        Отклонить
+                      </button>
                     </div>
                   
                 </ListGroup.Item>
@@ -351,7 +381,7 @@ const Admin = observer(() => {
                       <span>Возврат №{returnItem.id}</span>
                       <span onClick={() => navigate(THING_ROUTE + "/" + returnItem.thingId)} style={{ textDecoration: 'underline' }}>Модель: <p>{returnItem.thing.name}</p></span>
                       <span onClick={() => navigate(`/user/${returnItem.userId}`)} style={{ textDecoration: 'underline' }}>User: <p>{returnItem.user.email}</p></span>
-                      
+                      <span><p>{returnItem.cryptoCurrency}</p></span>
                       <span><p>{returnItem.reason}</p></span>
                     </div>
                     <div className={styles.hash}>
@@ -372,10 +402,26 @@ const Admin = observer(() => {
                       style={{ marginBottom: '10px' }}
                     />
                     <div className={styles.confirm_reject}>
-                      <button variant="success" onClick={() => handleApproveReturn(returnItem.id)} className={styles.confirm}>
+                      <button 
+                        variant="success" 
+                        onClick={() => showConfirm(
+                          'Подтвердите действие',
+                          'Вы уверены, что хотите подтвердить этот возврат?',
+                          () => handleApproveReturn(returnItem.id)
+                        )}
+                        className={styles.confirm}
+                      >
                         Подтвердить
                       </button>
-                      <button variant="danger" onClick={() => handleRejectReturn(returnItem.id)} className={styles.reject}>
+                      <button 
+                        variant="danger" 
+                        onClick={() => showConfirm(
+                          'Подтвердите действие',
+                          'Вы уверены, что хотите отклонить этот возврат?',
+                          () => handleRejectReturn(returnItem.id)
+                        )}
+                        className={styles.reject}
+                      >
                         Отклонить
                       </button> 
                     </div>
@@ -389,7 +435,7 @@ const Admin = observer(() => {
         )}
         <Button onClick={() => navigate(ALL_RETURNS_ROUTE)} className={styles.all_btn}>Посмотреть все возвраты</Button>
       </div>
-      
+    
 
       {/* Секция с обменами */}
       <div className={styles.returns}>
@@ -413,8 +459,10 @@ const Admin = observer(() => {
                     <span onClick={() => navigate(THING_ROUTE + "/" + exchange.newThingId)} style={{ textDecoration: 'underline' }}>
                       На: <p>{exchange.NewThing.name} (${exchange.NewThing.price})</p>
                     </span>
-                    <span><p>{exchange.userComment}</p></span>
+                    
                     <span>Разница в цене: <p>${exchange.priceDifference > 0 ? `+${exchange.priceDifference}` : exchange.priceDifference}</p></span>
+                    <span>Валюта: <p>{exchange.cryptoCurrency}</p></span>
+                    <span><p>{exchange.userComment}</p></span>
                   </div>
 
                   {isNewThingUnavailable && (
@@ -423,13 +471,24 @@ const Admin = observer(() => {
 
                   <div className={styles.confirm_reject}>
                     <button
-                      onClick={() => handleApproveExchange(exchange.id)}
+                      onClick={() => showConfirm(
+                        'Подтвердите действие',
+                        'Вы уверены, что хотите подтвердить этот обмен?',
+                        () => handleApproveExchange(exchange.id)
+                      )}
                       className={styles.confirm}
                       disabled={isNewThingUnavailable}
                     >
                       Подтвердить
                     </button>
-                    <button onClick={() => handleRejectExchange(exchange.id)} className={styles.reject}>
+                    <button 
+                      onClick={() => showConfirm(
+                        'Подтвердите действие',
+                        'Вы уверены, что хотите отклонить этот обмен?',
+                        () => handleRejectExchange(exchange.id)
+                      )}
+                      className={styles.reject}
+                    >
                       Отклонить
                     </button>
                   </div>
@@ -445,7 +504,14 @@ const Admin = observer(() => {
                         title='Copy Hash'
                         />
                       </div>
-                      <button onClick={() => handleConfirmPaymentExchange(exchange.id)} className={styles.doplata}>
+                      <button 
+                        onClick={() => showConfirm(
+                          'Подтверждение доплаты',
+                          'Вы уверены, что хотите подтвердить доплату?',
+                          () => handleConfirmPaymentExchange(exchange.id)
+                        )} 
+                        className={styles.doplata}
+                      >
                           Подтвердить доплату
                       </button>
                     </>
@@ -469,7 +535,14 @@ const Admin = observer(() => {
                         }}
                         style={{ marginBottom: '10px' }}
                       />
-                      <button onClick={() => handleConfirmRefundExchange(exchange.id)} className={styles.vozvrat}>
+                      <button 
+                        onClick={() => showConfirm(
+                          'Подтверждение возврата',
+                          'Вы уверены, что хотите подтвердить возврат средств?',
+                          () => handleConfirmRefundExchange(exchange.id)
+                        )}
+                        className={styles.vozvrat}
+                      >
                         Подтвердить возврат
                       </button>
                     </div>
@@ -488,11 +561,5 @@ const Admin = observer(() => {
   );
 });
 
+
 export default Admin;
-
-
-
-
-
-
-

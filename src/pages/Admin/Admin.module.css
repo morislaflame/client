@@ -166,7 +166,7 @@
     justify-content: center;
     font-size: calc(var(--index) * 1.5);
     font-weight: 500;
-    padding: calc(var(--index) * 0.7);
+    padding: calc(var(--index)* 0.7) calc(var(--index)* 0.7) 0;
     text-decoration: underline;
 }
 
@@ -233,15 +233,16 @@
 }
 
 .return_details {
-    background-color: #111111c4;
-    padding: calc(var(--index) * 1);
-    border-radius: calc(var(--index) * 1);
+    background-color: #111111eb;
+    color: white;
+    padding: calc(var(--index) * 0.5);
     display: flex;
-    width: 100%;
     flex-direction: column;
-    gap: calc(var(--index) * 0.5);
+    width: 100%;
+    gap: calc(var(--index)* 0.5);
     justify-content: center;
-    align-items: start;
+    align-items: center;
+    border-radius: calc(var(--index) * 1);
     border-bottom: 1px solid #7f7e7e66;
     border-top: 1px solid #aaa9a9b5;
     box-shadow: 
@@ -280,11 +281,10 @@
     color: white;
     width: 100%;
     flex-direction: column;
-    gap: calc(var(--index) * 1);
     justify-content: center;
     align-items: center;
-    background: linear-gradient(to bottom, #0672c2, #030107);
-    padding: calc(var(--index) * 1);
+    background: linear-gradient(to bottom, #056cb8, #030107);
+    padding: calc(var(--index) * 0.5);
     border-radius: calc(var(--index) * 1);
     border: 0;
 }
@@ -342,9 +342,20 @@
   }
 
   .refund_section {
+    background-color: #111111eb;
+    color: white;
+    padding: calc(var(--index) * 0.5);
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: calc(var(--index) * 1);
+    gap: calc(var(--index)* 0.5);
+    justify-content: center;
     align-items: center;
+    border-radius: calc(var(--index) * 1);
+    border-bottom: 1px solid #7f7e7e66;
+    border-top: 1px solid #aaa9a9b5;
+    box-shadow: 
+        0 0 2px black, 
+        0 0 5px #000000a3, 
+        0 0 10px #000000a3;
   }
