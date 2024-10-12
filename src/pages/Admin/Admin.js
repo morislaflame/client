@@ -285,7 +285,7 @@ const Admin = observer(() => {
       <div className={styles.orders}>
         <h3>Новые заказы</h3>
         {newOrders.length > 0 ? (
-          <ListGroup style={{width: '100%'}}>
+          <ListGroup style={{width: '100%', display: 'flex', flexDirection: 'column', gap: '10px'}}>
             {newOrders.map(order => {
               // Проверка статуса товаров в заказе
               const hasUnavailableItems = order.order_things.some(item => item.thing.status !== 'available');
@@ -306,10 +306,7 @@ const Admin = observer(() => {
                     ) : (
                         <></>
                     )}
-                    <span>Валюта: <p>{order.cryptoCurrency}</p></span>
-                    <span>Сумма: <p>{order.cryptoPaymentAmount}</p></span>
-                  </div>
-
+                    <div className={styles.order_things}>
                   {order.order_things.map(item => (
                       <span 
                         key={item.id} 
@@ -318,7 +315,13 @@ const Admin = observer(() => {
                       >
                       {item.thing.name} ${item.thing.price}</span>
                     ))}
+                    <span className={styles.total_price}>Total: ${order.totalPrice}</span>
+                    </div>
+                  </div>
+                  
                   <div className={styles.refund_section}>
+                    <span className={styles.valuta}>Валюта: <strong>{order.cryptoCurrency}</strong></span>
+                    <span className={styles.valuta}>Сумма: <strong>{order.cryptoPaymentAmount}</strong></span>
                     <div className={styles.hash}>
                       <span>Transaction Hash:</span> 
                       <CopyableButton 
@@ -369,7 +372,7 @@ const Admin = observer(() => {
       <div className={styles.returns}>
         <h3>Новые возвраты</h3>
         {pendingReturns.length > 0 ? (
-          <ListGroup style={{width: '100%'}}>
+          <ListGroup style={{width: '100%', display: 'flex', flexDirection: 'column', gap: '10px'}}>
             {pendingReturns.map(returnItem => {
                 const currentRefundHash = refundTransactionHashes[returnItem.id] || '';
                 return (
@@ -383,6 +386,7 @@ const Admin = observer(() => {
                     </div>
                     <div className={styles.refund_section}>
                       <span className={styles.valuta}>Валюта: <strong>{returnItem.cryptoCurrency}</strong></span>
+                      <span className={styles.valuta}>Сумма: <strong>{returnItem.refundAmount}</strong></span>
                       <div className={styles.hash}>
                           <span>Wallet:</span> 
                         <CopyableButton 
@@ -440,7 +444,7 @@ const Admin = observer(() => {
       <div className={styles.returns}>
         <h3>Новые обмены</h3>
         {pendingExchanges.length > 0 ? (
-          <ListGroup style={{ width: '100%' }}>
+          <ListGroup style={{ width: '100%', display: 'flex', flexDirection: 'column', gap: '10px' }}>
             {pendingExchanges.map(exchange => {
               const isNewThingUnavailable = exchange.NewThing.status !== 'available';
               const currentRefundHash = refundTransactionHashes[exchange.id] || '';
@@ -470,6 +474,7 @@ const Admin = observer(() => {
                   {exchange.priceDifference > 0 && !exchange.paymentConfirmed && (
                     <>
                     <span className={styles.valuta}>Валюта: <strong>{exchange.cryptoCurrency}</strong></span>
+                    
                       <div className={styles.hash}>
                         <span>Transaction Hash:</span> 
                         <CopyableButton 
@@ -493,6 +498,7 @@ const Admin = observer(() => {
                   {exchange.priceDifference < 0 && !exchange.refundProcessed && (
                     <div className={styles.refund_section}>
                       <span className={styles.valuta}>Валюта: <strong>{exchange.cryptoCurrency}</strong></span>
+                      <span className={styles.valuta}>Сумма: <strong>{exchange.cryptoPaymentAmount}</strong></span>
                       <div className={styles.hash}>
                         <span>Wallet:</span> 
                         <CopyableButton 

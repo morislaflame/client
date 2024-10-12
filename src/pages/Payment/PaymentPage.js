@@ -31,23 +31,12 @@ const PaymentPage = () => {
 
   const [selectedCrypto, setSelectedCrypto] = useState('usdt'); 
   const [cryptoTransactionHash, setCryptoTransactionHash] = useState(''); 
-  const [isHashValid, setIsHashValid] = useState(false); // Проверка валидности хэша
+  const [isHashValid, setIsHashValid] = useState(false); 
 
-  // Получение курсов криптовалют при монтировании и обновление каждые 15 минут
-  useEffect(() => {
-    fetchCryptoRates();
-    const interval = setInterval(() => {
-      fetchCryptoRates();
-    }, 900000); // 15 минут
-
-    return () => clearInterval(interval); 
-  }, [fetchCryptoRates]);
-
-  // Функция для конвертации суммы в выбранную криптовалюту
   const convertAmountForCrypto = (crypto) => {
     const rate = cryptoRates[crypto];
     if (!rate) return "Loading...";
-    return (totalAmountUSD / rate).toFixed(6); // Считаем сумму в криптовалюте
+    return (totalAmountUSD / rate).toFixed(6);
   };
 
   // Проверка валидности хэша транзакции (допустим, минимум 10 символов)
@@ -62,7 +51,6 @@ const PaymentPage = () => {
       const cryptoPaymentAmount = parseFloat(convertAmountForCrypto(wallets[selectedCrypto].currency));
 
       if (isExchangePayment) {
-        // Это доплата при обмене
         const { thingId, selectedThingId, userComment } = exchangeData;
         await createExchangeRequest({
           oldThingId: thingId,
@@ -72,22 +60,21 @@ const PaymentPage = () => {
           cryptoTransactionHash,
           cryptoPaymentAmount,
         });
-        message.success('Ожидайте подтверждения!');
+        message.success('Awaiting confirmation!');
         navigate(USER_ACCOUNT_ROUTE);
       } else {
-        // Обычная оплата заказа
         await createOrder({
           cryptoCurrency: wallets[selectedCrypto].currency,
           cryptoTransactionHash,
           cryptoPaymentAmount,
         });
         await thing.clearBasket();
-        message.success('Ожидайте подтверждения!');
+        message.success('Awaiting confirmation!');
         navigate(USER_ACCOUNT_ROUTE);
       }
     } catch (error) {
-      message.error('Ошибка при обработке платежа');
-      console.error('Ошибка при обработке платежа:', error);
+      message.error('Error in payment processing');
+      console.error('Error in payment processing:', error);
     }
   };
 
@@ -99,16 +86,15 @@ const PaymentPage = () => {
           <h4>Итого: {totalAmountUSD} USD</h4>
         </div>
 
-        {/* Селектор для выбора криптовалюты */}
         <div className={styles.selector_pay}>
           <div className={styles.choose_top}>
-            <label htmlFor="cryptoSelect">Выберите криптовалюту для оплаты:</label>
+            <label htmlFor="cryptoSelect">Choose cryptocurrency for payment:</label>
           </div>
           <Select
             id="cryptoSelect"
             value={selectedCrypto}
             onChange={(value) => setSelectedCrypto(value)}
-            placeholder="Выберите"
+            placeholder="Choose"
             suffixIcon={<span />}
             options={Object.keys(wallets).map((key) => ({
               label: (
@@ -122,7 +108,6 @@ const PaymentPage = () => {
           />
         </div>
 
-        {/* Отображение QR-кода и суммы для выбранной криптовалюты */}
         <div className={styles.crypto_payment}>
           <h5>
             {convertAmountForCrypto(wallets[selectedCrypto].currency)} {wallets[selectedCrypto].currency}
@@ -138,39 +123,37 @@ const PaymentPage = () => {
           </div>
 
           <div className={styles.address}>
-            <span>Адрес кошелька {wallets[selectedCrypto].currency}: </span>
+            <span>Wallet address {wallets[selectedCrypto].currency}: </span>
             <CopyableButton 
               value={wallets[selectedCrypto].address}
               className={styles.copyable_address}
-              title="Нажмите для копирования"
+              title="Click to copy"
             />
           </div>
         </div>
 
-        {/* Поле для ввода хэша транзакции */}
         <div className={styles.transaction_hash}>
           <label htmlFor="transactionHash">
-            После перевода, вставьте хэш транзакции и нажмите на подтверждение
+          After the transfer, insert the hash of the transaction and click on confirm
           </label>
           <input
             type="text"
             id="transactionHash"
             value={cryptoTransactionHash}
             onChange={handleTransactionHashChange}
-            placeholder="Введите хэш транзакции"
+            placeholder="Enter the transaction hash"
           />
-          {/* Кнопка подтверждения оплаты */}
           <button 
             className={styles.confirm_btn} 
             onClick={handleConfirmPayment} 
-            disabled={!isHashValid} // Деактивируем кнопку, если хэш не валидный
+            disabled={!isHashValid}
           >
-            Подтвердить оплату
+            Confirm payment
           </button>
         </div>
 
         <p style={{ color: "gray", fontSize: "0.9em" }}>
-          Курс обмена криптовалют обновляется каждые 15 минут. Пожалуйста, убедитесь, что оплата производится по актуальному курсу.
+        Cryptocurrency exchange rate is updated every 15 minutes. Please make sure to pay at the current exchange rate.
         </p>
       </div>
     </div>

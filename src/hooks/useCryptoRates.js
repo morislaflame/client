@@ -23,10 +23,15 @@ const useCryptoRates = () => {
         } catch (error) {
             console.error("Ошибка получения курсов криптовалют:", error);
         }
-    }, []); // Пустой массив зависимостей означает, что функция не изменится
+    }, []);
 
     useEffect(() => {
         fetchCryptoRates();
+        const interval = setInterval(() => {
+            fetchCryptoRates();
+        }, 900000); // 15 минут
+
+        return () => clearInterval(interval);
     }, [fetchCryptoRates]);
 
     return { cryptoRates, fetchCryptoRates };

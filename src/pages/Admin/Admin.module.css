@@ -1,7 +1,7 @@
 .container {
     text-align: center;
     padding: calc(var(--index) * 1);
-    background: linear-gradient(to bottom, #030107, #130133, #030107);
+    background: #030107;
     color: white;
     display: flex;
     flex-direction: column;
@@ -80,7 +80,7 @@
 .orders {
     background-color: #111111c4;
     color: white;
-    padding: calc(var(--index) * 1.5);
+    padding: calc(var(--index) * 1);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -121,6 +121,7 @@
         0 0 2px black, 
         0 0 5px #000000a3, 
         0 0 10px #000000a3;
+    font-size: calc(var(--index)* 1.2);
 }
 
 .order_details span {
@@ -137,10 +138,19 @@
 }
 
 .order_details span:first-child {
-    font-size: calc(var(--index) * 1.5);
+    font-size: calc(var(--index) * 1.3);
     font-weight: 500;
     justify-content: center;
     border-bottom: none;
+}
+
+.order_things {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding: calc(var(--index) * 0.6);
+    align-items: center;
+    font-size: calc(var(--index) * 1.3);
 }
  
 .copyableHash {
@@ -162,11 +172,15 @@
 
 .name_price {
     display: flex;
-    width: 100%;
-    justify-content: center;
-    font-size: calc(var(--index) * 1.7);
+    justify-content: center !important;
     font-weight: 500;
     text-decoration: underline;
+}
+
+.total_price {
+    display: flex;
+    justify-content: center !important;
+    font-weight: 500;
 }
 
 .confirm_reject {
@@ -186,7 +200,8 @@
     border: 0;
     color: #fff;
     border-radius: calc(var(--index) * 1);
-    padding: calc(var(--index) * 1);
+    padding: calc(var(--index)* 0.7);
+    font-size: calc(var(--index) * 1.3);
 }
 
 .reject {
@@ -200,13 +215,14 @@
     border: 0;
     color: #fff;
     border-radius: calc(var(--index) * 1);
-    padding: calc(var(--index) * 1);
+    padding: calc(var(--index)* 0.7);
+    font-size: calc(var(--index) * 1.3);
 }
 
 .returns {
     background-color: #111111c4;
     color: white;
-    padding: calc(var(--index) * 1.5);
+    padding: calc(var(--index) * 1);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -248,6 +264,7 @@
         0 0 2px black, 
         0 0 5px #000000a3, 
         0 0 10px #000000a3;
+    font-size: calc(var(--index)* 1.2);
 }
 
 .return_details span {
@@ -264,7 +281,7 @@
 }
 
 .return_details span:first-child {
-    font-size: calc(var(--index) * 1.5);
+    font-size: calc(var(--index) * 1.3);
     font-weight: 500;
     justify-content: center;
     border-bottom: none;
@@ -329,7 +346,7 @@
 }
 
 .hash {
-    font-size: calc(var(--index) * 1.4);
+    font-size: calc(var(--index) * 1.2);
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -349,7 +366,7 @@
     color: #fff;
     border-radius: calc(var(--index) * 1);
     padding: calc(var(--index) * 0.8) calc(var(--index) * 1);
-    font-size: calc(var(--index) * 1);
+    font-size: calc(var(--index) * 0.9);
   }
 
   .refund_section {
@@ -369,4 +386,5 @@
         0 0 2px black, 
         0 0 5px #000000a3, 
         0 0 10px #000000a3;
+    font-size: calc(var(--index)* 1.2);
   }
