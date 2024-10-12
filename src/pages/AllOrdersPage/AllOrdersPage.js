@@ -1,3 +1,5 @@
+// AllOrdersPage компонент
+
 import React, { useState, useEffect } from 'react';
 import { fetchAllOrders } from '../../http/orderAPI'; 
 import Form from 'react-bootstrap/Form';
@@ -6,12 +8,11 @@ import styles from './AllOrdersPage.module.css'
 import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 import { THING_ROUTE } from '../../utils/consts';
-
+import CopyableButton from '../../components/CopyableButton/CopyableButton'; // Импортируем CopyableButton
 
 const AllOrdersPage = () => {
     const [orders, setOrders] = useState([]);
     const [searchOrder, setSearchOrder] = useState('');
-    const [copiedOrderId, setCopiedOrderId] = useState(null)
 
     const navigate = useNavigate()
 
@@ -33,19 +34,6 @@ const AllOrdersPage = () => {
     const filteredOrders = orders.filter(order => 
         order.id.toString().includes(searchOrder)
     );
-
-    const copyToClipboard = async (hash, orderId) => {
-        try {
-          await navigator.clipboard.writeText(hash);
-          setCopiedOrderId(orderId);
-          message.success('Скопирован');
-          setTimeout(() => {
-            setCopiedOrderId(null);
-          }, 2000);
-        } catch (error) {
-          message.error('Не удалось скопировать' + error)
-        }
-      }
 
     return (
         <div className={styles.container}>
@@ -80,14 +68,16 @@ const AllOrdersPage = () => {
                                 <></>
                             )}
                             <span>Валюта: <p>{order.cryptoCurrency}</p></span>
-                            <span>Хэш: 
-                            <button
-                                className={styles.copyableHash}
-                                onClick={() => copyToClipboard(order.cryptoTransactionHash, order.id)}
-                            >
-                                {order.cryptoTransactionHash}
-                            </button> 
-                            </span>
+                            <div className={styles.hash}>
+                            <span>Хэш: </span>
+                            {/* Заменяем кнопку копирования на CopyableButton */}
+                            <CopyableButton 
+                                value={order.cryptoTransactionHash} 
+                                className={styles.copyable_address}
+                                title='Copy Hash'
+                            />
+                            
+                            </div>
                             <span>Сумма: <p>{order.cryptoPaymentAmount}</p></span>
                         </div>
                         
