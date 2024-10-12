@@ -16,6 +16,7 @@ import BackButton from '../../components/BackButton/BackButton';
 import Pages from '../../components/Pages';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from "react-icons/si";
+import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук
 
 const ExchangePage = observer(() => {
     const { thing, user, exchange } = useContext(Context); // Используем exchange из контекста
@@ -56,33 +57,8 @@ const ExchangePage = observer(() => {
         },
     };
 
-
-    // Состояние для курсов криптовалют
-    const [cryptoRates, setCryptoRates] = useState({
-        BTC: null,
-        ETH: null,
-        LTC: null,
-        USDT: 1, 
-    });
-
-
-    // Функция для получения курсов криптовалют
-    const fetchCryptoRates = async () => {
-        try {
-            const response = await axios.get(
-                "https://api.coingecko.com/api/v3/simple/price?ids=bitcoin,ethereum,litecoin,tether&vs_currencies=usd"
-            );
-            setCryptoRates({
-                BTC: response.data.bitcoin.usd,
-                ETH: response.data.ethereum.usd,
-                LTC: response.data.litecoin.usd,
-                USDT: response.data.tether.usd,
-            });
-        } catch (error) {
-            console.error("Ошибка получения курсов криптовалют:", error);
-        }
-    };
-
+    // Используем хук для получения курсов криптовалют
+    const { cryptoRates, fetchCryptoRates } = useCryptoRates();
 
     useEffect(() => {
         const savedPage = sessionStorage.getItem('exchangeCurrentPage');
@@ -126,7 +102,7 @@ const ExchangePage = observer(() => {
         if (showOffcanvas && selectedThing && currentThing && selectedThing.price - currentThing.price < 0) {
             fetchCryptoRates();
         }
-    }, [showOffcanvas, selectedThing, currentThing]);
+    }, [showOffcanvas, selectedThing, currentThing, fetchCryptoRates]);
 
     // Функция для конвертации суммы в выбранную криптовалюту
     const convertAmountForCrypto = (crypto, amountUSD) => {
@@ -134,7 +110,6 @@ const ExchangePage = observer(() => {
         if (!rate) return "Loading...";
         return (amountUSD / rate).toFixed(6); // Считаем сумму в криптовалюте
     };
-
 
     const handleSubmitExchange = async () => {
         if (!selectedThingId) {
@@ -188,7 +163,6 @@ const ExchangePage = observer(() => {
             }
         }
     };
-
 
     const handleCloseOffcanvas = () => {
         setShowOffcanvas(false);
@@ -283,6 +257,5 @@ const ExchangePage = observer(() => {
         </div>
     );
 });
-
 
 export default ExchangePage;

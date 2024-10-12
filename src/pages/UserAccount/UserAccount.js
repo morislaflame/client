@@ -79,7 +79,7 @@ const UserAccount = observer(() => {
           <h2>Account</h2>
         </div>
         <div className={styles.userinfo}>
-          <p>{user.user.email}</p> {/* Предполагается, что user.user содержит информацию о пользователе */}
+          <p>{user.user.email}</p> 
         </div>
       </div>
 
