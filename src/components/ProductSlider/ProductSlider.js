@@ -1,13 +1,21 @@
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
+import { Skeleton } from 'antd';
 import { fetchThings } from '../../http/thingAPI';
 import './ProductSlider.css';
 
-const ProductSlider = React.memo(() => {
+const ProductSlider = () => {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchThings().then(data => setProducts(data.rows));
+    fetchThings()
+      .then(data => {
+        setProducts(data.rows);
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   }, []);
 
   const settings = {
@@ -40,19 +48,36 @@ const ProductSlider = React.memo(() => {
     ],
   };
 
+  const skeletonCount = settings.slidesToShow;
+
   return (
-    <Slider {...settings} className='slider'>
-      {products.map(product => (
-        <div key={product.id} className="product-card">
-          <img 
-            src={`${process.env.REACT_APP_API_URL}${product.images?.[0]?.img || 'placeholder.jpg'}`} 
-            alt={product.name} 
-          />
-          <p>{product.name}</p>
-        </div>
-      ))}
-    </Slider>
-    );
-});
+    <div className='slider'>
+      {loading ? (
+        <Slider {...settings}>
+          {Array.from({ length: skeletonCount }).map((_, index) => (
+            <div key={index} className="product-card">
+              <Skeleton.Image style={{ width: '100%', height: '200px' }} active />
+              <Skeleton active paragraph={{ rows: 1, width: '80%' }} />
+            </div>
+          ))}
+        </Slider>
+      ) : (
+        <Slider {...settings}>
+          {products.map(product => {
+            const imageUrl = product.images?.[0]?.img
+              ? `${process.env.REACT_APP_API_URL}${product.images[0].img}`
+              : 'placeholder.jpg';
+            return (
+              <div key={product.id} className="product-card">
+                <img src={imageUrl} alt={product.name} />
+                <p>{product.name}</p>
+              </div>
+            );
+          })}
+        </Slider>
+      )}
+    </div>
+  );
+};
 
 export default ProductSlider;

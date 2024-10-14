@@ -1,5 +1,6 @@
-import React, { useState, Suspense, lazy } from 'react';
+import React, { useState } from 'react';
 import './Main.css';
+import ProductSlider from '../../components/ProductSlider/ProductSlider';
 import StorySlider from '../../components/StorySlider/StorySlider';
 import MyButton from '../../components/MyButton/MyButton';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
@@ -7,9 +8,6 @@ import { useNavigate } from 'react-router-dom';
 import { SHOP_ROUTE } from '../../utils/consts';
 import Reviews from '../../components/Reviews/Reviews';
 import { useInView } from 'react-intersection-observer';
-
-// Динамически импортируем ProductSlider
-const ProductSlider = lazy(() => import('../../components/ProductSlider/ProductSlider'));
 
 export default function Main() {
   const navigate = useNavigate();
@@ -21,6 +19,13 @@ export default function Main() {
   const { ref, inView } = useInView({
     threshold: 0.1, // Загрузка при 10% видимости
   });
+
+  const [isProductSliderLoaded, setProductSliderLoaded] = useState(false);
+
+  // Загружаем ProductSlider только при первом попадании в область видимости
+  if (inView && !isProductSliderLoaded) {
+    setProductSliderLoaded(true);
+  }
 
   return (
     <div className='main'>
@@ -80,9 +85,7 @@ export default function Main() {
 
       {/* Используем ref для отслеживания видимости ProductSlider */}
       <div ref={ref}>
-        <Suspense fallback={<div>Загрузка...</div>}>
-          {inView && <ProductSlider />} {/* Загружаем ProductSlider только если он в области видимости */}
-        </Suspense>
+        {isProductSliderLoaded && <ProductSlider />} {/* Загружаем ProductSlider только если он был загружен */}
       </div>
 
       <Reviews />
