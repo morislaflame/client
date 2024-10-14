@@ -1,13 +1,13 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, Suspense } from 'react'; // Добавлен Suspense
 import axios from 'axios'; // Импортируем axios
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import ThingListForExchange from '../../components/ThingListForExchange/ThingListForExchange';
-import { fetchThings, fetchOneThing } from '../../http/thingAPI';
+import { fetchOneThing } from '../../http/thingAPI'; // Удален fetchThings
 import { Button, Offcanvas } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './ExchangePage.module.css';
-import { message, Select, Input } from 'antd'; // Импортируем необходимые компоненты
+import { message, Select, Input, Skeleton } from 'antd'; // Импортируем необходимые компоненты, включая Skeleton
 import { ExchangeOffcanvas, ExchangeOffcanvasBody, ExchangeOffcanvasHeader } from '../../components/StyledComponents';
 import { PAYMENT_ROUTE } from '../../utils/consts';
 import BackButton from '../../components/BackButton/BackButton';
@@ -16,6 +16,8 @@ import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук
 import { wallets } from '../../utils/cryptoWallets'; // Импортируем wallets
 import { LuArrowRightLeft } from "react-icons/lu";
+
+const SideBar = React.lazy(() => import('../../components/SideBar/SideBar')); // Ленивая загрузка SideBar
 
 const ExchangePage = observer(() => {
     const { thing, user, exchange } = useContext(Context); // Используем exchange из контекста
@@ -49,15 +51,7 @@ const ExchangePage = observer(() => {
         exchange.loadUserExchangeRequests(); // Загрузка запросов на обмен пользователя
     }, [thingId, thing, exchange]);
 
-    useEffect(() => {
-        // Передаем параметры minPrice и maxPrice из стора
-        const { min, max } = thing.priceRange;
-        fetchThings(thing.selectedType.id, thing.selectedBrands, thing.page, 20, min, max).then(data => {
-            thing.setThings(data.rows);
-            thing.setTotalCount(data.count);
-        });
-        sessionStorage.setItem('exchangeCurrentPage', thing.page);
-    }, [thing.page, thing.selectedType, thing.selectedBrands, thing.priceRange]);
+    // Удален useEffect для загрузки товаров
 
     // Отслеживаем изменение выбранного товара и управляем отображением Offcanvas
     useEffect(() => {
@@ -89,6 +83,7 @@ const ExchangePage = observer(() => {
         if (!rate) return "Loading...";
         return (amountUSD / rate).toFixed(6); // Считаем сумму в криптовалюте
     };
+
 
     const handleSubmitExchange = async () => {
         if (!selectedThingId) {
@@ -276,6 +271,13 @@ const ExchangePage = observer(() => {
     return (
         <div className={styles.exchange_page}>
             <div className={styles.topic_back}><BackButton/><h2>Exchange</h2></div>
+            <div className={styles.shop_top}>
+                <div className={styles.filters}>
+                    <Suspense fallback={<Skeleton active />}>
+                        <SideBar />
+                    </Suspense>
+                </div>
+            </div>
             <div className={styles.mainlist}>
                 <ThingListForExchange selectedThingId={selectedThingId} onSelectThing={setSelectedThingId} />
                 <Pages/>

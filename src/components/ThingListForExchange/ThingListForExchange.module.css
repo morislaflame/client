@@ -28,3 +28,14 @@
     border-radius: calc(var(--index) * 1);
     padding: calc(var(--index) * 0.7);
 }
+
+.thing-item-skeleton {
+    margin: 10px;
+    width: 50%;
+    border-radius: calc(var(--index) * 1);
+    background-color: #111111;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
