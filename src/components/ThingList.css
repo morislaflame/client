@@ -4,3 +4,11 @@
     padding: calc(var(--index) * 0.6);
     width: 100%;
 }
+
+/* ThingList.css */
+
+.thing-item-skeleton {
+    margin: 10px;
+    width: 200px;
+  }
+  

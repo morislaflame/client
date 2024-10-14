@@ -5,6 +5,7 @@ import { THING_ROUTE } from "../../utils/consts";
 import MymIcon from '../../icons/Mym.png';
 import FanslyIcon from '../../icons/fansly.png';
 import OnlyIcon from '../../icons/onlyfans.png'
+import { Skeleton } from 'antd';
 
 
 const ThingItem = ({thing}) => {
@@ -29,40 +30,46 @@ const ThingItem = ({thing}) => {
     return (
         <div className={'card_list'} onClick={() => navigate(THING_ROUTE + "/" + thing.id)}>
             <div className={'card'}>
-                <img className={'card_img'} src={process.env.REACT_APP_API_URL + previewImage} alt={thing.name}/>
-                <div className="descript">
-                    {thing.brands && thing.brands.length > 0 ? (
-                        thing.brands.map(brand => (
-                            <div 
-                                key={brand.id} 
-                                style={brandStyles[brand.id] || { color: 'black' }}  
-                                className="brand-item"
-                            >
-                                {brandIcons[brand.id] && (
-                                    <img 
-                                        src={brandIcons[brand.id]} 
-                                        alt={`${brand.name} icon`} 
-                                        className="brand-icon"
-                                    />
-                                )}
+                {thing ? ( // Проверяем, загружен ли контент
+                    <>
+                        <img className={'card_img'} src={process.env.REACT_APP_API_URL + previewImage} alt={thing.name}/>
+                        <div className="descript">
+                            {thing.brands && thing.brands.length > 0 ? (
+                                thing.brands.map(brand => (
+                                    <div 
+                                        key={brand.id} 
+                                        style={brandStyles[brand.id] || { color: 'black' }}  
+                                        className="brand-item"
+                                    >
+                                        {brandIcons[brand.id] && (
+                                            <img 
+                                                src={brandIcons[brand.id]} 
+                                                alt={`${brand.name} icon`} 
+                                                className="brand-icon"
+                                            />
+                                        )}
+                                    </div>
+                                ))
+                            ) : (
+                                <div>Unknown Brand</div>
+                            )}
+                        </div>
+                        <div className="thing-all">
+                            <div className="thingName">
+                                {thing.name}
                             </div>
-                        ))
-                    ) : (
-                        <div>Unknown Brand</div>
-                    )}
-                </div>
-                <div className="thing-all">
-                    <div className="thingName">
-                        {thing.name}
-                    </div>
-                    <div className="thing-info">
-                        <div><b>Content:</b> {thing.info && thing.info.content ? thing.info.content : 'N/A'}</div>
-                        <div><b>OF Verified:</b> {thing.info && thing.info.ofverif ? thing.info.ofverif : 'N/A'}</div>
-                    </div>
-                    <div className="thing-price">
-                        ${thing.price}
-                    </div>
-                </div>
+                            <div className="thing-info">
+                                <div><b>Content:</b> {thing.info && thing.info.content ? thing.info.content : 'N/A'}</div>
+                                <div><b>OF Verified:</b> {thing.info && thing.info.ofverif ? thing.info.ofverif : 'N/A'}</div>
+                            </div>
+                            <div className="thing-price">
+                                ${thing.price}
+                            </div>
+                        </div>
+                    </>
+                ) : (
+                    <Skeleton active paragraph={{ rows: 4 }} /> // Добавляем Skeleton для загрузки
+                )}
             </div>
         </div>
     );

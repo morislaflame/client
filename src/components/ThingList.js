@@ -4,6 +4,8 @@ import { Context } from "../index";
 import ThingItem from "./ThingItem/ThingItem";
 import './ThingList.css'
 
+
+
 const ThingList = observer(() => {
     const {thing} = useContext(Context)
     return (

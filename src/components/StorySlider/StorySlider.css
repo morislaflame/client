@@ -51,6 +51,10 @@
     justify-content: space-between;
   }
 
+  .modal {
+    display: flex !important;
+  }
+
   .modal-dialog {
     width: 100vw;
     display: flex;
@@ -69,15 +73,16 @@
   }
   
   .modal-content {
-    min-height: 90vh;
-    padding: calc(var(--index) * 1.5);
-    background: linear-gradient(to bottom, black, #130035, black);
+    height: 98vh;
+    padding: calc(var(--index)* 1.5);
+    background-color: #111111;
     display: flex;
     flex-direction: column;
     justify-content: center;
     width: 90vw;
     align-self: center;
     justify-self: center;
+    border-radius: calc(var(--index)* 1.5);
   }
 
   .modal-header {
@@ -93,6 +98,11 @@
     display: flex;
     padding: calc(var(--index) * 0);
     align-items: center;
+  }
+
+  .modal-footer {
+    justify-content: center !important;
+    padding: calc(var(--index) * 1) !important;
   }
 
   .story .modal-img {
