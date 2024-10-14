@@ -3,7 +3,7 @@ import Slider from 'react-slick';
 import { fetchThings } from '../../http/thingAPI';
 import './ProductSlider.css';
 
-const ProductSlider = () => {
+const ProductSlider = React.memo(() => {
   const [products, setProducts] = useState([]);
 
   useEffect(() => {
@@ -52,7 +52,7 @@ const ProductSlider = () => {
         </div>
       ))}
     </Slider>
-  );
-};
+    );
+});
 
 export default ProductSlider;

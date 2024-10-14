@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
-import Spinner from 'react-bootstrap/Spinner';
 import styles from './VideoPlayer.module.css';
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 const VideoPlayer = ({ videoSrc, pauseTimer, resumeTimer }) => {
   const videoRef = useRef(null);
@@ -50,9 +50,8 @@ const VideoPlayer = ({ videoSrc, pauseTimer, resumeTimer }) => {
   return (
     <div className={styles.video_player}>
       {isLoading && (
-        <div className="video-loading-indicator">
-          <Spinner animation="border" variant="light" />
-          <div className="loading-text">Загрузка видео...</div>
+        <div className={styles.video_loading_indicator}>
+          <LoadingIndicator />
         </div>
       )}
       <video

@@ -1,14 +1,13 @@
 import React, { useContext, useState, useEffect } from 'react';
-import Container from 'react-bootstrap/esm/Container';
-import Card from 'react-bootstrap/esm/Card';
 import Form from 'react-bootstrap/Form';
-import Button from 'react-bootstrap/esm/Button';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from '../utils/consts';
 import { registration, login } from '../http/userAPI';
-import Row from 'react-bootstrap/esm/Row';
 import { observer } from 'mobx-react-lite';
 import { Context } from "../index";
+import styles from './Auth.module.css';
+import MyButton from '../components/MyButton/MyButton';
+import { message } from 'antd'; // Импортируем компонент message из antd
 
 const Auth = observer(() => {
   const { user, thing } = useContext(Context);
@@ -34,7 +33,8 @@ const Auth = observer(() => {
       localStorage.setItem('redirectAfterReload', SHOP_ROUTE);
       window.location.reload(); // Перезагружаем страницу
     } catch (e) {
-      alert(e.response.data.message);
+      // Используем antd message для отображения ошибок
+      message.error(e.response.data.message);
     }
   };
 
@@ -48,49 +48,42 @@ const Auth = observer(() => {
   }, [navigate]);
 
   return (
-    <div>
-      <Container 
-        className='d-flex justify-content-center align-items-center'
-        style={{ height: window.innerHeight - 54 }}
-      >
-        <Card style={{ width: 600 }} className='p-5'>
-          <h2 className='m-auto'>{isLogin ? 'Авторизация' : 'Регистрация'}</h2>
-          <Form className='d-flex flex-column'>
+    <div className={styles.auth}>
+        <div className={styles.auth_form}>
+          <h2 className={styles.auth_title}>{isLogin ? 'Authorization' : 'Registration'}</h2>
+          <div className={styles.auth_form_row}>
             <Form.Control
-              className='mt-4'
-              placeholder="Введите email"
+              className='mt-2'
+              placeholder="Enter your email"
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
             <Form.Control
               className='mt-2'
-              placeholder="Введите пароль"
+              placeholder="Enter your password"
               value={password}
               onChange={e => setPassword(e.target.value)}
               type='password'
             />
-            
-            <Row className='d-flex justify-content-between mt-3 pl-3 pr-3'>
+          </div>
+            <div className={styles.auth_row}>
               {isLogin ? (
-                <div className='align-self-center mt-3'>
-                  Нет аккаунта? <NavLink to={REGISTRATION_ROUTE}>Регистрация</NavLink>
+                <div className={styles.auth_row_link}>
+                  No account? <NavLink to={REGISTRATION_ROUTE}>Sign up</NavLink>
                 </div>
               ) : (
-                <div className='align-self-center mt-3'>
-                  Есть аккаунт? <NavLink to={LOGIN_ROUTE}>Войти</NavLink>
+                <div className={styles.auth_row_link}>
+                  Have an account? <NavLink to={LOGIN_ROUTE}>Sign in</NavLink>
                 </div>
               )}
-              <Button 
-                className='mt-3' 
-                variant='outline-danger'
-                onClick={click}
-              >
-                {isLogin ? 'Войти' : 'Регистрация'}
-              </Button>
-            </Row>
-          </Form>
-        </Card>
-      </Container>
+              <div className={styles.auth_row_button}>
+                <MyButton 
+                  text={isLogin ? 'Sign in' : 'Sign up'}
+                  onClick={click}
+                />  
+              </div>
+            </div>
+        </div>
     </div>
   );
 });

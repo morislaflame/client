@@ -1,20 +1,26 @@
-import React from 'react';
+import React, { useState, Suspense, lazy } from 'react';
 import './Main.css';
-import ProductSlider from '../../components/ProductSlider/ProductSlider';
 import StorySlider from '../../components/StorySlider/StorySlider';
 import MyButton from '../../components/MyButton/MyButton';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import { useNavigate } from 'react-router-dom';
 import { SHOP_ROUTE } from '../../utils/consts';
 import Reviews from '../../components/Reviews/Reviews';
+import { useInView } from 'react-intersection-observer';
+
+// Динамически импортируем ProductSlider
+const ProductSlider = lazy(() => import('../../components/ProductSlider/ProductSlider'));
 
 export default function Main() {
   const navigate = useNavigate();
-
   const handleClick = () => {
     navigate(SHOP_ROUTE);
   };
 
+  // Используем useInView для отслеживания видимости ProductSlider
+  const { ref, inView } = useInView({
+    threshold: 0.1, // Загрузка при 10% видимости
+  });
 
   return (
     <div className='main'>
@@ -71,11 +77,17 @@ export default function Main() {
         </div>
         <div className='go-shop'><MyButton text="Go to store" onClick={handleClick} /></div>
       </div>
-      <ProductSlider />
-      <Reviews/>
+
+      {/* Используем ref для отслеживания видимости ProductSlider */}
+      <div ref={ref}>
+        <Suspense fallback={<div>Загрузка...</div>}>
+          {inView && <ProductSlider />} {/* Загружаем ProductSlider только если он в области видимости */}
+        </Suspense>
+      </div>
+
+      <Reviews />
       <h2 className='Faq'>FAQ</h2>
       <FaqAccordion />
-      
     </div>
   );
 }
