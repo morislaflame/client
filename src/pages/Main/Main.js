@@ -4,11 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import { SHOP_ROUTE } from '../../utils/consts';
 import { useInView } from 'react-intersection-observer';
 import CustomSkeleton from '../../components/CustomSkeleton/CustomSkeleton';
+import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 
 const ProductSlider = React.lazy(() => import('../../components/ProductSlider/ProductSlider'));
 const StorySlider = React.lazy(() => import('../../components/StorySlider/StorySlider'));
 const MyButton = React.lazy(() => import('../../components/MyButton/MyButton'));
-const FaqAccordion = React.lazy(() => import('../../components/FaqAccordion/FaqAccordion'));
 const Reviews = React.lazy(() => import('../../components/Reviews/Reviews'));
 
 

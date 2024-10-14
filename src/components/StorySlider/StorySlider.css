@@ -75,7 +75,7 @@
   .modal-content {
     height: 98vh;
     padding: calc(var(--index)* 1.5);
-    background-color: #111111;
+    background-color: black;
     display: flex;
     flex-direction: column;
     justify-content: center;
@@ -101,6 +101,7 @@
   }
 
   .modal-footer {
+    color: white;
     justify-content: center !important;
     padding: calc(var(--index) * 1) !important;
   }
@@ -108,6 +109,8 @@
   .story .modal-img {
     height: 100%;
     border-radius: calc(var(--index) * 1);
+    object-fit: contain;
+    object-position: center;
   }
 
   .progress {

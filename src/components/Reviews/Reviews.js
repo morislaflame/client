@@ -92,7 +92,7 @@ const Reviews = observer(() => {
         speed: 500,
         slidesToShow: 7,
         autoplay: false,
-        arrows: true,
+        arrows: false,
         centerMode: true,
         centerPadding: "20px",
         swipeToSlide: true,

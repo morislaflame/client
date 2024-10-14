@@ -1,8 +1,9 @@
 import React, { useEffect, useRef, useState } from 'react';
+import Spinner from 'react-bootstrap/Spinner';
 import styles from './VideoPlayer.module.css';
 import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
-const VideoPlayer = ({ videoSrc, pauseTimer, resumeTimer }) => {
+const VideoPlayer = ({ videoSrc, pauseTimer, resumeTimer, startTimer }) => {
   const videoRef = useRef(null);
   const [isLoading, setIsLoading] = useState(true);
   const [isPaused, setIsPaused] = useState(false);
@@ -12,6 +13,7 @@ const VideoPlayer = ({ videoSrc, pauseTimer, resumeTimer }) => {
 
     const handleLoadedData = () => {
       setIsLoading(false);
+      startTimer(); // Запуск таймера после загрузки видео
     };
 
     const handleWaiting = () => {
@@ -31,7 +33,7 @@ const VideoPlayer = ({ videoSrc, pauseTimer, resumeTimer }) => {
       videoElement.removeEventListener('waiting', handleWaiting);
       videoElement.removeEventListener('playing', handlePlaying);
     };
-  }, []);
+  }, [startTimer]);
 
   // Обработчик клика по видео для паузы/возобновления
   const handleVideoClick = () => {
@@ -52,13 +54,15 @@ const VideoPlayer = ({ videoSrc, pauseTimer, resumeTimer }) => {
       {isLoading && (
         <div className={styles.video_loading_indicator}>
           <LoadingIndicator />
+          {/* <Spinner animation="border" variant="light" />
+          <div className={styles.loading_text}>Uploading a video...</div> */}
         </div>
       )}
       <video
         ref={videoRef}
         src={videoSrc}
         autoPlay
-        className={styles.video}
+        className={`${styles.video} ${isLoading ? styles.loading : styles.loaded}`}
         preload="metadata"
         onClick={handleVideoClick}
       />

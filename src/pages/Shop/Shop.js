@@ -18,6 +18,7 @@ const Shop = observer(() => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    window.scrollTo(0, 0);
     const savedPage = sessionStorage.getItem('currentPage');
     if (savedPage) {
       thing.setPage(Number(savedPage));

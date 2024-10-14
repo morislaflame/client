@@ -17,6 +17,7 @@ const StorySlider = () => {
   const [isPaused, setIsPaused] = useState(false);
   const timerRef = useRef(null);
   const { user } = useContext(Context);
+  const [isContentLoaded, setIsContentLoaded] = useState(false);
 
   useEffect(() => {
     loadStories();
@@ -31,7 +32,7 @@ const StorySlider = () => {
     setModalShow(true);
     setProgress(0);
     setIsPaused(false);
-    startTimer();
+    setIsContentLoaded(false); // Сбрасываем состояние загрузки контента
   };
 
   const handleClose = () => {
@@ -95,6 +96,11 @@ const StorySlider = () => {
     }
   };
 
+  const handleContentLoaded = () => {
+    setIsContentLoaded(true);
+    startTimer(); // Запуск таймера после загрузки контента
+  };
+
   const groupedStories = [];
   for (let i = 0; i < stories.length; i += 4) {
     groupedStories.push(stories.slice(i, i + 4));
@@ -137,6 +143,7 @@ const StorySlider = () => {
                   videoSrc={`${process.env.REACT_APP_API_URL}${selectedStory.video}`}
                   pauseTimer={pauseTimer}
                   resumeTimer={resumeTimer}
+                  startTimer={handleContentLoaded} // Передача функции handleContentLoaded
                 />
               ) : (
                 <img
@@ -144,6 +151,7 @@ const StorySlider = () => {
                   alt={selectedStory.title}
                   className="modal-img"
                   loading="lazy"
+                  onLoad={handleContentLoaded} // Запуск таймера после загрузки изображения
                   onClick={handleImageClick}
                 />
               )}

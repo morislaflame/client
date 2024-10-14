@@ -9,10 +9,17 @@
 .video {
     display: flex;
     width: 100%;
-    height: 80vh;
     object-fit: cover;
     object-position: center;
     border-radius: calc(var(--index)* 1.5);
+}
+
+.video.loading {
+    height: 0vh; /* Высота, когда видео загружается */
+}
+
+.video.loaded {
+    height: 80vh; /* Высота, когда видео загружено */
 }
 
 .video_loading_indicator {
@@ -29,4 +36,3 @@
     font-size: calc(var(--index) * 1.5);
     font-weight: 600;
 }
-
