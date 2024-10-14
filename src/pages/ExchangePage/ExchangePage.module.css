@@ -132,3 +132,40 @@
   .crypto_amount b {
     margin-right: calc(var(--index) * 1.7);
   }
+
+
+  .refund_info {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: calc(var(--index) * 0.7);
+  }
+
+  .models {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .thing_info {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #111111;
+    padding: calc(var(--index) * 1);
+    border-radius: calc(var(--index) * 1);
+  }
+
+  .thing_info span {
+    font-size: calc(var(--index) * 1.3);
+    font-weight: 500;
+  }
+
+  .equal_price_info {
+    display: flex;
+    width: 100%;
+    text-align: center;
+  }
+
+

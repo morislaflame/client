@@ -464,7 +464,7 @@ const Admin = observer(() => {
                     </span>
                     
                     <span>Разница в цене: <p>${exchange.priceDifference > 0 ? `+${exchange.priceDifference}` : exchange.priceDifference}</p></span>
-                    <span><p>{exchange.userComment}</p></span>
+                    <span>{exchange.userComment}</span>
                   </div>
 
                   {isNewThingUnavailable && (

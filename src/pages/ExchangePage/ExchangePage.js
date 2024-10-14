@@ -15,6 +15,7 @@ import Pages from '../../components/Pages';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук
 import { wallets } from '../../utils/cryptoWallets'; // Импортируем wallets
+import { LuArrowRightLeft } from "react-icons/lu";
 
 const ExchangePage = observer(() => {
     const { thing, user, exchange } = useContext(Context); // Используем exchange из контекста
@@ -173,69 +174,84 @@ const ExchangePage = observer(() => {
         setCryptoPaymentAmount(0);
     };
 
-    return (
-        <div className={styles.exchange_page}>
-            <div className={styles.topic_back}><BackButton/><h2>Exchange</h2></div>
-            <div className={styles.mainlist}>
-                <ThingListForExchange selectedThingId={selectedThingId} onSelectThing={setSelectedThingId} />
-                <Pages/>
-            </div>
-            <FaqAccordion/>
+    const renderOffcanvasContent = () => {
+        if (!selectedThing || !currentThing) return null;
 
-            <ExchangeOffcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="bottom">
-                <ExchangeOffcanvasHeader>
-                    <Offcanvas.Title>Confirm exchange request</Offcanvas.Title>
-                </ExchangeOffcanvasHeader>
-                <ExchangeOffcanvasBody>
-                    <div className={styles.selection}>
-                        <div>
-                            <span>Describe the reason</span>
-                        </div>
-                        <textarea
-                            placeholder="Comment"
-                            value={userComment}
-                            onChange={(e) => setUserComment(e.target.value)}
-                            style={{ width: '100%', minHeight: '80px', fontSize: 'calc(var(--index) * 1.4)'}}
-                        />
-                        {selectedThing && currentThing && selectedThing.price - currentThing.price < 0 && (
-                        // Если требуется возврат средств, показываем дополнительные поля
-                        <>
-                            <div className={styles.selector_pay}>
-                                <label htmlFor="cryptoSelect">Cryptocurrency for refund:</label>
-                                <Select
-                                    id="cryptoSelect"
-                                    value={cryptoCurrency}
-                                    onChange={(value) => setCryptoCurrency(value)}
-                                    placeholder="Select"
-                                    options={Object.keys(wallets).map((key) => ({
-                                        label: (
-                                            <div className={styles.crypto_selector}>
-                                                <span>{wallets[key].currency}</span>
-                                                <span>{wallets[key].icon}</span>
-                                            </div>
-                                        ),
-                                        value: key,
-                                    }))}
-                                />
-                            </div>
-                            <div className={styles.crypto_amount}>
-                                <span>Price difference: ${Math.abs(selectedThing.price - currentThing.price)}</span>
-                                <b>{convertAmountForCrypto(wallets[cryptoCurrency].currency, Math.abs(selectedThing.price - currentThing.price))} {wallets[cryptoCurrency].currency}</b>
-                            </div>
-                            <div className={styles.wallet_input}>
-                                <label htmlFor="walletAddress">Wallet:</label>
-                                <Input
-                                    id="walletAddress"
-                                    value={cryptoWalletAddress}
-                                    onChange={(e) => setCryptoWalletAddress(e.target.value)}
-                                    placeholder="Wallet address"
-                                />
-                            </div>
-                        </>
-                        )}
+        const priceDifference = selectedThing.price - currentThing.price;
+
+        return (
+            <div className={styles.selection}>
+                <div>
+                    <span>Describe the reason</span>
+                </div>
+                <textarea
+                    placeholder="Comment"
+                    value={userComment}
+                    onChange={(e) => setUserComment(e.target.value)}
+                    style={{ width: '100%', minHeight: '80px', fontSize: 'calc(var(--index) * 1.4)'}}
+                />
+                <div className={styles.models}>
+                    <div className={styles.thing_info}>
+                        <h6>Swap:</h6>
+                        <span>{currentThing.name} - ${currentThing.price}</span>
                     </div>
+                    <LuArrowRightLeft />
+                    <div className={styles.thing_info}>
+                        <h6>For:</h6>
+                        <span>{selectedThing.name} - ${selectedThing.price}</span>
+                    </div>
+                </div>
+                <span style={{fontSize: 'calc(var(--index) * 1.4)', fontWeight: '500', margin: 'calc(var(--index) * 0.5) 0'}}>Price difference: ${Math.abs(priceDifference)}</span>
 
-                    <Button
+                {priceDifference > 0 && (
+                    <div className={styles.payment_info}>
+                        <p>You need to pay an additional ${priceDifference}.</p>
+                    </div>
+                )}
+
+                {priceDifference < 0 && (
+                    <div className={styles.refund_info}>
+                        <div className={styles.selector_pay}>
+                            <label htmlFor="cryptoSelect">Cryptocurrency for refund:</label>
+                            <Select
+                                id="cryptoSelect"
+                                value={cryptoCurrency}
+                                onChange={(value) => setCryptoCurrency(value)}
+                                placeholder="Select"
+                                options={Object.keys(wallets).map((key) => ({
+                                    label: (
+                                        <div className={styles.crypto_selector}>
+                                            <span>{wallets[key].currency}</span>
+                                            <span>{wallets[key].icon}</span>
+                                        </div>
+                                    ),
+                                    value: key,
+                                }))}
+                            />
+                        </div>
+                        <div className={styles.crypto_amount}>
+                            <span>Price difference: ${Math.abs(priceDifference)}</span>
+                            <b>{convertAmountForCrypto(wallets[cryptoCurrency].currency, Math.abs(priceDifference))} {wallets[cryptoCurrency].currency}</b>
+                        </div>
+                        <div className={styles.wallet_input}>
+                            <label htmlFor="walletAddress">Wallet:</label>
+                            <Input
+                                id="walletAddress"
+                                value={cryptoWalletAddress}
+                                onChange={(e) => setCryptoWalletAddress(e.target.value)}
+                                placeholder="Wallet address"
+                            />
+                        </div>
+                    </div>
+                )}
+
+                {priceDifference === 0 && (
+                    <div className={styles.equal_price_info}>
+                        <p>The exchange is even. No additional payment or refund is required.</p>
+                       
+                    </div>
+                )}
+                <Button
                         variant="dark"
                         onClick={handleSubmitExchange}
                         style={{
@@ -252,6 +268,26 @@ const ExchangePage = observer(() => {
                             ? 'Proceed to Payment'
                             : 'Send an exchange request'}
                     </Button>
+            </div>
+            
+        );
+    };
+
+    return (
+        <div className={styles.exchange_page}>
+            <div className={styles.topic_back}><BackButton/><h2>Exchange</h2></div>
+            <div className={styles.mainlist}>
+                <ThingListForExchange selectedThingId={selectedThingId} onSelectThing={setSelectedThingId} />
+                <Pages/>
+            </div>
+            <FaqAccordion/>
+
+            <ExchangeOffcanvas show={showOffcanvas} onHide={handleCloseOffcanvas} placement="bottom">
+                <ExchangeOffcanvasHeader>
+                    <Offcanvas.Title>Confirm exchange request</Offcanvas.Title>
+                </ExchangeOffcanvasHeader>
+                <ExchangeOffcanvasBody>
+                    {renderOffcanvasContent()}
                 </ExchangeOffcanvasBody>
             </ExchangeOffcanvas>
         </div>

@@ -7,6 +7,7 @@
     flex-direction: column;
     justify-content: center;
     gap: calc(var(--index) * 2);
+    overflow: hidden;
 }
 
 .admin_buttons {
@@ -274,6 +275,7 @@
     align-items: center;
     border-bottom: 1px solid #7f7e7e66;
     padding: calc(var(--index) * 0.7);
+    flex-wrap: wrap;
 }
 
 .return_details span:last-child {
