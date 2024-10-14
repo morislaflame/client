@@ -9,6 +9,7 @@ import Spinner from 'react-bootstrap/Spinner'
 import Chat from './components/ChatForm/ChatForm';
 import { postEvent, retrieveLaunchParams } from '@telegram-apps/sdk-react';
 import Footer from './components/Footer/Footer';
+import LoadingIndicator from './components/LoadingIndicator/LoadingIndicator';
 
 const App = observer(() => {
   const {user} = useContext(Context)
@@ -28,7 +29,9 @@ const App = observer(() => {
   }, [])
 
   if(loading) {
-    return <Spinner animation={"grow"}/>
+    return <div className='loading'>
+      <Spinner animation={"grow"}/>
+    </div>
   }
 
   return (

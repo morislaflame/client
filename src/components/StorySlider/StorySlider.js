@@ -6,7 +6,7 @@ import Modal from 'react-bootstrap/Modal';
 import CloseButton from 'react-bootstrap/CloseButton';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { Context } from '../../index';
-import { message } from 'antd';
+import { message, Skeleton } from 'antd';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 
 const StorySlider = () => {
@@ -18,13 +18,22 @@ const StorySlider = () => {
   const timerRef = useRef(null);
   const { user } = useContext(Context);
   const [isContentLoaded, setIsContentLoaded] = useState(false);
+  const [loading, setLoading] = useState(true); // Состояние загрузки
 
   useEffect(() => {
     loadStories();
   }, []);
 
-  const loadStories = () => {
-    fetchStories().then((data) => setStories(data));
+  const loadStories = async () => {
+    setLoading(true);
+    try {
+      const data = await fetchStories();
+      setStories(data);
+    } catch (error) {
+      console.error('Error loading stories:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleStoryClick = (story) => {
@@ -32,7 +41,7 @@ const StorySlider = () => {
     setModalShow(true);
     setProgress(0);
     setIsPaused(false);
-    setIsContentLoaded(false); // Сбрасываем состояние загрузки контента
+    setIsContentLoaded(false);
   };
 
   const handleClose = () => {
@@ -98,7 +107,7 @@ const StorySlider = () => {
 
   const handleContentLoaded = () => {
     setIsContentLoaded(true);
-    startTimer(); // Запуск таймера после загрузки контента
+    startTimer();
   };
 
   const groupedStories = [];
@@ -108,25 +117,35 @@ const StorySlider = () => {
 
   return (
     <div className="story-slider">
-      <Carousel indicators={false} controls={false} interval={null}>
-        {groupedStories.map((group, idx) => (
-          <Carousel.Item key={idx}>
-            <div className="story-group">
-              {group.map((story) => (
-                <div key={story.id} className="story-card">
-                  <img
-                    src={`${process.env.REACT_APP_API_URL}${story.coverImg}`}
-                    alt={story.title}
-                    onClick={() => handleStoryClick(story)}
-                    loading="lazy"
-                  />
-                  
-                </div>
-              ))}
+      {loading ? (
+        <div className="story-skeletons">
+          {Array.from({ length: 4 }).map((_, index) => (
+            <div key={index} className="story-card-skeleton">
+              <Skeleton.Avatar style={{ width: 'calc(var(--index)* 5.8)', height: 'calc(var(--index)* 5.8)' }} active />
+              <Skeleton active paragraph={{ rows: 1, width: '80%' }} />
             </div>
-          </Carousel.Item>
-        ))}
-      </Carousel>
+          ))}
+        </div>
+      ) : (
+        <Carousel indicators={false} controls={false} interval={null}>
+          {groupedStories.map((group, idx) => (
+            <Carousel.Item key={idx}>
+              <div className="story-group">
+                {group.map((story) => (
+                  <div key={story.id} className="story-card">
+                    <img
+                      src={`${process.env.REACT_APP_API_URL}${story.coverImg}`}
+                      alt={story.title}
+                      onClick={() => handleStoryClick(story)}
+                      loading="lazy"
+                    />
+                  </div>
+                ))}
+              </div>
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      )}
 
       <Modal show={modalShow} onHide={handleClose} centered>
         <div className="story-top">

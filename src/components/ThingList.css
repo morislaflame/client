@@ -7,13 +7,21 @@
 }
 
 .thing-item-skeleton {
-    margin: 10px;
-    width: 40%;
-    border-radius: calc(var(--index) * 1);
-    background-color: #111111;
+    width: 50%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
   }
   
+.skeleton-image {
+    border-radius: calc(var(--index) * 1);
+    background-color: #111111de;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 95%;
+    height: 95%;
+    padding: calc(var(--index) * 1);
+}

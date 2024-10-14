@@ -40,8 +40,10 @@ const ThingList = observer(() => {
             {loading ? (
                 Array.from({ length: 20 }).map((_, index) => (
                     <div key={index} className="thing-item-skeleton">
+                        <div className="skeleton-image">
                         <Skeleton.Image style={{ width: '100%', height: '250px' }} active />
                         <Skeleton active paragraph={{ rows: 1, width: '80%' }} />
+                        </div>
                     </div>
                 ))
             ) : (

@@ -19,7 +19,7 @@ export default function Main() {
 
   return (
     <div className='main'>
-      <Suspense fallback={"Loading..."}>
+      <Suspense fallback={<Skeleton active />}>
         <StorySlider />
       </Suspense>
       <div className='mainPhoto'>
@@ -75,7 +75,7 @@ export default function Main() {
         <div className='go-shop'><MyButton text="Go to store" onClick={handleClick} /></div>
       </div>
 
-      <Suspense fallback={"Loading..."}>
+      <Suspense fallback={<Skeleton active />}>
         <ProductSlider />
       </Suspense>
 
