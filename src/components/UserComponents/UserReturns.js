@@ -9,6 +9,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
 import CopyableButton from '../CopyableButton/CopyableButton';
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) => {
   const { return: returnStore } = useContext(Context); // Доступ к ReturnStore из контекста
@@ -41,7 +42,7 @@ const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) 
   const hasReturns = returnData && returnData.length > 0;
 
   if (returnStore.loading && !returns) {
-    return <p>Loading returns...</p>;
+    return <div><LoadingIndicator/></div>;
   }
 
   if (!hasReturns) {

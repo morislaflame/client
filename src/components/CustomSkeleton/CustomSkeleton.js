@@ -21,6 +21,7 @@ const CustomSkeleton = ({ type }) => {
     case 'reviews':
       return (
         <div className={styles.reviews_skeleton}>
+            <Skeleton.Avatar active size={64} shape="circle" />
           <Skeleton active paragraph={{ rows: 3 }} />
         </div>
       );

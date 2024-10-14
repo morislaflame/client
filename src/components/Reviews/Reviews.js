@@ -14,6 +14,9 @@ import { HiMiniTrash } from "react-icons/hi2";
 import StarRatingInput from '../StarRatingInput/StarRatingInput';
 import ImageUploader from '../ImageUploader/ImageUploader';
 import ExpandableText from '../ExpandableText/ExpandableText';
+import { Modal as AntModal } from 'antd'; // Импортируем Modal из antd
+
+const { confirm } = AntModal;
 
 const Reviews = observer(() => {
     const { review, user } = useContext(Context);
@@ -67,15 +70,24 @@ const Reviews = observer(() => {
     };
 
     const handleDeleteReview = async (id) => {
-        const confirmDelete = window.confirm('Are you sure you want to delete this review?');
-        if (confirmDelete) {
-            try {
-                await review.removeReview(id);
-                message.success('Review successfully deleted');
-            } catch (error) {
-                message.error('Error deleting a review: ' + (error.response?.data?.message || error.message));
-            }
-        }
+        confirm({
+            title: 'Are you sure you want to delete this review?',
+            content: 'This action cannot be undone.',
+            okText: 'Yes',
+            okType: 'danger',
+            cancelText: 'No',
+            onOk: async () => {
+                try {
+                    await review.removeReview(id);
+                    message.success('Review successfully deleted');
+                } catch (error) {
+                    message.error('Error deleting a review: ' + (error.response?.data?.message || error.message));
+                }
+            },
+            onCancel() {
+                console.log('Cancel');
+            },
+        });
     };
 
     const loadMoreReviews = () => {

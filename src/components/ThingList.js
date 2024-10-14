@@ -1,20 +1,46 @@
 import { observer } from "mobx-react-lite";
-import React, { useContext } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../index";
 import ThingItem from "./ThingItem/ThingItem";
 import { Skeleton } from 'antd';
-import './ThingList.css'
+import { fetchThings } from '../http/thingAPI';
+import './ThingList.css';
 
-
-const ThingList = observer(({ loading }) => {
+const ThingList = observer(() => {
     const { thing } = useContext(Context);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+        const loadThings = async () => {
+            setLoading(true);
+            try {
+                const data = await fetchThings(
+                    thing.selectedType.id,
+                    thing.selectedBrands,
+                    thing.page,
+                    20,
+                    thing.priceRange.min,
+                    thing.priceRange.max
+                );
+                thing.setThings(data.rows);
+                thing.setTotalCount(data.count);
+            } catch (error) {
+                console.error('Error loading models:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadThings();
+    }, [thing.page, thing.selectedType, thing.selectedBrands, thing.priceRange]);
 
     return (
         <div className="thing-list">
             {loading ? (
-                Array.from({ length: 10 }).map((_, index) => (
+                Array.from({ length: 20 }).map((_, index) => (
                     <div key={index} className="thing-item-skeleton">
-                        <Skeleton.Image style={{ width: '100%', height: '200px' }} active />
+                        <Skeleton.Image style={{ width: '100%', height: '250px' }} active />
                         <Skeleton active paragraph={{ rows: 1, width: '80%' }} />
                     </div>
                 ))

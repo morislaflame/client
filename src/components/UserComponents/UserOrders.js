@@ -8,6 +8,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
 import CopyableButton from '../CopyableButton/CopyableButton';
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 const UserOrders = observer(({ orders, sliderSettings }) => {
   const { order } = useContext(Context); // Access OrderStore from context
@@ -37,7 +38,7 @@ const UserOrders = observer(({ orders, sliderSettings }) => {
   }, [orderSearch, userOrders]);
 
   if (order.loading && !orders) {
-    return <p>Loading orders...</p>;
+    return <div><LoadingIndicator/></div>;
   }
 
   if (!userOrders || userOrders.length === 0) {

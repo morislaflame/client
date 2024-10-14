@@ -11,6 +11,7 @@ import { THING_ROUTE } from '../../utils/consts';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 const UserModels = observer(({ handleShow }) => {
   const { user, exchange, return: returnStore } = useContext(Context);
@@ -75,7 +76,7 @@ const UserModels = observer(({ handleShow }) => {
   const { returns } = returnStore;
 
   if (user.loading || exchange.loading || returnStore.loading) {
-    return <p>Loading models...</p>;
+    return <div><LoadingIndicator/></div>;
   }
 
   return (

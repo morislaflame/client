@@ -7,6 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
 import CopyableButton from '../CopyableButton/CopyableButton';
+import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
 
 const UserExchanges = observer(({ exchanges, sliderSettings }) => {
   const { exchange } = useContext(Context); // Access ExchangeStore from context
@@ -39,7 +40,7 @@ const UserExchanges = observer(({ exchanges, sliderSettings }) => {
   const hasExchanges = userExchanges && userExchanges.length > 0;
 
   if (exchange.loading && !exchanges) {
-    return <p>Loading exchanges...</p>;
+    return <div><LoadingIndicator/></div>;
   }
 
   return (

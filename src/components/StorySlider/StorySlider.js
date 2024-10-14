@@ -143,7 +143,7 @@ const StorySlider = () => {
                   videoSrc={`${process.env.REACT_APP_API_URL}${selectedStory.video}`}
                   pauseTimer={pauseTimer}
                   resumeTimer={resumeTimer}
-                  startTimer={handleContentLoaded} // Передача функции handleContentLoaded
+                  startTimer={handleContentLoaded}
                 />
               ) : (
                 <img
@@ -151,7 +151,7 @@ const StorySlider = () => {
                   alt={selectedStory.title}
                   className="modal-img"
                   loading="lazy"
-                  onLoad={handleContentLoaded} // Запуск таймера после загрузки изображения
+                  onLoad={handleContentLoaded}
                   onClick={handleImageClick}
                 />
               )}

@@ -8,13 +8,13 @@ import { FaShoppingCart, FaEdit } from 'react-icons/fa';
 import { Button } from 'react-bootstrap';
 import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, SHOP_ROUTE, TERMS_ROUTE } from '../../utils/consts';
 import { observer } from 'mobx-react-lite';
-import { message } from 'antd';
+import { message, Image } from 'antd';
 import OnlyIcon from '../../icons/onlyfans.png';
-import MymIcon from '../../icons/Mym.png'
-import FanslyIcon from '../../icons/fansly.png'
+import MymIcon from '../../icons/Mym.png';
+import FanslyIcon from '../../icons/fansly.png';
 import BackButton from '../../components/BackButton/BackButton';
 import { IoMdLock } from "react-icons/io";
-import styles from './ThingPage.module.css'
+import styles from './ThingPage.module.css';
 
 const ThingPage = observer(() => {
   const [thing, setThing] = useState({ info: {}, images: [], brands: [], type: {} });
@@ -22,7 +22,6 @@ const ThingPage = observer(() => {
   const { thing: thingStore, user } = useContext(Context);
 
   const navigate = useNavigate();
-
 
   useEffect(() => {
     // Прокрутка страницы вверх при монтировании компонента
@@ -42,9 +41,8 @@ const ThingPage = observer(() => {
         message.error('Error adding to cart: ' + errorMessage);
       }
     } else {
-      navigate(LOGIN_ROUTE)
+      navigate(LOGIN_ROUTE);
     }
-    
   };
 
   // Проверяем, находится ли товар в корзине
@@ -65,11 +63,10 @@ const ThingPage = observer(() => {
     3: MymIcon
   };
 
-
   return (
     <div className={styles.thing_content}>
       <div className={styles.topic_back}>
-        <BackButton/>
+        <BackButton />
         <h2 className={styles.topic}>{thing.name}</h2>
       </div>
       <div className={styles.main_model}>
@@ -77,10 +74,12 @@ const ThingPage = observer(() => {
           <Carousel data-bs-theme="dark" className={styles.thing_carousel}>
             {thing.images.map((image, index) => (
               <Carousel.Item key={index}>
-                <img
+                <Image
                   className={styles.photos}
                   src={process.env.REACT_APP_API_URL + image.img}
                   alt={`Slide ${index + 1}`}
+                  placeholder={<Image.PreviewGroup />}
+                  width={'100%'}
                 />
               </Carousel.Item>
             ))}
@@ -113,9 +112,6 @@ const ThingPage = observer(() => {
           <div className={styles.thing_type}>
             {thing.type && (
               <div className={styles.type_item}>
-                {/* {typeIcons[thing.type.id] && (
-                  <span className="type-icon">{typeIcons[thing.type.id]}</span>
-                )} */}
                 <div className={styles.info_str}><span>Origin:</span> <div>{thing.type.name}</div></div>
               </div>
             )}

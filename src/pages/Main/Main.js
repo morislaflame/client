@@ -2,16 +2,13 @@ import React, { Suspense } from 'react';
 import './Main.css';
 import { useNavigate } from 'react-router-dom';
 import { SHOP_ROUTE } from '../../utils/consts';
-import { useInView } from 'react-intersection-observer';
-import CustomSkeleton from '../../components/CustomSkeleton/CustomSkeleton';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
+import { Skeleton } from 'antd';
+import MyButton from '../../components/MyButton/MyButton';
 
-const ProductSlider = React.lazy(() => import('../../components/ProductSlider/ProductSlider'));
 const StorySlider = React.lazy(() => import('../../components/StorySlider/StorySlider'));
-const MyButton = React.lazy(() => import('../../components/MyButton/MyButton'));
 const Reviews = React.lazy(() => import('../../components/Reviews/Reviews'));
-
-
+const ProductSlider = React.lazy(() => import('../../components/ProductSlider/ProductSlider'));
 
 export default function Main() {
   const navigate = useNavigate();
@@ -19,14 +16,10 @@ export default function Main() {
     navigate(SHOP_ROUTE);
   };
 
-  const { ref, inView } = useInView({
-    threshold: 0.1,
-    triggerOnce: true,
-  });
 
   return (
     <div className='main'>
-      <Suspense fallback={<CustomSkeleton type="story" />}>
+      <Suspense fallback={"Loading..."}>
         <StorySlider />
       </Suspense>
       <div className='mainPhoto'>
@@ -82,15 +75,11 @@ export default function Main() {
         <div className='go-shop'><MyButton text="Go to store" onClick={handleClick} /></div>
       </div>
 
-      <div ref={ref}>
-        {inView && (
-          <Suspense fallback={<CustomSkeleton type="product" />}>
-            <ProductSlider />
-          </Suspense>
-        )}
-      </div>
+      <Suspense fallback={"Loading..."}>
+        <ProductSlider />
+      </Suspense>
 
-      <Suspense fallback={<CustomSkeleton type="reviews" />}>
+      <Suspense fallback={<Skeleton active />}>
         <Reviews />
       </Suspense>
       <h2 className='Faq'>FAQ</h2>

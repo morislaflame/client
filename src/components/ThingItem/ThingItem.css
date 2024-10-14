@@ -24,7 +24,7 @@
     border-radius: calc(var(--index) * 1);
     cursor: pointer;
     border-width: 1px;
-    background-color: #111111c4;
+    background-color: #111111;
     
 }
 
