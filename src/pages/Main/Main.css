@@ -13,7 +13,7 @@
     min-height: 100vh; /* Устанавливаем высоту main на 100% высоты окна */
     background-color: #030107; /* Цвет фона main для наглядности */
     font-family: "Montserrat", sans-serif;
-    
+    background: radial-gradient(ellipse at top, #6e209100, #030107, #000000);
   }
 
 .mainPhoto {
@@ -69,7 +69,9 @@
     }
   
     .mainArticle {
-      background: linear-gradient(to bottom, #030107, #ac57ed0f, black);
+      background: 
+      radial-gradient(ellipse at right center, #1601328c, transparent, transparent), 
+      radial-gradient(ellipse at left center, #2e013275, transparent, transparent);
       width: 100%;
       padding: calc(var(--index) * 2);
     }
@@ -91,9 +93,8 @@
       height: calc(var(--index)* 20);
       bottom: calc(var(--index) * 0);
       z-index: -1;
-      background: url('../../../../server/static/backtwo.jpg') no-repeat center center;
-      background-size: contain; /* Изображение полностью помещается внутри элемента */
-      background-color: black;
+      background: url('../../../../server/static/main.png') no-repeat center center;
+      background-size: contain;
     }
   }
 
@@ -101,7 +102,6 @@
     margin-top: 20px;
     width: 100%;
     min-height: 100vh;
-    background-color: black;
     display: flex; 
     flex-direction: column;
     align-items: center;
@@ -117,7 +117,6 @@
   .infoBar {
     width: 70%;
     padding: 20px;
-    background-color: black;
     display: flex; 
     flex-direction: column;
     align-items: center;
@@ -193,7 +192,6 @@
 
   .advList {
     margin-top: 25px;
-    background-color: black;
     color: white;
     width: 80vw;
     height: fit-content;

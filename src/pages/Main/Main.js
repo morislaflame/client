@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
+import React, { Suspense } from 'react';
 import './Main.css';
-import ProductSlider from '../../components/ProductSlider/ProductSlider';
-import StorySlider from '../../components/StorySlider/StorySlider';
-import MyButton from '../../components/MyButton/MyButton';
-import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import { useNavigate } from 'react-router-dom';
 import { SHOP_ROUTE } from '../../utils/consts';
-import Reviews from '../../components/Reviews/Reviews';
 import { useInView } from 'react-intersection-observer';
+import CustomSkeleton from '../../components/CustomSkeleton/CustomSkeleton';
+
+const ProductSlider = React.lazy(() => import('../../components/ProductSlider/ProductSlider'));
+const StorySlider = React.lazy(() => import('../../components/StorySlider/StorySlider'));
+const MyButton = React.lazy(() => import('../../components/MyButton/MyButton'));
+const FaqAccordion = React.lazy(() => import('../../components/FaqAccordion/FaqAccordion'));
+const Reviews = React.lazy(() => import('../../components/Reviews/Reviews'));
+
+
 
 export default function Main() {
   const navigate = useNavigate();
@@ -15,21 +19,16 @@ export default function Main() {
     navigate(SHOP_ROUTE);
   };
 
-  // Используем useInView для отслеживания видимости ProductSlider
   const { ref, inView } = useInView({
-    threshold: 0.1, // Загрузка при 10% видимости
+    threshold: 0.1,
+    triggerOnce: true,
   });
-
-  const [isProductSliderLoaded, setProductSliderLoaded] = useState(false);
-
-  // Загружаем ProductSlider только при первом попадании в область видимости
-  if (inView && !isProductSliderLoaded) {
-    setProductSliderLoaded(true);
-  }
 
   return (
     <div className='main'>
-      <StorySlider />
+      <Suspense fallback={<CustomSkeleton type="story" />}>
+        <StorySlider />
+      </Suspense>
       <div className='mainPhoto'>
         <div className='mainArticle'>
           <h1>EXPRESS MODEL MARKETPLACE</h1>
@@ -83,14 +82,20 @@ export default function Main() {
         <div className='go-shop'><MyButton text="Go to store" onClick={handleClick} /></div>
       </div>
 
-      {/* Используем ref для отслеживания видимости ProductSlider */}
       <div ref={ref}>
-        {isProductSliderLoaded && <ProductSlider />} {/* Загружаем ProductSlider только если он был загружен */}
+        {inView && (
+          <Suspense fallback={<CustomSkeleton type="product" />}>
+            <ProductSlider />
+          </Suspense>
+        )}
       </div>
 
-      <Reviews />
+      <Suspense fallback={<CustomSkeleton type="reviews" />}>
+        <Reviews />
+      </Suspense>
       <h2 className='Faq'>FAQ</h2>
       <FaqAccordion />
     </div>
   );
 }
+
