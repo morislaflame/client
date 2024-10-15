@@ -19,7 +19,7 @@
 }
 
 .video.loaded {
-    height: 80vh; /* Высота, когда видео загружено */
+    /* height: 80vh; */
 }
 
 .video_loading_indicator {

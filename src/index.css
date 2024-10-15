@@ -82,3 +82,8 @@ iframe {
 b, strong {
   font-weight: bold;
 }
+
+:where(.css-dev-only-do-not-override-qnu6hi).ant-skeleton.ant-skeleton-element {
+  display: flex;
+  width: 100%;
+}

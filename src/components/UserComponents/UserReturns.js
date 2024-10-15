@@ -45,10 +45,6 @@ const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) 
     return <div><LoadingIndicator/></div>;
   }
 
-  if (!hasReturns) {
-    return <p>You have no returns.</p>;
-  }
-
   return (
     <>
       {hasReturns && (

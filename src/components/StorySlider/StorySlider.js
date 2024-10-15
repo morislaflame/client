@@ -6,8 +6,12 @@ import Modal from 'react-bootstrap/Modal';
 import CloseButton from 'react-bootstrap/CloseButton';
 import ProgressBar from 'react-bootstrap/ProgressBar';
 import { Context } from '../../index';
-import { message, Skeleton } from 'antd';
+import { message, Skeleton, Modal as AntModal } from 'antd';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
+import { HiMiniTrash } from "react-icons/hi2";
+import { Button } from 'react-bootstrap';
+
+const { confirm } = AntModal;
 
 const StorySlider = () => {
   const [stories, setStories] = useState([]);
@@ -18,7 +22,7 @@ const StorySlider = () => {
   const timerRef = useRef(null);
   const { user } = useContext(Context);
   const [isContentLoaded, setIsContentLoaded] = useState(false);
-  const [loading, setLoading] = useState(true); // Состояние загрузки
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     loadStories();
@@ -31,6 +35,7 @@ const StorySlider = () => {
       setStories(data);
     } catch (error) {
       console.error('Error loading stories:', error);
+      message.error('Error loading stories');
     } finally {
       setLoading(false);
     }
@@ -85,16 +90,30 @@ const StorySlider = () => {
     }
   };
 
-  const handleDeleteStory = (id) => {
-    deleteStory(id)
-      .then(() => {
-        message.success('История удалена');
-        loadStories();
-      })
-      .catch((error) => {
-        const errorMessage = error.response?.data?.message || error.message;
-        message.error('Ошибка при удалении истории: ' + errorMessage);
-      });
+  const showDeleteConfirm = (id) => {
+    confirm({
+      title: 'Вы уверены, что хотите удалить эту историю?',
+      content: 'Это действие нельзя будет отменить.',
+      okText: 'Да',
+      okType: 'danger',
+      cancelText: 'Нет',
+      onOk: () => handleDeleteStory(id),
+      onCancel() {
+        console.log('Отмена');
+      },
+    });
+  };
+
+  const handleDeleteStory = async (id) => {
+    try {
+      await deleteStory(id);
+      message.success('История удалена');
+      setStories((prevStories) => prevStories.filter(story => story.id !== id));
+      handleClose(); // Закрываем модальное окно после успешного удаления
+    } catch (error) {
+      const errorMessage = error.response?.data?.message || error.message;
+      message.error('Ошибка при удалении истории: ' + errorMessage);
+    }
   };
 
   const handleImageClick = () => {
@@ -152,11 +171,22 @@ const StorySlider = () => {
           <ProgressBar now={progress} />
           <Modal.Header data-bs-theme="dark">
             <CloseButton onClick={handleClose} />
+            {user.user.role === 'ADMIN' && (
+              <Button variant="dark" onClick={() => showDeleteConfirm(selectedStory.id)} className="edit_button">
+                <HiMiniTrash />
+              </Button>
+            )}
           </Modal.Header>
         </div>
         <Modal.Body className="story">
           {selectedStory && (
             <>
+              <div className="story-overlay">
+                <h3>{selectedStory.title}</h3>
+                <a href={selectedStory.link} target="_blank" rel="noopener noreferrer">
+                  {selectedStory.link}
+                </a>
+              </div>
               {selectedStory.video ? (
                 <VideoPlayer
                   videoSrc={`${process.env.REACT_APP_API_URL}${selectedStory.video}`}
@@ -177,9 +207,6 @@ const StorySlider = () => {
             </>
           )}
         </Modal.Body>
-        <Modal.Footer>
-          <Modal.Title>{selectedStory && selectedStory.title}</Modal.Title>
-        </Modal.Footer>
       </Modal>
     </div>
   );

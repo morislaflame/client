@@ -5,6 +5,7 @@ import { UploadOutlined } from '@ant-design/icons';
 
 const CreateStory = ({ show, onHide }) => {
   const [title, setTitle] = useState('');
+  const [link, setLink] = useState('');
   const [coverImg, setCoverImg] = useState(null);
   const [mainContent, setMainContent] = useState(null);
 
@@ -46,6 +47,7 @@ const CreateStory = ({ show, onHide }) => {
 
       const formData = new FormData();
       formData.append('title', title);
+      formData.append('link', link);
       formData.append('coverImg', coverImg);
 
       // Проверяем тип файла основного содержимого
@@ -65,6 +67,7 @@ const CreateStory = ({ show, onHide }) => {
       onHide();
       form.resetFields();
       setTitle('');
+      setLink('');
       setCoverImg(null);
       setMainContent(null);
       setCoverImgFileList([]);
@@ -99,6 +102,21 @@ const CreateStory = ({ show, onHide }) => {
               form.setFieldsValue({ title: e.target.value });
             }}
             placeholder="Введите заголовок"
+          />
+        </Form.Item>
+
+        <Form.Item
+          name="link"
+          label="Ссылка"
+          rules={[{ required: false, message: 'Пожалуйста, введите ссылку' }]}
+        >
+          <Input
+            value={link}
+            onChange={(e) => {
+              setLink(e.target.value);
+              form.setFieldsValue({ link: e.target.value });
+            }}
+            placeholder="Введите ссылку (необязательно)"
           />
         </Form.Item>
 

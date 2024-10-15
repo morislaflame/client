@@ -42,7 +42,7 @@ const UserOrders = observer(({ orders, sliderSettings }) => {
   }
 
   if (!userOrders || userOrders.length === 0) {
-    return <p>You have no orders.</p>;
+    return <div className={styles.no_orders}>Your orders will be displayed here</div>;
   }
 
   return (

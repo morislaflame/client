@@ -12,16 +12,19 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    height: fit-content;
+    padding: calc(var(--index)* 0.5);
   }
   
 .skeleton-image {
-    border-radius: calc(var(--index) * 1);
+    border-radius: calc(var(--index)* 1);
     background-color: #111111de;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    width: 95%;
-    height: 95%;
-    padding: calc(var(--index) * 1);
+    width: 100%;
+    height: 100%;
+    padding: calc(var(--index)* 1);
+    gap: calc(var(--index)* 1);
 }
