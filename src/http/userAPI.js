@@ -1,6 +1,12 @@
 import { $authHost, $host } from "./index";
 import { jwtDecode } from "jwt-decode";
 
+export const telegramAuth = async (initData) => {
+    const { data } = await $host.post('api/user/telegramAuth', { initData });
+    localStorage.setItem('token', data.token);
+    return jwtDecode(data.token);
+};
+
 export const registration = async (email, password) => {
     const {data} = await $host.post('api/user/registration', {email, password})
     console.log("Token received during registration:", data.token);  // Логируем полученный токен

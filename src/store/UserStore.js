@@ -1,5 +1,5 @@
 import {makeAutoObservable, action, runInAction } from "mobx";
-import { fetchUsers, getUserByEmail, changeUserRole, deleteUser, getUserById, fetchMyInfo, fetchMyPurchasedThings } from "../http/userAPI";
+import { fetchUsers, getUserByEmail, changeUserRole, deleteUser, getUserById, fetchMyInfo, fetchMyPurchasedThings, telegramAuth } from "../http/userAPI";
 
 import { fetchUserExchangeRequests, createExchangeRequest } from "../http/exchangeAPI"; // Добавьте необходимые методы
 
@@ -71,6 +71,21 @@ export default class UserStore {
             console.error("Error fetching all users:", error);
         }
     }
+
+
+    // Добавьте новый метод
+    async telegramLogin(initData) {
+        try {
+            const data = await telegramAuth(initData);
+            runInAction(() => {
+                this.setUser(data);
+                this.setIsAuth(true);
+            });
+        } catch (error) {
+            console.error("Error during Telegram authentication:", error);
+        }
+    }
+
 
     // Метод для загрузки информации о пользователе
     async loadUserInfo() {
