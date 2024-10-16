@@ -13,7 +13,7 @@
 .skelet {
     height: calc(var(--index) * 2.5);
     width: 40%;
-    background: url('../../../../server/static/button.png') no-repeat center center;
+    background: url('../../icons/button.png') no-repeat center center;
     background-size: contain; /* Изображение полностью помещается внутри элемента */
 }
 

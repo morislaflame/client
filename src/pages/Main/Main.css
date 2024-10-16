@@ -34,7 +34,7 @@
     height: 70vh;
     width: 60%;
     left: 0;
-    background: url('../../../../server/static/back.jpg');
+    background: url('../../icons/main.png');
     background-size: cover; /* Заднее фото покрывает весь контейнер */
     background-position: center;
 }
@@ -92,7 +92,7 @@
       height: calc(var(--index)* 20);
       bottom: calc(var(--index) * 0);
       z-index: -1;
-      background: url('../../../../server/static/main.png') no-repeat center center;
+      background: url('../../icons/main.png') no-repeat center center;
       background-size: contain;
     }
   }
@@ -232,7 +232,7 @@
     height: 100%;
     margin-bottom: 0;
     background: linear-gradient(to right, #ce3b7e99, #000000db, #ce3b7e99 ), 
-    url('../../../../server/static/girls2.jpg');
+    url('../../icons/girls2.jpg');
     filter: blur(calc(var(--index) * 4));
     background-size: cover;
     display: flex; 
@@ -245,7 +245,7 @@
     width: 40%;
     height: 150px;
     padding: 10px;
-    background: url('../../../../server/static/girls2.jpg') no-repeat center center;
+    background: url('../../icons/girls2.jpg') no-repeat center center;
     background-size: cover;
     display: flex; 
     justify-content: center;
@@ -295,7 +295,7 @@
     height: 100%;
     margin-bottom: 0;
     background: linear-gradient(to right, #5b04f5b8, #000000db, #5b04f5b8 ), 
-    url('../../../../server/static/middleman.jpg');
+    url('../../icons/middleman.jpg');
     filter: blur(calc(var(--index) * 4));
     background-size: cover;
     display: flex; 
@@ -308,7 +308,7 @@
     width: 40%;
     height: 150px;
     padding: 10px;
-    background: url('../../../../server/static/middleman.jpg') no-repeat center center;
+    background: url('../../icons/middleman.jpg') no-repeat center center;
     background-size: cover;
     display: flex; 
     justify-content: center;
