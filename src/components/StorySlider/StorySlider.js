@@ -147,10 +147,13 @@ const StorySlider = () => {
         </div>
       ) : (
         <Carousel indicators={false} controls={false} interval={null}>
-          {groupedStories.map((group, idx) => (
+          {groupedStories?.map((group, idx) => {
+           console.log(group);
+            if(!group?.length || typeof group == 'string') return null;
+            return (
             <Carousel.Item key={idx}>
               <div className="story-group">
-                {group.map((story) => (
+                {group?.map((story) => (
                   <div key={story.id} className="story-card">
                     <img
                       src={`${process.env.REACT_APP_API_URL}${story.coverImg}`}
@@ -162,7 +165,7 @@ const StorySlider = () => {
                 ))}
               </div>
             </Carousel.Item>
-          ))}
+          )})}
         </Carousel>
       )}
 
