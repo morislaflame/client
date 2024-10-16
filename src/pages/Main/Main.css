@@ -88,7 +88,6 @@
     }
 
     .skeleton {
-      /* position: absolute; */
       width: 100%;
       height: calc(var(--index)* 20);
       bottom: calc(var(--index) * 0);
@@ -123,6 +122,7 @@
     justify-items: center;
     border-style: solid;
     border-color: #fedada;
+    background-color: #030107;
     box-shadow: 
         0 0 2px #fedada36, 
         0 0 5px #fedada36, 
@@ -223,7 +223,7 @@
 
   .advListTop h3 {
     position: absolute;
-    right: calc(var(--index) * 6);
+    right: calc(var(--index) * 4);
     font-weight: 600;
   }
 
@@ -286,7 +286,7 @@
 
   .advListTop2 h3 {
     position: absolute;
-    left: calc(var(--index) * 4);
+    left: calc(var(--index) * 5.5);
     font-weight: 600;
   }
 

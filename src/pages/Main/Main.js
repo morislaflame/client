@@ -25,7 +25,7 @@ export default function Main() {
       <div className='mainPhoto'>
         <div className='mainArticle'>
           <h1>EXPRESS MODEL MARKETPLACE</h1>
-          <h3>Here you can buy models for OnlyFans and other platforms (please check “platforms available” section)</h3>
+          <h3>Here you can buy models for OnlyFans and other platforms (Please check available platforms on the creator's card)</h3>
         </div>
         <div className='skeleton'></div>
       </div>
@@ -33,13 +33,13 @@ export default function Main() {
       <div className='infoBox'>
         <div className='infoBar'>
           <div className='article'>
-            <span>Наш Маркетплейс создавался в соответствии с ожиданиями клиентов о надежности и качестве</span>
+            <span>Our marketplace was created according to the expectations of our customers about reliability and quality</span>
           </div>
           <div className='perfomance'>
             <span>
-              Агентство не может существовать без моделей, а поиск ответственного и честного создателя контента обычно выходит дорого и долго.
-              Поэтому, чтобы сократить ваши издержки на поиск качественных моделей, мы создали площадку, позволяющую легко отыскать нужного вам партнера. <br />
-              Встречайте - <strong>THE MODEL'S HOTEL!</strong>
+            An agency cannot exist without models, and finding a responsible and honest content creator is usually expensive and time-consuming.
+            Therefore, in order to reduce your costs for finding quality models, we have created a platform that makes it easy for you to find the right partner to earn money together <br />
+              Welcome to <strong>THE MODEL'S HOTEL!</strong>
             </span>
           </div>
         </div>
@@ -49,12 +49,12 @@ export default function Main() {
             <div className='advListTop'>
               <image className='pic'></image>
               <div className='art'></div>
-              <h3>Удобство <br /> И Выбор</h3>
+              <h3>Convenience <br /> And Choice</h3>
             </div>
             <div className='txt'>
               <p>
-                Маркетплейс моделей OnlyFans предлагает удобный интерфейс, позволяющий пользователям быстро находить интересующих их моделей с помощью различных фильтров.
-                Вы можете легко сортировать модели по категориям, популярности, ценам и другим параметрам, чтобы быстрее найти идеальный контент для своих предпочтений.
+              OnlyFans model marketplace offers a user-friendly interface that allows users to quickly find the models you are interested in using various filters.
+              You can easily sort models by available platforms, countries and prices to find the perfect content for your preferences faster.
               </p>
             </div>
           </div>
@@ -62,12 +62,12 @@ export default function Main() {
             <div className='advListTop2'>
               <div className='art2'></div>
               <image className='pic2'></image>
-              <h3>Надежность</h3>
+              <h3>Credibility</h3>
             </div>
             <div className='txt'>
               <p>
-                Маркетплейс моделей OnlyFans обеспечивает надежность использования благодаря гаранту, который хранит деньги до полного исполнения обязательств.
-                Даже после завершения сделки у клиентов есть возможность обменять модель на другую, если что-то пойдет не так, что обеспечивает дополнительную защиту и удовлетворение пользователей.
+              OnlyFans model marketplace provides reliability and safety of funds. With every purchase on the marketplace, there is a warranty period during which you can get your funds back.
+              Even after the transaction is complete, customers have the option to exchange the model for another if something goes wrong, which provides additional protection and user satisfaction.
               </p>
             </div>
           </div>
