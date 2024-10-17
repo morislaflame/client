@@ -10,6 +10,8 @@ import Chat from './components/ChatForm/ChatForm';
 import { postEvent, retrieveLaunchParams } from '@telegram-apps/sdk-react';
 import Footer from './components/Footer/Footer';
 import LoadingIndicator from './components/LoadingIndicator/LoadingIndicator';
+import { telegramAuth } from './http/userAPI';
+
 
 const App = observer(() => {
   const {user} = useContext(Context)
@@ -17,9 +19,24 @@ const App = observer(() => {
   // const {initDataRaw} = retrieveLaunchParams()
 
 
-  // useEffect(() =>{
-  //   postEvent('', { color: '#ffffff' });
-  // }, [])
+  useEffect(() => {
+    // telegramAuth().then(data => {
+    //     user.setUser(data)
+    //     user.setIsAuth(true)
+    // }).finally(() => setLoading(false))
+
+    const onTGAuth = async (data) => {
+        const response = await telegramAuth(data)
+        if (!response) return
+        user.setUser(response)
+        user.setIsAuth(true)
+        setLoading(false)
+    }
+
+    onTGAuth(window.Telegram.WebApp.initData)
+
+
+}, [])
 
   useEffect(() => {
       check().then(data => {
