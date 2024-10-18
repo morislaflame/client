@@ -32,7 +32,7 @@ iframe {
   display: none;
 }
 
-:where(.css-dev-only-do-not-override-qnu6hi).ant-select .ant-select-selection-placeholder {
+.ant-select .ant-select-selection-placeholder {
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
@@ -41,31 +41,31 @@ iframe {
   pointer-events: none;
 }
 
-:where(.css-dev-only-do-not-override-qnu6hi).ant-select-filled:not(.ant-select-customize-input) .ant-select-selector {
+.ant-select-filled:not(.ant-select-customize-input) .ant-select-selector {
   background: #25252552;
   border: 1px solid transparent;
   color: rgba(255, 255, 255, 0.562);
   text-align: center;
 }
 
-:where(.css-dev-only-do-not-override-qnu6hi).ant-select-single .ant-select-selector {
+.ant-select-single .ant-select-selector {
   border-radius: calc(var(--index) * 1);
 }
 
-:where(.css-dev-only-do-not-override-qnu6hi) .ant-select-focused .ant-select-single .ant-select-allow-clear .ant-select-show-search {
+.ant-select-focused .ant-select-single .ant-select-allow-clear .ant-select-show-search {
   color: black;
 }
 
-:where(.css-dev-only-do-not-override-qnu6hi).ant-select-single.ant-select-show-arrow .ant-select-selection-item, :where(.css-dev-only-do-not-override-qnu6hi).ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
+.ant-select-single.ant-select-show-arrow .ant-select-selection-item, .ant-select-single.ant-select-show-arrow .ant-select-selection-placeholder {
   padding-inline-end: 0;
 }
 
-.ant-select-show-search:where(.css-dev-only-do-not-override-qnu6hi).ant-select:not(.ant-select-customize-input) .ant-select-selector input {
+.ant-select-show-search .ant-select:not(.ant-select-customize-input) .ant-select-selector input {
   display: flex;
   color: rgb(255 255 255 / 74%);
 }
 
-:where(.css-dev-only-do-not-override-qnu6hi).ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
+.ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
   background: #25252552;
   border: 0;
   color: rgb(255 255 255 / 74%);
@@ -73,7 +73,7 @@ iframe {
   font-size: calc(var(--index) * 1.2);
 }
 
-:where(.css-dev-only-do-not-override-qnu6hi).ant-select:hover .ant-select-clear {
+.ant-select:hover .ant-select-clear {
   opacity: 1;
   background: #fff0;
   color: rgb(255 255 255 / 74%);
@@ -83,7 +83,7 @@ b, strong {
   font-weight: bold;
 }
 
-:where(.css-dev-only-do-not-override-qnu6hi).ant-skeleton.ant-skeleton-element {
+.ant-skeleton.ant-skeleton-element {
   display: flex;
   width: 100%;
 }
