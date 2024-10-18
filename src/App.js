@@ -4,59 +4,70 @@ import AppRouter from './components/AppRouter';
 import NavBar from './components/NavBar/NavBar';
 import { observer } from 'mobx-react-lite';
 import { Context } from './index';
-import { check } from './http/userAPI';
-import Spinner from 'react-bootstrap/Spinner'
+import { check, telegramAuth } from './http/userAPI';
+import Spinner from 'react-bootstrap/Spinner';
 import Chat from './components/ChatForm/ChatForm';
 import { postEvent, retrieveLaunchParams } from '@telegram-apps/sdk-react';
 import Footer from './components/Footer/Footer';
 import LoadingIndicator from './components/LoadingIndicator/LoadingIndicator';
-import { telegramAuth } from './http/userAPI';
-
 
 const App = observer(() => {
-  const {user} = useContext(Context)
-  const [loading, setLoading] = useState(true)
-  // const {initDataRaw} = retrieveLaunchParams()
-
+  const { user } = useContext(Context);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // telegramAuth().then(data => {
-    //     user.setUser(data)
-    //     user.setIsAuth(true)
-    // }).finally(() => setLoading(false))
+    const authenticate = async () => {
+      const initData = window.Telegram?.WebApp?.initData;
+      console.log('Init Data:', initData); // Для отладки
 
-    const onTGAuth = async (data) => {
-        const response = await telegramAuth(data)
-        if (!response) return
-        user.setUser(response)
-        user.setIsAuth(true)
-        setLoading(false)
-    }
+      if (initData) {
+        try {
+          // Выполняем аутентификацию через Telegram
+          const telegramResponse = await telegramAuth(initData);
+          console.log('Telegram Response:', telegramResponse); // Для отладки
 
-    onTGAuth(window.Telegram.WebApp.initData)
+          if (telegramResponse) {
+            user.setUser(telegramResponse);
+            user.setIsAuth(true);
+          }
+        } catch (error) {
+          console.error('Telegram authentication error:', error);
+        }
+      }
 
+      try {
+        // Выполняем проверку состояния аутентификации
+        const data = await check();
+        console.log('Check Data:', data); // Для отладки
 
-}, [])
+        if (data) {
+          user.setUser(data);
+          user.setIsAuth(true);
+        }
+      } catch (error) {
+        console.error('Check authentication error:', error);
+      }
 
-  useEffect(() => {
-      check().then(data => {
-        user.setUser(data)
-        user.setIsAuth(true)
-      }).finally(() => setLoading(false))
-  }, [])
+      setLoading(false);
+    };
 
-  if(loading) {
-    return <div className='loading'>
-      <Spinner animation={"grow"}/>
-    </div>
+    authenticate();
+  }, [user]);
+
+  if (loading) {
+    return (
+      <div className='loading'>
+        <Spinner animation="grow" />
+      </div>
+    );
   }
 
   return (
     <BrowserRouter>
-        <NavBar />
-        <AppRouter />
-        {/* <Footer/> */}
-        {/* <Chat/> */}
+      <NavBar />
+      <AppRouter />
+      {/* <Footer/> */}
+      {/* <Chat/> */}
     </BrowserRouter>
   );
 });
