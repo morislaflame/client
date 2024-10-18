@@ -70,8 +70,8 @@
   
     .mainArticle {
       background: 
-      radial-gradient(ellipse at right center, #1601328c, transparent, transparent), 
-      radial-gradient(ellipse at left center, #2e013275, transparent, transparent);
+      radial-gradient(ellipse at right center, #1d0142, transparent, transparent), 
+      radial-gradient(ellipse at left center, #36013b, transparent, transparent);
       width: 100%;
       padding: calc(var(--index) * 2);
     }

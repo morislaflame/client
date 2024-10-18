@@ -4,7 +4,12 @@ import { message } from 'antd';
 import { FaRegCopy, FaCheck } from 'react-icons/fa';
 import styles from './CopyableButton.module.css'; 
 
-const CopyableButton = ({ value, className, style, ...props }) => {
+const CopyableButton = ({ 
+  value, 
+  className = '', // Значение по умолчанию
+  style = {},     // Значение по умолчанию
+  ...props 
+}) => {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = () => {
@@ -29,6 +34,7 @@ const CopyableButton = ({ value, className, style, ...props }) => {
     <button
       onClick={handleCopy}
       className={`${styles.copyButton} ${className}`}
+      style={style} // Применение стилей
       {...props}
     >
       {copied ? <FaCheck /> : <FaRegCopy />}
@@ -43,9 +49,5 @@ CopyableButton.propTypes = {
   style: PropTypes.object,
 };
 
-CopyableButton.defaultProps = {
-  className: '',
-  style: {},
-};
 
 export default CopyableButton;

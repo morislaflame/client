@@ -106,7 +106,7 @@ const AllUsersPage = observer(() => {
       <div className={styles.all_users}>
         {user.users.map((u) => (
           <div key={u.id} className={styles.user}>
-            <span>e-Mail: <strong>{u.email}</strong></span>
+            <span>e-Mail: <strong>{u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}</strong></span>
             <Form.Check
               type="switch"
               id={`toggle-role-${u.id}`}
@@ -128,7 +128,7 @@ const AllUsersPage = observer(() => {
           <Modal.Title>Подтверждение удаления</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          Вы точно хотите удалить пользователя {userToDelete?.email}?
+          Вы точно хотите удалить пользователя {userToDelete?.email || `@${userToDelete?.username}` || `Telegram ID: ${userToDelete?.telegramId}`}?
         </Modal.Body>
         <Modal.Footer>
           <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>

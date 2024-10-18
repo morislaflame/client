@@ -323,11 +323,11 @@ const CreateModel = observer(({ show, onHide }) => {
                                     />
                                 </Form.Item>
                             </Col><Col span={12}>
-                                <Form.Item label="Сообщение">
+                                <Form.Item label="Доступ к аккаунту?">
                                     <Input
                                         value={i.girlmsg}
                                         onChange={e => changeInfo('girlmsg', e.target.value, i.number)}
-                                        placeholder="Сообщение"
+                                        placeholder="доступ"
                                     />
                                 </Form.Item>
                             </Col>

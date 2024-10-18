@@ -58,7 +58,7 @@ const AllOrdersPage = () => {
                             onClick={() => navigate(`/user/${order.userId}`)} 
                             style={{textDecoration: 'underline'}}
                             >
-                            User: <p>{order.user.email}</p> 
+                            User: <p>{order.user.email || `@${order.user.username}` || `Telegram ID: ${order.user.telegramId}`}</p> 
                             </span>
                             {order.promo_code ? (
                                 <span>

@@ -73,7 +73,7 @@ const UserInfoPage = () => {
                 <h2>User Info</h2>
             </div>
             <div className={styles.user}>
-                <p>Email: {userData.email}</p>
+                <p>Email: {userData.email || `@${userData.username}` || `Telegram ID: ${userData.telegramId}`}</p>
                 <p>Роль: {userData.role}</p>
                 <p>ID: {userData.id}</p>
             </div>

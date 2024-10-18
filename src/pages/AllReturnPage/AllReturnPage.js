@@ -64,7 +64,7 @@ const AllReturnsPage = () => {
                                 onClick={() => navigate(`/user/${returnItem.userId}`)} 
                                 style={{textDecoration: 'underline'}}
                             >
-                                User: <p>{returnItem.user.email}</p>
+                                User: <p>{returnItem.user.email || `@${returnItem.user.username}` || `Telegram ID: ${returnItem.user.telegramId}`}</p>
                             </span>
                             <span><p>{returnItem.reason}</p></span>
                             

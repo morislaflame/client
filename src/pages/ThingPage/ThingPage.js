@@ -87,37 +87,42 @@ const ThingPage = observer(() => {
         </div>
 
         <div className={styles.description}>
-          <div className={styles.brands}>
-            {thing.brands && thing.brands.length > 0 ? (
-              thing.brands.map(brand => (
-                <div
-                  key={brand.id}
-                  style={brandStyles[brand.id] || { color: 'black' }}
-                  className={styles.brand_item}
-                >
-                  {brandIcons[brand.id] && (
-                    <img
-                      src={brandIcons[brand.id]}
-                      alt={`${brand.name} icon`}
-                      className={styles.brands_icons}
-                    />
-                  )}
-                </div>
-              ))
-            ) : (
-              <div>Unknown Brand</div>
-            )}
-          </div>
-          {/* Отображение типа товара */}
-          <div className={styles.thing_type}>
-            {thing.type && (
-              <div className={styles.type_item}>
-                <div className={styles.info_str}><span>Origin:</span> <div>{thing.type.name}</div></div>
+          <div className={styles.brands_n_type}>
+            <div className={styles.brands}>
+              <span>Platforms available:</span>
+              <div className={styles.brands_icons_container}>
+                {thing.brands && thing.brands.length > 0 ? (
+                  thing.brands.map(brand => (
+                    <div
+                      key={brand.id}
+                      style={brandStyles[brand.id] || { color: 'black' }}
+                      className={styles.brand_item}
+                    >
+                      {brandIcons[brand.id] && (
+                        <img
+                          src={brandIcons[brand.id]}
+                          alt={`${brand.name} icon`}
+                          className={styles.brands_icons}
+                        />
+                      )}
+                    </div>
+                  ))
+                ) : (
+                  <div>Unknown Brand</div>
+                )}
               </div>
-            )}
+            </div>
+            {/* Отображение типа товара */}
+            {thing.type && (
+                <div className={styles.type_item}>
+                  <span>Origin:</span>
+                  <div className={styles.type}><span>{thing.type.name}</span></div>
+                </div>
+              )}
           </div>
           {thing.info && (
             <div className={styles.des_str}>
+              
               <div className={styles.info_str}><span>Age:</span> <div>{thing.info.age}</div></div>
               <div className={styles.info_str}><span>Smartphone:</span> <div>{thing.info.smartphone}</div></div>
               <div className={styles.info_str}><span>% For Her:</span> <div>{thing.info.percent}</div></div>
@@ -130,6 +135,7 @@ const ThingPage = observer(() => {
               <div className={styles.info_str}><span>Any Countries Blocked?:</span> <div>{thing.info.cblocked}</div></div>
               <div className={styles.info_str}><span>OF Verified:</span> <div>{thing.info.ofverif}</div></div>
               <div className={styles.info_str}><span>Contract Signed:</span> <div>{thing.info.contract}</div></div>
+              <div className={styles.info_str}><span>Does she need account access:</span> <div>{thing.info.girlmsg}</div></div>
             </div>
           )}
         </div>

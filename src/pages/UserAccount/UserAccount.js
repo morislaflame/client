@@ -79,7 +79,9 @@ const UserAccount = observer(() => {
           <h2>Account</h2>
         </div>
         <div className={styles.userinfo}>
-          <p>{user.user.email}</p> 
+          <p>
+            {user.user.email || user.user.username || `Telegram ID: ${user.user.telegramId}`}
+          </p>
         </div>
       </div>
 

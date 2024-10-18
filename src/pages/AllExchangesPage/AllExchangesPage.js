@@ -51,7 +51,7 @@ const AllExchangesPage = () => {
                         <div className={styles.return_details}>
                             <span>Обмен №{exchangeItem.id}</span>
                             <span onClick={() => navigate(`/user/${exchangeItem.userId}`)} style={{ textDecoration: 'underline' }}>
-                            User: <p>{exchangeItem.user.email}</p>
+                            User: <p>{exchangeItem.user.email || `@${exchangeItem.user.username}` || `Telegram ID: ${exchangeItem.user.telegramId}`}</p>
                             </span>
                             <span onClick={() => navigate(THING_ROUTE + "/" + exchangeItem.oldThingId)} style={{ textDecoration: 'underline' }}>
                             Обмен: <p>{exchangeItem.OldThing.name} (${exchangeItem.OldThing.price})</p>

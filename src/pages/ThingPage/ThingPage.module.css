@@ -97,18 +97,34 @@
     padding: calc(var(--index) * 0.5);
 }
 
-.brands {
-    width: 100%;
+.brands_n_type {
     display: flex;
+    padding: calc(var(--index)* 1) calc(var(--index)* 0.7);
+    font-size: calc(var(--index) * 1.25);
+    font-weight: 500;
+    align-items: center;
+}
+
+.brands {
+    width: 50%;
+    display: flex;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: calc(var(--index) * 4);
-    flex-wrap: wrap;
-    padding: calc(var(--index) * 1) calc(var(--index) * 0.7);
+    gap: calc(var(--index)* 1);
+    padding: calc(var(--index)* 1);
+    border-right: 1px solid #7f7e7e66;
+}
+
+.brands_icons_container {
+    display: flex;
+    width: 100%;
+    align-items: center;
+    justify-content: space-around;
 }
 
 .brands_icons {
-    width: calc(var(--index) * 3); /* Ширина иконки */
+    width: calc(var(--index) * 2); /* Ширина иконки */
     height: auto; /* Высота иконки */
 }
 
@@ -118,10 +134,9 @@
     justify-content: center;
     align-items: center;
     font-size: calc(var(--index) * 1.5);
-    border-radius: 0 0 calc(var(--index) * 1) calc(var(--index) * 1);
     background-color: #111111;
     color: white;
-    padding: calc(var(--index) * 1);
+    padding: 0 calc(var(--index) * 1);
     width: 100%;
     border-radius: calc(var(--index) * 1);
     border-top: 1px solid #7f7e7e66;
@@ -146,10 +161,9 @@
     display: flex;
     width: 90%;
     border-bottom: 1px solid #7f7e7e66;
-    padding: calc(var(--index) * 1);
-    min-height: calc(var(--index) * 5);
-    gap: calc(var(--index) * 1);
-    font-size: calc(var(--index) * 1.4);
+    gap: calc(var(--index)* 1);
+    font-size: calc(var(--index) * 1.25);
+    padding: calc(var(--index)* 1.05);
 }
 
 .info_str:last-child {
@@ -197,14 +211,16 @@ hr {
 }
 
 .type_item {
-    padding: calc(var(--index) * 0) calc(var(--index) * 2) calc(var(--index) * 0) calc(var(--index) * 2);
     display: flex;
+    width: 50%;
     flex-direction: column;
+    gap: calc(var(--index)* 1);
     justify-content: center;
     align-items: center;
-    font-size: calc(var(--index) * 1.5);
-    border-radius: 0 0 calc(var(--index) * 1) calc(var(--index) * 1);
+    padding: calc(var(--index)* 1);
+    border-left: 1px solid #7f7e7e66;
 }
+
 
 .inside {
     background-color: #111111;

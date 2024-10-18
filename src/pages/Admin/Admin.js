@@ -297,7 +297,7 @@ const Admin = observer(() => {
                       onClick={() => navigate(`/user/${order.userId}`)} 
                       style={{textDecoration: 'underline'}}
                     >
-                      User: <p>{order.user.email}</p> 
+                      User: <p>{order.user.email || `@${order.user.username}` || `Telegram ID: ${order.user.telegramId}`}</p> 
                     </span>
                     {order.promo_code ? (
                         <span>
@@ -380,7 +380,7 @@ const Admin = observer(() => {
                     <div className={styles.return_details}>
                       <span>Возврат №{returnItem.id}</span>
                       <span onClick={() => navigate(THING_ROUTE + "/" + returnItem.thingId)} style={{ textDecoration: 'underline' }}>Модель: <p>{returnItem.thing.name}</p></span>
-                      <span onClick={() => navigate(`/user/${returnItem.userId}`)} style={{ textDecoration: 'underline' }}>User: <p>{returnItem.user.email}</p></span>
+                      <span onClick={() => navigate(`/user/${returnItem.userId}`)} style={{ textDecoration: 'underline' }}>User: <p>{returnItem.user.email || `@${returnItem.user.username}` || `Telegram ID: ${returnItem.user.telegramId}`}</p></span>
                       
                       <span><p>{returnItem.reason}</p></span>
                     </div>
@@ -454,7 +454,7 @@ const Admin = observer(() => {
                   <div className={styles.return_details}>
                     <span>Обмен №{exchange.id}</span>
                     <span onClick={() => navigate(`/user/${exchange.userId}`)} style={{ textDecoration: 'underline' }}>
-                      User: <p>{exchange.user.email}</p>
+                      User: <p>{exchange.user.email || `@${exchange.user.username}` || `Telegram ID: ${exchange.user.telegramId}`}</p>
                     </span>
                     <span onClick={() => navigate(THING_ROUTE + "/" + exchange.oldThingId)} style={{ textDecoration: 'underline' }}>
                       Обмен: <p>{exchange.OldThing.name} (${exchange.OldThing.price})</p>

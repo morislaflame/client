@@ -6,12 +6,13 @@ import MymIcon from '../../icons/Mym.png';
 import FanslyIcon from '../../icons/fansly.png';
 import OnlyIcon from '../../icons/onlyfans.png'
 import { Skeleton } from 'antd';
+import Placeholder from '../../icons/placeholder.jpg';
 
 
 const ThingItem = ({thing}) => {
     const navigate = useNavigate();
 
-    const previewImage = thing.images && thing.images.length > 0 ? thing.images[0].img : 'placeholder.png';
+    const previewImage = thing.images && thing.images.length > 0 ? thing.images[0].img : Placeholder;
 
     const brandStyles = {
         1: { color: '#008ccf' },

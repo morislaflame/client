@@ -18,5 +18,5 @@
     color: #fff;
     border-radius: calc(var(--index) * 1);
     padding: calc(var(--index) * 1);
-    font-size: calc(var(--index) * 1.2);
+    font-size: calc(var(--index) * 0.9);
   }

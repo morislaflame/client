@@ -164,7 +164,7 @@ const Reviews = observer(() => {
                                         <div className={styles.review_main}>
                                             <Card.Header className={styles.review_top}>
                                                 <div className={styles.name_time}>
-                                                    <strong>{rev.user.email}</strong> 
+                                                    <strong>{rev.user.email || `@${rev.user.username}` || `Telegram ID: ${rev.user.telegramId}`}</strong> 
                                                     <span>{new Date(rev.createdAt).toLocaleString()}</span>
                                                 </div>
                                                 <div className={styles.edit_button}>
