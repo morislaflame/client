@@ -30,7 +30,7 @@ const NavBar = observer(() => {
     return (
         <Navbar bg="dark" variant="dark" expand="lg" className="bg-body-tertiary" style={{ justifyContent: 'center' }}>
             <div className='navbar'>
-                <Navbar.Brand onClick={() => navigate(MAIN_ROUTE)} style={{color: 'white'}}>
+                <Navbar.Brand onClick={() => navigate(SHOP_ROUTE)} style={{color: 'white'}}>
                     <img src={EMM} alt='EMM' />
                 </Navbar.Brand>
                 

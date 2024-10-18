@@ -106,7 +106,8 @@ const AllUsersPage = observer(() => {
       <div className={styles.all_users}>
         {user.users.map((u) => (
           <div key={u.id} className={styles.user}>
-            <span>e-Mail: <strong>{u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}</strong></span>
+            <span>UserName: <strong>{u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}</strong></span>
+            <span>ID: <strong>{u.id}</strong></span>
             <Form.Check
               type="switch"
               id={`toggle-role-${u.id}`}

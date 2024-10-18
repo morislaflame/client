@@ -115,7 +115,7 @@ const ThingPage = observer(() => {
             {/* Отображение типа товара */}
             {thing.type && (
                 <div className={styles.type_item}>
-                  <span>Origin:</span>
+                  <span>Where she's from:</span>
                   <div className={styles.type}><span>{thing.type.name}</span></div>
                 </div>
               )}

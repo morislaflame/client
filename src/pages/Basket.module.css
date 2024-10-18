@@ -165,11 +165,11 @@
     background-color: white;
     background: linear-gradient(150deg, #110f17, #c20606d4);
     color: white;
-    border-style: solid;
     border-radius: calc(var(--index)* 1);
     cursor: pointer;
     border-width: 1px;
     font-size: calc(var(--index) * 1.7);
+    border: none;
   }
 
   .promo_code_section {
