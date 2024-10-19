@@ -39,15 +39,15 @@ const SelectedFilters = observer(() => {
                                 </span>
                             </div>
                         )}
-                    </div>
-                    {(thing.priceRange.min !== 0 || thing.priceRange.max !== 10000) && (
+                        {(thing.priceRange.min !== 0 || thing.priceRange.max !== 10000) && (
                         <div className={styles.filterPrice}>
                             <span className={styles.label}>Price:</span>
                             <span className={styles.value}>
                                 {thing.priceRange.min} - {thing.priceRange.max}
                             </span>
-                        </div>
-                    )}
+                            </div>
+                        )}
+                    </div>
                     <button onClick={handleReset} className={styles.resetButton}>
                         Reset filters
                     </button>

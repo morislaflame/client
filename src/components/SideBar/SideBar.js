@@ -10,6 +10,7 @@ import PriceSlider from '../PriceSlider/PriceSlider';
 import SelectedFilters from '../SelectedFilters/SelectedFilters';
 import { Context } from '../../index';
 import { IoFilterOutline } from "react-icons/io5";
+import { FaFilter } from "react-icons/fa6";
 
 const SideBar = observer(({ name, ...props }) => {
     const [show, setShow] = useState(false);
@@ -21,12 +22,13 @@ const SideBar = observer(({ name, ...props }) => {
     return (
         <>
             <div className="sidebar-header">
+              <div className="filters-container">
                 <SelectedFilters />
                 <button className="filters-button" onClick={toggleShow} >
-                  <IoFilterOutline />
+                  <FaFilter />
                   Filters
                 </button>
-                
+              </div>
             </div>
             <Offcanvas show={show} onHide={handleClose} scroll backdrop placement="top">
                 <Offcanvas.Header>
