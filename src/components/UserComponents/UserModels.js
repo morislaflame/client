@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState, useCallback } from 'react';
 import styles from './UserComponents.module.css';
 import { GiHighHeel } from 'react-icons/gi';
-import { Dropdown, Menu } from 'antd';
+import { Dropdown } from 'antd';
 import { LiaExchangeAltSolid } from 'react-icons/lia';
 import { IoReturnDownBackOutline } from 'react-icons/io5';
 import { SlOptionsVertical } from 'react-icons/sl';
@@ -19,7 +19,7 @@ const UserModels = observer(({ handleShow }) => {
   const [openDropdowns, setOpenDropdowns] = useState({});
 
   useEffect(() => {
-    user.loadPurchasedThings(); // Load purchased things
+    user.loadPurchasedThings(); // Загрузка купленных вещей
     exchange.loadUserExchangeRequests();
     returnStore.loadUserReturns();
   }, [user, exchange, returnStore]);
@@ -48,26 +48,24 @@ const UserModels = observer(({ handleShow }) => {
   );
 
   const getDropdownMenu = useCallback(
-    (thingItem, hasExchangeRequest, hasReturnRequest) => (
-      <Menu>
-        <Menu.Item
-          key="exchange"
-          icon={<LiaExchangeAltSolid />}
-          disabled={hasExchangeRequest}
-          onClick={() => handleMenuClick('exchange', thingItem)}
-        >
-          {hasExchangeRequest ? 'Exchange request sent' : 'Request an exchange'}
-        </Menu.Item>
-        <Menu.Item
-          key="return"
-          icon={<IoReturnDownBackOutline />}
-          disabled={hasReturnRequest}
-          onClick={() => handleMenuClick('return', thingItem)}
-        >
-          {hasReturnRequest ? 'Return in processing' : 'Make a refund'}
-        </Menu.Item>
-      </Menu>
-    ),
+    (thingItem, hasExchangeRequest, hasReturnRequest) => ({
+      items: [
+        {
+          key: 'exchange',
+          icon: <LiaExchangeAltSolid />,
+          disabled: hasExchangeRequest,
+          label: hasExchangeRequest ? 'Exchange request sent' : 'Request an exchange',
+          onClick: () => handleMenuClick('exchange', thingItem),
+        },
+        {
+          key: 'return',
+          icon: <IoReturnDownBackOutline />,
+          disabled: hasReturnRequest,
+          label: hasReturnRequest ? 'Return in processing' : 'Make a refund',
+          onClick: () => handleMenuClick('return', thingItem),
+        },
+      ],
+    }),
     [handleMenuClick]
   );
 
@@ -120,10 +118,10 @@ const UserModels = observer(({ handleShow }) => {
                   </div>
                   <div className={styles.dropdownmenusection}>
                     <Dropdown
-                      overlay={getDropdownMenu(thingItem, hasExchangeRequest, hasReturnRequest)}
+                      menu={getDropdownMenu(thingItem, hasExchangeRequest, hasReturnRequest)}
                       trigger={['click']}
-                      onVisibleChange={(flag) => handleDropdownVisibleChange(flag, thingItem.id)}
-                      visible={openDropdowns[thingItem.id] || false}
+                      onOpenChange={(flag) => handleDropdownVisibleChange(flag, thingItem.id)}
+                      open={openDropdowns[thingItem.id] || false}
                     >
                       <div className={styles.dropdownmenu}>
                         <div onClick={(e) => e.preventDefault()} className={styles.dropdownTrigger}>

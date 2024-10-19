@@ -16,7 +16,7 @@ import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/ord
 import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../http/exchangeAPI'; // Импортируем API для обменов
 import CreatePromoCode from '../../components/modals/CreatePromoCode';
 import styles from './Admin.module.css'
-import { message, Input, Modal as AntdModal } from 'antd';
+import { message, Input, Modal as AntdModal, AutoComplete } from 'antd';
 import CopyableButton from '../../components/CopyableButton/CopyableButton';
 
 const { confirm } = AntdModal;
@@ -31,8 +31,8 @@ const Admin = observer(() => {
   const [pendingExchanges, setPendingExchanges] = useState([]);
 
   const { user } = useContext(Context);
-  const [email, setEmail] = useState('');
-  const [filteredEmails, setFilteredEmails] = useState([]);
+  const [userId, setUserId] = useState('');
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [newOrders, setNewOrders] = useState([]);
   const [refundTransactionHashes, setRefundTransactionHashes] = useState({});
 
@@ -89,27 +89,23 @@ const Admin = observer(() => {
 
   // Обновляем список подходящих пользователей при изменении введённого email
   useEffect(() => {
-    if (email) {
+    if (userId) {
       const filtered = user.users
-        .filter(u => u.email.toLowerCase().includes(email.toLowerCase()))
-        .slice(0, 5); // Показываем до 5 результатов
-      setFilteredEmails(filtered);
+        .filter(u => u.id.toString().includes(userId))
+        .slice(0, 5);
+      setFilteredUsers(filtered);
     } else {
-      setFilteredEmails([]);
+      setFilteredUsers([]);
     }
-  }, [email, user.users]);
+  }, [userId, user.users]);
 
-  const handleSearch = async (email) => {
-    const result = await user.searchUserByEmail(email);
+  const handleSearch = async (id) => {
+    const result = await user.getUserById(id);
     if (result) {
-      navigate(`/user/${result.id}`); // Переход на страницу информации о пользователе
+      navigate(`/user/${result.id}`);
     }
   };
 
-  const handleEmailClick = (email) => {
-    setEmail(email); // Устанавливаем выбранный email
-    setFilteredEmails([]); // Очищаем список подсказок
-  };
 
   const showConfirm = (title, content, onOk) => {
     confirm({
@@ -254,30 +250,18 @@ const Admin = observer(() => {
       <CreatePromoCode show={promoVisible} onHide={() => setPromoVisible(false)}/>
 
       <div className={styles.search_section}>
-      <h3>Найти пользователя</h3>
-        <Form.Group className="mt-3">
-          <Form.Control
-            type="email"
-            placeholder="Введите email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </Form.Group>
-
-        {filteredEmails.length > 0 && (
-          <ListGroup className="mt-2">
-            {filteredEmails.map(user => (
-              <ListGroup.Item
-                key={user.id}
-                onClick={() => handleEmailClick(user.email)}
-                action
-              >
-                {user.email}
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        )}
-        <button onClick={() => handleSearch(email)} className={styles.src_btn}>Найти пользователя</button>
+        <h3>Найти пользователя по ID</h3>
+        <AutoComplete
+          style={{ width: '100%' }}
+          options={filteredUsers.map(u => ({
+            value: u.id.toString(),
+            label: `ID: ${u.id} - ${u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}`
+          }))}
+          value={userId}
+          onChange={setUserId}
+          onSelect={handleSearch}
+          placeholder="Введите ID пользователя"
+        />
         <Button onClick={() => navigate(ALL_USERS_ROUTE)} className={styles.all_btn}>Посмотреть всех пользователей</Button>
       </div>
 
