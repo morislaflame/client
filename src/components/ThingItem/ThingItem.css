@@ -49,7 +49,7 @@
 }
 
 .brand-icon {
-    width: calc(var(--index) * 1.8); 
+    width: calc(var(--index) * 1.5); 
     height: auto; 
 }
 
@@ -79,14 +79,14 @@
 }
 
 .thing-info {
-    font-size: calc(var(--index) * 1.1);
+    font-size: calc(var(--index) * 1);
     color: #b3b2b2;
     display: flex;
     flex-direction: column;
-    gap: calc(var(--index) * 0.6);
+    gap: calc(var(--index)* 0.6);
     border-bottom: 1px solid #7f7e7e66;
     border-top: 1px solid #7f7e7e66;
-    padding: calc(var(--index) * 0.6) 0;
+    padding: calc(var(--index)* 0.8) 0;
 }
 
 .thing-price {
