@@ -1,0 +1,77 @@
+.selectedFilters {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: calc(var(--index)* 0.5);
+    flex-wrap: wrap;
+    background-color: #111111eb;
+    border-radius: calc(var(--index)* 1);
+    padding: calc(var(--index)* 1.2);
+    width: 60%;
+    font-size: calc(var(--index) * 1);
+}
+
+.brandType {
+    display: flex;
+    
+    color: white;
+}
+
+.filterType {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: calc(var(--index) * 0.5);
+    gap: calc(var(--index) * 0.5);
+    
+}   
+
+.filterBrand {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    padding: calc(var(--index) * 0.5);
+    gap: calc(var(--index) * 0.5);
+}
+
+.filterPrice {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--index) * 0.5);
+    padding: calc(var(--index) * 0.5);
+}
+
+.label {
+    font-weight: bold;
+    color: #555555;
+}
+
+.value {
+    color: #e9e3e3;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    height: 70%;
+}
+
+.resetButton {
+    padding: calc(var(--index)* 0.7) calc(var(--index)* 4);
+    background-color: white;
+    background: linear-gradient(150deg, #110f17, #c20606d4);
+    color: white;
+    border-radius: calc(var(--index)* 1);
+    cursor: pointer;
+    border-width: 1px;
+    border: none;
+}
+
+.resetButton:hover {
+    background-color: #c9302c;
+}
+
+.noFilters {
+    color: #888888;
+    font-style: italic;
+}
