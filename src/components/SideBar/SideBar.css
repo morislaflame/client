@@ -2,11 +2,22 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    gap: calc(var(--index) * 0.5);
+    gap: calc(var(--index)* 0.5);
     width: 100%;
-    padding: calc(var(--index) * 0.5);
-    background: linear-gradient(to left, #ac57ed, #030107, #030107);
-    border-radius: calc(var(--index) * 1);
+    padding: calc(var(--index)* 0.2);
+    background: linear-gradient(to left, #ac57ed, #030107);
+    border-radius: calc(var(--index)* 1);
+}
+
+.filters-button {
+    padding: calc(var(--index)* 0.7);
+    background: #25252552;
+    color: white;
+    border-radius: calc(var(--index)* 1);
+    cursor: pointer;
+    border-width: 1px;
+    font-size: calc(var(--index) * 1.3);
+    border: none;
 }
 
 .offcanvas.offcanvas-top {
