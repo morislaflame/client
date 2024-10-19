@@ -5,7 +5,7 @@
     flex-direction: column;
     border-radius: calc(var(--index)* 1);
     padding: calc(var(--index)* 0.5);
-    width: 70%;
+    width: 65%;
     font-size: calc(var(--index) * 1);
 }
 
@@ -16,6 +16,8 @@
     align-items: center;
     color: white;
     width: 100%;
+    padding: calc(var(--index)* 0.5);
+    border-right: 1px solid #7f7e7e66;
 }
 
 .filterType {

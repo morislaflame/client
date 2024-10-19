@@ -9,8 +9,6 @@ import './SideBar.css';
 import PriceSlider from '../PriceSlider/PriceSlider';
 import SelectedFilters from '../SelectedFilters/SelectedFilters';
 import { Context } from '../../index';
-import { IoFilterOutline } from "react-icons/io5";
-import { FaFilter } from "react-icons/fa6";
 
 const SideBar = observer(({ name, ...props }) => {
     const [show, setShow] = useState(false);
@@ -19,16 +17,33 @@ const SideBar = observer(({ name, ...props }) => {
     const handleClose = () => setShow(false);
     const toggleShow = () => setShow((s) => !s);
 
+    const handleReset = () => {
+        thing.setSelectedType({});
+        thing.setSelectedBrands([]);
+        thing.setPriceRange({ min: 0, max: 10000 });
+    };
+
+    const hasFilters =
+        Object.keys(thing.selectedType).length > 0 ||
+        thing.selectedBrands.length > 0 ||
+        (thing.priceRange.min !== 0 || thing.priceRange.max !== 10000);
+
     return (
         <>
             <div className="sidebar-header">
-              <div className="filters-container">
-                <SelectedFilters />
-                <button className="filters-button" onClick={toggleShow} >
-                  <FaFilter />
-                  Filters
-                </button>
-              </div>
+                <div className="filters-container">
+                    <SelectedFilters />
+                    <div className="filters-buttons">
+                        <button className="filters-button" onClick={toggleShow}>
+                            Filters
+                        </button>
+                        {hasFilters && (
+                            <button onClick={handleReset} className="reset-filters-button">
+                              Reset filters
+                          </button>
+                          )}
+                    </div>
+                </div>
             </div>
             <Offcanvas show={show} onHide={handleClose} scroll backdrop placement="top">
                 <Offcanvas.Header>

@@ -21,6 +21,11 @@ const PriceSlider = observer(() => {
         }).catch(err => console.error("Error fetching price range: ", err));
     }, []);
 
+    // Добавляем useEffect для отслеживания изменений в thing.priceRange
+    useEffect(() => {
+        setCurrentPriceRange([thing.priceRange.min, thing.priceRange.max]);
+    }, [thing.priceRange]);
+
     const handleSliderChange = (value) => {
         setCurrentPriceRange(value);
         console.log(`Price range changed: ${value}`);
