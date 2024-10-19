@@ -69,6 +69,8 @@
     height: 70vh;
     background: radial-gradient(ellipse at right top, #1c051e, black, #1a0734);
     color: white;
+    border-bottom-left-radius: calc(var(--index)* 1.5);
+    border-bottom-right-radius: calc(var(--index)* 1.5);
 }
 
 .offcanvas-header {
