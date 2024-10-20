@@ -5,7 +5,6 @@ import { fetchOneThing } from '../../http/thingAPI';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import { Context } from '../../index';
 import { FaShoppingCart, FaEdit } from 'react-icons/fa';
-import { Button } from 'react-bootstrap';
 import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, SHOP_ROUTE, TERMS_ROUTE } from '../../utils/consts';
 import { observer } from 'mobx-react-lite';
 import { message, Image } from 'antd';
@@ -15,9 +14,13 @@ import FanslyIcon from '../../icons/fansly.png';
 import BackButton from '../../components/BackButton/BackButton';
 import { IoMdLock } from "react-icons/io";
 import styles from './ThingPage.module.css';
+import { FloatButton, Button, Spin } from 'antd';
+import { LoadingOutlined } from "@ant-design/icons";
 
 const ThingPage = observer(() => {
   const [thing, setThing] = useState({ info: {}, images: [], brands: [], type: {} });
+  const [loading, setLoading] = useState(true);
+  const [addingToBasket, setAddingToBasket] = useState(false); // Добавлено состояние для анимации загрузки
   const { id } = useParams();
   const { thing: thingStore, user } = useContext(Context);
 
@@ -27,18 +30,24 @@ const ThingPage = observer(() => {
     // Прокрутка страницы вверх при монтировании компонента
     window.scrollTo({ top: 0, behavior: 'smooth' });
 
-    fetchOneThing(id).then(data => setThing(data));
+    fetchOneThing(id).then(data => {
+      setThing(data);
+      setLoading(false); // Устанавливаем загрузку в false после получения данных
+    });
     thingStore.loadBasket();
   }, [id, thingStore]);
 
   const handleAddToBasket = async () => {
     if (user.isAuth) {
+      setAddingToBasket(true); // Устанавливаем состояние загрузки в true
       try {
         await thingStore.addToBasket(id);
         message.success('Added to cart');
       } catch (error) {
         const errorMessage = error.response?.data?.message || error.message;
         message.error('Error adding to cart: ' + errorMessage);
+      } finally {
+        setAddingToBasket(false); // Устанавливаем состояние загрузки в false после завершения запроса
       }
     } else {
       navigate(LOGIN_ROUTE);
@@ -147,12 +156,16 @@ const ThingPage = observer(() => {
           <div className={styles.inside}>
             <span className={styles.price}>${thing.price}</span>
             <div className={styles.add_to_card}>
-              <button className={styles.buy} onClick={handleAddToBasket} disabled={isInBasket}>
-                {isInBasket ? 'Added' : 'Add to cart'}
+              <button
+                className={styles.buy}
+                onClick={handleAddToBasket}
+                disabled={isInBasket || addingToBasket} // Блокируем кнопку, если товар уже в корзине или идет добавление
+              >
+                {addingToBasket ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : isInBasket ? 'Added' : 'Add to cart'}
               </button>
               <Button
                 className={styles.shopping_card}
-                variant="outine-light"
+                type='text'
                 onClick={() => navigate(BASKET_ROUTE)}
                 style={{ height: '100%' }}
               >
@@ -171,15 +184,17 @@ const ThingPage = observer(() => {
       {isAdmin && (
         <div className={styles.admin_actions}>
           <Button
-            variant="primary"
+            type="primary"
             onClick={() => navigate(`${EDIT_THING_ROUTE}/${thing.id}`)}
-          
+            loading={loading} // Добавлено свойство loading
           >
-            <FaEdit /> Редактировать данные
+            <FaEdit /> Edit data
           </Button>
         </div>
       )}
-
+      <FloatButton.BackTop 
+        type='dark'
+      />
       <FaqAccordion className={styles.accord} />
     </div>
   );

@@ -8,11 +8,12 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import BackButton from '../../components/BackButton/BackButton';
 import styles from './AllUsersPage.module.css'
+import { AutoComplete } from 'antd';
 
 const AllUsersPage = observer(() => {
   const { user } = useContext(Context);
-  const [email, setEmail] = useState('');
-  const [filteredEmails, setFilteredEmails] = useState([]);
+  const [userId, setUserId] = useState(''); // Изменено с email на userId
+  const [filteredUsers, setFilteredUsers] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [userToDelete, setUserToDelete] = useState(null); 
   const navigate = useNavigate();
@@ -25,23 +26,27 @@ const AllUsersPage = observer(() => {
     await user.fetchAllUsers();
   };
 
- 
   useEffect(() => {
-    if (email) {
+    if (userId) {
       const filtered = user.users
-        .filter(u => u.email.toLowerCase().includes(email.toLowerCase()))
-        .slice(0, 5); // Показываем до 5 результатов
-      setFilteredEmails(filtered);
+        .filter(u => u.id.toString().includes(userId)) // Изменено на поиск по ID
+        .slice(0, 5);
+      setFilteredUsers(filtered);
     } else {
-      setFilteredEmails([]);
+      setFilteredUsers([]);
     }
-  }, [email, user.users]);
+  }, [userId, user.users]);
 
-  const handleSearch = async (email) => {
-    const result = await user.searchUserByEmail(email);
+  const handleSearch = async (id) => {
+    const result = await user.getUserById(id);
     if (result) {
       navigate(`/user/${result.id}`); 
     }
+  };
+
+  const handleEmailClick = (id) => {
+    setUserId(id); // Изменено с email на userId
+    setFilteredUsers([]);
   };
 
   const handleRoleChange = async (userId, currentRole) => {
@@ -62,11 +67,6 @@ const AllUsersPage = observer(() => {
     }
   };
 
-  const handleEmailClick = (email) => {
-    setEmail(email); // Устанавливаем выбранный email
-    setFilteredEmails([]); // Очищаем список подсказок
-  };
-
   return (
     <div className={styles.container}>
       <div className={styles.topic_back}>
@@ -76,29 +76,20 @@ const AllUsersPage = observer(() => {
       
       <div className={styles.search_section}>
         <Form.Group className="mt-3">
-          <Form.Control
-            type="email"
-            placeholder="Введите email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
+          <AutoComplete
+            style={{ width: '100%' }}
+            options={filteredUsers.map(u => ({
+              value: u.id.toString(),
+              label: `ID: ${u.id} - ${u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}`
+            }))}
+            value={userId}
+            onChange={setUserId}
+            onSelect={handleSearch}
+            placeholder="Введите ID пользователя"
           />
         </Form.Group>
 
-        {filteredEmails.length > 0 && (
-          <ListGroup className="mt-2">
-            {filteredEmails.map(user => (
-              <ListGroup.Item
-                key={user.id}
-                onClick={() => handleEmailClick(user.email)}
-                action
-              >
-                {user.email}
-              </ListGroup.Item>
-            ))}
-          </ListGroup>
-        )}
-
-        <button onClick={() => handleSearch(email)} className={styles.src_btn}>Найти пользователя</button>
+        <button onClick={() => handleSearch(userId)} className={styles.src_btn}>Найти пользователя</button>
       </div>
 
       {/* Список всех пользователей */}

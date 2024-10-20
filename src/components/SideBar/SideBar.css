@@ -3,8 +3,8 @@
     justify-content: space-between;
     align-items: center;
     width: 100%;
-    padding: calc(var(--index)* 0.5);
-    background: linear-gradient(to left, #7617a1, transparent);
+    padding: calc(var(--index)* 0.2);
+    background: linear-gradient(to left, #6b3ce6, #ac57ed, transparent);
     border-radius: calc(var(--index)* 1);
 }
 
@@ -18,7 +18,7 @@
     color: white;
     font-size: calc(var(--index) * 1.5);
     background-color: #111111;
-    border-top: 1px solid #7f7e7e66;
+    border-right: 1px solid #7f7e7e66;
     box-shadow: 0 0 2px black, 0 0 5px #000000a3, 0 0 10px #000000a3;
     font-size: calc(var(--index) * 1.5);
 }

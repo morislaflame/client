@@ -16,6 +16,8 @@ import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук
 import { wallets } from '../../utils/cryptoWallets'; // Импортируем wallets
 import { LuArrowRightLeft } from "react-icons/lu";
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const SideBar = React.lazy(() => import('../../components/SideBar/SideBar')); // Ленивая загрузка SideBar
 
@@ -37,6 +39,8 @@ const ExchangePage = observer(() => {
 
     // Используем хук для получения курсов криптовалют
     const { cryptoRates, fetchCryptoRates } = useCryptoRates();
+
+    const [isSubmitting, setIsSubmitting] = useState(false); // Добавлено состояние для анимации загрузки
 
     useEffect(() => {
         const savedPage = sessionStorage.getItem('exchangeCurrentPage');
@@ -96,52 +100,49 @@ const ExchangePage = observer(() => {
             return;
         }
 
+        setIsSubmitting(true); // Устанавливаем состояние загрузки в true
+
         const priceDifference = selectedThing.price - currentThing.price;
 
-        if (priceDifference > 0) {
-            // Требуется доплата, перенаправляем на PaymentPage
-            navigate(PAYMENT_ROUTE, {
-                state: {
-                    exchange: true,
-                    thingId,
-                    selectedThingId,
-                    userComment,
-                    priceDifference,
-                },
-            });
-        } else if (priceDifference < 0) {
-            // Требуется возврат средств
-            if (!cryptoWalletAddress) {
-                message.warning('Please enter your wallet address');
-                return;
-            }
+        try {
+            if (priceDifference > 0) {
+                // Требуется доплата, перенаправляем на PaymentPage
+                navigate(PAYMENT_ROUTE, {
+                    state: {
+                        exchange: true,
+                        thingId,
+                        selectedThingId,
+                        userComment,
+                        priceDifference,
+                    },
+                });
+            } else if (priceDifference < 0) {
+                // Требуется возврат средств
+                if (!cryptoWalletAddress) {
+                    message.warning('Please enter your wallet address');
+                    return;
+                }
 
-            const refundAmountUSD = Math.abs(priceDifference);
-            const cryptoPayment = parseFloat(convertAmountForCrypto(wallets[cryptoCurrency].currency, refundAmountUSD));
+                const refundAmountUSD = Math.abs(priceDifference);
+                const cryptoPayment = parseFloat(convertAmountForCrypto(wallets[cryptoCurrency].currency, refundAmountUSD));
 
-            try {
                 await exchange.createNewExchangeRequest({
                     oldThingId: thingId,
                     newThingId: selectedThingId,
                     userComment,
                     cryptoCurrency: wallets[cryptoCurrency].currency,
                     cryptoWalletAddress,
-                    cryptoPaymentAmount: cryptoPayment, // Передаем сумму в выбранной криптовалюте
+                    cryptoPaymentAmount: cryptoPayment,
                 });
                 message.success('Exchange request successfully sent');
-                exchange.loadUserExchangeRequests(); // Заново загружаем запросы на обмен
-                navigate('/account'); // Перенаправляем на страницу аккаунта пользователя
-            } catch (e) {
-                console.error('Error when creating an exchange request:', e);
-                message.error('Error when creating an exchange request');
-            }
-        } else {
-            // Товары имеют одинаковую цену
-            setCryptoCurrency(Object.keys(wallets)[0] || 'usdt');
-            setCryptoWalletAddress('');
-            setCryptoPaymentAmount(0);
+                exchange.loadUserExchangeRequests();
+                navigate('/account');
+            } else {
+                // Товары имеют одинаковую цену
+                setCryptoCurrency(Object.keys(wallets)[0] || 'usdt');
+                setCryptoWalletAddress('');
+                setCryptoPaymentAmount(0);
 
-            try {
                 await exchange.createNewExchangeRequest({
                     oldThingId: thingId,
                     newThingId: selectedThingId,
@@ -151,12 +152,14 @@ const ExchangePage = observer(() => {
                     cryptoPaymentAmount: 0,
                 });
                 message.success('Exchange request successfully sent');
-                exchange.loadUserExchangeRequests(); // Заново загружаем запросы на обмен
-                navigate('/account'); // Перенаправляем на страницу аккаунта пользователя
-            } catch (e) {
-                console.error('Error when creating an exchange request:', e);
-                message.error('Error when creating an exchange request');
+                exchange.loadUserExchangeRequests();
+                navigate('/account');
             }
+        } catch (e) {
+            console.error('Error when creating an exchange request:', e);
+            message.error('Error when creating an exchange request');
+        } finally {
+            setIsSubmitting(false); // Устанавливаем состояние загрузки в false после завершения
         }
     };
 
@@ -258,10 +261,12 @@ const ExchangePage = observer(() => {
                             fontSize: 'calc(var(--index) * 1.4)',
                         }}
                         className={styles.button}
+                        disabled={isSubmitting} // Блокируем кнопку при загрузке
                     >
-                        {selectedThing && currentThing && selectedThing.price - currentThing.price > 0
+                        {isSubmitting ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : 
+                        (selectedThing && currentThing && selectedThing.price - currentThing.price > 0
                             ? 'Proceed to Payment'
-                            : 'Send an exchange request'}
+                            : 'Send an exchange request')}
                     </Button>
             </div>
             

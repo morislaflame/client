@@ -73,7 +73,7 @@
 }
 
 .modal-content {
-    height: 98vh;
+    min-height: 90vh;
     padding: calc(var(--index)* 1.5);
     background-color: black;
     display: flex;
@@ -98,7 +98,6 @@
 .story.modal-body {
     display: flex;
     padding: calc(var(--index) * 0);
-    align-items: center;
     position: relative;
 }
 
@@ -109,10 +108,10 @@
 }
 
 .story .modal-img {
-    height: 100%;
-    border-radius: calc(var(--index) * 1);
-    object-fit: contain;
-    object-position: center;
+  height: fit-content;
+  border-radius: calc(var(--index)* 1);
+  object-fit: contain;
+  object-position: top;
 }
 
 .progress {

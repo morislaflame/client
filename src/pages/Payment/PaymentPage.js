@@ -10,6 +10,8 @@ import BackButton from "../../components/BackButton/BackButton";
 import CopyableButton from "../../components/CopyableButton/CopyableButton";
 import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук
 import { wallets } from '../../utils/cryptoWallets'; // Импортируем wallets
+import { Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const PaymentPage = () => {
   const { thing, exchange } = useContext(Context);
@@ -32,6 +34,7 @@ const PaymentPage = () => {
   const [selectedCrypto, setSelectedCrypto] = useState('usdt'); 
   const [cryptoTransactionHash, setCryptoTransactionHash] = useState(''); 
   const [isHashValid, setIsHashValid] = useState(false); 
+  const [isConfirming, setIsConfirming] = useState(false); // Добавлено состояние для анимации загрузки
 
   const convertAmountForCrypto = (crypto) => {
     const rate = cryptoRates[crypto];
@@ -47,6 +50,7 @@ const PaymentPage = () => {
   };
 
   const handleConfirmPayment = async () => {
+    setIsConfirming(true); // Устанавливаем состояние загрузки в true
     try {
       const cryptoPaymentAmount = parseFloat(convertAmountForCrypto(wallets[selectedCrypto].currency));
 
@@ -75,6 +79,8 @@ const PaymentPage = () => {
     } catch (error) {
       message.error('Error in payment processing');
       console.error('Error in payment processing:', error);
+    } finally {
+      setIsConfirming(false); // Устанавливаем состояние загрузки в false после завершения
     }
   };
 
@@ -146,9 +152,9 @@ const PaymentPage = () => {
           <button 
             className={styles.confirm_btn} 
             onClick={handleConfirmPayment} 
-            disabled={!isHashValid}
+            disabled={!isHashValid || isConfirming} // Блокируем кнопку при загрузке
           >
-            Confirm payment
+            {isConfirming ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : 'Confirm payment'} 
           </button>
         </div>
 

@@ -1,6 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { Button, Offcanvas } from 'react-bootstrap';
-import { Input, Select, message } from 'antd';
+import { Input, Select, message, Spin } from 'antd';
 import { PiKeyReturnFill } from 'react-icons/pi';
 import styles from './ReturnRequestModal.module.css';
 import { observer } from 'mobx-react-lite';
@@ -9,13 +9,15 @@ import { Context } from '../../index';
 import { CustomOffcanvas, CustomOffcanvasBody, CustomOffcanvasHeader } from '../StyledComponents';
 import useCryptoRates from '../../hooks/useCryptoRates';
 import { wallets } from '../../utils/cryptoWallets'; 
+import { LoadingOutlined } from '@ant-design/icons';
 
 const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
   const { return: returnStore } = useContext(Context);
   const [reason, setReason] = useState('');
   const [cryptoCurrency, setCryptoCurrency] = useState('usdt');
   const [cryptoWalletAddress, setCryptoWalletAddress] = useState('');
-  const [cryptoAmount, setCryptoAmount] = useState(null); // Состояние для суммы в криптовалюте
+  const [cryptoAmount, setCryptoAmount] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false); // Добавлено состояние для анимации загрузки
 
   const { cryptoRates, fetchCryptoRates } = useCryptoRates();
 
@@ -39,13 +41,14 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
       message.warning('The amount in the selected cryptocurrency is not calculated');
       return;
     }
+    setIsSubmitting(true); // Устанавливаем состояние загрузки в true
     try {
       await returnStore.createNewReturn({
         thingId: selectedThing.id,
         reason: reason || '',
         cryptoCurrency: wallets[cryptoCurrency].currency,
         cryptoWalletAddress,
-        refundAmount: cryptoAmount, // Используем сумму в криптовалюте
+        refundAmount: cryptoAmount,
       });
       message.success('Wait for return confirmation!');
       setTimeout(() => {
@@ -55,6 +58,8 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
     } catch (e) {
       console.error('Error creating return:', e);
       message.error('Error creating return');
+    } finally {
+      setIsSubmitting(false); // Устанавливаем состояние загрузки в false после завершения
     }
   }, [cryptoAmount, cryptoCurrency, cryptoWalletAddress, handleClose, reason, selectedThing, returnStore, wallets]);
 
@@ -123,8 +128,9 @@ const ReturnRequestModal = observer(({ show, handleClose, selectedThing }) => {
                 gap: '7px',
               }}
               className={styles.button}
+              disabled={isSubmitting} // Блокируем кнопку при загрузке
             >
-              <span>Request Refund</span>
+              {isSubmitting ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : 'Request Refund'} 
               <PiKeyReturnFill />
             </Button>
           </>

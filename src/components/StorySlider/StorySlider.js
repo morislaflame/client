@@ -148,7 +148,6 @@ const StorySlider = () => {
       ) : (
         <Carousel indicators={false} controls={false} interval={null}>
           {groupedStories?.map((group, idx) => {
-           console.log(group);
             if(!group?.length || typeof group == 'string') return null;
             return (
             <Carousel.Item key={idx}>
