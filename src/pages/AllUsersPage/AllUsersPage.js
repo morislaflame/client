@@ -9,6 +9,7 @@ import BackButton from '../../components/BackButton/BackButton';
 import styles from './AllUsersPage.module.css'
 import { AutoComplete, message, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
+import { FloatButton } from 'antd';
 
 const AllUsersPage = observer(() => {
   const { user } = useContext(Context);
@@ -146,6 +147,9 @@ const AllUsersPage = observer(() => {
           </Button>
         </Modal.Footer>
       </Modal>
+      <FloatButton.BackTop 
+        type='dark'
+      />
     </div>
   );
 });

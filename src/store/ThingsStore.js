@@ -43,7 +43,7 @@ export default class ThingStore {
                 this._discount = data.discount || 0;
             });
         } catch (error) {
-            console.error('Ошибка при загрузке корзины:', error);
+            console.error('Error loading basket:', error);
         }
     }
 
@@ -53,7 +53,7 @@ export default class ThingStore {
             await addToBasket(thingId);
             await this.loadBasket();
         } catch (error) {
-            console.error('Ошибка при добавлении в корзину:', error);
+            console.error('Error adding to basket:', error);
             throw error;
         }
     }
@@ -67,7 +67,7 @@ export default class ThingStore {
                 this._basket = this._basket.filter(item => item.id !== thingId);
             });
         } catch (error) {
-            console.error('Ошибка при удалении из корзины:', error);
+            console.error('Error removing from basket:', error);
         }
     }
 
@@ -81,7 +81,7 @@ export default class ThingStore {
                 this._discount = 0;
             });
         } catch (error) {
-            console.error('Ошибка при очистке корзины:', error);
+            console.error('Error clearing basket:', error);
         }
     }
 
@@ -96,8 +96,8 @@ export default class ThingStore {
             await this.loadBasket(); // Refresh basket data
             return { success: true };
         } catch (error) {
-            console.error('Ошибка при применении промокода:', error);
-            const message = error.response?.data?.message || 'Ошибка при применении промокода';
+            console.error('Error applying promo code:', error);
+            const message = error.response?.data?.message || 'Error applying promo code';
             return { success: false, message };
         }
     }
@@ -112,7 +112,7 @@ export default class ThingStore {
             });
             await this.loadBasket();
         } catch (error) {
-            console.error('Ошибка при удалении промокода:', error);
+            console.error('Error removing promo code:', error);
         }
     }
 
@@ -124,7 +124,7 @@ export default class ThingStore {
                 this._userPromoCodes = promoCodes;
             });
         } catch (error) {
-            console.error('Ошибка при загрузке промокодов пользователя:', error);
+            console.error('Error loading user promo codes:', error);
         }
     }
 

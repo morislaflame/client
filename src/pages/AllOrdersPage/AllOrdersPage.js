@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { THING_ROUTE } from '../../utils/consts';
 import CopyableButton from '../../components/CopyableButton/CopyableButton'; 
 import { FcClock, FcOk, FcCancel } from 'react-icons/fc';
+import { FloatButton } from 'antd';
 
 const AllOrdersPage = () => {
     const [orders, setOrders] = useState([]);
@@ -60,7 +61,7 @@ const AllOrdersPage = () => {
                             </span>
                             {order.promo_code ? (
                                 <span>
-                                    Promocode: <p>{order.promo_code.code}</p> - <p>${order.promo_code.discountValue}</p>
+                                    Promocode: <p>{order.promo_code.code}</p> - <p>{order.promo_code.isPercentage ? `${order.promo_code.discountValue}%` : `$${order.promo_code.discountValue}`}</p>
                                 </span>
                             ) : (
                                 <></>
@@ -107,6 +108,9 @@ const AllOrdersPage = () => {
                     </div>
                 ))}
             </div>
+            <FloatButton.BackTop 
+                type='dark'
+            />
         </div>
     );
 };

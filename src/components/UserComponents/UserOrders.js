@@ -83,7 +83,7 @@ const UserOrders = observer(({ orders, sliderSettings }) => {
                         <div className={styles.promocode_status}>
                           <span>Promocode:</span>{' '}
                           <b>
-                            {orderItem.promo_code.code} ${orderItem.promo_code.discountValue}
+                            {orderItem.promo_code.code} {orderItem.promo_code.isPercentage ? `${orderItem.promo_code.discountValue}%` : `$${orderItem.promo_code.discountValue}`}
                           </b>
                         </div>
                       )}

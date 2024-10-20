@@ -9,6 +9,7 @@ const CreatePromoCode = ({ show, onHide }) => {
     const [code, setCode] = useState('');
     const [discountValue, setDiscountValue] = useState(0);
     const [isOneTime, setIsOneTime] = useState(false);
+    const [isPercentage, setIsPercentage] = useState(false); // Новое состояние для процентной скидки
     const [count, setCount] = useState(1); // Для генерации одноразовых промокодов
     const [userId, setUserId] = useState(''); // Для создания персонального промокода
 
@@ -16,13 +17,13 @@ const CreatePromoCode = ({ show, onHide }) => {
         try {
             if (mode === 'create') {
                 // Создание обычного промокода
-                await createPromoCode({ code, discountValue, isOneTime });
+                await createPromoCode({ code, discountValue, isOneTime, isPercentage });
             } else if (mode === 'generate') {
                 // Генерация одноразовых промокодов
                 await generateOneTimePromoCodes(count, discountValue);
             } else if (mode === 'personal') {
                 // Создание персонального промокода
-                await createPersonalPromoCode({ code, discountValue, userId });
+                await createPersonalPromoCode({ code, discountValue, userId, isPercentage });
             }
             message.success('Промокод успешно создан!');
             onHide(); // Закрываем модальное окно после выполнения действия
@@ -81,6 +82,15 @@ const CreatePromoCode = ({ show, onHide }) => {
                                 Одноразовый промокод
                             </Checkbox>
                         </Form.Item>
+
+                        <Form.Item>
+                            <Checkbox
+                                checked={isPercentage}
+                                onChange={e => setIsPercentage(e.target.checked)}
+                            >
+                                Процентная скидка
+                            </Checkbox>
+                        </Form.Item>
                     </>
                 )}
 
@@ -134,6 +144,15 @@ const CreatePromoCode = ({ show, onHide }) => {
                                 onChange={e => setUserId(e.target.value)}
                                 placeholder="Введите ID пользователя"
                             />
+                        </Form.Item>
+
+                        <Form.Item>
+                            <Checkbox
+                                checked={isPercentage}
+                                onChange={e => setIsPercentage(e.target.checked)}
+                            >
+                                Процентная скидка
+                            </Checkbox>
                         </Form.Item>
                     </>
                 )}

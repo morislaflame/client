@@ -1,8 +1,8 @@
 import { $authHost } from "./index";
 
 // Создание нового промокода
-export const createPromoCode = async ({ code, discountValue, isOneTime }) => {
-    const { data } = await $authHost.post('api/promocode/create', { code, discountValue, isOneTime });
+export const createPromoCode = async ({ code, discountValue, isOneTime, isPercentage }) => {
+    const { data } = await $authHost.post('api/promocode/create', { code, discountValue, isOneTime, isPercentage });
     return data;
 };
 
@@ -25,7 +25,7 @@ export const generateOneTimePromoCodes = async (count, discountValue) => {
 };
 
 // Создание персонального промокода
-export const createPersonalPromoCode = async ({ code, discountValue, userId }) => {
-    const { data } = await $authHost.post('api/promocode/createPersonal', { code, discountValue, userId });
+export const createPersonalPromoCode = async ({ code, discountValue, userId, isPercentage }) => {
+    const { data } = await $authHost.post('api/promocode/createPersonal', { code, discountValue, userId, isPercentage });
     return data;
 };

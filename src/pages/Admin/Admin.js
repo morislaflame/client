@@ -8,7 +8,7 @@ import ListGroup from 'react-bootstrap/ListGroup';
 import { observer } from 'mobx-react-lite';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import { ALL_EXCHANGES_ROUTE, ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, THING_ROUTE } from '../../utils/consts';
+import { ALL_EXCHANGES_ROUTE, ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, THING_ROUTE, ALL_USERS_ROUTE } from '../../utils/consts';
 import { fetchNewOrders, confirmOrder, rejectOrder } from '../../http/orderAPI';
 import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/orderAPI';
 import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../http/exchangeAPI'; // Импортируем API для обменов
@@ -271,11 +271,11 @@ const Admin = observer(() => {
           placeholder="Введите ID пользователя"
         />
         <button
-          onClick={() => handleSearch(userId)}
+          onClick={() => navigate(ALL_USERS_ROUTE)}
           className={styles.all_btn}
           disabled={isSearching} // Блокируем кнопку при загрузке
         >
-          {isSearching ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : 'Найти пользователя'} 
+          {isSearching ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : 'Все пользователи'} 
         </button>
       </div>
 
@@ -299,7 +299,7 @@ const Admin = observer(() => {
                     </span>
                     {order.promo_code ? (
                         <span>
-                            Promocode: <p>{order.promo_code.code}</p> - <p>${order.promo_code.discountValue}</p>
+                            Promocode: <p>{order.promo_code.code}</p> - <p>{order.promo_code.isPercentage ? `${order.promo_code.discountValue}%` : `$${order.promo_code.discountValue}`}</p>
                         </span>
                     ) : (
                         <></>
