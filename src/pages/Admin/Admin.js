@@ -5,18 +5,17 @@ import CreateType from '../../components/modals/CreateType';
 import { Context } from '../../index';
 import CreateStory from '../../components/modals/CreateStory';
 import ListGroup from 'react-bootstrap/ListGroup';
-import Form from 'react-bootstrap/Form';
 import { observer } from 'mobx-react-lite';
-import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import { ALL_EXCHANGES_ROUTE, ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, ALL_USERS_ROUTE, THING_ROUTE, USERINFO_ROUTE } from '../../utils/consts';
+import { ALL_EXCHANGES_ROUTE, ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, THING_ROUTE } from '../../utils/consts';
 import { fetchNewOrders, confirmOrder, rejectOrder } from '../../http/orderAPI';
 import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/orderAPI';
 import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../http/exchangeAPI'; // Импортируем API для обменов
 import CreatePromoCode from '../../components/modals/CreatePromoCode';
 import styles from './Admin.module.css'
-import { message, Input, Modal as AntdModal, AutoComplete } from 'antd';
+import { message, Input, Modal as AntdModal, AutoComplete, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import CopyableButton from '../../components/CopyableButton/CopyableButton';
 
 const { confirm } = AntdModal;
@@ -38,6 +37,7 @@ const Admin = observer(() => {
 
   const navigate = useNavigate();
 
+  const [isSearching, setIsSearching] = useState(false); // Добавлено состояние для анимации загрузки
 
   useEffect(() => {
     const loadAllData = async () => {
@@ -100,9 +100,17 @@ const Admin = observer(() => {
   }, [userId, user.users]);
 
   const handleSearch = async (id) => {
-    const result = await user.getUserById(id);
-    if (result) {
-      navigate(`/user/${result.id}`);
+    setIsSearching(true); // Устанавливаем состояние загрузки в true
+    try {
+      const result = await user.getUserById(id);
+      if (result) {
+        navigate(`/user/${result.id}`);
+      }
+    } catch (error) {
+      console.error('Ошибка при поиске пользователя:', error);
+      message.error('Пользователь не найден');
+    } finally {
+      setIsSearching(false); // Устанавливаем состояние загрузки в false после завершения
     }
   };
 
@@ -262,7 +270,13 @@ const Admin = observer(() => {
           onSelect={handleSearch}
           placeholder="Введите ID пользователя"
         />
-        <Button onClick={() => navigate(ALL_USERS_ROUTE)} className={styles.all_btn}>Посмотреть всех пользователей</Button>
+        <button
+          onClick={() => handleSearch(userId)}
+          className={styles.all_btn}
+          disabled={isSearching} // Блокируем кнопку при загрузке
+        >
+          {isSearching ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : 'Найти пользователя'} 
+        </button>
       </div>
 
       {/* Секция с новыми заказами */}

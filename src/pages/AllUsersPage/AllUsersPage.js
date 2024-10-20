@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../../index';
-import ListGroup from 'react-bootstrap/ListGroup';
 import Form from 'react-bootstrap/Form';
 import { observer } from 'mobx-react-lite';
 import Modal from 'react-bootstrap/Modal';
@@ -8,18 +7,20 @@ import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
 import BackButton from '../../components/BackButton/BackButton';
 import styles from './AllUsersPage.module.css'
-import { AutoComplete } from 'antd';
+import { AutoComplete, message, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 
 const AllUsersPage = observer(() => {
   const { user } = useContext(Context);
-  const [userId, setUserId] = useState(''); // Изменено с email на userId
+  const [userId, setUserId] = useState('');
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null); 
+  const [userToDelete, setUserToDelete] = useState(null);
+  const [isSearching, setIsSearching] = useState(false); // Добавлено состояние для анимации загрузки
   const navigate = useNavigate();
 
   useEffect(() => {
-    loadUsers(); 
+    loadUsers();
   }, []);
 
   const loadUsers = async () => {
@@ -29,7 +30,7 @@ const AllUsersPage = observer(() => {
   useEffect(() => {
     if (userId) {
       const filtered = user.users
-        .filter(u => u.id.toString().includes(userId)) // Изменено на поиск по ID
+        .filter(u => u.id.toString().includes(userId))
         .slice(0, 5);
       setFilteredUsers(filtered);
     } else {
@@ -38,14 +39,22 @@ const AllUsersPage = observer(() => {
   }, [userId, user.users]);
 
   const handleSearch = async (id) => {
-    const result = await user.getUserById(id);
-    if (result) {
-      navigate(`/user/${result.id}`); 
+    setIsSearching(true); // Устанавливаем состояние загрузки в true
+    try {
+      const result = await user.getUserById(id);
+      if (result) {
+        navigate(`/user/${result.id}`);
+      }
+    } catch (error) {
+      console.error('Ошибка при поиске пользователя:', error);
+      message.error('Пользователь не найден');
+    } finally {
+      setIsSearching(false); // Устанавливаем состояние загрузки в false после завершения
     }
   };
 
   const handleEmailClick = (id) => {
-    setUserId(id); // Изменено с email на userId
+    setUserId(id);
     setFilteredUsers([]);
   };
 
@@ -55,25 +64,25 @@ const AllUsersPage = observer(() => {
   };
 
   const confirmDeleteUser = (user) => {
-    setUserToDelete(user); // Устанавливаем пользователя для удаления
-    setShowDeleteModal(true); // Показываем модальное окно
+    setUserToDelete(user);
+    setShowDeleteModal(true);
   };
 
   const handleDeleteUser = async () => {
     if (userToDelete) {
       await user.removeUser(userToDelete.id);
-      setShowDeleteModal(false); // Закрываем модальное окно после удаления
-      loadUsers(); // Обновляем список пользователей
+      setShowDeleteModal(false);
+      loadUsers();
     }
   };
 
   return (
     <div className={styles.container}>
       <div className={styles.topic_back}>
-        <BackButton/>
+        <BackButton />
         <h2>All Users</h2>
       </div>
-      
+
       <div className={styles.search_section}>
         <Form.Group className="mt-3">
           <AutoComplete
@@ -89,7 +98,13 @@ const AllUsersPage = observer(() => {
           />
         </Form.Group>
 
-        <button onClick={() => handleSearch(userId)} className={styles.src_btn}>Найти пользователя</button>
+        <button
+          onClick={() => handleSearch(userId)}
+          className={styles.src_btn}
+          disabled={isSearching}
+        >
+          {isSearching ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : 'Найти пользователя'}
+        </button>
       </div>
 
       {/* Список всех пользователей */}

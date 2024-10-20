@@ -1,44 +1,43 @@
 import React from 'react';
-import { Accordion, Card, Image } from 'react-bootstrap';
+import { Accordion } from 'react-bootstrap';
 import './FaqAccordion.css';
 
 const FaqAccordion = () => {
   const faqItems = [
     {
       id: 1,
-      question: 'Как выглядит процесс покупки модели?',
-      answer: 'После оплаты в криптовалюте, мы подтверждаем заказ, и модель автоматически закрепляется за вами (Вы можете отслеживать статус заказа и закрепленных за вами моделей в личном кабинете). В этот же момент, мы создаем с вами и моделью чат в Telegram, где вы можете обсудить все детали и договориться о дате начала работы.',
-      imageUrl: '../../../../server/static/backtwo.jpg', // Путь к изображению
+      question: 'What does the process of buying a model look like?',
+      answer: 'After payment in cryptocurrency, we confirm the order and the model is automatically assigned to you (you can track the status of the order and assigned models in your personal cabinet). At the same moment, we create a chat with you and the model in Telegram, where you can discuss all the details and agree on the start date.',
+
     },
     {
       id: 2,
-      question: 'Как я могу оформить возврат?',
-      answer: 'Если вас не устраивает работа модели, вы можете оформить возврат в течении 14 дней с момента заказа. Для этого перейдите в личный кабинет, выберите модель, заполните все данные для возврата и укажите причину. Наши менеджеры проверят все данные и вернут вам деньги на указанный вами кошелек.',
-      imageUrl: '../../../../../server/static/back.jpg',
+      question: 'How can I issue a refund?',
+      answer: 'If you are not satisfied with the performance of the model, you can make a return within 14 days from the date of order. To do this, go to your personal cabinet, select a model, fill in all the data for the return and indicate the reason. Our managers will check all the data and refund your money to the wallet you specified.',
+
     },
     {
       id: 3,
-      question: 'Как я могу поменять модель?',
-      answer: 'Обмен - это альтернатива возврату средств. Вы можете обменять модель на другую, если она вас не устраивает. Для этого перейдите в личный кабинет, выберите модель, заполните все данные для обмена и укажите причину. Наши менеджеры проверят все данные и обменяют вашу модель на указанную в заявке.',
-      imageUrl: '../../../../../server/static/back.jpg',
+      question: 'How can I exchange the model?',
+      answer: 'Exchange is an alternative to a refund. You can exchange a model for another if it does not meet your expectations. To do this, go to your personal cabinet, select a model, fill in all the data for the exchange and indicate the reason. Our managers will check all the data and exchange your model for the one specified in the application.',
+
     },
     {
       id: 4,
-      question: 'Принимаете ли гаранта?',
-      answer: 'Для того, чтобы подключить гаранта к сделке, вам необходимо будет оформить заказ через наш телеграм-канал. Работаем через гаранта Кардо, Henri и Laugh',
-      imageUrl: '../../../../../server/static/back.jpg',
+      question: 'Do you accept a guarantor?',
+      answer: 'To connect a guarantor to the deal, you need to place an order through our Telegram channel. We work with guarantors Cardo, Henri and Laugh',
+
     },
     {
       id: 5,
-      question: 'Какие есть способы оплаты?',
-      answer: 'Мы принимаем оплату только в криптовалюте: USDT(TRC-20, ERC-20, BEP-20), BTC, ETH, SOL, USDC(ERC-20, Arbitrium One). Актуальные адреса для оплаты вы можете увидеть при оформлении заказа. Если хотите оплатить в не указанной в данном списке криптовалютой, напишите менеджеру в телеграм, в будущем список будет расширяться.',
-      imageUrl: '../../../../../server/static/back.jpg',
+      question: 'What payment methods do you accept?',
+      answer: 'We only accept payments in cryptocurrency: USDT(TRC-20, ERC-20, BEP-20), BTC, ETH, SOL, USDC(ERC-20, Arbitrium One). The actual addresses for payment you can see when placing an order. If you want to pay in a cryptocurrency not listed in this list, write to the manager in Telegram, the list will be expanded in the future.',
+
     },
     {
       id: 6,
-      question: 'Можно ли забронировать модель?',
-      answer: 'Да, вы можете забронировать модель на 24 часа за 50$, если она еще не закреплена за другим пользователем. Если вы решите не покупать модель, мы оставляем депозит. Для бронирования напишите менеджеру в телеграм',
-      imageUrl: '../../../../../server/static/back.jpg',
+      question: 'Can I reserve a model?',
+      answer: 'Yes, you can reserve a model for 24 hours for $50 if it is not assigned to another user. If you decide not to buy the model, we will leave the deposit. To reserve, write to the manager in Telegram',
     },
   ];
 
@@ -48,7 +47,6 @@ const FaqAccordion = () => {
         <Accordion.Item eventKey={item.id.toString()} key={item.id}>
           <Accordion.Header>
             <div className="acc_item">
-              {/* <Image src={item.imageUrl} roundedCircle className="mr-3" /> */}
               <span>{item.question}</span>
             </div>
           </Accordion.Header>

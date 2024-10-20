@@ -47,7 +47,7 @@ export default function Main() {
         <div className='advantages'>
           <div className='advList'>
             <div className='advListTop'>
-              <image className='pic'></image>
+              <div className='pic'></div>
               <div className='art'></div>
               <h3>Convenience <br /> And Choice</h3>
             </div>
@@ -61,7 +61,7 @@ export default function Main() {
           <div className='advList'>
             <div className='advListTop2'>
               <div className='art2'></div>
-              <image className='pic2'></image>
+              <div className='pic2'></div>
               <h3>Credibility</h3>
             </div>
             <div className='txt'>

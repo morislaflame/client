@@ -1,14 +1,12 @@
-// AllOrdersPage компонент
-
 import React, { useState, useEffect } from 'react';
 import { fetchAllOrders } from '../../http/orderAPI'; 
 import Form from 'react-bootstrap/Form';
 import BackButton from '../../components/BackButton/BackButton';
 import styles from './AllOrdersPage.module.css'
 import { useNavigate } from 'react-router-dom';
-import { message } from 'antd';
 import { THING_ROUTE } from '../../utils/consts';
-import CopyableButton from '../../components/CopyableButton/CopyableButton'; // Импортируем CopyableButton
+import CopyableButton from '../../components/CopyableButton/CopyableButton'; 
+import { FcClock, FcOk, FcCancel } from 'react-icons/fc';
 
 const AllOrdersPage = () => {
     const [orders, setOrders] = useState([]);
@@ -72,7 +70,7 @@ const AllOrdersPage = () => {
                             <span>Хэш: </span>
                             {/* Заменяем кнопку копирования на CopyableButton */}
                             <CopyableButton 
-                                value={order.cryptoTransactionHash} 
+                                value={order.cryptoTransactionHash || 'No hash'} 
                                 className={styles.copyable_address}
                                 title='Copy Hash'
                             />
@@ -89,6 +87,23 @@ const AllOrdersPage = () => {
                             >
                             {item.thing.name} ${item.thing.price}</span>
                             ))}
+                            <span>
+                                {order.status === 'created' && (
+                                    <span className={styles.status}>
+                                        <FcClock /> В ожидании
+                                    </span>
+                                )}
+                                {order.status === 'paid' && (
+                                    <span className={styles.status}>
+                                        <FcOk /> Одобрен
+                                    </span>
+                                )}
+                                {order.status === 'rejected' && (
+                                    <span className={styles.status}>
+                                        <FcCancel /> Отклонен
+                                    </span>
+                                )}
+                            </span>
                     </div>
                 ))}
             </div>

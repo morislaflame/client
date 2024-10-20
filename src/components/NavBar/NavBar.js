@@ -10,6 +10,9 @@ import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE, SHOP_ROUTE,
 import './NavBar.css';
 import { FaTelegram } from "react-icons/fa6";
 import EMM from '../../icons/EMM2.png';
+import { IoShieldCheckmarkSharp } from "react-icons/io5";
+import { FaCartShopping } from "react-icons/fa6";
+import { FaUserGroup } from "react-icons/fa6";
 
 const NavBar = observer(() => {
     const { user, thing } = useContext(Context);
@@ -82,12 +85,18 @@ const NavBar = observer(() => {
                         style={{ maxHeight: '165px', color: 'white' }}
                         navbarScroll
                     >
-                        <Nav.Link href='https://t.me/themodelshotel' style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'white' }}>
+                        <Nav.Link href='https://t.me/express_model_marketplace' style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'white' }}>
                             <FaTelegram /> Us in Telegram
                         </Nav.Link>
-                        <Nav.Link onClick={() => navigate(SHOP_ROUTE)} style={{ color: 'white' }}>Store</Nav.Link>
-                        <Nav.Link onClick={() => navigate(PRIVACY_ROUTE)} style={{ color: 'white' }}>Privacy Policy</Nav.Link>
-                        <Nav.Link onClick={() => navigate(TERMS_ROUTE)} style={{ color: 'white' }}>Terms of warranty</Nav.Link>
+                        <Nav.Link onClick={() => navigate(SHOP_ROUTE)} style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'white' }}>
+                            <FaCartShopping /> Store
+                        </Nav.Link>
+                        <Nav.Link onClick={() => navigate(PRIVACY_ROUTE)} style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'white' }}>
+                            <FaUserGroup /> Referral program
+                        </Nav.Link>
+                        <Nav.Link onClick={() => navigate(TERMS_ROUTE)} style={{ display: 'flex', gap: '5px', alignItems: 'center', color: 'white' }}>
+                            <IoShieldCheckmarkSharp /> Terms of warranty
+                        </Nav.Link>
                     </Nav>
                     <div className="d-flex" style={{ justifyContent: 'flex-end' }}>
                         {user.isAuth ? (
