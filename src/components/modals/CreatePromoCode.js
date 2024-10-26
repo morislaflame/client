@@ -12,8 +12,10 @@ const CreatePromoCode = ({ show, onHide }) => {
     const [isPercentage, setIsPercentage] = useState(false); // Новое состояние для процентной скидки
     const [count, setCount] = useState(1); // Для генерации одноразовых промокодов
     const [userId, setUserId] = useState(''); // Для создания персонального промокода
+    const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
 
     const handleSubmit = async () => {
+        setLoading(true); // Устанавливаем состояние загрузки в true
         try {
             if (mode === 'create') {
                 // Создание обычного промокода
@@ -30,6 +32,8 @@ const CreatePromoCode = ({ show, onHide }) => {
         } catch (e) {
             console.error('Ошибка при выполнении операции с промокодом', e);
             message.error('Ошибка при создании промокода: ' + (e.response?.data?.message || e.message));
+        } finally {
+            setLoading(false); // Возвращаем состояние загрузки в false
         }
     };
 
@@ -159,7 +163,7 @@ const CreatePromoCode = ({ show, onHide }) => {
 
                 <Form.Item>
                     <Button onClick={onHide} style={{ marginRight: 8 }}>Отмена</Button>
-                    <Button type="primary" onClick={handleSubmit}>
+                    <Button type="primary" onClick={handleSubmit} loading={loading}>
                         {mode === 'create' && 'Создать'}
                         {mode === 'generate' && 'Сгенерировать'}
                         {mode === 'personal' && 'Создать персональный промокод'}

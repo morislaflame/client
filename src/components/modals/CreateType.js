@@ -4,8 +4,10 @@ import { createType } from "../../http/thingAPI";
 
 const CreateType = ({ show, onHide }) => {
     const [value, setValue] = useState('');
+    const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
 
     const addType = async () => {
+        setLoading(true); // Устанавливаем состояние загрузки в true
         try {
             if (!value.trim()) {
                 message.warning('Пожалуйста, введите название страны!');
@@ -17,6 +19,8 @@ const CreateType = ({ show, onHide }) => {
             onHide();
         } catch (error) {
             message.error('Ошибка при добавлении страны: ' + (error.response?.data?.message || error.message));
+        } finally {
+            setLoading(false); // Возвращаем состояние загрузки в false
         }
     };
 
@@ -43,7 +47,7 @@ const CreateType = ({ show, onHide }) => {
                     <Button onClick={onHide} style={{ marginRight: 8 }}>
                         Закрыть
                     </Button>
-                    <Button type="primary" onClick={addType}>
+                    <Button type="primary" onClick={addType} loading={loading}>
                         Добавить
                     </Button>
                 </Form.Item>

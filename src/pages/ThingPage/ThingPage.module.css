@@ -262,3 +262,18 @@ hr {
     color: #05ba05;
     font-size: calc(var(--index) * 1.5);
 }
+
+.admin_info{ 
+    display: flex;
+    margin: calc(var(--index)* 2);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 90%;
+    gap: calc(var(--index)* 1);
+    color: white;
+}
+
+.admin_info h3 {
+    margin: 0;
+}

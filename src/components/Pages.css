@@ -1,12 +1,12 @@
-:where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-prev .ant-pagination-item-link, :where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-next .ant-pagination-item-link {
+.ant-pagination .ant-pagination-prev .ant-pagination-item-link, .ant-pagination .ant-pagination-next .ant-pagination-item-link {
     background-color: #111111c4;
 }
 
-:where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-prev button, :where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-next button {
+.ant-pagination .ant-pagination-prev button, .ant-pagination .ant-pagination-next button {
     color: rgb(255, 255, 255);
 }
 
-:where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-disabled .ant-pagination-item-link, :where(.css-dev-only-do-not-override-qnu6hi).ant-pagination .ant-pagination-disabled:hover .ant-pagination-item-link {
+.ant-pagination .ant-pagination-disabled .ant-pagination-item-link, .ant-pagination .ant-pagination-disabled:hover .ant-pagination-item-link {
     color: #ffffff61;
     cursor: not-allowed;
 }

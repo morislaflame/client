@@ -1,9 +1,10 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
-import { Button, Modal, Form, Input, InputNumber, Select, Row, Col, message, AutoComplete } from 'antd';
+import { Button, Modal, Form, Input, InputNumber, Select, Row, Col, message, AutoComplete, Checkbox } from 'antd';
 import { Context } from "../../index";
 import { createThing, fetchBrands, fetchTypes } from '../../http/thingAPI';
 import { observer } from "mobx-react-lite";
 import ImageUploader from '../ImageUploader/ImageUploader';
+import { fetchScouts } from '../../http/scoutAPI';
 
 const { Option } = Select;
 
@@ -13,20 +14,28 @@ const CreateModel = observer(({ show, onHide }) => {
     const [files, setFiles] = useState([]);
     const [info, setInfo] = useState([]);
     const [selectedBrands, setSelectedBrands] = useState([]);
+    const [scouts, setScouts] = useState([]);
+    const [isScoutModel, setIsScoutModel] = useState(false);
+    const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
+
 
     useEffect(() => {
         const loadData = async () => {
             try {
                 const typesData = await fetchTypes();
                 thing.setTypes(typesData);
+    
                 const brandsData = await fetchBrands();
                 thing.setBrands(brandsData);
+    
+                const scoutsData = await fetchScouts(); // Загружаем скаутов
+                setScouts(scoutsData);
             } catch (error) {
-                message.error('Ошибка при загрузке типов и брендов: ' + error.message);
+                message.error('Ошибка при загрузке данных: ' + error.message);
             }
         };
         loadData();
-    }, [thing]);
+    }, [thing]);    
 
     const addInfo = () => {
         setInfo(prevInfo => [
@@ -73,6 +82,7 @@ const CreateModel = observer(({ show, onHide }) => {
     
 
     const addThing = async () => {
+        setLoading(true); // Устанавливаем состояние загрузки в true
         try {
             const values = await form.validateFields();
 
@@ -111,6 +121,11 @@ const CreateModel = observer(({ show, onHide }) => {
             formData.append('price', values.price);
             formData.append('typeId', values.typeId);
             formData.append('info', JSON.stringify(info));
+            formData.append('isScoutModel', values.isScoutModel);
+
+            if (values.isScoutModel && values.scoutId) {
+                formData.append('scoutId', values.scoutId);
+            }
 
             const brandIds = selectedBrands.map(b => b.id);
             formData.append('brandIds', JSON.stringify(brandIds));
@@ -126,13 +141,15 @@ const CreateModel = observer(({ show, onHide }) => {
             setFiles([]);
             setInfo([]);
             setSelectedBrands([]);
+            setIsScoutModel(false);
         } catch (error) {
             if (error.errorFields) {
-                // Ошибки валидации
                 message.error('Пожалуйста, заполните все обязательные поля!');
             } else {
                 message.error('Ошибка при добавлении модели: ' + error.message);
             }
+        } finally {
+            setLoading(false); // Возвращаем состояние загрузки в false
         }
     };
 
@@ -202,6 +219,30 @@ const CreateModel = observer(({ show, onHide }) => {
                         style={{ width: '100%' }}
                     />
                 </Form.Item>
+                <Form.Item
+                    name="isScoutModel"
+                    label="Товар является скаутским?"
+                    valuePropName="checked"
+                >
+                    <Checkbox onChange={(e) => setIsScoutModel(e.target.checked)} />
+                </Form.Item>
+
+                {isScoutModel && (
+                    <Form.Item
+                        name="scoutId"
+                        label="Выберите скаута"
+                        rules={[{ required: true, message: 'Пожалуйста, выберите скаута' }]}
+                    >
+                        <Select placeholder="Выберите скаута">
+                            {scouts.map(scout => (
+                                <Option value={scout.id} key={scout.id}>
+                                    {scout.username} (Комиссия: {scout.percentage}%)
+                                </Option>
+                            ))}
+                        </Select>
+                    </Form.Item>
+                )}
+
                 <Form.Item label="Изображения">
                     <ImageUploader images={files} setImages={setFiles} />
                 </Form.Item>
@@ -344,7 +385,7 @@ const CreateModel = observer(({ show, onHide }) => {
                     </div>
                 ))}
                 <Form.Item>
-                    <Button type="primary" onClick={addThing} block>
+                    <Button type="primary" onClick={addThing} block loading={loading}>
                         Добавить
                     </Button>
                 </Form.Item>
@@ -354,3 +395,6 @@ const CreateModel = observer(({ show, onHide }) => {
 });
 
 export default CreateModel;
+
+
+

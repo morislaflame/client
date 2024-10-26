@@ -12,6 +12,7 @@ import { useNavigate } from 'react-router-dom';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
 import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
+import placeholder from '../../icons/placeholder.jpg';
 
 const UserModels = observer(({ handleShow }) => {
   const { user, exchange, return: returnStore } = useContext(Context);
@@ -102,7 +103,7 @@ const UserModels = observer(({ handleShow }) => {
                       alt={thingItem.name}
                       className={styles.thing_image}
                       onError={(e) => {
-                        e.target.src = '/path/to/default/image.jpg';
+                        e.target.src = placeholder;
                       }}
                       onClick={() => navigate(THING_ROUTE + '/' + thingItem.id)}
                     />

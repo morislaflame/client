@@ -156,7 +156,7 @@ const StorySlider = () => {
                   <div key={story.id} className="story-card">
                     <img
                       src={`${process.env.REACT_APP_API_URL}${story.coverImg}`}
-                      alt="img"
+                      alt=""
                       onClick={() => handleStoryClick(story)}
                       loading="lazy"
                     />

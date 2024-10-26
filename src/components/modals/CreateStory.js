@@ -13,6 +13,7 @@ const CreateStory = ({ show, onHide }) => {
   const [mainContentFileList, setMainContentFileList] = useState([]);
 
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
 
   const handleCoverImgChange = (info) => {
     setCoverImgFileList(info.fileList);
@@ -35,6 +36,7 @@ const CreateStory = ({ show, onHide }) => {
   };
 
   const addStory = async () => {
+    setLoading(true); // Устанавливаем состояние загрузки в true
     try {
       await form.validateFields();
 
@@ -75,6 +77,8 @@ const CreateStory = ({ show, onHide }) => {
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
       message.error('Ошибка при создании истории: ' + errorMessage);
+    } finally {
+      setLoading(false); // Возвращаем состояние загрузки в false
     }
   };
 
@@ -162,7 +166,7 @@ const CreateStory = ({ show, onHide }) => {
           <Button onClick={onHide} style={{ marginRight: 8 }}>
             Закрыть
           </Button>
-          <Button type="primary" onClick={addStory}>
+          <Button type="primary" onClick={addStory} loading={loading}>
             Добавить
           </Button>
         </Form.Item>

@@ -3,11 +3,12 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchOneThing, updateThing, fetchTypes, fetchBrands } from '../../http/thingAPI';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
-import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Upload, message, Checkbox } from 'antd';
 import { MAIN_ROUTE } from '../../utils/consts';
 import styles from './ThingEditPage.module.css';
 import BackButton from '../../components/BackButton/BackButton';
 import { UploadOutlined } from '@ant-design/icons';
+import { fetchScouts } from '../../http/scoutAPI';
 
 const { Option } = Select;
 
@@ -31,30 +32,46 @@ const ThingEditPage = observer(() => {
   const [brands, setBrands] = useState([]);
   const [newImages, setNewImages] = useState([]);
   const [imagesToRemove, setImagesToRemove] = useState([]);
+  const [scouts, setScouts] = useState([]);
+const [isScoutModel, setIsScoutModel] = useState(false);
+const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
 
-  useEffect(() => {
-    fetchOneThing(id).then(data => {
-      const brandIds = data.brands ? data.brands.map(brand => brand.id) : [];
-      setThing({ ...data, brandIds });
-      form.setFieldsValue({
-        name: data.name,
-        price: data.price,
-        typeId: data.typeId,
-        brandIds: brandIds,
-        ...data.info,
-      });
+
+useEffect(() => {
+  const loadData = async () => {
+    const data = await fetchOneThing(id);
+    const brandIds = data.brands ? data.brands.map(brand => brand.id) : [];
+    setThing({ ...data, brandIds });
+    form.setFieldsValue({
+      name: data.name,
+      price: data.price,
+      typeId: data.typeId,
+      brandIds: brandIds,
+      ...data.info,
+      isScoutModel: data.isScoutModel,
+      scoutId: data.scoutId,
     });
-    fetchTypes().then(data => setTypes(data));
-    fetchBrands().then(data => setBrands(data));
-  }, [id, form]);
-
-  const handleValuesChange = (changedValues, allValues) => {
-    setThing(prevThing => ({
-      ...prevThing,
-      ...allValues,
-      info: { ...prevThing.info, ...allValues },
-    }));
+    setIsScoutModel(data.isScoutModel); // Устанавливаем начальное значение
   };
+
+  loadData();
+  fetchTypes().then(data => setTypes(data));
+  fetchBrands().then(data => setBrands(data));
+  fetchScouts().then(data => setScouts(data)); // Загружаем список скаутов
+}, [id, form]);
+
+
+const handleValuesChange = (changedValues, allValues) => {
+  if ('isScoutModel' in changedValues) {
+    setIsScoutModel(changedValues.isScoutModel);
+  }
+  setThing(prevThing => ({
+    ...prevThing,
+    ...allValues,
+    info: { ...prevThing.info, ...allValues },
+  }));
+};
+
 
   const handleImageChange = ({ fileList }) => {
     setNewImages(fileList);
@@ -69,9 +86,10 @@ const ThingEditPage = observer(() => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true); // Устанавливаем состояние загрузки в true
     try {
       const values = await form.validateFields();
-
+  
       const formData = new FormData();
       formData.append('name', values.name);
       formData.append('price', values.price);
@@ -79,19 +97,27 @@ const ThingEditPage = observer(() => {
       formData.append('brandIds', JSON.stringify(values.brandIds));
       formData.append('info', JSON.stringify(thing.info));
       formData.append('imagesToRemove', JSON.stringify(imagesToRemove));
-
+      formData.append('isScoutModel', values.isScoutModel);
+  
+      if (values.isScoutModel && values.scoutId) {
+        formData.append('scoutId', values.scoutId);
+      }
+  
       newImages.forEach(file => {
         formData.append('img', file.originFileObj);
       });
-
+  
       await updateThing(id, formData);
       message.success('Товар успешно обновлён');
       navigate(`/thing/${id}`);
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
       message.error('Ошибка при обновлении товара: ' + errorMessage);
+    } finally {
+      setLoading(false); // Возвращаем состояние загрузки в false
     }
   };
+  
 
   if (!user.isAuth || user.user.role !== 'ADMIN') {
     navigate(MAIN_ROUTE);
@@ -119,7 +145,7 @@ const ThingEditPage = observer(() => {
     <div className={styles.edit_page}>
       <div className={styles.topic_back}>
         <BackButton />
-        <h2>Редактирование товара</h2>
+        <h2>Редактирование модели</h2>
       </div>
       
       <Form
@@ -130,30 +156,30 @@ const ThingEditPage = observer(() => {
       >
         <Form.Item
           name="name"
-          label="Название"
-          rules={[{ required: true, message: 'Введите имя товара!' }]}
+          label="Имя"
+          rules={[{ required: true, message: 'Введите имя модели!' }]}
         >
-          <Input placeholder="Введите название товара" />
+          <Input placeholder="Введите имя модели" />
         </Form.Item>
 
         <Form.Item
           name="price"
           label="Цена"
-          rules={[{ required: true, message: 'Введите цену товара!' }]}
+          rules={[{ required: true, message: 'Введите цену модели!' }]}
         >
           <InputNumber
             min={0}
-            placeholder="Введите цену товара"
+            placeholder="Введите цену модели"
             style={{ width: '100%' }}
           />
         </Form.Item>
 
         <Form.Item
           name="typeId"
-          label="Тип"
-          rules={[{ required: true, message: 'Выберите тип товара!' }]}
+          label="Страна"
+          rules={[{ required: true, message: 'Выберите страну модели!' }]}
         >
-          <Select placeholder="Выберите тип">
+          <Select placeholder="Выберите страну">
             {types.map(type => (
               <Option key={type.id} value={type.id}>
                 {type.name}
@@ -164,12 +190,12 @@ const ThingEditPage = observer(() => {
 
         <Form.Item
           name="brandIds"
-          label="Бренды"
-          rules={[{ required: true, message: 'Выберите хотя бы один бренд!' }]}
+          label="Платформы"
+          rules={[{ required: true, message: 'Выберите хотя бы один платформу!' }]}
         >
           <Select
             mode="multiple"
-            placeholder="Выберите бренды"
+            placeholder="Выберите платформы"
             onChange={(value) =>
               setThing(prevThing => ({ ...prevThing, brandIds: value }))
             }
@@ -182,7 +208,41 @@ const ThingEditPage = observer(() => {
           </Select>
         </Form.Item>
 
-        <h3>Информация о товаре</h3>
+        <Form.Item
+          name="isScoutModel"
+          label="Модель является скаутской?"
+          valuePropName="checked"
+        >
+          <Checkbox
+            checked={isScoutModel}
+            onChange={(e) => {
+              setIsScoutModel(e.target.checked);
+              form.setFieldsValue({ isScoutModel: e.target.checked });
+              if (!e.target.checked) {
+                form.setFieldsValue({ scoutId: null });
+              }
+            }}
+          />
+        </Form.Item>
+
+        {isScoutModel && (
+          <Form.Item
+            name="scoutId"
+            label="Выберите скаута"
+            rules={[{ required: true, message: 'Пожалуйста, выберите скаута' }]}
+          >
+            <Select placeholder="Выберите скаута">
+              {scouts.map(scout => (
+                <Option value={scout.id} key={scout.id}>
+                  {scout.username} (Комиссия: {scout.percentage}%)
+                </Option>
+              ))}
+            </Select>
+          </Form.Item>
+        )}
+
+
+        <h3>Информация о модели</h3>
         {infoFields.map(field => (
           <Form.Item
             key={field.name}
@@ -231,7 +291,7 @@ const ThingEditPage = observer(() => {
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit">
+          <Button type="primary" htmlType="submit" loading={loading}>
             Сохранить изменения
           </Button>
         </Form.Item>

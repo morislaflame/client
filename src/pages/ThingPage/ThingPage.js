@@ -5,7 +5,7 @@ import { fetchOneThing } from '../../http/thingAPI';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
 import { Context } from '../../index';
 import { FaShoppingCart, FaEdit } from 'react-icons/fa';
-import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, SHOP_ROUTE, TERMS_ROUTE } from '../../utils/consts';
+import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, TERMS_ROUTE } from '../../utils/consts';
 import { observer } from 'mobx-react-lite';
 import { message, Image } from 'antd';
 import OnlyIcon from '../../icons/onlyfans.png';
@@ -145,10 +145,13 @@ const ThingPage = observer(() => {
               <div className={styles.info_str}><span>OF Verified:</span> <div>{thing.info.ofverif}</div></div>
               <div className={styles.info_str}><span>Contract Signed:</span> <div>{thing.info.contract}</div></div>
               <div className={styles.info_str}><span>Does she need account access:</span> <div>{thing.info.girlmsg}</div></div>
+              
             </div>
           )}
         </div>
       </div>
+      
+
 
       {/* Условный рендеринг блока price_n_buy */}
       {thing.status !== 'purchased' && (
@@ -182,16 +185,40 @@ const ThingPage = observer(() => {
 
       {/* Кнопка редактирования для администратора */}
       {isAdmin && (
-        <div className={styles.admin_actions}>
-          <Button
-            type="primary"
-            onClick={() => navigate(`${EDIT_THING_ROUTE}/${thing.id}`)}
-            loading={loading} // Добавлено свойство loading
-          >
-            <FaEdit /> Edit data
-          </Button>
+        <>
+        <div className={styles.admin_info}>
+          <h3>Admin Information</h3>
+          <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center'}}>
+              <div className={styles.info_str}>
+                      <span>Link:</span>
+                      <div><a href={thing.info.link} target="_blank" rel="noopener noreferrer">{thing.info.link}</a></div>
+                    </div>
+              <div className={styles.info_str}>
+                <span>Is Scout Model:</span> <div>{thing.isScoutModel ? 'Yes' : 'No'}</div>
+              </div>
+              {thing.isScoutModel && thing.scout && (
+                <>
+                  <div className={styles.info_str}>
+                    <span>Scout ID:</span> <div>{thing.scout.id}</div>
+                  </div>
+                  <div className={styles.info_str}>
+                    <span>Scout Username:</span> <div>{thing.scout.username}</div>
+                  </div>
+                </>
+              )}
+          </div>
+            <Button
+              type="primary"
+              onClick={() => navigate(`${EDIT_THING_ROUTE}/${thing.id}`)}
+              loading={loading} // Добавлено свойство loading
+            >
+              <FaEdit /> Edit model
+            </Button>
         </div>
+        </>
       )}
+
+
       <FloatButton.BackTop 
         type='dark'
       />

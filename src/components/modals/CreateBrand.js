@@ -4,8 +4,10 @@ import { createBrand } from "../../http/thingAPI";
 
 const CreateBrand = ({ show, onHide }) => {
     const [value, setValue] = useState('');
+    const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
 
     const addBrand = async () => {
+        setLoading(true); // Устанавливаем состояние загрузки в true
         try {
             if (!value.trim()) {
                 message.warning('Пожалуйста, введите название бренда!');
@@ -17,6 +19,8 @@ const CreateBrand = ({ show, onHide }) => {
             onHide();
         } catch (error) {
             message.error('Ошибка при добавлении бренда: ' + (error.response?.data?.message || error.message));
+        } finally {
+            setLoading(false); // Возвращаем состояние загрузки в false
         }
     };
 
@@ -43,7 +47,7 @@ const CreateBrand = ({ show, onHide }) => {
                     <Button onClick={onHide} style={{ marginRight: 8 }}>
                         Закрыть
                     </Button>
-                    <Button type="primary" onClick={addBrand}>
+                    <Button type="primary" onClick={addBrand} loading={loading}>
                         Добавить
                     </Button>
                 </Form.Item>

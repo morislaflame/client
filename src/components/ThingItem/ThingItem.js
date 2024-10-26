@@ -13,9 +13,6 @@ const ThingItem = ({thing}) => {
     const navigate = useNavigate();
 
     const previewImage = thing.images && thing.images.length > 0 ? thing.images[0].img : Placeholder;
-    console.log("Loaded image:", previewImage); // Добавляем console.log для загруженного изображения
-
-    
 
     const brandStyles = {
         1: { color: '#008ccf' },
@@ -34,13 +31,7 @@ const ThingItem = ({thing}) => {
             <div className={'card'}>
                 {thing ? ( // Проверяем, загружен ли контент
                     <>
-                        <img 
-  className={'card_img'} 
-  src={`${process.env.REACT_APP_API_URL}${previewImage}?ngrok-skip-browser-warning=true`} 
-  alt={thing.name}
-/>
-
-                        console.log("")
+                        <img className={'card_img'} src={process.env.REACT_APP_API_URL + previewImage} alt={thing.name}/>
                         <div className="descript">
                             {thing.brands && thing.brands.length > 0 ? (
                                 thing.brands.map(brand => (
