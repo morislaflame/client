@@ -1,27 +1,4 @@
-import axios from 'axios';
-
-const $host = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-    headers: {
-        'ngrok-skip-browser-warning': 'true', // Устанавливаем заголовок ngrok
-        'User-Agent': 'CustomUserAgent/1.0'   // Устанавливаем нестандартный User-Agent
-    }
-});
-
-const $authHost = axios.create({
-    baseURL: process.env.REACT_APP_API_URL,
-    headers: {
-        'ngrok-skip-browser-warning': 'true', // Устанавливаем заголовок ngrok
-        'User-Agent': 'CustomUserAgent/1.0'   // Устанавливаем нестандартный User-Agent
-    }
-});
-
-const authInterceptor = config => {
-    config.headers.authorization = `Bearer ${localStorage.getItem('token')}`;
-    return config;
-};
-
-$authHost.interceptors.request.use(authInterceptor);
+import { $authHost, $host } from "./index";
 
 export const createType = async (type) => {
     const { data } = await $authHost.post('api/type', type);
@@ -51,7 +28,7 @@ export const createThing = async (thing) => {
 export const fetchThings = async (typeId, brandIds, page, limit = 20, minPrice, maxPrice) => {
     console.log("Fetching things with params:", { typeId, brandIds, page, limit, minPrice, maxPrice });
     try {
-        const { data } = await $host.get('api/thing', {
+        const { data } = await $authHost.get('api/thing', {
             params: { typeId, brandIds, page, limit, minPrice, maxPrice }
         });
         console.log("Fetched things:", data);
@@ -68,9 +45,10 @@ export const fetchPriceRange = async () => {
 };
 
 export const fetchOneThing = async (id) => {
-    const { data } = await $host.get('api/thing/' + id);
+    const { data } = await $authHost.get('api/thing/' + id);
     return data;
 };
+
 
 export const addToBasket = async (thingId) => {
     const { data } = await $authHost.post('api/basket/add', { thingId });

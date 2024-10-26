@@ -27,15 +27,20 @@ const ThingPage = observer(() => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    // Прокрутка страницы вверх при монтировании компонента
+    // Scroll to top when the component mounts
     window.scrollTo({ top: 0, behavior: 'smooth' });
-
+  
     fetchOneThing(id).then(data => {
       setThing(data);
-      setLoading(false); // Устанавливаем загрузку в false после получения данных
+      setLoading(false);
     });
-    thingStore.loadBasket();
-  }, [id, thingStore]);
+  
+    // Only load the basket if the user is authenticated
+    if (user.isAuth) {
+      thingStore.loadBasket();
+    }
+  }, [id, thingStore, user.isAuth]); // Added user.isAuth to dependency array
+  
 
   const handleAddToBasket = async () => {
     if (user.isAuth) {
