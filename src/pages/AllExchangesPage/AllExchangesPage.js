@@ -7,6 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { THING_ROUTE } from '../../utils/consts';
 import CopyableButton from '../../components/CopyableButton/CopyableButton'; // Импортируем CopyableButton
 import { FcCancel, FcClock, FcOk } from 'react-icons/fc'; // Импортируем иконки
+import { FloatButton } from 'antd';
 
 const AllExchangesPage = () => {
     const [exchanges, setExchanges] = useState([]);
@@ -93,10 +94,14 @@ const AllExchangesPage = () => {
                                     </span>
                                 )}
                             </span>
+                            
                         </div>
                     </div>
                 ))}
             </div>
+            <FloatButton.BackTop 
+                type='dark'
+            />
         </div>
     );
 };

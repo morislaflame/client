@@ -8,14 +8,16 @@ import FanslyIcon from '../icons/fansly.png';
 import OnlyIcon from '../icons/onlyfans.png';
 import { observer } from 'mobx-react-lite';
 import BackButton from '../components/BackButton/BackButton';
-import { message, Badge } from 'antd';
+import { message, Badge, Spin } from 'antd';
 import { CgCloseO } from "react-icons/cg";
+import { LoadingOutlined } from "@ant-design/icons";
 
 const Basket = observer(() => {
     const { thing } = useContext(Context);
     const navigate = useNavigate();
     const [promoCodeInput, setPromoCodeInput] = useState('');
     const [appliedPromoCode, setAppliedPromoCode] = useState('');
+    const [isApplyingPromo, setIsApplyingPromo] = useState(false); // Состояние для анимации загрузки
 
     useEffect(() => {
         thing.loadBasket();
@@ -45,7 +47,10 @@ const Basket = observer(() => {
             return;
         }
 
+        setIsApplyingPromo(true); // Устанавливаем состояние загрузки в true
         const result = await thing.applyPromoCode(promoCodeToApply);
+        setIsApplyingPromo(false); // Устанавливаем состояние загрузки в false после завершения
+
         if (!result.success) {
             message.error(result.message || 'Error when applying promocode');
         } else {
@@ -172,7 +177,6 @@ const Basket = observer(() => {
             <div className={styles.promo_code_section}>
                 <div className={styles.promocodes}>
                     <h3>Apply Promocode</h3>
-                    {/* Условие, которое проверяет, применен ли промокод */}
                     {appliedPromoCode || thing.promoCode ? (
                         <div className={styles.applied_promocode}>
                             <p>Promocode: {appliedPromoCode || thing.promoCode.code}</p>
@@ -187,25 +191,26 @@ const Basket = observer(() => {
                                 placeholder="Enter promo code"
                                 className={styles.apply_promo_input}
                             />
-                            <button onClick={() => handleApplyPromoCode()}>Apply</button>
+                            <button onClick={() => handleApplyPromoCode()} disabled={isApplyingPromo}>
+                                {isApplyingPromo ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />} /> : 'Apply'}
+                            </button>
                         </>
                     )}
                 </div>
 
-                {/* User's personal promo codes */}
                 <div className={styles.user_promocodes}>
                     {thing.userPromoCodes.length > 0 ? (
                         <div>
                             <h3>Your Promocodes:</h3>
-                            <div>
+                            <div className={styles.user_promocodes_list}>
                                 {thing.userPromoCodes.map(promo => (
                                     <button
                                         key={promo.id}
                                         onClick={() => handleApplyPromoCode(promo.code)}
                                         className={styles.user_promocode_item}
-                                        disabled={appliedPromoCode === promo.code}
+                                        disabled={appliedPromoCode === promo.code || isApplyingPromo}
                                     >
-                                        {appliedPromoCode === promo.code ? `${promo.code} applied` : `${promo.code} $${promo.discountValue}`}
+                                        {isApplyingPromo && appliedPromoCode !== promo.code ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />} /> : (appliedPromoCode === promo.code ? `${promo.code} applied` : `${promo.code} ${promo.isPercentage ? promo.discountValue + '%' : '$' + promo.discountValue}`)}
                                     </button>
                                 ))}
                             </div>
@@ -226,7 +231,6 @@ const Basket = observer(() => {
                     onClick={handlePayment}
                     disabled={thing.basket.some(item => item.status !== 'available')}
                 ></MyButton>
-
             </div>
         </div>
     );

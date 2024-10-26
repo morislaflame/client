@@ -80,7 +80,7 @@ const UserAccount = observer(() => {
         </div>
         <div className={styles.userinfo}>
           <p>
-            {user.user.email || `@${user.user.username}` || `Telegram ID: ${user.user.telegramId}`}
+            {user.user.email || user.user.username || `Telegram ID: ${user.user.telegramId}`}
           </p>
         </div>
       </div>
