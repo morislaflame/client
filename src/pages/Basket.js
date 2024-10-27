@@ -27,6 +27,9 @@ const Basket = observer(() => {
     const handleRemove = async (thingId) => {
         try {
             await thing.removeFromBasket(thingId);
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+              }
         } catch (error) {
             message.error('Error when removing an item from the cart: ' + error.message);
         }
@@ -35,6 +38,9 @@ const Basket = observer(() => {
     const handleClearBasket = async () => {
         try {
             await thing.clearBasket();
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+              }
         } catch (error) {
             message.error('Error when clearing the cart: ' + error.message);
         }
@@ -46,7 +52,9 @@ const Basket = observer(() => {
             message.error('Please enter the promocode');
             return;
         }
-
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
         setIsApplyingPromo(true); // Устанавливаем состояние загрузки в true
         const result = await thing.applyPromoCode(promoCodeToApply);
         setIsApplyingPromo(false); // Устанавливаем состояние загрузки в false после завершения
@@ -61,6 +69,9 @@ const Basket = observer(() => {
 
     const handleRemovePromoCode = async () => {
         await thing.removePromoCode();
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
         setAppliedPromoCode('');
     };
 
@@ -70,6 +81,9 @@ const Basket = observer(() => {
             message.error('Some items are not available for payment. Please remove them from your cart.');
             return;
         }
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
         navigate('/payment', { state: { totalAmount: thing.totalPrice } });
     };
     
