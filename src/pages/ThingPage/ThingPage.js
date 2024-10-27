@@ -48,6 +48,10 @@ const ThingPage = observer(() => {
       try {
         await thingStore.addToBasket(id);
         message.success('Added to cart');
+
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+          window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+        }
       } catch (error) {
         const errorMessage = error.response?.data?.message || error.message;
         message.error('Error adding to cart: ' + errorMessage);
