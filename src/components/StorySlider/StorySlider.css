@@ -1,6 +1,10 @@
 .story-slider {
-    width: 100%;
+    width: 50%;
     margin: 0 0 calc(var(--index) * 2) 0;
+    position: absolute;
+    z-index: 100;
+    top: calc(var(--index) * 1.5);
+    left: 25vw;
 }
 
 .story-group {
@@ -9,7 +13,7 @@
 }
 
 .story-slider .carousel-inner {
-    width: 50%;
+    width: 90%;
 }
 
 .carousel {
@@ -31,8 +35,8 @@
 }
 
 .story-card img {
-    width: calc(var(--index)* 3.5);
-    height: calc(var(--index)* 3.5);
+    width: calc(var(--index)* 3);
+    height: calc(var(--index)* 3);
     border-radius: 50%;
     object-fit: cover; 
     object-position: center; 
@@ -163,6 +167,10 @@
 .story-slider {
     width: 100%;
     margin: 0 0 calc(var(--index) * 2) 0;
+    position: relative;
+    width: 100%;
+    left: 0;
+    top: 0;
 }
 
 .story-group {
