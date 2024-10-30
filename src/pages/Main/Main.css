@@ -124,7 +124,7 @@
   }
 
   .infoBar {
-    width: 70%;
+    width: 60%;
     padding: calc(var(--index) * 0.5);
     display: flex; 
     gap: calc(var(--index)* 0.5);
@@ -186,7 +186,7 @@
   }
 
   .advantages {
-    padding: calc(var(--index) * 1);
+    padding: calc(var(--index) * 2);
     margin-top: calc(var(--index) * 6);
     display: flex;
     gap: calc(var(--index) * 3);
