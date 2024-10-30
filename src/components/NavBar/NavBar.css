@@ -20,7 +20,7 @@
 
 .menu {
     display: flex;
-    gap: calc(var(--index) * 1);
+    gap: calc(var(--index) * 0.5);
 }
 
 .navbar-toggler {
@@ -56,6 +56,10 @@
 
     .navbar-brand img {
         width: calc(var(--index) * 10);
+    }
+
+    .menu {
+        gap: calc(var(--index) * 1);
     }
 
     .nav-link {

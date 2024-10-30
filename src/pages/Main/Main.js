@@ -22,27 +22,29 @@ export default function Main() {
       <Suspense fallback={<Skeleton active />}>
         <StorySlider />
       </Suspense>
-      <div className='mainPhoto'>
-        <div className='mainArticle'>
-          <h1>YOUR MODEL MARKETPLACE</h1>
-          <h3>Here you can buy models for OnlyFans and other platforms (Please check available platforms on the creator's card)</h3>
-        </div>
-      </div>
-      <div className='skeleton'></div>
-      <div className='infoBox'>
-        <div className='infoBar'>
-          <div className='article'>
-            <span>Our marketplace was created according to the expectations of our customers about reliability and quality</span>
+        <div className='mainPhoto'>
+          <div className='mainArticle'>
+            <h1>YOUR MODEL MARKETPLACE</h1>
+            <h3>Here you can buy models for OnlyFans and other platforms (Please check available platforms on the creator's card)</h3>
           </div>
-          <div className='perfomance'>
-            <span>
-            An agency cannot exist without models, and finding a responsible and honest content creator is usually expensive and time-consuming.
-            Therefore, in order to reduce your costs for finding quality models, we have created a platform that makes it easy for you to find the right partner to earn money together <br />
-              Welcome to <strong>THE MODEL'S HOTEL!</strong>
-            </span>
+          <div className='infoBox'>
+          <div className='skeleton'/>
+          <div className='infoBar'>
+            <div className='article'>
+              <span>Our marketplace was created according to the expectations of our customers about reliability and quality</span>
+            </div>
+            <div className='perfomance'>
+              <span>
+                An agency cannot exist without models, and finding a responsible and honest content creator is usually expensive and time-consuming.
+                Therefore, in order to reduce your costs for finding quality models, we have created a platform that makes it easy for you to find the right partner to earn money together <br />
+                  Welcome to <strong>THE MODEL'S HOTEL!</strong>
+              </span>
+            </div>
           </div>
         </div>
-
+        </div>
+        
+        
         <div className='advantages'>
           <div className='advList'>
             <div className='advListTop'>
@@ -72,7 +74,7 @@ export default function Main() {
           </div>
         </div>
         <div className='go-shop'><MyButton text="Go to store" onClick={handleClick} /></div>
-      </div>
+
 
       <Suspense fallback={<Skeleton active />}>
         <ProductSlider />
@@ -83,6 +85,7 @@ export default function Main() {
       </Suspense>
       <h2 className='Faq'>FAQ</h2>
       <FaqAccordion />
+
     </div>
   );
 }

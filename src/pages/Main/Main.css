@@ -17,66 +17,69 @@
   }
 
 .mainPhoto {
-    width: 100%;
-    height: 60vh;
-    background: 
-    radial-gradient(ellipse at right center, #1d0142, transparent, transparent), 
-    radial-gradient(ellipse at left center, #36013b, transparent, transparent);
-    background-size: cover;
+  margin-top: calc(var(--index)* 2);
+  width: 100%;
+  height: auto;
+  background-size: cover;
     background-position: center;
     display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
     z-index: 1 ;
+    background: 
+    radial-gradient(ellipse at right center, #1d0142, transparent, transparent), 
+    radial-gradient(ellipse at left center, #36013b, transparent, transparent);
 }
 
 .skeleton {
   width: 100%;
-  height: calc(var(--index)* 13);
+  height: calc(var(--index)* 8);
   bottom: calc(var(--index) * 0);
   background: url('../../icons/main.png') no-repeat center bottom;
   background-size: contain;
 }
 
   .mainArticle {
-    width: 60%;
-    /* height: 100%; */
+    width: 70%;
     display: flex; 
     align-items: center; 
     flex-direction: column;
-    /* background-color: black; */
     z-index: 10;
     color: white;
     text-align: center;
   }
 
   .mainArticle h1 {
-    font-size: calc(var(--index) * 3.5);
+    font-size: calc(var(--index) * 3);
     font-weight: 900;
   }
 
   .mainArticle h3 {
+
     text-align: center;
-    font-size: calc(var(--index) * 1);
-    margin-top: calc(var(--index) * 0.5);
+    font-size: calc(var(--index) * 0.8);
     padding: calc(var(--index) * 1) calc(var(--index) * 3);
   }
 
   @media (max-width: 600px) {
     .mainPhoto {
+      margin-top: 0;
+      width: 100%;
       height: auto;
+      background: none;
     }
   
     .mainArticle {
-      background: 
-      radial-gradient(ellipse at right center, #1d0142, transparent, transparent), 
-      radial-gradient(ellipse at left center, #36013b, transparent, transparent);
       width: 100%;
       padding: calc(var(--index) * 2);
+      background: 
+    radial-gradient(ellipse at right center, #1d0142, transparent, transparent), 
+    radial-gradient(ellipse at left center, #36013b, transparent, transparent);
     }
 
     .mainArticle h1 {
+      font-size: calc(var(--index) * 4);
       margin: 0;
     }
 
@@ -87,25 +90,34 @@
     }
 
     .skeleton {
-      width: 100%;
+      width: 120%;
       height: calc(var(--index)* 15);
-      bottom: calc(var(--index) * 0);
-      background: url('../../icons/main.png') no-repeat center bottom;
-      background-size: contain;
+    }
+  }
+
+  .mainInfo {
+    display: flex;
+    width: 100%;
+    justify-content: space-around;
+  }
+
+  @media (max-width: 600px) {
+    .mainInfo {
+      flex-direction: column;
     }
   }
 
   .infoBox {
-    margin-top: 20px;
-    width: 100%;
-    min-height: 100vh;
-    display: flex; 
+    width: 80%;
+    display: flex;
     flex-direction: column;
     align-items: center;
+    align-self: center;
   }
 
   @media (max-width: 600px) {
     .infoBox {
+      width: 100%;
       margin: 0;
       padding: 0 calc(var(--index) * 3) calc(var(--index) * 3) calc(var(--index) * 3);
     }
@@ -113,13 +125,9 @@
 
   .infoBar {
     width: 70%;
-  }
-
-  @media (max-width: 600px) {
-    .infoBar {
-      width: 100%;
-      padding: 20px;
+    padding: calc(var(--index) * 0.5);
     display: flex; 
+    gap: calc(var(--index)* 0.5);
     flex-direction: column;
     align-items: center;
     justify-items: center;
@@ -132,21 +140,26 @@
         0 0 10px #fedada36, 
         0 0 15px #fedada36;
     border-width: 3px;
-    border-radius: 10px;
+    border-radius: calc(var(--index) * 1);
     z-index: 30;
+  }
+
+  @media (max-width: 600px) {
+    .infoBar {
+      width: 100%;
+      padding: calc(var(--index) * 1);
     }
   }
 
   .article {
-    padding: 15px;
+    padding: calc(var(--index) * 1);
     background-color: white;
     color: black;
-    width: 700px;
     height: fit-content;
-    font-size: 1em;
+    font-size: calc(var(--index) * 0.7);
     font-weight: 700;
     text-align: center;
-    border-radius: 10px;
+    border-radius: calc(var(--index) * 1);
   }
 
   @media (max-width: 600px) {
@@ -157,39 +170,60 @@
   }
 
   .perfomance {
-    padding: 15px;
+    padding: calc(var(--index) * 0.5);
     color: white;
     width: 100%;
     height: fit-content;
-    font-size: 1em;
+    font-size: calc(var(--index) * 0.7);
     font-weight: 500;
     text-align: center;
-    border-radius: 20px;
   }
 
   @media (max-width: 600px) {
     .perfomance{
-      padding: 15px 0 0 0;
       font-size: calc(var(--index) * 1);
     }
   }
 
   .advantages {
-    padding: 20px;
+    padding: calc(var(--index) * 1);
+    margin-top: calc(var(--index) * 6);
     display: flex;
-    flex-direction: column;
     gap: calc(var(--index) * 3);
+    width: 100%;
   }
 
   @media (max-width: 600px) {
     .advantages {
-      padding: calc(var(--index) * 4) 0 calc(var(--index) * 2) 0;
+      padding: 0 calc(var(--index)* 3) calc(var(--index)* 3) calc(var(--index)* 3);
+      margin-top: 0;
       font-size: calc(var(--index) * 1);
+      width: 100%;
+      flex-direction: column;
     }
   }
 
   .advList {
-    margin-top: 25px;
+    color: white;
+    width: 50%;
+    height: fit-content;
+    font-weight: 500;
+    text-align: center;
+    border-radius: calc(var(--index) * 1);
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    flex-direction: column;
+  }
+
+  @media (max-width: 600px) {
+    .advList{
+      padding: 15px 0 0 0;
+      width: 100%;
+      flex-direction: column;
+      font-size: calc(var(--index) * 1);
+      width: 100%;
+      margin-top: 25px;
     color: white;
     width: 80vw;
     height: fit-content;
@@ -199,30 +233,40 @@
     border-radius: 12px;
     display: flex; 
     justify-content: center;
-    align-items: center; 
-  }
-
-  @media (max-width: 600px) {
-    .advList{
-      padding: 15px 0 0 0;
-      flex-direction: column;
-      font-size: calc(var(--index) * 1);
-      width: 100%;
+    align-items: center;
     }
   }
 
   .advListTop {
     width: 100%;
-    height: calc(var(--index) * 15);
+    height: calc(var(--index) * 10);
     display: flex;
     justify-content: left;
     align-items: center;
+    position: relative;
+  }
+
+  @media (max-width: 600px) {
+    .advListTop{
+      width: 100%;
+      height: calc(var(--index) * 15);
+    }
   }
 
   .advListTop h3 {
+    font-size: calc(var(--index) * 1.5);
     position: absolute;
     right: calc(var(--index) * 4);
     font-weight: 600;
+  }
+
+  @media (max-width: 600px) {
+    .advListTop h3 {
+      position: absolute;
+      width: fit-content;
+      right: calc(var(--index) * 2);
+      font-size: calc(var(--index) * 2);
+    }
   }
 
   .art {
@@ -241,7 +285,7 @@
 
   .pic {
     width: 40%;
-    height: 150px;
+    height: calc(var(--index) * 10);
     padding: 10px;
     background: url('../../icons/girls2.jpg') no-repeat center center;
     background-size: cover;
@@ -259,33 +303,55 @@
   }
 
   .txt {
-    padding: 10px;
+    padding: calc(var(--index) * 1);
+    width: 100%;
     display: flex;
     flex-direction: column;
     z-index: 30;
+    font-size: calc(var(--index) * 0.7);
+    margin-top: calc(var(--index) * 1);
   }
 
   @media (max-width: 600px) {
     .txt{
       text-align: left;
+      width: 100%;
       padding: calc(var(--index) * 3) 0 0 0;
-
+      padding: 10px;
+      display: flex;
+    flex-direction: column;
+    z-index: 30;
+    font-size: calc(var(--index) * 1);
     }
   }
 
-
   .advListTop2 {
     width: 100%;
-    height: calc(var(--index) * 15);
+    height: calc(var(--index) * 10);
     display: flex;
     justify-content: left;
     align-items: center;
+    position: relative;
+  }
+
+  @media (max-width: 600px) {
+    .advListTop2{
+      height: calc(var(--index) * 15);
+    }
   }
 
   .advListTop2 h3 {
     position: absolute;
-    left: calc(var(--index) * 5.5);
+    left: calc(var(--index) * 4);
     font-weight: 600;
+    margin: 0;
+  }
+
+  @media (max-width: 600px) {
+    .advListTop2 h3 {
+      left: calc(var(--index) * 2);
+      font-size: calc(var(--index) * 2);
+    }
   }
 
   .art2 {
@@ -304,7 +370,7 @@
 
   .pic2 {
     width: 40%;
-    height: 150px;
+    height: calc(var(--index) * 10);
     padding: 10px;
     background: url('../../icons/middleman.jpg') no-repeat center center;
     background-size: cover;
