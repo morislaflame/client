@@ -18,25 +18,25 @@
 
 .mainPhoto {
     width: 100%;
-    height: 95vh;
-    /* background: 
-    linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 1)); */
+    height: 60vh;
+    background: 
+    radial-gradient(ellipse at right center, #1d0142, transparent, transparent), 
+    radial-gradient(ellipse at left center, #36013b, transparent, transparent);
     background-size: cover;
     background-position: center;
     display: flex;
     flex-direction: column;
-    justify-content: right;
+    justify-content: center;
     align-items: center;
     z-index: 1 ;
 }
 
 .skeleton {
-    height: 70vh;
-    width: 60%;
-    left: 0;
-    background: url('../../icons/main.png');
-    background-size: cover; /* Заднее фото покрывает весь контейнер */
-    background-position: center;
+  width: 100%;
+  height: calc(var(--index)* 13);
+  bottom: calc(var(--index) * 0);
+  background: url('../../icons/main.png') no-repeat center bottom;
+  background-size: contain;
 }
 
   .mainArticle {
@@ -65,8 +65,7 @@
 
   @media (max-width: 600px) {
     .mainPhoto {
-      flex-direction: column;
-      height: calc(var(--index) * 39);
+      height: auto;
     }
   
     .mainArticle {
@@ -78,9 +77,7 @@
     }
 
     .mainArticle h1 {
-      font-size: calc(var(--index) * 3.5);
       margin: 0;
-      
     }
 
     .mainArticle h3 {
@@ -91,10 +88,9 @@
 
     .skeleton {
       width: 100%;
-      height: calc(var(--index)* 20);
+      height: calc(var(--index)* 15);
       bottom: calc(var(--index) * 0);
-      z-index: -1;
-      background: url('../../icons/main.png') no-repeat center center;
+      background: url('../../icons/main.png') no-repeat center bottom;
       background-size: contain;
     }
   }
@@ -110,7 +106,7 @@
 
   @media (max-width: 600px) {
     .infoBox {
-      margin: calc(var(--index) * -2) 0;
+      margin: 0;
       padding: 0 calc(var(--index) * 3) calc(var(--index) * 3) calc(var(--index) * 3);
     }
   }

@@ -27,9 +27,8 @@ export default function Main() {
           <h1>YOUR MODEL MARKETPLACE</h1>
           <h3>Here you can buy models for OnlyFans and other platforms (Please check available platforms on the creator's card)</h3>
         </div>
-        <div className='skeleton'></div>
       </div>
-
+      <div className='skeleton'></div>
       <div className='infoBox'>
         <div className='infoBar'>
           <div className='article'>
