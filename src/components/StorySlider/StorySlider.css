@@ -3,7 +3,7 @@
     margin: 0 0 calc(var(--index) * 2) 0;
     position: absolute;
     z-index: 100;
-    top: calc(var(--index) * 1.5);
+    top: calc(var(--index) * 0.7);
     left: 25vw;
 }
 
@@ -35,8 +35,8 @@
 }
 
 .story-card img {
-    width: calc(var(--index)* 3);
-    height: calc(var(--index)* 3);
+    width: calc(var(--index)* 2.8);
+    height: calc(var(--index)* 2.8);
     border-radius: 50%;
     object-fit: cover; 
     object-position: center; 
@@ -57,6 +57,7 @@
 
 .modal {
     display: flex !important;
+    justify-content: center;
 }
 
 .modal-dialog {

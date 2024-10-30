@@ -19,7 +19,7 @@
 }
 
 .video.loaded {
-    /* height: 80vh; */
+    max-height: 90vh;
 }
 
 .video_loading_indicator {
