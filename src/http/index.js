@@ -5,14 +5,14 @@ const $host = axios.create({
 });
 
 // Add the ngrok header to $host
-$host.defaults.headers.common['ngrok-skip-browser-warning'] = 'true';
+// $host.defaults.headers.common['ngrok-skip-browser-warning'] = 'true';
 
 const $authHost = axios.create({
   baseURL: process.env.REACT_APP_API_URL
 });
 
 // Add the ngrok header to $authHost
-$authHost.defaults.headers.common['ngrok-skip-browser-warning'] = 'true';
+// $authHost.defaults.headers.common['ngrok-skip-browser-warning'] = 'true';
 
 const authInterceptor = config => {
   config.headers.authorization = `Bearer ${localStorage.getItem('token')}`;
