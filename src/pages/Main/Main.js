@@ -24,7 +24,7 @@ export default function Main() {
       </Suspense>
       <div className='mainPhoto'>
         <div className='mainArticle'>
-          <h1>EXPRESS MODEL MARKETPLACE</h1>
+          <h1>YOUR MODEL MARKETPLACE</h1>
           <h3>Here you can buy models for OnlyFans and other platforms (Please check available platforms on the creator's card)</h3>
         </div>
         <div className='skeleton'></div>
