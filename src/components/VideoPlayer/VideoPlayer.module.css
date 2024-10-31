@@ -11,7 +11,7 @@
     width: 100%;
     object-fit: cover;
     object-position: center;
-    border-radius: calc(var(--index)* 1.5);
+    border-radius: calc(var(--index)* 1);
 }
 
 .video.loading {
@@ -19,7 +19,7 @@
 }
 
 .video.loaded {
-    max-height: 90vh;
+    height: 100%;
 }
 
 .video_loading_indicator {

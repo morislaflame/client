@@ -80,6 +80,9 @@ const PaymentPage = () => {
       message.error('Error in payment processing');
       console.error('Error in payment processing:', error);
     } finally {
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+      }
       setIsConfirming(false); // Устанавливаем состояние загрузки в false после завершения
     }
   };

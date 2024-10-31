@@ -27,6 +27,9 @@ const NavBar = observer(() => {
 
     const logOut = () => {
         user.logout(); 
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+          }
         navigate(LOGIN_ROUTE); 
     };
 

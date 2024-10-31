@@ -50,7 +50,7 @@ const ThingPage = observer(() => {
         message.success('Added to cart');
 
         if (window.Telegram?.WebApp?.HapticFeedback) {
-          window.Telegram.WebApp.HapticFeedback.impactOccurred('hard');
+          window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
         }
       } catch (error) {
         const errorMessage = error.response?.data?.message || error.message;

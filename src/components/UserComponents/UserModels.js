@@ -26,6 +26,9 @@ const UserModels = observer(({ handleShow }) => {
   }, [user, exchange, returnStore]);
 
   const handleDropdownVisibleChange = useCallback((flag, thingId) => {
+    if (window.Telegram?.WebApp?.HapticFeedback) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    }
     setOpenDropdowns((prevState) => ({
       ...prevState,
       [thingId]: flag,
@@ -34,6 +37,9 @@ const UserModels = observer(({ handleShow }) => {
 
   const handleMenuClick = useCallback(
     (action, thingItem) => {
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+      }
       if (action === 'exchange') {
         navigate(`/exchange/${thingItem.id}`);
       } else if (action === 'return') {
@@ -67,6 +73,7 @@ const UserModels = observer(({ handleShow }) => {
         },
       ],
     }),
+    
     [handleMenuClick]
   );
 

@@ -28,6 +28,9 @@ const CopyableButton = ({
         console.error('Copy error:', err);
         message.error('Failed to copy');
       });
+      if (window.Telegram?.WebApp?.HapticFeedback) {
+        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+      }
   };
 
   return (

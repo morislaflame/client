@@ -25,6 +25,9 @@ const UserAccount = observer(() => {
   const handleShowReturnModal = useCallback((thing) => {
     setSelectedThing(thing);
     setShowReturnModal(true);
+    if (window.Telegram?.WebApp?.HapticFeedback) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+    }
   }, []);
 
   const handleExchangeRequest = useCallback((thingItem) => {

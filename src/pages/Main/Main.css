@@ -264,7 +264,7 @@
     .advListTop h3 {
       position: absolute;
       width: fit-content;
-      right: calc(var(--index) * 2);
+      right: calc(var(--index) * 1.5);
       font-size: calc(var(--index) * 2);
     }
   }
@@ -396,6 +396,13 @@
   .go-shop {
     margin: calc(var(--index)* 2) 0;
     display: flex;
-    width: 95vw;
+    width: 40vw;
     justify-content: center;
+    align-self: center;
+  }
+
+  @media (max-width: 600px) {
+    .go-shop {
+      width: 100vw;
+    }
   }

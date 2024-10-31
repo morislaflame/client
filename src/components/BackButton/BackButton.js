@@ -3,7 +3,6 @@ import { Button, Flex } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import { SHOP_ROUTE } from '../../utils/consts';
 import styles from './BackButton.module.css';
-import { HiArrowLongLeft } from "react-icons/hi2";
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 
 
@@ -15,6 +14,9 @@ export default function BackButton() {
       navigate(-1);
     } else {
       navigate(SHOP_ROUTE);
+    }
+    if (window.Telegram?.WebApp?.HapticFeedback) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
     }
   };
 

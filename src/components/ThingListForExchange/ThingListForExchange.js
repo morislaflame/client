@@ -37,6 +37,9 @@ const ThingListForExchange = observer(({ selectedThingId, onSelectThing }) => {
     const handleSelect = (thingId) => {
         const newSelectedThingId = selectedThingId === thingId ? null : thingId;
         onSelectThing(newSelectedThingId); 
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+          }
     };
 
     return (

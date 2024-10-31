@@ -55,14 +55,15 @@ const ExchangePage = observer(() => {
         exchange.loadUserExchangeRequests(); // Загрузка запросов на обмен пользователя
     }, [thingId, thing, exchange]);
 
-    // Удален useEffect для загрузки товаров
 
-    // Отслеживаем изменение выбранного товара и управляем отображением Offcanvas
     useEffect(() => {
         if (selectedThingId) {
             // Загружаем информацию о выбранном товаре
             fetchOneThing(selectedThingId).then(data => {
                 setSelectedThing(data);
+                if (window.Telegram?.WebApp?.HapticFeedback) {
+                    window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+                  }
                 setShowOffcanvas(true);
             });
         } else {
@@ -159,6 +160,9 @@ const ExchangePage = observer(() => {
             console.error('Error when creating an exchange request:', e);
             message.error('Error when creating an exchange request');
         } finally {
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+              }
             setIsSubmitting(false); // Устанавливаем состояние загрузки в false после завершения
         }
     };

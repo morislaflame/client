@@ -12,6 +12,9 @@ const BrandBar = observer(() => {
         } else {
             thing.setSelectedBrands([...thing.selectedBrands, brand.id]);
         }
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+        }
     };
 
     return (

@@ -4,3 +4,7 @@
     left: 4px;
     font-size: calc(var(--index) * 3);
 }
+
+.backbutton:hover {
+    color: #515151 !important;
+}

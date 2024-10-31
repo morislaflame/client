@@ -21,6 +21,9 @@ const SideBar = observer(({ name, ...props }) => {
         thing.setSelectedType({});
         thing.setSelectedBrands([]);
         thing.setPriceRange({ min: 0, max: 10000 });
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+          }
     };
 
     const hasFilters =

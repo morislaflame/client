@@ -18,6 +18,9 @@ const TypeBar = observer(() => {
         if (selectedType) {
             thing.setSelectedType(selectedType);
         }
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+        }
     };
 
     return (
