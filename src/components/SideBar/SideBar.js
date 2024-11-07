@@ -4,7 +4,6 @@ import TypeBar from '../TypeBar/TypeBar';
 import BrandBar from '../BrandBar/BrandBar';
 import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useState, useContext } from 'react';
-import MyButton from '../MyButton/MyButton';
 import './SideBar.css';
 import PriceSlider from '../PriceSlider/PriceSlider';
 import SelectedFilters from '../SelectedFilters/SelectedFilters';
@@ -15,7 +14,12 @@ const SideBar = observer(({ name, ...props }) => {
     const { thing } = useContext(Context);
 
     const handleClose = () => setShow(false);
-    const toggleShow = () => setShow((s) => !s);
+    const toggleShow = () => {
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+        }
+        setShow((s) => !s );
+    };
 
     const handleReset = () => {
         thing.setSelectedType({});

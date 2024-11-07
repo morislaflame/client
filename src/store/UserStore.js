@@ -1,5 +1,22 @@
 import {makeAutoObservable, action, runInAction } from "mobx";
-import { fetchUsers, getUserByEmail, changeUserRole, deleteUser, getUserById, fetchMyInfo, fetchMyPurchasedThings, telegramAuth } from "../http/userAPI";
+import { 
+    fetchUsers, 
+    getUserByEmail, 
+    changeUserRole, 
+    deleteUser, 
+    getUserById, 
+    fetchMyInfo, 
+    fetchMyPurchasedThings, 
+    telegramAuth, 
+    createThingAsSeller, 
+    fetchSellerThings, 
+    updateThingAsSeller, 
+    deleteThingAsSeller, 
+    fetchPendingThings, 
+    approveThing, 
+    rejectThing, 
+    deleteThingAsAdmin 
+} from "../http/userAPI";
 
 import { fetchUserExchangeRequests, createExchangeRequest } from "../http/exchangeAPI"; // Добавьте необходимые методы
 
@@ -12,8 +29,12 @@ export default class UserStore {
         this._userInfo = null
         this._loading = true
         this._purchasedThings = [];
+        this._sellerThings = [];
+        this._pendingThings = [];
         makeAutoObservable(this, 
             {
+                setIsAuth: action,
+                setUser: action,
                 setUsers: action,
                 fetchAllUsers: action,
                 updateUserRole: action,
@@ -24,6 +45,17 @@ export default class UserStore {
                 setUserInfo: action,
                 setLoading: action,
                 loadPurchasedThings: action,
+                setSellerThings: action,
+                setPendingThings: action,
+                fetchSellerThings: action,
+                createThing: action,
+                updateThing: action,
+                deleteThing: action,
+                fetchPendingThings: action,
+                approveThing: action,
+                rejectThing: action,
+                deleteThingAsAdmin: action,
+                logout: action,
             }
         )
     }
@@ -55,6 +87,13 @@ export default class UserStore {
     setLoading(loading) {
         this._loading = loading;
     }
+    setSellerThings(things) {
+        this._sellerThings = things;
+    }
+    setPendingThings(things) {
+        this._pendingThings = things;
+    }
+
 
     logout() {
         console.log("Logging out");  // Логируем выход из аккаунта
@@ -186,6 +225,103 @@ export default class UserStore {
         }
     }
 
+    async fetchSellerThings() {
+        try {
+            const data = await fetchSellerThings();
+            runInAction(() => {
+                this.setSellerThings(data);
+            });
+        } catch (error) {
+            console.error("Error fetching seller things:", error);
+        }
+    }
+
+    async createThing(formData) {
+        try {
+            const data = await createThingAsSeller(formData);
+            runInAction(() => {
+                this._sellerThings.push(data.thing);
+            });
+            return data;
+        } catch (error) {
+            console.error("Error creating thing:", error);
+            throw error;
+        }
+    }
+
+    async updateThing(thingId, formData) {
+        try {
+            const data = await updateThingAsSeller(thingId, formData);
+            runInAction(() => {
+                const index = this._sellerThings.findIndex(thing => thing.id === thingId);
+                if (index !== -1) {
+                    this._sellerThings[index] = data.thing;
+                }
+            });
+            return data;
+        } catch (error) {
+            console.error("Error updating thing:", error);
+            throw error;
+        }
+    }
+
+    async deleteThing(thingId) {
+        try {
+            await deleteThingAsSeller(thingId);
+            runInAction(() => {
+                this._sellerThings = this._sellerThings.filter(thing => thing.id !== thingId);
+            });
+        } catch (error) {
+            console.error("Error deleting thing:", error);
+            throw error;
+        }
+    }
+
+
+    async fetchPendingThings() {
+        try {
+            const data = await fetchPendingThings();
+            runInAction(() => {
+                this.setPendingThings(data);
+            });
+        } catch (error) {
+            console.error("Error fetching pending things:", error);
+        }
+    }
+
+    async approveThing(thingId) {
+        try {
+            await approveThing(thingId);
+            runInAction(() => {
+                this._pendingThings = this._pendingThings.filter(thing => thing.id !== thingId);
+            });
+        } catch (error) {
+            console.error("Error approving thing:", error);
+        }
+    }
+
+    async rejectThing(thingId, rejectionReason) {
+        try {
+            await rejectThing(thingId, rejectionReason);
+            runInAction(() => {
+                this._pendingThings = this._pendingThings.filter(thing => thing.id !== thingId);
+            });
+        } catch (error) {
+            console.error("Error rejecting thing:", error);
+        }
+    }
+
+    async deleteThingAsAdmin(thingId) {
+        try {
+            await deleteThingAsAdmin(thingId);
+            runInAction(() => {
+                this._pendingThings = this._pendingThings.filter(thing => thing.id !== thingId);
+            });
+        } catch (error) {
+            console.error("Error deleting thing as admin:", error);
+        }
+    }
+
     get users() {
         return this._users;
     }
@@ -211,5 +347,12 @@ export default class UserStore {
     get purchasedThings() {
         return this._purchasedThings;
       }
+
+    get sellerThings() {
+        return this._sellerThings;
+    }
+    get pendingThings() {
+        return this._pendingThings;
+    }
 }
 

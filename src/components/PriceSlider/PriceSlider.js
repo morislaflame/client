@@ -29,7 +29,7 @@ const PriceSlider = observer(() => {
     const handleSliderChange = (value) => {
         setCurrentPriceRange(value);
         if (window.Telegram?.WebApp?.HapticFeedback) {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
           }
         console.log(`Price range changed: ${value}`);
     };

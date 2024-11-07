@@ -70,4 +70,53 @@ export const fetchMyPurchasedThings = async () => {
   return data;
 };
 
+// Добавление товара продавцом
+export const createThingAsSeller = async (formData) => {
+    const { data } = await $authHost.post('api/seller/things', formData);
+    return data;
+};
+
+// Обновление товара продавцом
+export const updateThingAsSeller = async (thingId, formData) => {
+    const { data } = await $authHost.put(`api/seller/things/${thingId}`, formData);
+    return data;
+};
+
+// Удаление товара продавцом
+export const deleteThingAsSeller = async (thingId) => {
+    const { data } = await $authHost.delete(`api/seller/things/${thingId}`);
+    return data;
+};
+
+// Получение списка товаров продавца
+export const fetchSellerThings = async () => {
+    const { data } = await $authHost.get('api/seller/things');
+    return data;
+};
+
+
+
+// Получение товаров, ожидающих модерации
+export const fetchPendingThings = async () => {
+    const { data } = await $authHost.get('api/thing/admin/pending');
+    return data;
+};
+
+// Одобрение товара
+export const approveThing = async (thingId) => {
+    const { data } = await $authHost.put(`api/thing/admin/${thingId}/approve`);
+    return data;
+};
+
+// Отклонение товара
+export const rejectThing = async (thingId, rejectionReason) => {
+    const { data } = await $authHost.put(`api/thing/admin/${thingId}/reject`, { rejectionReason });
+    return data;
+};
+
+// Удаление товара администратором
+export const deleteThingAsAdmin = async (thingId) => {
+    const { data } = await $authHost.delete(`api/thing/${thingId}`);
+    return data;
+};
 

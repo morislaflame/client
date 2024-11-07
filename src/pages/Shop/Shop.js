@@ -54,6 +54,7 @@ const Shop = observer(() => {
       
       <FloatButton.BackTop 
         type='dark'
+        duration={100}
       />
     </div>
   );
