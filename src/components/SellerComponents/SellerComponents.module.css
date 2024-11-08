@@ -1,0 +1,96 @@
+.name_price {
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+    align-items: center;
+    padding: calc(var(--index) * 1) calc(var(--index) * 0.6);
+    border-bottom: 1px solid #97959566;
+    font-size: calc(var(--index)* 1.4);
+}
+
+.name_heel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: calc(var(--index) * 0.5);
+}
+
+.my_things {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--index) * 2);
+}
+
+.my_things h3 {
+    text-align: center;
+    margin-bottom: 0;
+}
+
+.things_list {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: calc(var(--index) * 1);
+    padding: calc(var(--index) * 1) calc(var(--index) * 2);
+}
+
+.thing_item {
+    background: linear-gradient(280deg, #7617a1, #030107);
+    padding: calc(var(--index) * 0.5);
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+}
+
+.thing_item:first-child {
+    border-top-left-radius: calc(var(--index) * 1);
+    border-top-right-radius: calc(var(--index) * 1);
+}
+
+.thing_item:last-child {
+    border-bottom-left-radius: calc(var(--index) * 1);
+    border-bottom-right-radius: calc(var(--index) * 1);
+}
+
+.thing_image {
+    width: calc(var(--index) * 8);
+    height: calc(var(--index)* 10);
+    object-fit: cover;
+    border-radius: calc(var(--index) * 0.7) 0 0 calc(var(--index) * 0.7);
+    z-index: 100;
+    cursor: pointer;
+}
+
+.thing_details {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 0 calc(var(--index) * 0.7) calc(var(--index) * 0.7) 0;
+    padding: calc(var(--index) * 0.6);
+    color: white;
+    font-size: calc(var(--index) * 1.5);
+    background-color: #151515;
+    border-top: 1px solid #7f7e7e66;
+    box-shadow: 
+        0 0 2px black, 
+        0 0 5px #000000a3, 
+        0 0 10px #000000a3;
+}
+
+.dropdownmenusection {
+    display: flex;
+    width: 100%;
+    justify-content: end;
+}
+
+.dropdownmenu {
+    background: linear-gradient(150deg, #ac57ed, #6b3ce6);
+    color: #fff;
+    padding: calc(var(--index) * 0.5) calc(var(--index) * 1.2);
+    border-radius: calc(var(--index) * 0.7);
+    display: flex;
+    align-items: center;
+}

@@ -145,7 +145,7 @@ const handleValuesChange = (changedValues, allValues) => {
     <div className={styles.edit_page}>
       <div className={styles.topic_back}>
         <BackButton />
-        <h2>Редактирование модели</h2>
+        <h2>Editing</h2>
       </div>
       
       <Form
@@ -241,8 +241,6 @@ const handleValuesChange = (changedValues, allValues) => {
           </Form.Item>
         )}
 
-
-        <h3>Информация о модели</h3>
         {infoFields.map(field => (
           <Form.Item
             key={field.name}

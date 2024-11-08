@@ -22,6 +22,8 @@ import {
     EXCHANGE_ROUTE,
     EDIT_THING_ROUTE, 
     ALL_EXCHANGES_ROUTE,
+    SELLER_ACCOUNT_ROUTE,
+    EDIT_SELLER_MODEL_ROUTE,
 } from "./utils/consts";
 import Main from "./pages/Main/Main";
 import TermsOfService from "./pages/TermsOfService/TermsOfService";
@@ -35,6 +37,8 @@ import AllReturnsPage from "./pages/AllReturnPage/AllReturnPage";
 import ExchangePage from "./pages/ExchangePage/ExchangePage";
 import ThingEditPage from "./pages/ThingEditPage/ThingEditPage"; // Добавьте эту строку
 import AllExchangesPage from "./pages/AllExchangesPage/AllExchangesPage";
+import SellerAccount from "./pages/SellerAccount/SellerAccount";
+import EditSellerModel from "./pages/EditSellerModel/EditSellerModel";
 
 
 
@@ -93,6 +97,19 @@ export const authRoutes = (user) => {
         });
     } else {
         console.log("User is not admin");
+    }
+
+    if (user && user.role === 'SELLER') {
+        console.log("User is seller, adding seller routes");
+        routes.push({
+            path: SELLER_ACCOUNT_ROUTE,
+            Component: <SellerAccount />
+        });
+        routes.push({
+            path: EDIT_SELLER_MODEL_ROUTE + '/:id',
+            Component: <EditSellerModel />
+        });
+        // Добавьте остальные маршруты продавца, если необходимо
     }
 
     return routes;

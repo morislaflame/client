@@ -1,0 +1,252 @@
+import React, { useContext, useState, useEffect, useCallback } from "react";
+import { Button, Modal, Form, Input, InputNumber, Select, Row, Col, message, AutoComplete } from 'antd';
+import { Context } from "../../../index";
+import { fetchBrands, fetchTypes } from '../../../http/thingAPI'; // Импортируем только необходимые функции
+import { observer } from "mobx-react-lite";
+import ImageUploader from '../../ImageUploader/ImageUploader';
+
+const { Option } = Select;
+
+const CreateSellerModel = observer(({ show, onHide }) => {
+    const { thing, user } = useContext(Context);
+    const [form] = Form.useForm();
+    const [files, setFiles] = useState([]);
+    const [info, setInfo] = useState([]);
+    const [selectedBrands, setSelectedBrands] = useState([]);
+    const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
+
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                const typesData = await fetchTypes();
+                thing.setTypes(typesData);
+    
+                const brandsData = await fetchBrands();
+                thing.setBrands(brandsData);
+            } catch (error) {
+                message.error('Ошибка при загрузке данных: ' + error.message);
+            }
+        };
+        loadData();
+    }, [thing]);
+
+    const addInfo = () => {
+        setInfo(prevInfo => [
+            ...prevInfo,
+            {
+                age: '',
+                smartphone: '',
+                percent: '',
+                time: '',
+                english: '',
+                content: '',
+                contract: '',
+                start: '',
+                socialmedia: '',
+                tiktok: '',
+                cblocked: '',
+                ofverif: '',
+                link: '',
+                girlmsg: '',
+                number: Date.now(),
+            },
+        ]);
+    };
+
+    const removeInfo = useCallback((number) => {
+        setInfo(prevInfo => prevInfo.filter(i => i.number !== number));
+    }, []);
+
+    const changeInfo = useCallback((key, value, number) => {
+        setInfo(prevInfo =>
+            prevInfo.map(i => (i.number === number ? { ...i, [key]: value } : i))
+        );
+    }, []);
+
+    const handleBrandChange = (value) => {
+        setSelectedBrands(thing.brands.filter(brand => value.includes(brand.id)));
+    };
+
+    const handleTypeSelect = (value, option) => {
+        form.setFieldsValue({ typeId: option.id });
+    };
+
+    const addThing = async () => {
+        setLoading(true); // Устанавливаем состояние загрузки в true
+        try {
+            const values = await form.validateFields();
+
+            if (files.length === 0) {
+                setLoading(false);
+                return message.warning('Добавьте хотя бы одно изображение!');
+            }
+
+            const requiredFields = [
+                'age',
+                'smartphone',
+                'percent',
+                'time',
+                'english',
+                'content',
+                'contract',
+                'start',
+                'socialmedia',
+                'tiktok',
+                'cblocked',
+                'ofverif',
+                'link',
+                'girlmsg',
+            ];
+
+            for (let i of info) {
+                for (let field of requiredFields) {
+                    if (!i[field]?.toString().trim()) {
+                        setLoading(false);
+                        message.warning('Заполните все поля информации!');
+                        return;
+                    }
+                }
+            }
+
+            const formData = new FormData();
+            formData.append('name', values.name);
+            formData.append('price', values.price);
+            formData.append('typeId', values.typeId);
+            formData.append('info', JSON.stringify(info));
+
+            const brandIds = selectedBrands.map(b => b.id);
+            formData.append('brandIds', JSON.stringify(brandIds));
+
+            files.forEach(file => {
+                formData.append('img', file);
+            });
+
+            // Используем метод из UserStore для создания модели от имени продавца
+            await user.createThing(formData);
+            message.success('Модель успешно добавлена!');
+            onHide();
+            form.resetFields();
+            setFiles([]);
+            setInfo([]);
+            setSelectedBrands([]);
+        } catch (error) {
+            if (error.errorFields) {
+                message.error('Пожалуйста, заполните все обязательные поля!');
+            } else {
+                message.error('Ошибка при добавлении модели: ' + error.message);
+            }
+        } finally {
+            setLoading(false); // Возвращаем состояние загрузки в false
+        }
+    };
+
+    const typeOptions = thing.types.map(type => ({
+        value: type.name,
+        id: type.id,
+    }));
+
+    return (
+        <Modal
+            open={show}
+            onCancel={onHide}
+            footer={null}
+            centered
+            title="Добавить новую модель"
+            width={800}
+        >
+            <Form form={form} layout="vertical">
+                <Form.Item
+                    label="Страна"
+                    name="typeId"
+                    rules={[{ required: true, message: 'Пожалуйста, выберите страну!' }]}
+                >
+                    <AutoComplete
+                        options={typeOptions}
+                        placeholder="Начните вводить страну"
+                        onSelect={(value, option) => handleTypeSelect(value, option)}
+                        filterOption={(inputValue, option) =>
+                            option.value.toLowerCase().includes(inputValue.toLowerCase())
+                        }
+                    />
+                </Form.Item>
+
+                <Form.Item
+                    name="brandIds"
+                    label="Выберите платформы"
+                    rules={[{ required: true, message: 'Пожалуйста, выберите платформы' }]}
+                >
+                    <Select
+                        mode="multiple"
+                        placeholder="Выберите платформы"
+                        onChange={handleBrandChange}
+                    >
+                        {thing.brands.map(brand => (
+                            <Option value={brand.id} key={brand.id}>
+                                {brand.name}
+                            </Option>
+                        ))}
+                    </Select>
+                </Form.Item>
+                <Form.Item
+                    name="name"
+                    label="Имя Модели"
+                    rules={[{ required: true, message: 'Пожалуйста, введите имя модели' }]}
+                >
+                    <Input placeholder="Введите имя модели" />
+                </Form.Item>
+                <Form.Item
+                    name="price"
+                    label="Цена модели"
+                    rules={[{ required: true, message: 'Пожалуйста, введите цену модели!' }]}
+                >
+                    <InputNumber
+                        placeholder="Введите цену модели"
+                        min={0}
+                        style={{ width: '100%' }}
+                    />
+                </Form.Item>
+
+                <Form.Item label="Изображения">
+                    <ImageUploader images={files} setImages={setFiles} />
+                </Form.Item>
+                <Button type="dashed" onClick={addInfo} block style={{ marginBottom: '20px' }}>
+                    Добавить информацию
+                </Button>
+                {info.map(i => (
+                    <div key={i.number} style={{ marginBottom: '20px', border: '1px solid #f0f0f0', padding: '10px' }}>
+                        <Row gutter={16}>
+                            {/* Поля информации */}
+                            <Col span={12}>
+                                <Form.Item label="Возраст">
+                                    <Input
+                                        value={i.age}
+                                        onChange={e => changeInfo('age', e.target.value, i.number)}
+                                        placeholder="Возраст"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            {/* Добавьте остальные поля аналогично */}
+                            {/* ... */}
+                            <Col span={24}>
+                                <Button
+                                    type="danger"
+                                    onClick={() => removeInfo(i.number)}
+                                    block
+                                >
+                                    Удалить информацию
+                                </Button>
+                            </Col>
+                        </Row>
+                    </div>
+                ))}
+                <Form.Item>
+                    <Button type="primary" onClick={addThing} block loading={loading}>
+                        Добавить
+                    </Button>
+                </Form.Item>
+            </Form>
+        </Modal>
+    );
+});
+
+export default CreateSellerModel;

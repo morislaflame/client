@@ -273,7 +273,7 @@
 }
 
 .ladies {
-    background-color: #151515;
+    background-color: #151515ed;
     padding: calc(var(--index) * 0.6);
     border-radius: calc(var(--index) * 1);
     display: flex;

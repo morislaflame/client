@@ -163,7 +163,7 @@ const ThingPage = observer(() => {
 
 
       {/* Условный рендеринг блока price_n_buy */}
-      {thing.status !== 'purchased' && (
+      {thing.status === 'available' && thing.moderationStatus === 'approved' && (
         <div className={styles.price_n_buy}>
           <div className={styles.inside}>
             <span className={styles.price}>${thing.price}</span>

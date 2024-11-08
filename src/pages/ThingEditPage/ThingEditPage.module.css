@@ -2,8 +2,8 @@
     display: flex;
     flex-direction: column;
     padding: calc(var(--index) * 1);
-    color: black;
-    background-color: white;
+    color: white;
+    background-color: #030107;
 }
 
 .topic_back {
@@ -12,6 +12,10 @@
     justify-content: center;
     align-items: center;
     margin-bottom: calc(var(--index) * 1);
+}
+
+.topic_back h2 {
+    margin: 0 !important;
 }
 
 .photo {

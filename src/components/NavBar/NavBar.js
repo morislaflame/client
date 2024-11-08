@@ -6,7 +6,7 @@ import Navbar from 'react-bootstrap/Navbar';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import { FaShoppingCart, FaUserAlt  } from 'react-icons/fa';
-import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE, SHOP_ROUTE, PRIVACY_ROUTE, TERMS_ROUTE, MAIN_ROUTE } from '../../utils/consts';
+import { LOGIN_ROUTE, ADMIN_ROUTE, BASKET_ROUTE, USER_ACCOUNT_ROUTE, SHOP_ROUTE, PRIVACY_ROUTE, TERMS_ROUTE, SELLER_ACCOUNT_ROUTE } from '../../utils/consts';
 import './NavBar.css';
 import { FaTelegram } from "react-icons/fa6";
 import EMM from '../../icons/EMM2.png';
@@ -44,6 +44,15 @@ const NavBar = observer(() => {
                 <div className='menu'>
                     {user.isAuth && (
                         <>
+                        {user.user.role === 'SELLER' && (
+                            <Button
+                                className='seller-account'
+                                variant="outline-light"
+                                onClick={() => navigate(SELLER_ACCOUNT_ROUTE)}
+                            >
+                                <FaUserGroup />
+                            </Button>
+                        )}
                             <Button
                                 className='shopping-cart'
                                 variant="outline-light"
