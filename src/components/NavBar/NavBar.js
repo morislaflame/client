@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../index';
 import Button from 'react-bootstrap/Button';
 import Nav from 'react-bootstrap/Nav';
@@ -13,10 +13,11 @@ import EMM from '../../icons/EMM2.png';
 import { IoShieldCheckmarkSharp } from "react-icons/io5";
 import { FaCartShopping } from "react-icons/fa6";
 import { FaUserGroup } from "react-icons/fa6";
+import Menu from '../Menu/Menu';
 
 const NavBar = observer(() => {
     const { user, thing } = useContext(Context);
-    
+    const [drawerOpen, setDrawerOpen] = useState(false);
     const navigate = useNavigate();
 
 
@@ -83,7 +84,8 @@ const NavBar = observer(() => {
                             <Button
                                 className='user-account'
                                 variant="outline-light"
-                                onClick={() => navigate(USER_ACCOUNT_ROUTE)}
+                                onClick={() => setDrawerOpen(true)}
+                                // onClick={() => navigate(USER_ACCOUNT_ROUTE)}
                             >
                                 <FaUserAlt />
                             </Button>
@@ -137,6 +139,7 @@ const NavBar = observer(() => {
                     </div>
                 </Navbar.Collapse>
             </div>
+            <Menu open={drawerOpen} onClose={() => setDrawerOpen(false)} />
         </Navbar>
     );
 });

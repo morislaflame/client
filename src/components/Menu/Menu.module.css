@@ -1,0 +1,29 @@
+.links_container {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--index) * 0.5);
+    margin-top: calc(var(--index) * 1.5);
+    
+}
+
+.menuLink {
+    color: white;
+    text-decoration: none;
+    font-size: calc(var(--index) * 0.7);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: calc(var(--index) * 0.5);
+}
+
+
+@media (max-width: 768px) {
+    .links_container {
+        gap: calc(var(--index) * 1);
+        margin-top: calc(var(--index) * 3);
+    }
+
+    .menuLink {
+        font-size: calc(var(--index) * 1.3);
+    }
+}
