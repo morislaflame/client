@@ -54,7 +54,7 @@
     align-items: center;
     padding: calc(var(--index) * 0.5);
     border-radius: calc(var(--index) * 1);
-    background-color: #111111;
+    background-color: #151515;
     width: 100%;
 }
 
@@ -98,7 +98,7 @@
 }
 
 .review_body {
-    background: linear-gradient(to bottom, #111111c4, black);
+    background: linear-gradient(to bottom, #151515, black);
     border-bottom-left-radius: calc(var(--index) * 1) !important;
     border-bottom-right-radius: calc(var(--index) * 1) !important;
     display: flex;

@@ -16,6 +16,7 @@ import { FaUserGroup } from "react-icons/fa6";
 
 const NavBar = observer(() => {
     const { user, thing } = useContext(Context);
+    
     const navigate = useNavigate();
 
 

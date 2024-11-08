@@ -42,7 +42,7 @@ iframe {
 }
 
 .ant-select-filled:not(.ant-select-customize-input) .ant-select-selector {
-  background: #25252552;
+  background: #151515;
   border: 1px solid transparent;
   color: rgba(255, 255, 255, 0.562);
   text-align: center;
@@ -66,7 +66,7 @@ iframe {
 }
 
 .ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
-  background: #25252552;
+  background: #151515;
   border: 0;
   color: rgb(255 255 255 / 74%);
   text-align: center;

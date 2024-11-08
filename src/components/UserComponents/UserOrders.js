@@ -72,7 +72,7 @@ const UserOrders = observer(({ orders, sliderSettings }) => {
                     {orderItem.order_things.map((item) => (
                       <div className={styles.name_price} key={item.id}>
                         <div className={styles.name_heel}>
-                          <GiHighHeel />
+                          {/* <GiHighHeel /> */}
                           model: <b>{item.thing.name}</b>
                         </div>
                         <span>${item.thing.price}</span>

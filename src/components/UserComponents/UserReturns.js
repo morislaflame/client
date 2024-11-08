@@ -72,7 +72,7 @@ const UserReturns = observer(({ returns, sliderSettings, isAdminView = false }) 
                       <div className={styles.ladies}>
                         <div className={styles.name_price}>
                           <div className={styles.name_heel}>
-                            <GiHighHeel />
+                            {/* <GiHighHeel /> */}
                             model: <b>{returnItem.thing ? returnItem.thing.name : 'Unknown'}</b>
                           </div>
                           <span>${returnItem.thing ? returnItem.thing.price : 'N/A'}</span>

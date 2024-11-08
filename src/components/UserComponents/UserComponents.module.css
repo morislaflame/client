@@ -103,6 +103,7 @@
     object-fit: cover;
     border-radius: calc(var(--index) * 0.7) 0 0 calc(var(--index) * 0.7);
     z-index: 100;
+    cursor: pointer;
 }
 
 .thing_details {
@@ -115,7 +116,7 @@
     padding: calc(var(--index) * 0.6);
     color: white;
     font-size: calc(var(--index) * 1.5);
-    background-color: #111111;
+    background-color: #151515;
     border-top: 1px solid #7f7e7e66;
     box-shadow: 
         0 0 2px black, 
@@ -229,7 +230,7 @@
 }
 
 .order_item {
-    background-color: #111111;
+    background-color: #151515;
     color: white;
     padding: calc(var(--index) * 0.8);
     display: flex;
@@ -272,7 +273,7 @@
 }
 
 .ladies {
-    background-color: #111111eb;
+    background-color: #151515;
     padding: calc(var(--index) * 0.6);
     border-radius: calc(var(--index) * 1);
     display: flex;
@@ -349,7 +350,7 @@
 }
 
 .exchange_item {
-    background-color: #111111;
+    background-color: #151515;
     color: white;
     padding: calc(var(--index)* 0.8);
     display: flex;
@@ -411,7 +412,7 @@
 }
 
 .old_new {
-    background-color: #111111eb;
+    background-color: #151515;
     color: white;
     padding: calc(var(--index) * 0.5);
     display: flex;

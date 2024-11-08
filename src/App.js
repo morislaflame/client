@@ -5,9 +5,8 @@ import NavBar from './components/NavBar/NavBar';
 import { observer } from 'mobx-react-lite';
 import { Context } from './index';
 import { check, telegramAuth } from './http/userAPI';
-import Spinner from 'react-bootstrap/Spinner';
+import './App.css';
 import Chat from './components/ChatForm/ChatForm';
-import { postEvent, retrieveLaunchParams } from '@telegram-apps/sdk-react';
 import Footer from './components/Footer/Footer';
 import LoadingIndicator from './components/LoadingIndicator/LoadingIndicator';
 
@@ -57,7 +56,7 @@ const App = observer(() => {
   if (loading) {
     return (
       <div className='loading'>
-        <Spinner animation="grow" />
+        <LoadingIndicator />
       </div>
     );
   }

@@ -119,7 +119,7 @@ const UserModels = observer(({ handleShow }) => {
                 <div className={styles.thing_details}>
                   <div className={styles.name_price}>
                     <div className={styles.name_heel}>
-                      <GiHighHeel />
+                      {/* <GiHighHeel /> */}
                       <span>{thingItem.name}</span>
                     </div>
                     <span>${thingItem.price}</span>
