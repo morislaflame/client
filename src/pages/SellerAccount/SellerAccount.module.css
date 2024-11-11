@@ -1,0 +1,119 @@
+.sellerAccount {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: 0 calc(var(--index) * 2);
+    gap: calc(var(--index) * 2);
+    color: white;
+    min-height: 100vh;
+}
+
+.sellerAccount h5 {
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: calc(var(--index) * 1.4);
+}
+
+.sellerAccount h2 {
+    margin-bottom: 0;
+    font-size: calc(var(--index) * 2.5);
+    font-weight: bolder;
+}
+
+.sellerAccount h3 {
+    margin-bottom: 0;
+    font-size: calc(var(--index) * 2);
+    font-weight: bold;
+}
+
+.topic_back {
+    display: flex;
+    width: 100%;
+    justify-content: left;
+    align-items: center;
+    gap: calc(var(--index) * 1);
+}
+
+
+.shop_menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    background: linear-gradient(to right bottom, #25032C, #211F25);
+    border-radius: calc(var(--index) * 1);
+    padding: calc(var(--index) * 1);
+}
+
+.shop_name_rating {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    border-bottom: 1px solid #7F7E7E;
+    padding-bottom: calc(var(--index) * 1);
+}
+
+.shop_rating {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--index) * 0.5);
+}
+
+.menu_info {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    margin-top: calc(var(--index) * 1);
+}
+
+.menu_links {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--index) * 0.7);
+}
+
+.menu_link {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--index) * 0.5);
+    color: white;
+    text-decoration: none;
+    font-weight: 400;
+    font-size: calc(var(--index) * 1.2);
+}
+
+.total_info {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--index) * 0.5);
+    background-color: #25032C;
+    padding: calc(var(--index) * 1);
+    border-radius: calc(var(--index) * 1);
+    justify-content: center;
+    align-items: center;
+}
+
+.models {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: calc(var(--index) * 1);
+}
+
+.models_header {
+    display: flex;
+    width: 100%;
+    justify-content: left;
+    align-items: center;
+    gap: calc(var(--index) * 1);
+}
+
+.add_model_button {
+    background-color: #211F25;
+    border: none;
+    color: white;
+    font-weight: 500;
+    font-size: calc(var(--index) * 1.2);
+    padding: calc(var(--index) * 0.3) calc(var(--index) * 2);
+    border-radius: calc(var(--index) * 0.7);
+}

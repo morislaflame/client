@@ -113,3 +113,9 @@ b, strong {
 .ant-drawer .ant-drawer-close {
   color: rgb(255 255 255 / 45%);
 }
+
+.ant-tag.ant-tag-blue {
+  color: #4d8cf2;
+  background: #51affb1f;
+  border-color: #4b657e;
+}

@@ -1,96 +1,130 @@
-.name_price {
+.seller_thing_list {
     display: flex;
-    width: 90%;
+    flex-wrap: wrap;
     justify-content: space-between;
-    align-items: center;
-    padding: calc(var(--index) * 1) calc(var(--index) * 0.6);
-    border-bottom: 1px solid #97959566;
-    font-size: calc(var(--index)* 1.4);
-}
-
-.name_heel {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: calc(var(--index) * 0.5);
-}
-
-.my_things {
-    display: flex;
-    flex-direction: column;
-    gap: calc(var(--index) * 2);
-}
-
-.my_things h3 {
-    text-align: center;
-    margin-bottom: 0;
-}
-
-.things_list {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: calc(var(--index) * 1);
-    padding: calc(var(--index) * 1) calc(var(--index) * 2);
-}
-
-.thing_item {
-    background: linear-gradient(280deg, #7617a1, #030107);
-    padding: calc(var(--index) * 0.5);
-    display: flex;
-    flex-direction: row;
     width: 100%;
 }
 
-.thing_item:first-child {
+
+/* SellerThingItem.css */
+
+.card_list {
+    width: 48%;
+    padding: calc(var(--index) * 1) 0;
+}
+
+.seller_card {
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: calc(var(--index) * 1);
+    cursor: pointer;
+    background-color: #211F25;
+  }
+
+  .seller_card_image_wrapper {
+    width: 100%;
+  }
+  
+  .seller_card_image {
+    width: 100%;
+    height: calc(var(--index) * 18);
     border-top-left-radius: calc(var(--index) * 1);
     border-top-right-radius: calc(var(--index) * 1);
-}
-
-.thing_item:last-child {
-    border-bottom-left-radius: calc(var(--index) * 1);
-    border-bottom-right-radius: calc(var(--index) * 1);
-}
-
-.thing_image {
-    width: calc(var(--index) * 8);
-    height: calc(var(--index)* 10);
-    object-fit: cover;
-    border-radius: calc(var(--index) * 0.7) 0 0 calc(var(--index) * 0.7);
-    z-index: 100;
-    cursor: pointer;
-}
-
-.thing_details {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: 0 calc(var(--index) * 0.7) calc(var(--index) * 0.7) 0;
-    padding: calc(var(--index) * 0.6);
-    color: white;
-    font-size: calc(var(--index) * 1.5);
-    background-color: #151515;
-    border-top: 1px solid #7f7e7e66;
-    box-shadow: 
-        0 0 2px black, 
-        0 0 5px #000000a3, 
-        0 0 10px #000000a3;
-}
-
-.dropdownmenusection {
+    object-fit: cover; 
+    object-position: center; 
+  }
+  
+  .seller_card_content {
+    padding: 0 calc(var(--index) * 1) calc(var(--index) * 1);
     display: flex;
     width: 100%;
-    justify-content: end;
-}
+    flex-direction: column;
+    align-items: center;
+    gap: calc(var(--index)* 1);
+  }
 
-.dropdownmenu {
-    background: linear-gradient(150deg, #ac57ed, #6b3ce6);
-    color: #fff;
-    padding: calc(var(--index) * 0.5) calc(var(--index) * 1.2);
-    border-radius: calc(var(--index) * 0.7);
+  .brand_name {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 calc(var(--index) * 1) calc(var(--index) * 1);
+    gap: calc(var(--index) * 0.7);
+    border-bottom: 1px solid #d2d2d266;
+  }
+
+  .seller_card_brands {
     display: flex;
     align-items: center;
-}
+    justify-content: space-around;
+    width: 100%;
+  }
+  
+  .seller_brand_icon {
+    width: calc(var(--index) * 1.6); 
+    height: auto;
+  }
+  
+  .seller_card_header {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .seller_card_header span {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--index) * 0.5);
+    color: white;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: calc(var(--index) * 1.4);
+  }
+
+  .moderation_status {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .moderation_status span {
+    font-size: calc(var(--index) * 1.2);
+    margin-inline-end: 0;
+  }
+  
+  .action_buttons {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    font-size: calc(var(--index) * 1.2);
+    gap: calc(var(--index) * 1);
+    /* padding: calc(var(--index) * 1) 0; */
+  }
+
+  .edit_button {
+    background-color: #ffffff21;
+    color: white;
+    border: none;
+    padding: calc(var(--index)* 0.2) calc(var(--index)* 1);
+    border-radius: calc(var(--index)* 0.5);
+    width: 50%;
+  }
+
+  .delete_button {
+    background-color: #ff030321;
+    color: white;
+    border: none;
+    padding: calc(var(--index)* 0.2) calc(var(--index)* 1);
+    border-radius: calc(var(--index)* 0.5);
+    width: 50%;
+  }
+
+  
+  
+  

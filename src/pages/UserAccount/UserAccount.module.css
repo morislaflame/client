@@ -16,7 +16,6 @@
 }
 
 
-
 .user {
     padding: calc(var(--index) * 1);
     margin: 0 calc(var(--index) * 2);

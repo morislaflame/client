@@ -225,8 +225,117 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                                     />
                                 </Form.Item>
                             </Col>
-                            {/* Добавьте остальные поля аналогично */}
-                            {/* ... */}
+                            <Col span={12}>
+                                <Form.Item label="Смартфон">
+                                    <Input
+                                        value={i.smartphone}
+                                        onChange={e => changeInfo('smartphone', e.target.value, i.number)}
+                                        placeholder="Смартфон"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label="Процент">
+                                    <Input
+                                        value={i.percent}
+                                        onChange={e => changeInfo('percent', e.target.value, i.number)}
+                                        placeholder="Процент"
+                                        suffix="%"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label="Время">
+                                    <Input
+                                        value={i.time}
+                                        onChange={e => changeInfo('time', e.target.value, i.number)}
+                                        placeholder="Время"
+                                        suffix="hours"
+                                    />
+                                </Form.Item>
+                            </Col>
+                            <Col span={12}>
+                                <Form.Item label="Английский">
+                                    <Input
+                                        value={i.english}
+                                        onChange={e => changeInfo('english', e.target.value, i.number)}
+                                        placeholder="Английский"
+                                        suffix="/10"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Контент">
+                                    <Input
+                                        value={i.content}
+                                        onChange={e => changeInfo('content', e.target.value, i.number)}
+                                        placeholder="Контент"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Контракт">
+                                    <Input
+                                        value={i.contract}
+                                        onChange={e => changeInfo('contract', e.target.value, i.number)}
+                                        placeholder="Контракт"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Когда начнет">
+                                    <Input
+                                        value={i.start}
+                                        onChange={e => changeInfo('start', e.target.value, i.number)}
+                                        placeholder="Старт"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Соц. сети">
+                                    <Input
+                                        value={i.socialmedia}
+                                        onChange={e => changeInfo('socialmedia', e.target.value, i.number)}
+                                        placeholder="Соц. сети"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="ТикТок">
+                                    <Input
+                                        value={i.tiktok}
+                                        onChange={e => changeInfo('tiktok', e.target.value, i.number)}
+                                        placeholder="ТикТок"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Блок. страны">
+                                    <Input
+                                        value={i.cblocked}
+                                        onChange={e => changeInfo('cblocked', e.target.value, i.number)}
+                                        placeholder="Блок. страны"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="OF верификация">
+                                    <Input
+                                        value={i.ofverif}
+                                        onChange={e => changeInfo('ofverif', e.target.value, i.number)}
+                                        placeholder="OF верификация"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Контакт(ссылка)">
+                                    <Input
+                                        value={i.link}
+                                        onChange={e => changeInfo('link', e.target.value, i.number)}
+                                        placeholder="Контакт(ссылка)"
+                                    />
+                                </Form.Item>
+                            </Col><Col span={12}>
+                                <Form.Item label="Доступ к аккаунту?">
+                                    <Input
+                                        value={i.girlmsg}
+                                        onChange={e => changeInfo('girlmsg', e.target.value, i.number)}
+                                        placeholder="доступ"
+                                    />
+                                </Form.Item>
+                            </Col>
                             <Col span={24}>
                                 <Button
                                     type="danger"

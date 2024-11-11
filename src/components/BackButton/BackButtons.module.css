@@ -1,0 +1,9 @@
+.backbutton {
+    color: white;
+    font-size: calc(var(--index) * 2.5);
+    padding: 0;
+}
+
+.backbutton:hover {
+    color: #515151 !important;
+}
