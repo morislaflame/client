@@ -53,7 +53,7 @@
 }
 
 .value {
-    color: #e9e3e3;
+    color: #b3b2b2;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -78,6 +78,6 @@
 }
 
 .noFilters {
-    color: #888888;
+    color: #b3b2b2;
     font-style: italic;
 }

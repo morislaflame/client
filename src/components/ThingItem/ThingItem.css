@@ -24,7 +24,7 @@
     border-radius: calc(var(--index) * 1);
     cursor: pointer;
     border-width: 1px;
-    background-color: #211F25;
+    background: linear-gradient(to right bottom, #2d252f, #211F25, #211923);
     
 }
 

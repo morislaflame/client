@@ -63,7 +63,7 @@ iframe {
 }
 
 .ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
-  background: #211F25;
+  background: #6e6e6e66;
   border: 0;
   color: rgb(255 255 255 / 74%);
   text-align: center;
@@ -97,6 +97,10 @@ b, strong {
 
 .ant-form {
   padding: calc(var(--index) * 1) calc(var(--index) * 1) calc(var(--index) * 1);
+}
+
+.ant-form-item {
+  margin-bottom: calc(var(--index) * 1);
 }
 
 .ant-drawer .ant-drawer-content {
@@ -146,7 +150,7 @@ b, strong {
 
 .ant-collapse .ant-collapse-content {
   color: white;
-  background-color: #211F25;
+  background: linear-gradient(to right bottom, #25032C, #211F25);
   border-top: 1px solid #d2d2d266;
 }
 

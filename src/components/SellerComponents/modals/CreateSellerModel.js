@@ -11,7 +11,23 @@ const CreateSellerModel = observer(({ show, onHide }) => {
     const { thing, user } = useContext(Context);
     const [form] = Form.useForm();
     const [files, setFiles] = useState([]);
-    const [info, setInfo] = useState([]);
+    const [info, setInfo] = useState([{
+        age: '',
+        smartphone: '',
+        percent: '',
+        time: '',
+        english: '',
+        content: '',
+        contract: '',
+        start: '',
+        socialmedia: '',
+        tiktok: '',
+        cblocked: '',
+        ofverif: '',
+        link: '',
+        girlmsg: '',
+        number: Date.now(),
+    }]);
     const [selectedBrands, setSelectedBrands] = useState([]);
     const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
 
@@ -29,33 +45,6 @@ const CreateSellerModel = observer(({ show, onHide }) => {
         };
         loadData();
     }, [thing]);
-
-    const addInfo = () => {
-        setInfo(prevInfo => [
-            ...prevInfo,
-            {
-                age: '',
-                smartphone: '',
-                percent: '',
-                time: '',
-                english: '',
-                content: '',
-                contract: '',
-                start: '',
-                socialmedia: '',
-                tiktok: '',
-                cblocked: '',
-                ofverif: '',
-                link: '',
-                girlmsg: '',
-                number: Date.now(),
-            },
-        ]);
-    };
-
-    const removeInfo = useCallback((number) => {
-        setInfo(prevInfo => prevInfo.filter(i => i.number !== number));
-    }, []);
 
     const changeInfo = useCallback((key, value, number) => {
         setInfo(prevInfo =>
@@ -209,145 +198,130 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                 <Form.Item label="Изображения">
                     <ImageUploader images={files} setImages={setFiles} />
                 </Form.Item>
-                <Button type="dashed" onClick={addInfo} block style={{ marginBottom: '20px' }}>
-                    Добавить информацию
-                </Button>
-                {info.map(i => (
-                    <div key={i.number} style={{ marginBottom: '20px', border: '1px solid #f0f0f0', padding: '10px' }}>
-                        <Row gutter={16}>
-                            {/* Поля информации */}
-                            <Col span={12}>
-                                <Form.Item label="Возраст">
-                                    <Input
-                                        value={i.age}
-                                        onChange={e => changeInfo('age', e.target.value, i.number)}
-                                        placeholder="Возраст"
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label="Смартфон">
-                                    <Input
-                                        value={i.smartphone}
-                                        onChange={e => changeInfo('smartphone', e.target.value, i.number)}
-                                        placeholder="Смартфон"
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label="Процент">
-                                    <Input
-                                        value={i.percent}
-                                        onChange={e => changeInfo('percent', e.target.value, i.number)}
-                                        placeholder="Процент"
-                                        suffix="%"
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label="Время">
-                                    <Input
-                                        value={i.time}
-                                        onChange={e => changeInfo('time', e.target.value, i.number)}
-                                        placeholder="Время"
-                                        suffix="hours"
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col span={12}>
-                                <Form.Item label="Английский">
-                                    <Input
-                                        value={i.english}
-                                        onChange={e => changeInfo('english', e.target.value, i.number)}
-                                        placeholder="Английский"
-                                        suffix="/10"
-                                    />
-                                </Form.Item>
-                            </Col><Col span={12}>
-                                <Form.Item label="Контент">
-                                    <Input
-                                        value={i.content}
-                                        onChange={e => changeInfo('content', e.target.value, i.number)}
-                                        placeholder="Контент"
-                                    />
-                                </Form.Item>
-                            </Col><Col span={12}>
-                                <Form.Item label="Контракт">
-                                    <Input
-                                        value={i.contract}
-                                        onChange={e => changeInfo('contract', e.target.value, i.number)}
-                                        placeholder="Контракт"
-                                    />
-                                </Form.Item>
-                            </Col><Col span={12}>
-                                <Form.Item label="Когда начнет">
-                                    <Input
-                                        value={i.start}
-                                        onChange={e => changeInfo('start', e.target.value, i.number)}
-                                        placeholder="Старт"
-                                    />
-                                </Form.Item>
-                            </Col><Col span={12}>
-                                <Form.Item label="Соц. сети">
-                                    <Input
-                                        value={i.socialmedia}
-                                        onChange={e => changeInfo('socialmedia', e.target.value, i.number)}
-                                        placeholder="Соц. сети"
-                                    />
-                                </Form.Item>
-                            </Col><Col span={12}>
-                                <Form.Item label="ТикТок">
-                                    <Input
-                                        value={i.tiktok}
-                                        onChange={e => changeInfo('tiktok', e.target.value, i.number)}
-                                        placeholder="ТикТок"
-                                    />
-                                </Form.Item>
-                            </Col><Col span={12}>
-                                <Form.Item label="Блок. страны">
-                                    <Input
-                                        value={i.cblocked}
-                                        onChange={e => changeInfo('cblocked', e.target.value, i.number)}
-                                        placeholder="Блок. страны"
-                                    />
-                                </Form.Item>
-                            </Col><Col span={12}>
-                                <Form.Item label="OF верификация">
-                                    <Input
-                                        value={i.ofverif}
-                                        onChange={e => changeInfo('ofverif', e.target.value, i.number)}
-                                        placeholder="OF верификация"
-                                    />
-                                </Form.Item>
-                            </Col><Col span={12}>
-                                <Form.Item label="Контакт(ссылка)">
-                                    <Input
-                                        value={i.link}
-                                        onChange={e => changeInfo('link', e.target.value, i.number)}
-                                        placeholder="Контакт(ссылка)"
-                                    />
-                                </Form.Item>
-                            </Col><Col span={12}>
-                                <Form.Item label="Доступ к аккаунту?">
-                                    <Input
-                                        value={i.girlmsg}
-                                        onChange={e => changeInfo('girlmsg', e.target.value, i.number)}
-                                        placeholder="доступ"
-                                    />
-                                </Form.Item>
-                            </Col>
-                            <Col span={24}>
-                                <Button
-                                    type="danger"
-                                    onClick={() => removeInfo(i.number)}
-                                    block
-                                >
-                                    Удалить информацию
-                                </Button>
-                            </Col>
-                        </Row>
-                    </div>
-                ))}
+                <div style={{ marginBottom: '20px' }}>
+                    <Row gutter={16}>
+                        <Col span={12}>
+                            <Form.Item label="Возраст">
+                                <Input
+                                    value={info[0].age}
+                                    onChange={e => changeInfo('age', e.target.value, info[0].number)}
+                                    placeholder="Возраст"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Смартфон">
+                                <Input
+                                    value={info[0].smartphone}
+                                    onChange={e => changeInfo('smartphone', e.target.value, info[0].number)}
+                                    placeholder="Смартфон"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Процент">
+                                <Input
+                                    value={info[0].percent}
+                                    onChange={e => changeInfo('percent', e.target.value, info[0].number)}
+                                    placeholder="Процент"
+                                    suffix="%"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Время">
+                                <Input
+                                    value={info[0].time}
+                                    onChange={e => changeInfo('time', e.target.value, info[0].number)}
+                                    placeholder="Время"
+                                    suffix="hours"
+                                />
+                            </Form.Item>
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Английский">
+                                <Input
+                                    value={info[0].english}
+                                    onChange={e => changeInfo('english', e.target.value, info[0].number)}
+                                    placeholder="Английский"
+                                    suffix="/10"
+                                />
+                            </Form.Item>
+                        </Col><Col span={12}>
+                            <Form.Item label="Контент">
+                                <Input
+                                    value={info[0].content}
+                                    onChange={e => changeInfo('content', e.target.value, info[0].number)}
+                                    placeholder="Контент"
+                                />
+                            </Form.Item>
+                        </Col><Col span={12}>
+                            <Form.Item label="Контракт">
+                                <Input
+                                    value={info[0].contract}
+                                    onChange={e => changeInfo('contract', e.target.value, info[0].number)}
+                                    placeholder="Контракт"
+                                />
+                            </Form.Item>
+                        </Col><Col span={12}>
+                            <Form.Item label="Когда начнет">
+                                <Input
+                                    value={info[0].start}
+                                    onChange={e => changeInfo('start', e.target.value, info[0].number)}
+                                    placeholder="Старт"
+                                />
+                            </Form.Item>
+                        </Col><Col span={12}>
+                            <Form.Item label="Соц. сети">
+                                <Input
+                                    value={info[0].socialmedia}
+                                    onChange={e => changeInfo('socialmedia', e.target.value, info[0].number)}
+                                    placeholder="Соц. сети"
+                                />
+                            </Form.Item>
+                        </Col><Col span={12}>
+                            <Form.Item label="ТикТок">
+                                <Input
+                                    value={info[0].tiktok}
+                                    onChange={e => changeInfo('tiktok', e.target.value, info[0].number)}
+                                    placeholder="ТикТок"
+                                />
+                            </Form.Item>
+                        </Col><Col span={12}>
+                            <Form.Item label="Блок. страны">
+                                <Input
+                                    value={info[0].cblocked}
+                                    onChange={e => changeInfo('cblocked', e.target.value, info[0].number)}
+                                    placeholder="Блок. страны"
+                                />
+                            </Form.Item>
+                        </Col><Col span={12}>
+                            <Form.Item label="OF верификация">
+                                <Input
+                                    value={info[0].ofverif}
+                                    onChange={e => changeInfo('ofverif', e.target.value, info[0].number)}
+                                    placeholder="OF верификация"
+                                />
+                            </Form.Item>
+                        </Col><Col span={12}>
+                            <Form.Item label="Контакт(ссылка)">
+                                <Input
+                                    value={info[0].link}
+                                    onChange={e => changeInfo('link', e.target.value, info[0].number)}
+                                    placeholder="Контакт(ссылка)"
+                                />
+                            </Form.Item>
+                        </Col><Col span={12}>
+                            <Form.Item label="Доступ к аккаунту?">
+                                <Input
+                                    value={info[0].girlmsg}
+                                    onChange={e => changeInfo('girlmsg', e.target.value, info[0].number)}
+                                    placeholder="доступ"
+                                />
+                            </Form.Item>
+                        </Col>
+                    </Row>
+                </div>
                 <Form.Item>
                     <Button type="primary" onClick={addThing} block loading={loading}>
                         Добавить

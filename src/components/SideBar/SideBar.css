@@ -4,7 +4,7 @@
     align-items: center;
     width: 100%;
     padding: calc(var(--index)* 0.2);
-    background: linear-gradient(to left, #6b3ce6, #ac57ed, transparent);
+    background: linear-gradient(to left, #6b3ce6, #ac57ed, #25032C);
     border-radius: calc(var(--index)* 1);
 }
 
@@ -17,7 +17,7 @@
     border-radius: calc(var(--index)* 0.7);
     color: white;
     font-size: calc(var(--index) * 1.5);
-    background-color: #211F25;
+    background: linear-gradient(to right bottom, #25032C, #211F25);
     /* border-right: 1px solid #7f7e7e66; */
     box-shadow: 0 0 2px black, 0 0 5px #000000a3, 0 0 10px #000000a3;
     font-size: calc(var(--index) * 1.5);
