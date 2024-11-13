@@ -1,8 +1,8 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
+import { Drawer } from 'antd';
 import TypeBar from '../TypeBar/TypeBar';
 import BrandBar from '../BrandBar/BrandBar';
-import Offcanvas from 'react-bootstrap/Offcanvas';
 import { useState, useContext } from 'react';
 import './SideBar.css';
 import PriceSlider from '../PriceSlider/PriceSlider';
@@ -46,30 +46,38 @@ const SideBar = observer(({ name, ...props }) => {
                         </button>
                         {hasFilters && (
                             <button onClick={handleReset} className="reset-filters-button">
-                              Reset filters
-                          </button>
-                          )}
+                                Reset filters
+                            </button>
+                        )}
                     </div>
                 </div>
             </div>
-            <Offcanvas show={show} onHide={handleClose} scroll backdrop placement="top">
-                <Offcanvas.Header>
-                    <Offcanvas.Title>FILTERS</Offcanvas.Title>
-                </Offcanvas.Header>
-                <Offcanvas.Body>
-                    <div className={'sidebar'}>
-                        <div>
-                            <PriceSlider />
-                        </div>
-                        <div>
-                            <BrandBar />
-                        </div>
-                        <div>
-                            <TypeBar />
-                        </div>
+            <Drawer
+                title="FILTERS"
+                placement="top"
+                onClose={handleClose}
+                open={show}
+                height={`auto`}
+                styles={{
+                    body: {
+                        padding: `calc(var(--index)* 1)`,
+                        borderBottomLeftRadius: `calc(var(--index)* 1.5)`,
+                        borderBottomRightRadius: `calc(var(--index)* 1.5)`,
+                    }
+                }}
+            >
+                <div className={'sidebar'}>
+                    <div>
+                        <PriceSlider />
                     </div>
-                </Offcanvas.Body>
-            </Offcanvas>
+                    <div>
+                        <BrandBar />
+                    </div>
+                    <div>
+                        <TypeBar />
+                    </div>
+                </div>
+            </Drawer>
         </>
     );
 });
