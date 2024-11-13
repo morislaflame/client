@@ -42,7 +42,7 @@ const FaqAccordion = () => {
   ];
 
   return (
-    <Collapse defaultActiveKey={['1']}>
+    <Collapse accordion>
       {faqItems.map(item => (
         <Collapse.Panel 
           header={

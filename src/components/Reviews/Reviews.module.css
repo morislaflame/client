@@ -41,6 +41,8 @@
     display: flex !important;
     width: 100% !important;
     justify-content: center;
+    align-items: center;
+    height: 300px;
 }
 
 .review_card {
@@ -56,6 +58,7 @@
     border-radius: calc(var(--index) * 1);
     background-color: #211F25;
     width: 100%;
+    border: none;
 }
 
 .review_main {

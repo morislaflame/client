@@ -16,6 +16,7 @@
     text-align: center;
     cursor: pointer;
     transition: border 0.3s ease;
+    color: white;
   }
   
   .dropzone:hover {

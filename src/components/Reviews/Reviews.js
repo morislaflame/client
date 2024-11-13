@@ -1,22 +1,20 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
-import { Card, Button, Form, Modal, Spinner } from 'react-bootstrap';
 import Slider from 'react-slick';
 import CommentList from '../CommentList/CommentList';
 import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
-import { HiMiniPencilSquare } from "react-icons/hi2";
-import { message, Image } from 'antd'; // Импортируем Image из antd
+import { HiMiniPencilSquare, HiMiniTrash } from "react-icons/hi2";
+import { message, Image, Modal, Card, Button, Form, Input, Spin } from 'antd';
 import styles from './Reviews.module.css'
 import StarRating from '../StarRating/StarRating';
-import { HiMiniTrash } from "react-icons/hi2";
 import StarRatingInput from '../StarRatingInput/StarRatingInput';
 import ImageUploader from '../ImageUploader/ImageUploader';
 import ExpandableText from '../ExpandableText/ExpandableText';
-import { Modal as AntModal } from 'antd'; // Импортируем Modal из antd
 
-const { confirm } = AntModal;
+const { confirm } = Modal;
+const { TextArea } = Input;
 
 const Reviews = observer(() => {
     const { review, user } = useContext(Context);
@@ -95,7 +93,7 @@ const Reviews = observer(() => {
     };
 
     if (review.loading && review.reviews.length === 0) {
-        return <Spinner animation="border" />;
+        return <Spin size="large" />;
     }
 
     const sliderSettings = {
@@ -141,7 +139,7 @@ const Reviews = observer(() => {
             <div className={styles.review_header}>
                 <h2>Reviews</h2>
                 {user.isAuth && (
-                    <button variant="primary" onClick={() => openReviewModal()}>Leave a feedback</button>
+                    <button type="primary" onClick={() => openReviewModal()}>Leave a feedback</button>
                 )}
             </div>
             <div style={{ maxWidth: '100%' }}>
@@ -151,7 +149,7 @@ const Reviews = observer(() => {
                             return (
                                 <div key="loadMore" className={styles.loadmore}>
                                     {review.hasMoreReviews ? (
-                                        <Button variant="secondary" onClick={loadMoreReviews}>Load more</Button>
+                                        <Button style={{color: 'white', background: '#211F25', border: 'none'}} onClick={loadMoreReviews}>Load more</Button>
                                     ) : (
                                         <p>There are no further reviews</p>
                                     )}
@@ -162,7 +160,7 @@ const Reviews = observer(() => {
                                 <div className={styles.reviews_list} key={rev.id}>
                                     <Card className={styles.review_card}>
                                         <div className={styles.review_main}>
-                                            <Card.Header className={styles.review_top}>
+                                            <div className={styles.review_top}>
                                                 <div className={styles.name_time}>
                                                     <strong>{rev.user.email || `@${rev.user.username}` || `Telegram ID: ${rev.user.telegramId}`}</strong> 
                                                     <span>{new Date(rev.createdAt).toLocaleString()}</span>
@@ -170,14 +168,14 @@ const Reviews = observer(() => {
                                                 <div className={styles.edit_button}>
                                                     {(user.user.id === rev.userId || user.user.role === 'ADMIN') && (
                                                         <>
-                                                            <Button variant="dark" onClick={() => openReviewModal(rev)}><HiMiniPencilSquare /></Button>
-                                                            <Button variant="dark" onClick={() => handleDeleteReview(rev.id)}><HiMiniTrash /></Button>
+                                                            <Button type="text" style={{color: 'white', background: '#6e6e6e66'}} onClick={() => openReviewModal(rev)}><HiMiniPencilSquare /></Button>
+                                                            <Button type="text" style={{color: 'white', background: '#6e6e6e66'}} onClick={() => handleDeleteReview(rev.id)}><HiMiniTrash /></Button>
                                                         </>
                                                     )}
                                                 </div>
-                                                <span> <StarRating rating={rev.rating}/> </span>
-                                            </Card.Header>
-                                            <Card.Body className={styles.review_body}>
+                                                <span><StarRating rating={rev.rating}/></span>
+                                            </div>
+                                            <div className={styles.review_body}>
                                                 <ExpandableText text={rev.text} maxHeight={100} style={{width: '70%'}}/>
                                                 <div className={styles.rev_images}>
                                                     {rev.images && rev.images.map((img) => (
@@ -188,17 +186,12 @@ const Reviews = observer(() => {
                                                             className={styles.rev_img}
                                                             width={100}
                                                             style={{ cursor: 'pointer' }}
-                                                            placeholder={<Spinner animation='border'/>}
+                                                            placeholder={<Spin />}
                                                         />
                                                     ))}
                                                 </div>
-                                            </Card.Body>
+                                            </div>
                                         </div>
-                                        
-                                        {/* <Card.Footer className={styles.rev_footer}>
-                                            <CommentList review={rev} />
-                                        </Card.Footer> */}
-                                        
                                     </Card>
                                 </div>
                             );
@@ -207,46 +200,38 @@ const Reviews = observer(() => {
                 </Slider>
             </div>
 
-            {/* Модальное окно для создания/редактирования отзыва */}
             <Modal 
-                className={styles.rev_modal} 
-                dialogClassName={styles.rev_modal_dialog}
-                contentClassName={styles.rev_modal_content}
-                show={showReviewModal} onHide={closeReviewModal}>
-                <Modal.Header className={styles.rev_modal_header}>
-                    <Modal.Title>{editMode ? 'Edit feedback' : 'Write feedback'}</Modal.Title>
-                </Modal.Header>
-                <Modal.Body className={styles.rev_modal_body}>
-                    <Form className={styles.rev_form}>
-                        <Form.Group controlId="formReviewRating" className={styles.rev_modal_stars}>
-                            <StarRatingInput rating={newReviewRating} setRating={setNewReviewRating} />
-                        </Form.Group>
-                        <Form.Group controlId="formReviewText" className={styles.rev_modal_input}>
-                            <div className='skelet'></div>
-                            <Form.Control
-                                as="textarea"
-                                placeholder="Your experience using our service"
-                                rows={3}
-                                value={newReviewText}
-                                onChange={(e) => setNewReviewText(e.target.value)}
-                            />
-                        </Form.Group>
-                        
-
-                        {!editMode && (
-                            <Form.Group controlId="formReviewImages">
-                                <ImageUploader images={reviewImages} setImages={setReviewImages} />
-                            </Form.Group>
-                        )}
-
-                    </Form>
-                </Modal.Body>
-                <Modal.Footer>
-                    <button onClick={closeReviewModal} className={styles.cancel_btn}>Cancel</button>
-                    <button onClick={handleCreateOrEditReview} className={styles.save_btn}>
+                title={editMode ? 'Edit feedback' : 'Write feedback'}
+                open={showReviewModal}
+                onCancel={closeReviewModal}
+                footer={[
+                    <Button key="cancel" onClick={closeReviewModal}>
+                        Cancel
+                    </Button>,
+                    <Button key="submit" type="primary" onClick={handleCreateOrEditReview}>
                         {editMode ? 'Save' : 'Send'}
-                    </button>
-                </Modal.Footer>
+                    </Button>
+                ]}
+            >
+                <Form layout="vertical">
+                    <Form.Item>
+                        <StarRatingInput rating={newReviewRating} setRating={setNewReviewRating} />
+                    </Form.Item>
+                    <Form.Item>
+                        <TextArea
+                            rows={4}
+                            placeholder="Your experience using our service"
+                            value={newReviewText}
+                            onChange={(e) => setNewReviewText(e.target.value)}
+                        />
+                    </Form.Item>
+                    
+                    {!editMode && (
+                        <Form.Item>
+                            <ImageUploader images={reviewImages} setImages={setReviewImages} />
+                        </Form.Item>
+                    )}
+                </Form>
             </Modal>
         </div>
     );
