@@ -164,7 +164,7 @@
 
 .story-slider {
     width: 100%;
-    margin: 0 0 calc(var(--index) * 2) 0;
+    margin: 0 0 calc(var(--index) * 1) 0;
     position: relative;
     width: 100%;
     left: 0;

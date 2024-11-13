@@ -6,7 +6,7 @@ import SellerModels from '../../components/SellerComponents/SellerModels';
 import CreateSellerModel from '../../components/SellerComponents/modals/CreateSellerModel'; // Импортируем модальное окно
 import styles from './SellerAccount.module.css';
 import BackButtons from '../../components/BackButton/Backbuttons';
-import { AiFillStar } from "react-icons/ai";
+import { MdStar } from "react-icons/md";
 import { NavLink } from 'react-router-dom';
 import { SELLER_ACCOUNT_ROUTE } from '../../utils/consts';
 import { GoNote } from "react-icons/go";
@@ -27,8 +27,8 @@ const SellerAccount = observer(() => {
       </div>
       <div className={styles.shop_menu}>
         <div className={styles.shop_name_rating}>
-            <h3>{user.sellerName}</h3>
-            <div className={styles.shop_rating}><h5>5</h5><AiFillStar style={{color: '#FFD700'}} /></div>
+            <h3>SHOP NAME</h3>
+            <div className={styles.shop_rating}><h5>5</h5><MdStar style={{color: '#FFD700'}} /></div>
         </div>
         <div className={styles.menu_info}>
             <div className={styles.menu_links}>

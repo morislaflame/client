@@ -66,7 +66,7 @@ iframe {
 }
 
 .ant-select-outlined:not(.ant-select-customize-input) .ant-select-selector {
-  background: #151515;
+  background: #211F25;
   border: 0;
   color: rgb(255 255 255 / 74%);
   text-align: center;
@@ -115,7 +115,19 @@ b, strong {
 }
 
 .ant-tag.ant-tag-blue {
-  color: #4d8cf2;
-  background: #51affb1f;
-  border-color: #4b657e;
+  color: #0458fe;
+  background: #008dff21;
+  border-color: #008dff21;
+}
+
+.ant-tag.ant-tag-green {
+  color: #37b800;
+  background: #7efc0021;
+  border-color: #7efc0021;
+}
+
+:where(.css-dev-only-do-not-override-qnu6hi).ant-tag.ant-tag-red {
+  color: #da0818;
+  background: #ff110021;
+  border-color: #ff110021;
 }

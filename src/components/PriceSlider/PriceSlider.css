@@ -22,7 +22,7 @@
 }
 
 .min-max {
-    background-color: #111111c4;
+    background-color: #211F25;
     color: white;
     padding: calc(var(--index) * 0.6);
     border-radius: calc(var(--index) * 1);

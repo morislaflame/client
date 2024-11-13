@@ -39,7 +39,7 @@ const SellerThingItem = ({ thing, onEdit, onDelete }) => {
           <img src={process.env.REACT_APP_API_URL + previewImage} alt={thing.name} className={styles.seller_card_image} />
         </div>
         <div className={styles.seller_card_content}>
-          <div className={styles.brand_name}>
+          <div className={styles.brand_name} onClick={() => navigate(THING_ROUTE + "/" + thing.id)}>
             <div className={styles.seller_card_brands}>
               {thing.brands && thing.brands.length > 0 ? (
                 thing.brands.map((brand) => (

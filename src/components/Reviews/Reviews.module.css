@@ -54,7 +54,7 @@
     align-items: center;
     padding: calc(var(--index) * 0.5);
     border-radius: calc(var(--index) * 1);
-    background-color: #151515;
+    background-color: #211F25;
     width: 100%;
 }
 
@@ -74,7 +74,7 @@
     gap: calc(var(--index) * 0.5);
     align-items: end;
     font-size: calc(var(--index) * 1.2);
-    border-bottom: 1px solid #3c3a3a66;
+    border-bottom: 1px solid #d2d2d266;
 } 
 
 .edit_button {
@@ -98,7 +98,7 @@
 }
 
 .review_body {
-    background: linear-gradient(to bottom, #151515, black);
+    background: linear-gradient(to bottom, #211F25, black);
     border-bottom-left-radius: calc(var(--index) * 1) !important;
     border-bottom-right-radius: calc(var(--index) * 1) !important;
     display: flex;
