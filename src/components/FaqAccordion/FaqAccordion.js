@@ -1,5 +1,5 @@
 import React from 'react';
-import { Accordion } from 'react-bootstrap';
+import { Collapse } from 'antd';
 import './FaqAccordion.css';
 
 const FaqAccordion = () => {
@@ -42,20 +42,20 @@ const FaqAccordion = () => {
   ];
 
   return (
-    <Accordion defaultActiveKey="0">
+    <Collapse defaultActiveKey={['1']}>
       {faqItems.map(item => (
-        <Accordion.Item eventKey={item.id.toString()} key={item.id}>
-          <Accordion.Header>
+        <Collapse.Panel 
+          header={
             <div className="acc_item">
               <span>{item.question}</span>
             </div>
-          </Accordion.Header>
-          <Accordion.Body>
-            {item.answer}
-          </Accordion.Body>
-        </Accordion.Item>
+          } 
+          key={item.id}
+        >
+          {item.answer}
+        </Collapse.Panel>
       ))}
-    </Accordion>
+    </Collapse>
   );
 };
 
