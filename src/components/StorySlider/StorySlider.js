@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { fetchStories } from '../../http/storyAPI';
 import Stories from 'react-insta-stories';
-import { message } from 'antd';
+import { Button, message } from 'antd';
 import './StorySlider.css';
 import { AiFillCloseCircle } from 'react-icons/ai';
 
@@ -10,7 +10,7 @@ const StorySlider = () => {
   const [formattedStories, setFormattedStories] = useState([]);
   const [isStoriesVisible, setIsStoriesVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
-  const [currentStory, setCurrentStory] = useState(null); // Новое состояние
+  const [currentStory, setCurrentStory] = useState(null);
 
   useEffect(() => {
     loadStories();
@@ -20,6 +20,7 @@ const StorySlider = () => {
     try {
       const data = await fetchStories();
       setStories(data);
+
       const formatted = data.map((story) => ({
         url: story.video
           ? `${process.env.REACT_APP_API_URL}${story.video}`
@@ -33,14 +34,15 @@ const StorySlider = () => {
         },
         type: story.video ? 'video' : 'image',
         duration: 5000,
-        link: story.link, // Добавляем свойство link
+        link: story.link, // Добавляем link на верхний уровень
       }));
 
-      // Добавляем кастомную историю (если нужно)
-      // formatted.push({
-      //   content: customContent,
-      //   duration: 7000, // Длительность кастомной истории
-      // });
+      // Добавляем кастомную историю
+      formatted.push({
+        content: CustomStoryContent,
+        duration: 7000,
+        link: 'https://example.com', // Ссылка для кастомной истории
+      });
 
       setFormattedStories(formatted);
     } catch (error) {
@@ -49,14 +51,71 @@ const StorySlider = () => {
     }
   };
 
-  // Обработчик начала истории
-  const handleStoryStart = (story, currentIndex) => {
+  const handleStoryStart = (currentIndex, story) => {
+    console.log('Current index in handleStoryStart:', currentIndex);
+    console.log('Current story in handleStoryStart:', story);
     setCurrentStory(story);
   };
 
   const handleCircleClick = (index) => {
     setCurrentIndex(index);
     setIsStoriesVisible(true);
+  };
+
+  // Функция для обработки клика по кнопке в основном компоненте
+  const handleButtonClick = () => {
+    if (currentStory && currentStory.link) {
+      window.open(currentStory.link, '_blank');
+    }
+  };
+
+  // Кастомный контент для кастомной истории
+  const CustomStoryContent = ({ action, isPaused, story }) => {
+    console.log('CustomStoryContent story:', story);
+
+    // Обработчик клика по кнопке внутри кастомной истории
+    const handleCustomButtonClick = () => {
+      if (story.link) {
+        window.open(story.link, '_blank');
+      }
+    };
+
+    return (
+      <div
+        style={{
+          background: 'pink',
+          height: '100%',
+          padding: 20,
+          position: 'relative',
+        }}
+      >
+        <h1 style={{ marginTop: '50%', marginBottom: 0 }}>🌟 Кастомная история 🌟</h1>
+        <p>{isPaused ? 'На паузе' : 'Идёт воспроизведение'}</p>
+        <button onClick={() => action(isPaused ? 'play' : 'pause')}>
+          {isPaused ? 'Продолжить' : 'Пауза'}
+        </button>
+        {/* Кнопка для кастомной истории */}
+        {story.link && (
+          <button
+            onClick={handleCustomButtonClick}
+            style={{
+              position: 'absolute',
+              bottom: 20,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              padding: '10px 20px',
+              backgroundColor: '#007bff',
+              color: '#fff',
+              border: 'none',
+              borderRadius: '5px',
+              cursor: 'pointer',
+            }}
+          >
+            Перейти по ссылке
+          </button>
+        )}
+      </div>
+    );
   };
 
   return (
@@ -81,7 +140,7 @@ const StorySlider = () => {
       {/* Оверлей с историями */}
       {isStoriesVisible && (
         <div className="story-slider-overlay">
-          {/* Кнопка закрытия вне заголовка */}
+          {/* Кнопка закрытия */}
           <div className="close-stories">
             <button
               className="close-stories-button"
@@ -91,15 +150,18 @@ const StorySlider = () => {
             </button>
           </div>
 
-          {/* Оверлей с ссылкой */}
-          {/* {currentStory && currentStory.link && ( */}
-            <div className="story-link-overlay">
-              <a href={currentStory.link} target="_blank" rel="noopener noreferrer">
-                Перейти по ссылке
-              </a>
-            </div>
-          {/* )} */}
+          {/* Кнопка для текущей истории */}
+          {currentStory && currentStory.link && (
+            <Button
+              onClick={handleButtonClick}
+              className="story-link-button"
+              type="primary"
+            >
+              Learn More
+            </Button>
+          )}
 
+          {/* Компонент с историями */}
           <Stories
             stories={formattedStories}
             currentIndex={currentIndex}
@@ -107,7 +169,7 @@ const StorySlider = () => {
             width={`100vw`}
             height={`100vh`}
             onAllStoriesEnd={() => setIsStoriesVisible(false)}
-            onStoryStart={handleStoryStart} // Добавили обработчик
+            onStoryStart={handleStoryStart}
           />
         </div>
       )}

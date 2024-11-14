@@ -96,9 +96,27 @@
 
   .story-link-overlay {
     position: absolute;
-    bottom: 50vh;
+    bottom: 20vh;
     left: 0;
     width: 100%;
-    z-index: 1000;
+    z-index: 1002;
     color: white;
+    display: flex;
+    justify-content: center;
   }
+
+  .story-link-button {
+    position: absolute;
+    bottom: 15vh; /* Настройте по необходимости */
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 1001;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .story-link-button:hover {
+    background-color: #0056b3; /* Цвет при наведении */
+  }
+  
