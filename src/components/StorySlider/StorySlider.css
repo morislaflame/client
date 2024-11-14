@@ -78,11 +78,13 @@
   }
   
   .story-circle {
+    flex: 0 0 auto;
     width: 60px;
     height: 60px;
-    border: 2px solid #1890ff;
+    border: 1px solid #6b3ce6;
+    padding: 3px;
     border-radius: 50%;
-    flex-shrink: 0;
+    margin-right: 10px;
     cursor: pointer;
     overflow: hidden;
   }
@@ -91,6 +93,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: 50%;
   }
   
 
@@ -119,4 +122,30 @@
   .story-link-button:hover {
     background-color: #0056b3; /* Цвет при наведении */
   }
+
+/* Основной контейнер */
+.main-container {
+    max-width: 100%; /* Или установите конкретную ширину, например, 600px */
+    overflow: hidden; /* Предотвращает выход содержимого за пределы контейнера */
+    margin: 0 auto; /* Центрируем контейнер, если задана конкретная ширина */
+  }
+  
+  /* Контейнер с кружочками */
+  .story-circle-container {
+    display: flex;
+    flex-direction: row; /* Располагаем кружочки горизонтально */
+    align-items: center;
+    overflow-x: auto; /* Включаем горизонтальную прокрутку при переполнении */
+    overflow-y: hidden; /* Скрываем вертикальную прокрутку */
+    -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
+    scrollbar-width: none; /* Скрываем полосу прокрутки в Firefox */
+  }
+  
+  .story-circle-container::-webkit-scrollbar {
+    display: none; /* Скрываем полосу прокрутки в Chrome, Safari, Opera */
+  }
+  
+ 
+    
+  
   
