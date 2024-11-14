@@ -10,6 +10,9 @@ const Pages = observer(() => {
 
   const handlePageChange = (page) => {
     thing.setPage(page);
+    if (window.Telegram?.WebApp?.HapticFeedback) {
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+    }
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 

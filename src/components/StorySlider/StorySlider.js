@@ -10,6 +10,7 @@ const StorySlider = () => {
   const [formattedStories, setFormattedStories] = useState([]);
   const [isStoriesVisible, setIsStoriesVisible] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [currentStory, setCurrentStory] = useState(null); // Новое состояние
 
   useEffect(() => {
     loadStories();
@@ -32,13 +33,14 @@ const StorySlider = () => {
         },
         type: story.video ? 'video' : 'image',
         duration: 5000,
+        link: story.link, // Добавляем свойство link
       }));
 
-      // Добавляем кастомную историю
-      formatted.push({
-        content: customContent,
-        duration: 7000, // Длительность кастомной истории
-      });
+      // Добавляем кастомную историю (если нужно)
+      // formatted.push({
+      //   content: customContent,
+      //   duration: 7000, // Длительность кастомной истории
+      // });
 
       setFormattedStories(formatted);
     } catch (error) {
@@ -47,16 +49,9 @@ const StorySlider = () => {
     }
   };
 
-  const customContent = ({ action, isPaused }) => {
-    return (
-      <div style={{ background: 'pink', height: '100%', padding: 20 }}>
-        <h1 style={{ marginTop: '50%', marginBottom: 0 }}>🌟 Кастомная история 🌟</h1>
-        <p>{isPaused ? 'Пауза' : 'Воспроизведение'}</p>
-        <button onClick={() => action(isPaused ? 'play' : 'pause')}>
-          {isPaused ? 'Продолжить' : 'Пауза'}
-        </button>
-      </div>
-    );
+  // Обработчик начала истории
+  const handleStoryStart = (story, currentIndex) => {
+    setCurrentStory(story);
   };
 
   const handleCircleClick = (index) => {
@@ -87,12 +82,24 @@ const StorySlider = () => {
       {isStoriesVisible && (
         <div className="story-slider-overlay">
           {/* Кнопка закрытия вне заголовка */}
-          <button
-            className="close-stories-button"
-            onClick={() => setIsStoriesVisible(false)}
-          >
-            <AiFillCloseCircle />
-          </button>
+          <div className="close-stories">
+            <button
+              className="close-stories-button"
+              onClick={() => setIsStoriesVisible(false)}
+            >
+              <AiFillCloseCircle />
+            </button>
+          </div>
+
+          {/* Оверлей с ссылкой */}
+          {/* {currentStory && currentStory.link && ( */}
+            <div className="story-link-overlay">
+              <a href={currentStory.link} target="_blank" rel="noopener noreferrer">
+                Перейти по ссылке
+              </a>
+            </div>
+          {/* )} */}
+
           <Stories
             stories={formattedStories}
             currentIndex={currentIndex}
@@ -100,6 +107,7 @@ const StorySlider = () => {
             width={`100vw`}
             height={`100vh`}
             onAllStoriesEnd={() => setIsStoriesVisible(false)}
+            onStoryStart={handleStoryStart} // Добавили обработчик
           />
         </div>
       )}
