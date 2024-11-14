@@ -1,17 +1,11 @@
 import React, { useEffect, useState, useRef, useContext } from 'react';
 import { fetchStories, deleteStory } from '../../http/storyAPI';
-import './StorySlider.css';
-import Carousel from 'react-bootstrap/Carousel';
-import Modal from 'react-bootstrap/Modal';
-import CloseButton from 'react-bootstrap/CloseButton';
-import ProgressBar from 'react-bootstrap/ProgressBar';
+import { Carousel, Modal, Button, Progress, message, Skeleton, Popconfirm } from 'antd';
+import { CloseOutlined } from '@ant-design/icons';
 import { Context } from '../../index';
-import { message, Skeleton, Modal as AntModal } from 'antd';
 import VideoPlayer from '../VideoPlayer/VideoPlayer';
 import { HiMiniTrash } from "react-icons/hi2";
-import { Button } from 'react-bootstrap';
-
-const { confirm } = AntModal;
+import './StorySlider.css';
 
 const StorySlider = () => {
   const [stories, setStories] = useState([]);
@@ -90,20 +84,6 @@ const StorySlider = () => {
     }
   };
 
-  const showDeleteConfirm = (id) => {
-    confirm({
-      title: 'Вы уверены, что хотите удалить эту историю?',
-      content: 'Это действие нельзя будет отменить.',
-      okText: 'Да',
-      okType: 'danger',
-      cancelText: 'Нет',
-      onOk: () => handleDeleteStory(id),
-      onCancel() {
-        console.log('Отмена');
-      },
-    });
-  };
-
   const handleDeleteStory = async (id) => {
     try {
       await deleteStory(id);
@@ -146,41 +126,54 @@ const StorySlider = () => {
           ))}
         </div>
       ) : (
-        <Carousel indicators={false} controls={false} interval={null}>
+        <Carousel dots={false} arrows={false} autoplay={false}>
           {groupedStories?.map((group, idx) => {
-            if(!group?.length || typeof group == 'string') return null;
+            if (!group?.length || typeof group === 'string') return null;
             return (
-            <Carousel.Item key={idx}>
-              <div className="story-group">
-                {group?.map((story) => (
-                  <div key={story.id} className="story-card">
-                    <img
-                      src={`${process.env.REACT_APP_API_URL}${story.coverImg}`}
-                      alt=""
-                      onClick={() => handleStoryClick(story)}
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
+              <div key={idx}>
+                <div className="story-group">
+                  {group?.map((story) => (
+                    <div key={story.id} className="story-card">
+                      <img
+                        src={`${process.env.REACT_APP_API_URL}${story.coverImg}`}
+                        alt=""
+                        onClick={() => handleStoryClick(story)}
+                        loading="lazy"
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </Carousel.Item>
-          )})}
+            );
+          })}
         </Carousel>
       )}
 
-      <Modal show={modalShow} onHide={handleClose} centered>
+      <Modal
+        visible={modalShow}
+        onCancel={handleClose}
+        centered
+        footer={null}
+        closable={false}
+        height={`95vh`}
+      >
         <div className="story-top">
-          <ProgressBar now={progress} />
-          <Modal.Header data-bs-theme="dark">
-            <CloseButton onClick={handleClose} />
-            {user.user.role === 'ADMIN' && (
-              <Button variant="dark" onClick={() => showDeleteConfirm(selectedStory.id)} className="edit_button">
-                <HiMiniTrash />
-              </Button>
+          <Progress percent={progress} showInfo={false} strokeColor="#1890ff" />
+          <div className="modal-header">
+            <Button type="text" icon={<CloseOutlined />} onClick={handleClose} />
+            {user.user.role === 'ADMIN' && selectedStory && (
+              <Popconfirm
+                title="Вы уверены, что хотите удалить эту историю?"
+                okText="Да"
+                cancelText="Нет"
+                onConfirm={() => handleDeleteStory(selectedStory.id)}
+              >
+                <Button type="text" className="edit_button" icon={<HiMiniTrash />} />
+              </Popconfirm>
             )}
-          </Modal.Header>
+          </div>
         </div>
-        <Modal.Body className="story">
+        <div className="story">
           {selectedStory && (
             <>
               <div className="story-overlay">
@@ -208,7 +201,7 @@ const StorySlider = () => {
               )}
             </>
           )}
-        </Modal.Body>
+        </div>
       </Modal>
     </div>
   );

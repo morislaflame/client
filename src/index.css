@@ -208,6 +208,7 @@ b, strong {
   color: #fff;
   border-radius: calc(var(--index)* 0.7);
   padding: calc(var(--index)* 0.7) calc(var(--index)* 2);
+  min-width: calc(var(--index)* 8);
 }
 
 .ant-btn-default {
@@ -217,4 +218,5 @@ b, strong {
   color: #fff;
   border-radius: calc(var(--index)* 0.7);
   padding: calc(var(--index)* 0.7) calc(var(--index)* 2);
+  min-width: calc(var(--index)* 8);
 }

@@ -32,6 +32,8 @@
     cursor: pointer;
     width: calc(var(--index)* 1);
     color: white;
+    display: flex;
+        justify-content: center;
 }
 
 .story-card img {
