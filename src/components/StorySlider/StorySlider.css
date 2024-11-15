@@ -16,18 +16,6 @@
     flex-direction: column;
     
   }
-  
-  /* Кастомный хедер */
-  .custom-header {
-    position: absolute;
-    top: 0;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    padding: 10px;
-    box-sizing: border-box;
-    z-index: 1001;
-  }
 
   .close-stories {
     background: linear-gradient(to bottom, #34343400, #000000eb, black);
@@ -51,40 +39,21 @@
     margin: calc(var(--index) * 1);
   }
   
-  .story-header-content {
-    display: flex;
-    align-items: center;
-  }
-  
-  .story-header-content img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .story-header-content h4,
-  .story-header-content p {
-    margin: 0;
-    color: white;
-  }
-  
   /* Стили для кружков */
   .story-circle-container {
     display: flex;
-    gap: 10px;
-    padding: 10px;
+    gap: calc(var(--index) * 3);
+    padding: 0  0 calc(var(--index) * 1);
     overflow-x: auto;
   }
   
   .story-circle {
     flex: 0 0 auto;
-    width: 60px;
-    height: 60px;
+    width: calc(var(--index) * 6);
+    height: calc(var(--index) * 6);
     border: 1px solid #6b3ce6;
     padding: 3px;
     border-radius: 50%;
-    margin-right: 10px;
     cursor: pointer;
     overflow: hidden;
   }
@@ -128,6 +97,7 @@
     max-width: 100%; /* Или установите конкретную ширину, например, 600px */
     overflow: hidden; /* Предотвращает выход содержимого за пределы контейнера */
     margin: 0 auto; /* Центрируем контейнер, если задана конкретная ширина */
+    padding: 0 calc(var(--index) * 1) calc(var(--index) * 1);
   }
   
   /* Контейнер с кружочками */
