@@ -220,3 +220,12 @@ b, strong {
   padding: calc(var(--index)* 0.7) calc(var(--index)* 2);
   min-width: calc(var(--index)* 8);
 }
+
+.slick-dots li.slick-active button:before {
+    opacity: .75;
+    color: transparent !important;
+}
+
+.slick-next:before {
+  color: #00000000;
+}

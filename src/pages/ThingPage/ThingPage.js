@@ -1,5 +1,4 @@
 import React, { useEffect, useState, useContext } from 'react';
-import Carousel from 'react-bootstrap/Carousel';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchOneThing } from '../../http/thingAPI';
 import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
@@ -7,7 +6,7 @@ import { Context } from '../../index';
 import { FaShoppingCart, FaEdit } from 'react-icons/fa';
 import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, TERMS_ROUTE } from '../../utils/consts';
 import { observer } from 'mobx-react-lite';
-import { message, Image } from 'antd';
+import { message, Image, Carousel } from 'antd';
 import OnlyIcon from '../../icons/onlyfans.png';
 import MymIcon from '../../icons/Mym.png';
 import FanslyIcon from '../../icons/fansly.png';
@@ -89,9 +88,12 @@ const ThingPage = observer(() => {
       </div>
       <div className={styles.main_model}>
         <div className={styles.photo}>
-          <Carousel data-bs-theme="dark" className={styles.thing_carousel}>
+          <Carousel
+            arrows
+            className={styles.thing_carousel}
+          >
             {thing.images.map((image, index) => (
-              <Carousel.Item key={index}>
+              <div key={index}>
                 <Image
                   className={styles.photos}
                   src={process.env.REACT_APP_API_URL + image.img}
@@ -99,7 +101,7 @@ const ThingPage = observer(() => {
                   placeholder={<Image.PreviewGroup />}
                   width={'100%'}
                 />
-              </Carousel.Item>
+              </div>
             ))}
           </Carousel>
         </div>
