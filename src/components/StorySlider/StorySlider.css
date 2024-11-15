@@ -49,8 +49,8 @@
   
   .story-circle {
     flex: 0 0 auto;
-    width: calc(var(--index) * 6);
-    height: calc(var(--index) * 6);
+    width: calc(var(--index)* 5.5);
+    height: calc(var(--index)* 5.5);
     border: 1px solid #6b3ce6;
     padding: 3px;
     border-radius: 50%;
@@ -97,7 +97,7 @@
     max-width: 100%; /* Или установите конкретную ширину, например, 600px */
     overflow: hidden; /* Предотвращает выход содержимого за пределы контейнера */
     margin: 0 auto; /* Центрируем контейнер, если задана конкретная ширина */
-    padding: 0 calc(var(--index) * 1) calc(var(--index) * 1);
+    padding: calc(var(--index) * 1);
   }
   
   /* Контейнер с кружочками */
