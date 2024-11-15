@@ -42,8 +42,7 @@
   /* Стили для кружков */
   .story-circle-container {
     display: flex;
-    gap: calc(var(--index) * 3);
-    padding: 0  0 calc(var(--index) * 1);
+    gap: calc(var(--index) * 1.6);
     overflow-x: auto;
   }
   

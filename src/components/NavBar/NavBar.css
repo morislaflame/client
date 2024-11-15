@@ -23,6 +23,7 @@
 
 .navbar-brand {
     margin-right: 0;
+    padding: 0 !important;
 }
 
 .menu {
