@@ -67,15 +67,7 @@ const Menu = ({ open, onClose }) => {
                 Админка
               </Button>
             )}
-            <Button
-              type="primary"
-              danger
-              block
-              onClick={logOut}
-              style={{ marginTop: '8px' }}
-            >
-              Выйти
-            </Button>
+           
           </>
         ) : (
           <Button
@@ -121,6 +113,15 @@ const Menu = ({ open, onClose }) => {
         >
           <FaTelegram /> Мы в Telegram
         </a>
+        <Button
+              type="primary"
+              danger
+              block
+              onClick={logOut}
+              style={{ marginTop: '8px' }}
+            >
+              Выйти
+            </Button>
       </div>
     </Drawer>
   );

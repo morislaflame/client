@@ -96,7 +96,9 @@ b, strong {
 }
 
 .ant-form {
-  padding: calc(var(--index) * 1) calc(var(--index) * 1) calc(var(--index) * 1);
+  padding: calc(var(--index) * 1);
+  background-color: #211F25;
+  border-radius: calc(var(--index)* 1);
 }
 
 .ant-form-item {

@@ -68,14 +68,15 @@ const NavBar = observer(() => {
                   </span>
                 )}
               </button>
-              <button
+              
+            </>
+          )}
+          <button
                 className="navbar-button"
                 onClick={() => setDrawerOpen(true)}
               >
                 <PiListBold />
               </button>
-            </>
-          )}
         </div>
       </div>
       {/* Используем ваш существующий компонент Menu */}
