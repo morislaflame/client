@@ -31,6 +31,53 @@ export const fetchMyInfo = async () => {
     return data;
 };
 
+export const fetchUserPromoCodes = async () => {
+    const { data } = await $authHost.get('api/user/promoCodes');
+    return data;
+}
+
+export const fetchMyPurchasedThings = async () => {
+  const { data } = await $authHost.get('api/user/my-purchased-things');
+  return data;
+};
+
+export const becomeSeller = async () => {
+    const { data } = await $authHost.post('api/user/become-seller');
+    return data;
+};
+
+
+
+
+
+
+
+// Добавление товара продавцом
+export const createThingAsSeller = async (formData) => {
+    const { data } = await $authHost.post('api/seller/things', formData);
+    return data;
+};
+
+// Обновление товара продавцом
+export const updateThingAsSeller = async (thingId, formData) => {
+    const { data } = await $authHost.put(`api/seller/things/${thingId}`, formData);
+    return data;
+};
+
+// Удаление товара продавцом
+export const deleteThingAsSeller = async (thingId) => {
+    const { data } = await $authHost.delete(`api/seller/things/${thingId}`);
+    return data;
+};
+
+// Получение списка товаров продавца
+export const fetchSellerThings = async () => {
+    const { data } = await $authHost.get('api/seller/things');
+    return data;
+};
+
+
+
 
 export const fetchUsers = async () => {
     const { data } = await $authHost.get('api/user/users');
@@ -59,42 +106,6 @@ export const deleteUser = async (userId) => {
     const { data } = await $authHost.delete('api/user/users', { data: { userId } });
     return data;
 };
-
-export const fetchUserPromoCodes = async () => {
-    const { data } = await $authHost.get('api/user/promoCodes');
-    return data;
-}
-
-export const fetchMyPurchasedThings = async () => {
-  const { data } = await $authHost.get('api/user/my-purchased-things');
-  return data;
-};
-
-// Добавление товара продавцом
-export const createThingAsSeller = async (formData) => {
-    const { data } = await $authHost.post('api/seller/things', formData);
-    return data;
-};
-
-// Обновление товара продавцом
-export const updateThingAsSeller = async (thingId, formData) => {
-    const { data } = await $authHost.put(`api/seller/things/${thingId}`, formData);
-    return data;
-};
-
-// Удаление товара продавцом
-export const deleteThingAsSeller = async (thingId) => {
-    const { data } = await $authHost.delete(`api/seller/things/${thingId}`);
-    return data;
-};
-
-// Получение списка товаров продавца
-export const fetchSellerThings = async () => {
-    const { data } = await $authHost.get('api/seller/things');
-    return data;
-};
-
-
 
 // Получение товаров, ожидающих модерации
 export const fetchPendingThings = async () => {

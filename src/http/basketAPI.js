@@ -5,13 +5,13 @@ export const fetchBasket = async () => {
     return data;
 }
 
-export const addToBasket = async (thingId) => {
-    const { data } = await $authHost.post('api/basket/add', { thingId });
+export const addToBasket = async (modelProductId) => {
+    const { data } = await $authHost.post('api/basket/add', { modelProductId });
     return data;
 }
 
-export const removeFromBasket = async (thingId) => {
-    const { data } = await $authHost.delete(`api/basket/remove/${thingId}`);
+export const removeFromBasket = async (basketItemId) => {
+    const { data } = await $authHost.delete(`api/basket/remove/${basketItemId}`);
     return data;
 }
 
