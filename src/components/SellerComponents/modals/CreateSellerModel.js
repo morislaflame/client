@@ -8,28 +8,28 @@ import ImageUploader from '../../ImageUploader/ImageUploader';
 const { Option } = Select;
 
 const CreateSellerModel = observer(({ show, onHide }) => {
-    const { thing, user } = useContext(Context);
+    const { thing, user, seller } = useContext(Context); // Добавили seller
     const [form] = Form.useForm();
     const [files, setFiles] = useState([]);
     const [info, setInfo] = useState([{
-        age: '',
-        smartphone: '',
-        percent: '',
-        time: '',
-        english: '',
-        content: '',
-        contract: '',
-        start: '',
-        socialmedia: '',
-        tiktok: '',
-        cblocked: '',
-        ofverif: '',
-        link: '',
-        girlmsg: '',
+        age: '20',
+        smartphone: 'Iphone',
+        percent: '30',
+        time: '10',
+        english: '5',
+        content: 'All classic solo content',
+        contract: 'No',
+        start: 'ASAP',
+        socialmedia: 'Need new accounts',
+        tiktok: 'Yes',
+        cblocked: 'No',
+        ofverif: 'Yes',
+        link: 'https://www.instagram.com/example',
+        girlmsg: 'Yes',
         number: Date.now(),
     }]);
     const [selectedBrands, setSelectedBrands] = useState([]);
-    const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
+    const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const loadData = async () => {
@@ -61,7 +61,7 @@ const CreateSellerModel = observer(({ show, onHide }) => {
     };
 
     const addThing = async () => {
-        setLoading(true); // Устанавливаем состояние загрузки в true
+        setLoading(true);
         try {
             const values = await form.validateFields();
 
@@ -99,24 +99,40 @@ const CreateSellerModel = observer(({ show, onHide }) => {
 
             const formData = new FormData();
             formData.append('name', values.name);
-            formData.append('price', values.price);
-            formData.append('typeId', values.typeId);
-            formData.append('info', JSON.stringify(info));
+            formData.append('priceUSD', values.price); // Изменили 'price' на 'priceUSD'
+            formData.append('countryId', values.typeId); // Изменили 'typeId' на 'countryId'
+            formData.append('info', JSON.stringify(info[0])); // Если info — массив с одним объектом
 
             const brandIds = selectedBrands.map(b => b.id);
-            formData.append('brandIds', JSON.stringify(brandIds));
+            formData.append('adultPlatformIds', JSON.stringify(brandIds)); // Изменили 'brandIds' на 'adultPlatformIds'
 
             files.forEach(file => {
                 formData.append('img', file);
             });
 
-            // Используем метод из UserStore для создания модели от имени продавца
-            await user.createThing(formData);
+            // Используем метод из SellerStore для создания модели
+            await seller.createModelProduct(formData);
             message.success('Модель успешно добавлена!');
             onHide();
             form.resetFields();
             setFiles([]);
-            setInfo([]);
+            setInfo([{
+                age: '',
+                smartphone: '',
+                percent: '',
+                time: '',
+                english: '',
+                content: '',
+                contract: '',
+                start: '',
+                socialmedia: '',
+                tiktok: '',
+                cblocked: '',
+                ofverif: '',
+                link: '',
+                girlmsg: '',
+                number: Date.now(),
+            }]);
             setSelectedBrands([]);
         } catch (error) {
             if (error.errorFields) {
@@ -125,7 +141,7 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                 message.error('Ошибка при добавлении модели: ' + error.message);
             }
         } finally {
-            setLoading(false); // Возвращаем состояние загрузки в false
+            setLoading(false);
         }
     };
 
@@ -333,3 +349,9 @@ const CreateSellerModel = observer(({ show, onHide }) => {
 });
 
 export default CreateSellerModel;
+
+
+
+
+
+

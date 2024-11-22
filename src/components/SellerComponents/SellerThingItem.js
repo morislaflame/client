@@ -27,9 +27,9 @@ const SellerThingItem = ({ thing, onEdit, onDelete }) => {
 
   // Отображение цвета статуса модерации
   const statusColors = {
-    'approved': 'green',
-    'pending': 'blue',
-    'rejected': 'red',
+    'APPROVED': 'green',
+    'PENDING': 'blue',
+    'REJECTED': 'red',
   };
 
   return (
@@ -41,8 +41,8 @@ const SellerThingItem = ({ thing, onEdit, onDelete }) => {
         <div className={styles.seller_card_content}>
           <div className={styles.brand_name} onClick={() => navigate(THING_ROUTE + "/" + thing.id)}>
             <div className={styles.seller_card_brands}>
-              {thing.brands && thing.brands.length > 0 ? (
-                thing.brands.map((brand) => (
+              {thing.adultPlatforms && thing.adultPlatforms.length > 0 ? (
+                thing.adultPlatforms.map((brand) => (
                   <div
                     key={brand.id}
                     style={brandStyles[brand.id] || { color: 'black' }}
@@ -63,7 +63,7 @@ const SellerThingItem = ({ thing, onEdit, onDelete }) => {
             </div>
             <div className={styles.seller_card_header}>
               <span className={styles.seller_card_title}>{thing.name}</span>
-              <span className={styles.seller_card_price}>${thing.price}</span>
+              <span className={styles.seller_card_price}>${thing.priceUSD}</span>
             </div>
           </div>
           <div className={styles.moderation_status}>

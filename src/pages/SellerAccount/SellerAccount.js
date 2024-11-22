@@ -14,10 +14,14 @@ import { IoIosReturnLeft } from "react-icons/io";
 import { FaComment } from "react-icons/fa";
 
 const SellerAccount = observer(() => {
-  const { user } = useContext(Context);
+  const { seller } = useContext(Context);
   const [showCreateModal, setShowCreateModal] = useState(false);
 
+  useEffect(() => {
+    seller.loadMyInformation();
+  }, [seller]);
 
+  const { sellerInfo } = seller;
 
   return (
     <div className={styles.sellerAccount}>
@@ -27,8 +31,11 @@ const SellerAccount = observer(() => {
       </div>
       <div className={styles.shop_menu}>
         <div className={styles.shop_name_rating}>
-            <h3>SHOP NAME</h3>
-            <div className={styles.shop_rating}><h5>5</h5><MdStar style={{color: '#FFD700'}} /></div>
+            <h3>{sellerInfo.sellerInformation?.sellerName}</h3>
+            <div className={styles.shop_rating}><h5>{sellerInfo.sellerInformation?.sellerRating}</h5><MdStar style={{color: '#FFD700'}} /></div>
+        </div>
+        <div className={styles.shop_info}>
+          <h5>"{sellerInfo.sellerInformation?.sellerInfo}"</h5>
         </div>
         <div className={styles.menu_info}>
             <div className={styles.menu_links}>

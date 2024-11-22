@@ -117,6 +117,10 @@ b, strong {
   color: rgb(255 255 255 / 45%);
 }
 
+.ant-tag {
+  font-size: calc(var(--index) * 1) !important;
+}
+
 .ant-tag.ant-tag-blue {
   color: #0458fe;
   background: #008dff21;

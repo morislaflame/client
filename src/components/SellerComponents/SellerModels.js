@@ -7,15 +7,15 @@ import styles from './SellerComponents.module.css';
 import { useNavigate } from 'react-router-dom';
 
 const SellerModels = observer(() => {
-  const { user } = useContext(Context);
+  const { seller } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
   useEffect(() => {
-    const loadSellerThings = async () => {
+    const loadMyModelProducts = async () => {
       setLoading(true);
       try {
-        await user.fetchSellerThings();
+        await seller.loadMyModelProducts();
       } catch (error) {
         console.error('Error loading seller models:', error);
       } finally {
@@ -23,8 +23,8 @@ const SellerModels = observer(() => {
       }
     };
 
-    loadSellerThings();
-  }, [user]);
+    loadMyModelProducts();
+  }, [seller]);
 
   const handleEdit = (thing) => {
     navigate(`/seller/edit-model/${thing.id}`);
@@ -32,21 +32,21 @@ const SellerModels = observer(() => {
 
   const handleDelete = async (thing) => {
     try {
-      await user.deleteThing(thing.id);
+      await seller.deleteProduct(thing.id);
       message.success('Model deleted successfully');
     } catch (error) {
       message.error('Error deleting model');
     }
   };
 
-  const { sellerThings } = user;
+  const { myModelProducts } = seller;
 
   return (
     <div className={styles.seller_thing_list}>
       {loading ? (
         <Spin />
-      ) : sellerThings && sellerThings.length > 0 ? (
-        sellerThings.map((thing) => (
+      ) : myModelProducts && myModelProducts.length > 0 ? (
+        myModelProducts.map((thing) => (
           <SellerThingItem
             key={thing.id}
             thing={thing}

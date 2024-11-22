@@ -10,6 +10,7 @@ import { SDKProvider } from '@telegram-apps/sdk-react';
 import OrderStore from './store/OrderStore';
 import ReturnStore from './store/ReturnStore';
 import ExchangeStore from './store/ExchangeStore';
+import SellerStore from './store/SellerStore';
 
 export const Context = createContext(null)
 
@@ -23,6 +24,7 @@ root.render(
     order: new OrderStore(),
     return: new ReturnStore(),
     exchange: new ExchangeStore(),
+    seller: new SellerStore(),
   }}>
     <App />
   </Context.Provider>

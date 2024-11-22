@@ -43,14 +43,21 @@
     background: linear-gradient(to right bottom, #25032C, #211F25);
     border-radius: calc(var(--index) * 1);
     padding: calc(var(--index) * 1);
+    
 }
 
 .shop_name_rating {
     display: flex;
     width: 100%;
     justify-content: space-between;
-    border-bottom: 1px solid #7F7E7E;
     padding-bottom: calc(var(--index) * 1);
+}
+
+.shop_info {
+    padding-bottom: calc(var(--index) * 1);
+    border-bottom: 1px solid #7F7E7E;
+    font-size: calc(var(--index) * 1.2) !important;
+    font-weight: 400 !important;
 }
 
 .shop_rating {

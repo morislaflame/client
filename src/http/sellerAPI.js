@@ -23,6 +23,11 @@ export const fetchMyModelProducts = async () => {
     return data;
 };
 
+export const fetchMyInformation = async () => {
+    const { data } = await $authHost.get('api/seller/my-information');
+    return data;
+};
+
 export const updateMyInformation = async (formData) => {
     const { data } = await $authHost.put('api/seller/profile', formData);
     return data;
