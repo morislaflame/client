@@ -1,11 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { Modal, Button, Form, Input, Upload, message } from 'antd';
-import { createStory } from '../../http/storyAPI';
 import { UploadOutlined } from '@ant-design/icons';
+import { Context } from '../../../index';
 
 const CreateStory = ({ show, onHide }) => {
-  const [title, setTitle] = useState('');
-  const [link, setLink] = useState('');
   const [coverImg, setCoverImg] = useState(null);
   const [mainContent, setMainContent] = useState(null);
 
@@ -13,7 +11,9 @@ const CreateStory = ({ show, onHide }) => {
   const [mainContentFileList, setMainContentFileList] = useState([]);
 
   const [form] = Form.useForm();
-  const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
+  const [loading, setLoading] = useState(false);
+
+  const { admin } = useContext(Context);
 
   const handleCoverImgChange = (info) => {
     setCoverImgFileList(info.fileList);
@@ -35,21 +35,21 @@ const CreateStory = ({ show, onHide }) => {
     }
   };
 
-  const addStory = async () => {
-    setLoading(true); // Устанавливаем состояние загрузки в true
+  const addStory = async (values) => {
+    setLoading(true);
     try {
-      await form.validateFields();
-
       if (!coverImg) {
-        return message.error('Выберите обложку истории');
+        message.error('Выберите обложку истории');
+        return;
       }
       if (!mainContent) {
-        return message.error('Выберите основное содержимое истории (фото или видео)');
+        message.error('Выберите основное содержимое истории (фото или видео)');
+        return;
       }
 
       const formData = new FormData();
-      formData.append('title', title);
-      formData.append('link', link);
+      formData.append('title', values.title);
+      formData.append('link', values.link || '');
       formData.append('coverImg', coverImg);
 
       // Проверяем тип файла основного содержимого
@@ -61,15 +61,16 @@ const CreateStory = ({ show, onHide }) => {
       } else if (allowedVideoTypes.includes(mainContent.type)) {
         formData.append('video', mainContent);
       } else {
-        return message.error('Неверный формат основного содержимого. Допустимы изображения или видео.');
+        message.error('Неверный формат основного содержимого. Допустимы изображения или видео.');
+        return;
       }
 
-      await createStory(formData);
+      // Используем метод из AdminStore
+      await admin.createStory(formData);
+
       message.success('История успешно создана');
       onHide();
       form.resetFields();
-      setTitle('');
-      setLink('');
       setCoverImg(null);
       setMainContent(null);
       setCoverImgFileList([]);
@@ -78,7 +79,7 @@ const CreateStory = ({ show, onHide }) => {
       const errorMessage = error.response?.data?.message || error.message;
       message.error('Ошибка при создании истории: ' + errorMessage);
     } finally {
-      setLoading(false); // Возвращаем состояние загрузки в false
+      setLoading(false);
     }
   };
 
@@ -93,35 +94,21 @@ const CreateStory = ({ show, onHide }) => {
       <Form
         form={form}
         layout="vertical"
+        onFinish={addStory}
       >
         <Form.Item
           name="title"
           label="Заголовок"
           rules={[{ required: true, message: 'Пожалуйста, введите заголовок истории' }]}
         >
-          <Input
-            value={title}
-            onChange={(e) => {
-              setTitle(e.target.value);
-              form.setFieldsValue({ title: e.target.value });
-            }}
-            placeholder="Введите заголовок"
-          />
+          <Input placeholder="Введите заголовок" />
         </Form.Item>
 
         <Form.Item
           name="link"
           label="Ссылка"
-          rules={[{ required: false, message: 'Пожалуйста, введите ссылку' }]}
         >
-          <Input
-            value={link}
-            onChange={(e) => {
-              setLink(e.target.value);
-              form.setFieldsValue({ link: e.target.value });
-            }}
-            placeholder="Введите ссылку (необязательно)"
-          />
+          <Input placeholder="Введите ссылку (необязательно)" />
         </Form.Item>
 
         <Form.Item
@@ -141,6 +128,7 @@ const CreateStory = ({ show, onHide }) => {
           >
             <Button icon={<UploadOutlined />}>Выберите изображение</Button>
           </Upload>
+          {!coverImg && <div style={{ color: 'red' }}>Пожалуйста, выберите обложку истории</div>}
         </Form.Item>
 
         <Form.Item
@@ -160,13 +148,14 @@ const CreateStory = ({ show, onHide }) => {
           >
             <Button icon={<UploadOutlined />}>Выберите фото или видео</Button>
           </Upload>
+          {!mainContent && <div style={{ color: 'red' }}>Пожалуйста, выберите основное содержимое истории</div>}
         </Form.Item>
 
         <Form.Item>
           <Button onClick={onHide} style={{ marginRight: 8 }}>
             Закрыть
           </Button>
-          <Button type="primary" onClick={addStory} loading={loading}>
+          <Button type="primary" htmlType="submit" loading={loading}>
             Добавить
           </Button>
         </Form.Item>

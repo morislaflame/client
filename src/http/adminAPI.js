@@ -1,4 +1,4 @@
-import { $authHost } from './index';
+import { $authHost, $host } from './index';
 
 export const fetchPendingModelProducts = async () => {
     const { data } = await $authHost.get('api/model-product/admin/pending');
@@ -6,12 +6,12 @@ export const fetchPendingModelProducts = async () => {
 };
 
 export const approveModelProduct = async (modelProductId) => {
-    const { data } = await $authHost.put(`api/model-product/admin/${modelProductId}/approve`);
+    const { data } = await $authHost.post(`api/model-product/admin/${modelProductId}/approve`);
     return data;
 };
 
-export const rejectModelProduct = async (modelProductId) => {
-    const { data } = await $authHost.put(`api/model-product/admin/${modelProductId}/reject`);
+export const rejectModelProduct = async (modelProductId, rejectionReason) => {
+    const { data } = await $authHost.post(`api/model-product/admin/${modelProductId}/reject`, { rejectionReason });
     return data;
 };
 
@@ -100,3 +100,19 @@ export const deleteCommissionRate = async (commissionRateId) => {
     const { data } = await $authHost.delete(`api/commission-rate/${commissionRateId}`);
     return data;
 };
+
+export const createStory = async (story) => {
+    const { data } = await $authHost.post('api/story', story);
+    return data;
+};
+
+export const fetchStories = async () => {
+    const { data } = await $host.get('api/story');
+    return data;
+};
+
+// Добавляем функцию для удаления истории
+export const deleteStory = async (id) => {
+    const { data } = await $authHost.delete(`api/story/${id}`);
+    return data;
+}

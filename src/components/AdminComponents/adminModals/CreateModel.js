@@ -1,10 +1,10 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { Button, Modal, Form, Input, InputNumber, Select, Row, Col, message, AutoComplete, Checkbox } from 'antd';
-import { Context } from "../../index";
-import { createThing, fetchBrands, fetchTypes } from '../../http/thingAPI';
+import { Context } from "../../../index";
+import { createThing, fetchBrands, fetchTypes } from '../../../http/thingAPI';
 import { observer } from "mobx-react-lite";
-import ImageUploader from '../ImageUploader/ImageUploader';
-import { fetchScouts } from '../../http/scoutAPI';
+import ImageUploader from '../../ImageUploader/ImageUploader';
+import { fetchScouts } from '../../../http/scoutAPI';
 
 const { Option } = Select;
 

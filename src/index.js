@@ -11,6 +11,7 @@ import OrderStore from './store/OrderStore';
 import ReturnStore from './store/ReturnStore';
 import ExchangeStore from './store/ExchangeStore';
 import SellerStore from './store/SellerStore';
+import AdminStore from './store/AdminStore';
 
 export const Context = createContext(null)
 
@@ -25,6 +26,7 @@ root.render(
     return: new ReturnStore(),
     exchange: new ExchangeStore(),
     seller: new SellerStore(),
+    admin: new AdminStore(),
   }}>
     <App />
   </Context.Provider>

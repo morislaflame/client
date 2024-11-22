@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Button, Modal, Form, Input, Select, Checkbox, InputNumber, message } from 'antd';
-import { createPromoCode, generateOneTimePromoCodes, createPersonalPromoCode } from "../../http/promocodeAPI";
+import { createPromoCode, generateOneTimePromoCodes, createPersonalPromoCode } from "../../../http/promocodeAPI";
 
 const { Option } = Select;
 

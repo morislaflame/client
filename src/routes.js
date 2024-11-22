@@ -39,6 +39,7 @@ import ThingEditPage from "./pages/ThingEditPage/ThingEditPage"; // Добавь
 import AllExchangesPage from "./pages/AllExchangesPage/AllExchangesPage";
 import SellerAccount from "./pages/SellerAccount/SellerAccount";
 import EditSellerModel from "./pages/EditSellerModel/EditSellerModel";
+import AdminPage from "./pages/AdminPage/AdminPage";
 
 
 
@@ -69,7 +70,7 @@ export const authRoutes = (user) => {
         console.log("User is admin, adding admin route");
         routes.push({
             path: ADMIN_ROUTE,
-            Component: <Admin />
+            Component: <AdminPage />
         });
         routes.push({
             path: USERINFO_ROUTE,
