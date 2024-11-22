@@ -6,7 +6,7 @@ import { message, Spin } from 'antd';
 import styles from './SellerComponents.module.css';
 import { useNavigate } from 'react-router-dom';
 
-const SellerModels = observer(() => {
+const SellerModels = observer(({ onAddModel }) => {
   const { seller } = useContext(Context);
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
@@ -30,9 +30,9 @@ const SellerModels = observer(() => {
     navigate(`/seller/edit-model/${thing.id}`);
   };
 
-  const handleDelete = async (thing) => {
+  const handleDelete = async (id) => {
     try {
-      await seller.deleteProduct(thing.id);
+      await seller.deleteProduct(id);
       message.success('Model deleted successfully');
     } catch (error) {
       message.error('Error deleting model');
@@ -42,21 +42,31 @@ const SellerModels = observer(() => {
   const { myModelProducts } = seller;
 
   return (
-    <div className={styles.seller_thing_list}>
-      {loading ? (
-        <Spin />
-      ) : myModelProducts && myModelProducts.length > 0 ? (
-        myModelProducts.map((thing) => (
-          <SellerThingItem
-            key={thing.id}
-            thing={thing}
-            onEdit={handleEdit}
-            onDelete={handleDelete}
-          />
-        ))
-      ) : (
-        <span className={styles.placeholder}>You don't have any Models.</span>
-      )}
+    <div className={styles.models}>
+      <div className={styles.models_header}>
+        <h3>My Models</h3> 
+        <div className={styles.buttons}>
+          <button className={styles.add_model_button} onClick={onAddModel}>
+            Add Model
+          </button>
+        </div>
+      </div>
+      <div className={styles.seller_thing_list}>
+        {loading ? (
+          <Spin />
+        ) : myModelProducts && myModelProducts.length > 0 ? (
+          myModelProducts.map((thing) => (
+            <SellerThingItem
+              key={thing.id}
+              thing={thing}
+              onEdit={handleEdit}
+              onDelete={() => handleDelete(thing.id)}
+            />
+          ))
+        ) : (
+          <span className={styles.placeholder}>You don't have any Models.</span>
+        )}
+      </div>
     </div>
   );
 });
