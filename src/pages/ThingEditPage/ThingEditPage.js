@@ -1,6 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchOneThing, updateThing, fetchTypes, fetchBrands } from '../../http/thingAPI';
+import { fetchModelProductById, fetchCountries, fetchAdultPlatforms } from '../../http/modelProductAPI';
+import { updateModelProduct } from '../../http/sellerAPI';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
 import { Button, Form, Input, InputNumber, Select, Upload, message, Checkbox } from 'antd';
@@ -8,67 +9,57 @@ import { MAIN_ROUTE } from '../../utils/consts';
 import styles from './ThingEditPage.module.css';
 import BackButton from '../../components/UI/BackButton/BackButton';
 import { UploadOutlined } from '@ant-design/icons';
-import { fetchScouts } from '../../http/scoutAPI';
 
 const { Option } = Select;
 
 const ThingEditPage = observer(() => {
   const { id } = useParams();
-  const navigate = useNavigate();
   const { user } = useContext(Context);
+  const navigate = useNavigate();
 
   const [form] = Form.useForm();
 
-  const [thing, setThing] = useState({
+  const [model, setModel] = useState({
     name: '',
-    price: '',
-    typeId: '',
-    brandIds: [],
+    priceUSD: '',
+    countryId: '',
+    adultPlatformIds: [],
     info: {},
     images: [],
   });
 
-  const [types, setTypes] = useState([]);
-  const [brands, setBrands] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [adultPlatforms, setAdultPlatforms] = useState([]);
   const [newImages, setNewImages] = useState([]);
   const [imagesToRemove, setImagesToRemove] = useState([]);
-  const [scouts, setScouts] = useState([]);
-const [isScoutModel, setIsScoutModel] = useState(false);
 const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
 
 
 useEffect(() => {
   const loadData = async () => {
-    const data = await fetchOneThing(id);
-    const brandIds = data.brands ? data.brands.map(brand => brand.id) : [];
-    setThing({ ...data, brandIds });
+    const data = await fetchModelProductById(id);
+    const adultPlatformIds = data.adultPlatforms ? data.adultPlatforms.map(adultPlatform => adultPlatform.id) : [];
+    setModel({ ...data, adultPlatformIds });
     form.setFieldsValue({
       name: data.name,
-      price: data.price,
-      typeId: data.typeId,
-      brandIds: brandIds,
+      priceUSD: data.priceUSD,
+      countryId: data.countryId,
+      adultPlatformIds: adultPlatformIds,
       ...data.info,
-      isScoutModel: data.isScoutModel,
-      scoutId: data.scoutId,
     });
-    setIsScoutModel(data.isScoutModel); // Устанавливаем начальное значение
   };
 
   loadData();
-  fetchTypes().then(data => setTypes(data));
-  fetchBrands().then(data => setBrands(data));
-  fetchScouts().then(data => setScouts(data)); // Загружаем список скаутов
+  fetchCountries().then(data => setCountries(data));
+  fetchAdultPlatforms().then(data => setAdultPlatforms(data));
 }, [id, form]);
 
 
 const handleValuesChange = (changedValues, allValues) => {
-  if ('isScoutModel' in changedValues) {
-    setIsScoutModel(changedValues.isScoutModel);
-  }
-  setThing(prevThing => ({
-    ...prevThing,
+  setModel(prevModel => ({
+    ...prevModel,
     ...allValues,
-    info: { ...prevThing.info, ...allValues },
+    info: { ...prevModel.info, ...allValues },
   }));
 };
 
@@ -79,9 +70,9 @@ const handleValuesChange = (changedValues, allValues) => {
 
   const handleRemoveImage = (imageId) => {
     setImagesToRemove([...imagesToRemove, imageId]);
-    setThing({
-      ...thing,
-      images: thing.images.filter(image => image.id !== imageId),
+    setModel({
+      ...model,
+      images: model.images.filter(image => image.id !== imageId),
     });
   };
 
@@ -92,22 +83,17 @@ const handleValuesChange = (changedValues, allValues) => {
   
       const formData = new FormData();
       formData.append('name', values.name);
-      formData.append('price', values.price);
-      formData.append('typeId', values.typeId);
-      formData.append('brandIds', JSON.stringify(values.brandIds));
-      formData.append('info', JSON.stringify(thing.info));
+      formData.append('priceUSD', values.priceUSD);
+      formData.append('countryId', values.countryId);
+      formData.append('adultPlatformIds', JSON.stringify(values.adultPlatformIds));
+      formData.append('info', JSON.stringify(model.info));
       formData.append('imagesToRemove', JSON.stringify(imagesToRemove));
-      formData.append('isScoutModel', values.isScoutModel);
-  
-      if (values.isScoutModel && values.scoutId) {
-        formData.append('scoutId', values.scoutId);
-      }
   
       newImages.forEach(file => {
         formData.append('img', file.originFileObj);
       });
   
-      await updateThing(id, formData);
+      await updateModelProduct(id, formData);
       message.success('Товар успешно обновлён');
       navigate(`/thing/${id}`);
     } catch (error) {
@@ -163,7 +149,7 @@ const handleValuesChange = (changedValues, allValues) => {
         </Form.Item>
 
         <Form.Item
-          name="price"
+          name="priceUSD"
           label="Цена"
           rules={[{ required: true, message: 'Введите цену модели!' }]}
         >
@@ -175,21 +161,21 @@ const handleValuesChange = (changedValues, allValues) => {
         </Form.Item>
 
         <Form.Item
-          name="typeId"
+          name="countryId"
           label="Страна"
           rules={[{ required: true, message: 'Выберите страну модели!' }]}
         >
           <Select placeholder="Выберите страну">
-            {types.map(type => (
-              <Option key={type.id} value={type.id}>
-                {type.name}
+            {countries.map(country => (
+              <Option key={country.id} value={country.id}>
+                {country.name}
               </Option>
             ))}
           </Select>
         </Form.Item>
 
         <Form.Item
-          name="brandIds"
+          name="adultPlatformIds"
           label="Платформы"
           rules={[{ required: true, message: 'Выберите хотя бы один платформу!' }]}
         >
@@ -197,49 +183,16 @@ const handleValuesChange = (changedValues, allValues) => {
             mode="multiple"
             placeholder="Выберите платформы"
             onChange={(value) =>
-              setThing(prevThing => ({ ...prevThing, brandIds: value }))
+              setModel(prevModel => ({ ...prevModel, adultPlatformIds: value }))
             }
           >
-            {brands.map(brand => (
-              <Option key={brand.id} value={brand.id}>
-                {brand.name}
+            {adultPlatforms.map(adultPlatform => (
+              <Option key={adultPlatform.id} value={adultPlatform.id}>
+                {adultPlatform.name}
               </Option>
             ))}
           </Select>
         </Form.Item>
-
-        <Form.Item
-          name="isScoutModel"
-          label="Модель является скаутской?"
-          valuePropName="checked"
-        >
-          <Checkbox
-            checked={isScoutModel}
-            onChange={(e) => {
-              setIsScoutModel(e.target.checked);
-              form.setFieldsValue({ isScoutModel: e.target.checked });
-              if (!e.target.checked) {
-                form.setFieldsValue({ scoutId: null });
-              }
-            }}
-          />
-        </Form.Item>
-
-        {isScoutModel && (
-          <Form.Item
-            name="scoutId"
-            label="Выберите скаута"
-            rules={[{ required: true, message: 'Пожалуйста, выберите скаута' }]}
-          >
-            <Select placeholder="Выберите скаута">
-              {scouts.map(scout => (
-                <Option value={scout.id} key={scout.id}>
-                  {scout.username} (Комиссия: {scout.percentage}%)
-                </Option>
-              ))}
-            </Select>
-          </Form.Item>
-        )}
 
         {infoFields.map(field => (
           <Form.Item
@@ -257,7 +210,7 @@ const handleValuesChange = (changedValues, allValues) => {
 
         <h3>Изображения</h3>
         <div className={styles.existingImages}>
-          {thing.images.map(image => (
+          {model.images.map(image => (
             <div key={image.id} className={styles.photo}>
               <img
                 src={process.env.REACT_APP_API_URL + image.img}

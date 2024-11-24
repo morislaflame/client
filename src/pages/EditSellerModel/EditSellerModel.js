@@ -47,17 +47,18 @@ const EditSellerModel = () => {
     const loadData = async () => {
       try {
         const modelData = seller.myModelProducts.find((t) => t.id === Number(id));
+        const adultPlatformIds = modelData ? modelData.adultPlatforms.map((platform) => platform.id) : [];
         if (!modelData) {
           message.error('Model not found');
           navigate(SELLER_ACCOUNT_ROUTE);
           return;
         }
-        setModel(modelData);
+        setModel({...modelData, adultPlatformIds});
         form.setFieldsValue({
           name: modelData.name,
           priceUSD: modelData.priceUSD, // Изменено
           countryId: modelData.countryId, // Изменено
-          adultPlatformIds: modelData.adultPlatformIds, // Изменено
+          adultPlatformIds: adultPlatformIds, // Изменено
           ...modelData.info, // Устанавливаем значения info
         });
 
@@ -98,6 +99,7 @@ const EditSellerModel = () => {
   };
 
   const handleSubmit = async () => {
+    setLoading(true);
     try {
       const values = await form.validateFields();
 
@@ -119,6 +121,8 @@ const EditSellerModel = () => {
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
       message.error('Error updating model: ' + errorMessage);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -230,6 +234,7 @@ const EditSellerModel = () => {
           <button 
             className={styles.confirm_btn} 
             type="submit"
+            loading={loading}
           >
             Update Model
           </button>
