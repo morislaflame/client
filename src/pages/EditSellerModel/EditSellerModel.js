@@ -1,8 +1,10 @@
+// EditSellerModel.js
+
 import React, { useEffect, useState, useContext } from 'react';
 import { Form, Input, InputNumber, Select, Upload, Button, message, Spin, Row, Col } from 'antd';
 import { UploadOutlined } from '@ant-design/icons';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchTypes, fetchBrands } from '../../http/thingAPI';
+import { fetchCountries, fetchAdultPlatforms } from '../../http/modelProductAPI';
 import { Context } from '../../index';
 import styles from './EditSellerModel.module.css';
 import { SELLER_ACCOUNT_ROUTE } from '../../utils/consts';
@@ -13,13 +15,13 @@ const { Option } = Select;
 
 const EditSellerModel = () => {
   const { id } = useParams();
-  const { user } = useContext(Context);
+  const { seller } = useContext(Context);
   const navigate = useNavigate();
 
   const [form] = Form.useForm();
-  const [thing, setThing] = useState(null);
-  const [types, setTypes] = useState([]);
-  const [brands, setBrands] = useState([]);
+  const [model, setModel] = useState(null);
+  const [countries, setCountries] = useState([]);
+  const [adultPlatforms, setAdultPlatforms] = useState([]);
   const [newImages, setNewImages] = useState([]);
   const [imagesToRemove, setImagesToRemove] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -44,26 +46,26 @@ const EditSellerModel = () => {
   useEffect(() => {
     const loadData = async () => {
       try {
-        const thingData = user.sellerThings.find((t) => t.id === Number(id));
-        if (!thingData) {
+        const modelData = seller.myModelProducts.find((t) => t.id === Number(id));
+        if (!modelData) {
           message.error('Model not found');
           navigate(SELLER_ACCOUNT_ROUTE);
           return;
         }
-        setThing(thingData);
+        setModel(modelData);
         form.setFieldsValue({
-          name: thingData.name,
-          price: thingData.price,
-          typeId: thingData.typeId,
-          brandIds: thingData.brands.map((brand) => brand.id),
-          ...thingData.info, // Устанавливаем значения info
+          name: modelData.name,
+          priceUSD: modelData.priceUSD, // Изменено
+          countryId: modelData.countryId, // Изменено
+          adultPlatformIds: modelData.adultPlatformIds, // Изменено
+          ...modelData.info, // Устанавливаем значения info
         });
 
-        const typesData = await fetchTypes();
-        setTypes(typesData);
+        const countriesData = await fetchCountries();
+        setCountries(countriesData);
 
-        const brandsData = await fetchBrands();
-        setBrands(brandsData);
+        const adultPlatformsData = await fetchAdultPlatforms();
+        setAdultPlatforms(adultPlatformsData);
 
         setLoading(false);
       } catch (error) {
@@ -73,13 +75,13 @@ const EditSellerModel = () => {
     };
 
     loadData();
-  }, [id, form, navigate, user.sellerThings]);
+  }, [id, form, navigate, seller.myModelProducts]);
 
   const handleValuesChange = (changedValues, allValues) => {
-    setThing((prevThing) => ({
-      ...prevThing,
+    setModel((prevModel) => ({
+      ...prevModel,
       ...allValues,
-      info: { ...prevThing.info, ...allValues },
+      info: { ...prevModel.info, ...allValues },
     }));
   };
 
@@ -89,9 +91,9 @@ const EditSellerModel = () => {
 
   const handleRemoveImage = (imageId) => {
     setImagesToRemove([...imagesToRemove, imageId]);
-    setThing({
-      ...thing,
-      images: thing.images.filter((image) => image.id !== imageId),
+    setModel({
+      ...model,
+      images: model.images.filter((image) => image.id !== imageId),
     });
   };
 
@@ -101,17 +103,17 @@ const EditSellerModel = () => {
 
       const formData = new FormData();
       formData.append('name', values.name);
-      formData.append('price', values.price);
-      formData.append('typeId', values.typeId);
-      formData.append('brandIds', JSON.stringify(values.brandIds));
-      formData.append('info', JSON.stringify(thing.info));
-      formData.append('imagesToRemove', JSON.stringify(imagesToRemove));
+      formData.append('priceUSD', values.priceUSD); // Изменено
+      formData.append('countryId', values.countryId); // Изменено
+      formData.append('adultPlatformIds', JSON.stringify(values.adultPlatformIds)); // Изменено
+      formData.append('info', JSON.stringify(model.info));
+      formData.append('imageIdsToRemove', JSON.stringify(imagesToRemove));
 
       newImages.forEach((file) => {
         formData.append('img', file.originFileObj);
       });
 
-      await user.updateThing(id, formData);
+      await seller.updateProduct(id, formData);
       message.success('Model updated successfully');
       navigate(SELLER_ACCOUNT_ROUTE);
     } catch (error) {
@@ -120,16 +122,16 @@ const EditSellerModel = () => {
     }
   };
 
-  if (loading || !thing) {
+  if (loading || !model) {
     return <LoadingIndicator />;
   }
 
   return (
     <div className={styles.editModel}>
-        <div className={styles.topic_back}>
-            <BackButton />
-            <h2>Edit Model</h2>
-        </div>
+      <div className={styles.topic_back}>
+        <BackButton />
+        <h2>Edit Model</h2>
+      </div>
       <Form
         form={form}
         layout="vertical"
@@ -144,34 +146,34 @@ const EditSellerModel = () => {
           <Input placeholder="Enter model name" />
         </Form.Item>
         <Form.Item
-          name="price"
+          name="priceUSD" // Изменено
           label="Price"
           rules={[{ required: true, message: 'Please enter price' }]}
         >
           <InputNumber min={0} placeholder="Enter price" style={{ width: '100%' }} />
         </Form.Item>
         <Form.Item
-          name="typeId"
+          name="countryId" // Изменено
           label="Country"
           rules={[{ required: true, message: 'Please select country' }]}
         >
           <Select placeholder="Select country">
-            {types.map((type) => (
-              <Option key={type.id} value={type.id}>
-                {type.name}
+            {countries.map((country) => (
+              <Option key={country.id} value={country.id}>
+                {country.name}
               </Option>
             ))}
           </Select>
         </Form.Item>
         <Form.Item
-          name="brandIds"
+          name="adultPlatformIds" // Изменено
           label="Platforms"
           rules={[{ required: true, message: 'Please select at least one platform' }]}
         >
           <Select mode="multiple" placeholder="Select platforms">
-            {brands.map((brand) => (
-              <Option key={brand.id} value={brand.id}>
-                {brand.name}
+            {adultPlatforms.map((adultPlatform) => (
+              <Option key={adultPlatform.id} value={adultPlatform.id}>
+                {adultPlatform.name}
               </Option>
             ))}
           </Select>
@@ -192,10 +194,10 @@ const EditSellerModel = () => {
         </Row>
 
         <div className={styles.existingImages}>
-          {thing.images.map((image) => (
+          {model.images.map((image) => (
             <div key={image.id} className={styles.photo}>
               <img
-                src={process.env.REACT_APP_API_URL + image.img}
+                src={`${process.env.REACT_APP_API_URL}${image.img}`} // Изменено
                 alt="Current Image"
                 className={styles.photos}
               />
@@ -210,27 +212,27 @@ const EditSellerModel = () => {
           ))}
         </div>
         <div className={styles.addImages}>
-        <Form.Item label="Add New Images">
-          <Upload
-            listType="picture"
-            multiple
-            beforeUpload={() => false}
-            onChange={handleImageChange}
-            fileList={newImages}
-            accept="image/*"
-          >
-            <Button icon={<UploadOutlined />}>Upload Images</Button>
-          </Upload>
-        </Form.Item>
+          <Form.Item label="Add New Images">
+            <Upload
+              listType="picture"
+              multiple
+              beforeUpload={() => false}
+              onChange={handleImageChange}
+              fileList={newImages}
+              accept="image/*"
+            >
+              <Button icon={<UploadOutlined />}>Upload Images</Button>
+            </Upload>
+          </Form.Item>
         </div>
 
         <div className={styles.confirm_btn_container}>
-            <button 
-                className={styles.confirm_btn} 
-                type="submit"
-            >
-                Update Model
-            </button>
+          <button 
+            className={styles.confirm_btn} 
+            type="submit"
+          >
+            Update Model
+          </button>
         </div>
       </Form>
     </div>

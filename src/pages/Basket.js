@@ -179,7 +179,7 @@ const Basket = observer(() => {
                         </div>
                     );
 
-                    return modelProduct.status !== 'AVAILABLE' ? (
+                    return (modelProduct.status !== 'AVAILABLE' || modelProduct.moderationStatus !== 'APPROVED') ? (
                         <Badge.Ribbon
                             key={modelProduct.id}
                             text="SOLD"
