@@ -32,7 +32,7 @@ export default class SellerStore {
         });
     }
 
-    async loadMyModelProducts() {
+    loadMyModelProducts = async () => {
         try {
             const data = await fetchMyModelProducts();
             runInAction(() => {
@@ -43,7 +43,7 @@ export default class SellerStore {
         }
     }
 
-    async loadMyOrders() {
+    loadMyOrders = async () => {
         try {
             const data = await fetchMyOrders();
             runInAction(() => {
@@ -54,7 +54,7 @@ export default class SellerStore {
         }
     }
 
-    async createModelProduct(formData) {
+    createModelProduct = async (formData) => {
         try {
             const newModelProduct = await createModelProduct(formData);
             runInAction(() => {
@@ -65,7 +65,7 @@ export default class SellerStore {
         }
     }
 
-    async updateProduct(modelProductId, formData) {
+    updateProduct = async (modelProductId, formData) => {
         try {
           const updatedProduct = await updateModelProduct(modelProductId, formData);
           runInAction(() => {
@@ -81,7 +81,7 @@ export default class SellerStore {
         }
     }
 
-    async deleteProduct(modelProductId) {
+    deleteProduct = async (modelProductId) => {
         try {
           await deleteModelProduct(modelProductId);
           runInAction(() => {
@@ -94,7 +94,7 @@ export default class SellerStore {
         }
     }
 
-    async loadMyInformation() {
+    loadMyInformation = async () => {
         try {
             const data = await fetchMyInformation();
             runInAction(() => {
@@ -105,7 +105,7 @@ export default class SellerStore {
         }
     }   
 
-    async updateSellerInfo(formData) {
+    updateSellerInfo = async (formData) => {
         try {
           const updatedInfo = await updateMyInformation(formData);
           runInAction(() => {
@@ -116,7 +116,7 @@ export default class SellerStore {
         }
     }
 
-    async addSellerReview(sellerId, formData) {
+    addSellerReview = async (sellerId, formData) => {
         try {
           const response = await createSellerReview(sellerId, formData);
           runInAction(() => {
@@ -128,7 +128,7 @@ export default class SellerStore {
         }
     }
 
-    async loadSellerReviews(sellerId) {
+    loadSellerReviews = async (sellerId) => {
         this.sellerReviewsLoading = true;
         try {
           const data = await getSellerReviews(sellerId);

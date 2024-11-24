@@ -101,7 +101,7 @@ export default class AdminStore {
       }
     };
   
-    async approveModelProduct(modelProductId) {
+   approveModelProduct = async (modelProductId) => {
       try {
         await approveModelProduct(modelProductId);
         runInAction(() => {
@@ -114,7 +114,7 @@ export default class AdminStore {
       }
     };
   
-    async rejectModelProduct(modelProductId, rejectionReason) {
+    rejectModelProduct = async (modelProductId, rejectionReason) => {
         try {
           await rejectModelProduct(modelProductId, rejectionReason);
           runInAction(() => {
