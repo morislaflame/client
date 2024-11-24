@@ -11,15 +11,15 @@ import { message, Select, Input, Skeleton } from 'antd'; // Импортируе
 import { ExchangeOffcanvas, ExchangeOffcanvasBody, ExchangeOffcanvasHeader } from '../../components/StyledComponents';
 import { PAYMENT_ROUTE } from '../../utils/consts';
 import BackButton from '../../components/BackButton/BackButton';
-import Pages from '../../components/Pages';
-import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
+import Pages from '../../components/ShopComponents/Pages/Pages';
+import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
 import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук
 import { wallets } from '../../utils/cryptoWallets'; // Импортируем wallets
 import { LuArrowRightLeft } from "react-icons/lu";
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
-const SideBar = React.lazy(() => import('../../components/SideBar/SideBar')); // Ленивая загрузка SideBar
+const SideBar = React.lazy(() => import('../../components/ShopComponents/SideBar/SideBar')); // Ленивая загрузка SideBar
 
 const ExchangePage = observer(() => {
     const { thing, user, exchange } = useContext(Context); // Используем exchange из контекста

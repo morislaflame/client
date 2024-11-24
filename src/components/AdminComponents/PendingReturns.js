@@ -7,7 +7,7 @@ import { List, message, Input, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import styles from './AdminComponents.module.css';
 import { THING_ROUTE } from '../../utils/consts';
-import CopyableButton from '../CopyableButton/CopyableButton';
+import CopyableButton from '../UI/CopyableButton/CopyableButton';
 
 const PendingReturns = observer(() => {
   const { admin } = useContext(Context);

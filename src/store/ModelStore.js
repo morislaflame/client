@@ -62,13 +62,13 @@ export default class ModelStore {
     }
 
     // Загрузка списка модельных продуктов
-    loadModelProducts = async (typeId, brandIds, page = 1, limit = 20, minPrice = 0, maxPrice = 10000) => {
+    loadModelProducts = async (typeId, brandIds, page = 1, limit = 20, minPriceUSD = 0, maxPriceUSD = 10000) => {
         this.isLoadingModelProducts = true;
         try {
-            const data = await fetchModelProducts(typeId, brandIds, page, limit, minPrice, maxPrice);
+            const data = await fetchModelProducts(typeId, brandIds, page, limit, minPriceUSD, maxPriceUSD);
             runInAction(() => {
-                this.modelProducts = data.items || [];
-                this.totalCount = data.totalCount || 0;
+                this.modelProducts = data.rows || [];
+                this.totalCount = data.count || 0;
                 this.page = page;
                 this.limit = limit;
             });

@@ -1,0 +1,50 @@
+:root {
+    --index: calc(1vw + 1vh);
+    --transition: transform .75s cubic-bezier(.075, .5, 0, 1);
+}
+
+.main-button {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 50%;
+}
+
+.skelet {
+    height: calc(var(--index) * 1.5);
+    width: 40%;
+    background: url('../../../icons/button.png') no-repeat center center;
+    background-size: contain; /* Изображение полностью помещается внутри элемента */
+}
+
+.my-button {
+    width: 100%;
+    height: calc(var(--index)* 3);
+    background: linear-gradient(150deg, #ac57ed, #6b3ce6);
+    color: #fff;
+    border: 0;
+    border-radius: calc(var(--index) * 1);
+    box-shadow: 
+        0 0 2px black, 
+        0 0 5px #000000a3, 
+        0 0 10px #000000a3;
+    cursor: pointer;
+    font-size: calc(var(--index) * 1);
+    font-weight: 400;
+  }
+  
+  .my-button:hover {
+    background: #6b3ce6 ;
+  }
+
+  @media (max-width: 600px) {
+    .skelet {
+        height: calc(var(--index) * 2.5);
+    }
+
+    .my-button {
+        height: calc(var(--index)* 4);
+        font-size: calc(var(--index) * 1.4);
+    }
+  }
+  

@@ -7,7 +7,7 @@ import BackButton from '../../components/BackButton/BackButton';
 import styles from './AllReturnPage.module.css'
 import { THING_ROUTE } from '../../utils/consts';
 import { useNavigate } from 'react-router-dom';
-import CopyableButton from '../../components/CopyableButton/CopyableButton'; // Импортируем CopyableButton
+import CopyableButton from '../../components/UI/CopyableButton/CopyableButton'; // Импортируем CopyableButton
 import { FcCancel, FcClock, FcOk } from 'react-icons/fc'; // Импортируем иконки
 import { FloatButton } from 'antd';
 

@@ -6,8 +6,8 @@ import { FcCancel, FcClock, FcOk } from 'react-icons/fc';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
-import CopyableButton from '../CopyableButton/CopyableButton';
-import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
+import CopyableButton from '../UI/CopyableButton/CopyableButton';
+import LoadingIndicator from '../UI/LoadingIndicator/LoadingIndicator';
 
 const UserExchanges = observer(({ exchanges, sliderSettings }) => {
   const { exchange } = useContext(Context); // Access ExchangeStore from context

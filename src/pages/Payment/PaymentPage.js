@@ -7,7 +7,7 @@ import { createExchangeRequest } from '../../http/exchangeAPI';
 import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
 import styles from './PaymentPage.module.css';
 import BackButton from "../../components/BackButton/BackButton";
-import CopyableButton from "../../components/CopyableButton/CopyableButton";
+import CopyableButton from "../../components/UI/CopyableButton/CopyableButton";
 import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук
 import { wallets } from '../../utils/cryptoWallets'; // Импортируем wallets
 import { Spin } from 'antd';

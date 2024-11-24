@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 import { List, message, Button } from 'antd';
 import styles from './AdminComponents.module.css';
 import { THING_ROUTE } from '../../utils/consts';
-import CopyableButton from '../CopyableButton/CopyableButton';
+import CopyableButton from '../UI/CopyableButton/CopyableButton';
 
 const NewOrders = observer(() => {
   const { admin } = useContext(Context);

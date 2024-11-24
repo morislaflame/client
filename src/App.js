@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
 import { BrowserRouter } from 'react-router-dom';
 import AppRouter from './components/AppRouter';
-import NavBar from './components/NavBar/NavBar';
+import NavBar from './components/MainComponents/NavBar/NavBar';
 import { observer } from 'mobx-react-lite';
 import { Context } from './index';
 import { check, telegramAuth } from './http/userAPI';
 import './App.css';
-import Chat from './components/ChatForm/ChatForm';
-import Footer from './components/Footer/Footer';
-import LoadingIndicator from './components/LoadingIndicator/LoadingIndicator';
+import Chat from './components/FuctionalComponents/ChatForm/ChatForm';
+import Footer from './components/MainComponents/Footer/Footer';
+import LoadingIndicator from './components/UI/LoadingIndicator/LoadingIndicator';
 
 const App = observer(() => {
   const { user } = useContext(Context);

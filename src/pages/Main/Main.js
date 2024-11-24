@@ -2,13 +2,13 @@ import React, { Suspense } from 'react';
 import './Main.css';
 import { useNavigate } from 'react-router-dom';
 import { SHOP_ROUTE } from '../../utils/consts';
-import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
+import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
 import { Skeleton } from 'antd';
-import MyButton from '../../components/MyButton/MyButton';
+import MyButton from '../../components/UI/MyButton/MyButton';
 
-const StorySlider = React.lazy(() => import('../../components/StorySlider/StorySlider'));
-const Reviews = React.lazy(() => import('../../components/Reviews/Reviews'));
-const ProductSlider = React.lazy(() => import('../../components/ProductSlider/ProductSlider'));
+const StorySlider = React.lazy(() => import('../../components/ShopComponents/StorySlider/StorySlider'));
+const Reviews = React.lazy(() => import('../../components/MainComponents/Reviews/Reviews'));
+const ProductSlider = React.lazy(() => import('../../components/ShopComponents/ProductSlider/ProductSlider'));
 
 export default function Main() {
   const navigate = useNavigate();

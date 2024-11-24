@@ -2,7 +2,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import styles from './Basket.module.css';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../index';
-import MyButton from '../components/MyButton/MyButton';
+import MyButton from '../components/UI/MyButton/MyButton';
 import MymIcon from '../icons/Mym.png';
 import FanslyIcon from '../icons/fansly.png';
 import OnlyIcon from '../icons/onlyfans.png';

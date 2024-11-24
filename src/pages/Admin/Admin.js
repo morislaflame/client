@@ -16,7 +16,7 @@ import CreatePromoCode from '../../components/AdminComponents/adminModals/Create
 import styles from './Admin.module.css'
 import { message, Input, Modal as AntdModal, AutoComplete, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import CopyableButton from '../../components/CopyableButton/CopyableButton';
+import CopyableButton from '../../components/UI/CopyableButton/CopyableButton';
 
 const { confirm } = AntdModal;
 

@@ -3,7 +3,7 @@ import { Button, Modal, Form, Input, InputNumber, Select, Row, Col, message, Aut
 import { Context } from "../../../index";
 import { createThing, fetchBrands, fetchTypes } from '../../../http/thingAPI';
 import { observer } from "mobx-react-lite";
-import ImageUploader from '../../ImageUploader/ImageUploader';
+import ImageUploader from '../../UI/ImageUploader/ImageUploader';
 import { fetchScouts } from '../../../http/scoutAPI';
 
 const { Option } = Select;

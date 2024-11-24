@@ -11,7 +11,7 @@ import { THING_ROUTE } from '../../utils/consts';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
-import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
+import LoadingIndicator from '../UI/LoadingIndicator/LoadingIndicator';
 import placeholder from '../../icons/placeholder.jpg';
 
 const UserModels = observer(({ handleShow }) => {

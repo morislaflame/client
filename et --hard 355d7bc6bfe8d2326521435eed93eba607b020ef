@@ -1,0 +1,296 @@
+[33mcommit 65a44760b21218f4a35afd281daa0acced791d2a[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32msellers[m[33m)[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sun Nov 24 13:16:37 2024 +0500
+
+    ShopComponents
+
+[33mcommit 355d7bc6bfe8d2326521435eed93eba607b020ef[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sun Nov 24 11:20:11 2024 +0500
+
+    ModelStore
+
+[33mcommit b159fd1aba0ab9df0e75bc3511e5a03e0b268263[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 22 19:43:02 2024 +0500
+
+    AdminComponents
+
+[33mcommit faf4629863aa80f5a47088e52064676fc7685bf1[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 22 17:26:29 2024 +0500
+
+    SellerPages
+
+[33mcommit 4677259d4bb1d9c658bb76a340c57aebed69da98[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 22 17:12:07 2024 +0500
+
+    NewSellerComponents
+
+[33mcommit c99947f45af224e1f2e8bbc92d0330b30b44b232[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Thu Nov 21 20:45:55 2024 +0500
+
+    NewAPI
+
+[33mcommit 9e9bfc1af9ce3c321f8784fc8b147d155590cf5c[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Thu Nov 21 16:27:58 2024 +0500
+
+    beforeChanges
+
+[33mcommit 92160a7b038ee92dd030bb400ba5ce93115ac5b8[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 15 17:51:42 2024 +0500
+
+    thingPage
+
+[33mcommit 37bfb679817e2d0c8bee489d9ba6abaed95c9f64[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 15 17:31:34 2024 +0500
+
+    navbar
+
+[33mcommit 23afb7c90fe30ebf9f86b5adaf9b9b86e7b49d54[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 15 17:18:15 2024 +0500
+
+    navbar
+
+[33mcommit 00d35e31e637e4e1efb1092f3ee4d58785a5f5eb[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 15 16:01:16 2024 +0500
+
+    storiesinstagram
+
+[33mcommit 2f0a935e8276182b210164153cc9fb89711ef335[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 15 00:42:58 2024 +0500
+
+    storiesinstagram
+
+[33mcommit 9b2d26960beb90d60aeb97447984147f677ecbe8[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 15 00:00:07 2024 +0500
+
+    storiesinstagram
+
+[33mcommit be82a6d8f972b2eb6168043a0e9fa0cb301f9eab[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Thu Nov 14 21:16:27 2024 +0500
+
+    storiesinsta
+
+[33mcommit dc0b9d83fa62fd7ba72665bde7baf038c4733155[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Thu Nov 14 20:50:24 2024 +0500
+
+    storiesinsta
+
+[33mcommit b961db75afc25fb3957c757df72c619a223b48eb[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Thu Nov 14 18:33:52 2024 +0500
+
+    stories
+
+[33mcommit 4753f4e2090cfc958ea0ebd9377e06152518363a[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Nov 13 21:21:05 2024 +0500
+
+    sidebar
+
+[33mcommit 0f407eb9d602bca935750d43745563e074a5511e[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Nov 13 20:46:40 2024 +0500
+
+    reviews
+
+[33mcommit 44b9072d5e8f09740e5acdde8459f970b5c30700[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Nov 13 16:19:08 2024 +0500
+
+    reviews
+
+[33mcommit 250ab1f368d79cc13210207c5ad0139df4d46ca4[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Nov 13 14:59:40 2024 +0500
+
+    accordion
+
+[33mcommit c11aff05903f0a5c0d3b63296c300b409a51df73[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Nov 13 14:05:30 2024 +0500
+
+    sellers
+
+[33mcommit 2f47fb84a064b6813b28bb76b5ce68f558be12bf[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Mon Nov 11 17:19:22 2024 +0500
+
+    sellerAccount
+
+[33mcommit 60f8993378d504052ef76ff1d7e8725e809613f6[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 8 17:21:53 2024 +0500
+
+    menu
+
+[33mcommit 2bb271f713ae17a73b57c5b034303194e0a27765[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 8 16:11:08 2024 +0500
+
+    seller_account
+
+[33mcommit 8488d52de16f26fd6c9e69c2a0afd1a1284e5ed4[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Fri Nov 8 12:33:08 2024 +0500
+
+    seller_added
+
+[33mcommit a69a762bc88cc3e707fe2fc90545f447659afac4[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Thu Nov 7 23:52:34 2024 +0500
+
+    seller_functions
+
+[33mcommit 2cb337d03114f5802bc9e383448f58d228f471ec[m[33m ([m[1;31morigin/master[m[33m, [m[1;32mmaster[m[33m)[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Thu Oct 31 16:12:29 2024 +0500
+
+    haptic
+
+[33mcommit fd12bcaeab516fcf2acac846be9420b34f8ab3ee[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Thu Oct 31 13:51:48 2024 +0500
+
+    https
+
+[33mcommit 50dbc4e63ed9c41ad9746890ee1b5ae705ab9bc8[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Oct 30 23:23:49 2024 +0500
+
+    credentials
+
+[33mcommit b5f0d2a50d30ae3b0688ff93046fba12afaf6703[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Oct 30 23:14:15 2024 +0500
+
+    nongrok
+
+[33mcommit f1921ce12861209b45e1545d5036cc648b65f2ab[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Oct 30 23:06:11 2024 +0500
+
+    nosocket
+
+[33mcommit 9c4fa98c062e0a9f0470e4248ec114e1251f8a55[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Oct 30 23:00:53 2024 +0500
+
+    nosocket
+
+[33mcommit 8c3206a3a652e4735447568ff71d5721cd4056b7[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Oct 30 22:27:53 2024 +0500
+
+    Main
+
+[33mcommit 96657739f7269547b52379afa1f0f8363403dafd[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Oct 30 19:56:50 2024 +0500
+
+    Main
+
+[33mcommit da115a5a67c9d24c8bcbcbe869ce87d86c7bb88e[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Oct 30 14:28:13 2024 +0500
+
+    MainTop
+
+[33mcommit cb617f905ec870523657d1dd377804584bd79ae4[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Oct 30 12:59:51 2024 +0500
+
+    Story
+
+[33mcommit c9b53a12408a4dc16bacdf02ef020fb196ff8398[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Oct 30 12:41:08 2024 +0500
+
+    Story
+
+[33mcommit d7247fcd2924b5df92031d51079d7b6794b39fb6[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Wed Oct 30 12:13:51 2024 +0500
+
+    NavBar
+
+[33mcommit 34c7cd65efe27f7aa2247a1541482b5897726c2e[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sun Oct 27 12:40:46 2024 +0500
+
+    HapticBasket
+
+[33mcommit 31c3f4d01d696df90e79bf586df3daccc3903a3e[m
+Merge: 1f42ad5 0a6ff44
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sun Oct 27 12:27:53 2024 +0500
+
+    Merge branch 'master' of https://github.com/morislaflame/client
+
+[33mcommit 1f42ad585c9412b297f2bcee92bc9fc95bd0980d[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sun Oct 27 12:27:17 2024 +0500
+
+    Haptic
+
+[33mcommit bca0fbef5ba874be4702b1b010d2c57b68e75369[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sat Oct 26 21:07:28 2024 +0500
+
+    Add
+
+[33mcommit 50726a748f5fb2fca86c5241f555894f2a47aaba[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sat Oct 26 20:00:53 2024 +0500
+
+    Scout
+
+[33mcommit d3f2165fbfa0ac9e634e2a3a2794879607522239[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sat Oct 26 14:04:23 2024 +0500
+
+    BeforeMessage
+
+[33mcommit 0a6ff444aa56425838803ca8c1e5b415fd9ba52e[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sun Oct 20 19:54:07 2024 +0500
+
+    Final
+
+[33mcommit 5e996be616925506f9998dcab55c1e621b7febc4[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sun Oct 20 12:49:41 2024 +0500
+
+    Refferal
+
+[33mcommit f63b97a4d863d956342ee5c92725c16073adbcc2[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sun Oct 20 11:52:42 2024 +0500
+
+    buttonAnimation
+
+[33mcommit 3202d29245e0b84752a918243c0fc4031ec6eca4[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sat Oct 19 22:57:07 2024 +0500
+
+    Filters
+
+[33mcommit ff5170e8858df2e48fb8328378a8ddff595d465e[m
+Author: morislaflame <andrey.uraltender@yandex.ru>
+Date:   Sat Oct 19 22:34:53 2024 +0500
+
+    Filters
+
+[33mcommit a3fe6e372cc244dd5f6acc027ddd12

@@ -3,14 +3,14 @@ import styles from './Shop.module.css'
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { fetchBrands, fetchTypes } from '../../http/thingAPI';
-import Pages from '../../components/Pages';
-import StorySlider from '../../components/StorySlider/StorySlider';
+import Pages from '../../components/ShopComponents/Pages/Pages';
+import StorySlider from '../../components/ShopComponents/StorySlider/StorySlider';
 import { FloatButton, Skeleton } from "antd";
-import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
+import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
 
-const SideBar = React.lazy(() => import('../../components/SideBar/SideBar'));
-const Reviews = React.lazy(() => import('../../components/Reviews/Reviews'));
-const ThingList = React.lazy(() => import('../../components/ThingList'));
+const SideBar = React.lazy(() => import('../../components/ShopComponents/SideBar/SideBar'));
+const Reviews = React.lazy(() => import('../../components/MainComponents/Reviews/Reviews'));
+const ThingList = React.lazy(() => import('../../components/ShopComponents/ModelList/ThingList'));
 
 const Shop = observer(() => {
   const {thing} = useContext(Context);

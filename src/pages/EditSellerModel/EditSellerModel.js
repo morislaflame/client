@@ -7,7 +7,7 @@ import { Context } from '../../index';
 import styles from './EditSellerModel.module.css';
 import { SELLER_ACCOUNT_ROUTE } from '../../utils/consts';
 import BackButton from '../../components/BackButton/BackButton';
-import LoadingIndicator from '../../components/LoadingIndicator/LoadingIndicator';
+import LoadingIndicator from '../../components/UI/LoadingIndicator/LoadingIndicator';
 
 const { Option } = Select;
 

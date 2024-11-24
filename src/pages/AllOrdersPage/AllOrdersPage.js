@@ -5,7 +5,7 @@ import BackButton from '../../components/BackButton/BackButton';
 import styles from './AllOrdersPage.module.css'
 import { useNavigate } from 'react-router-dom';
 import { THING_ROUTE } from '../../utils/consts';
-import CopyableButton from '../../components/CopyableButton/CopyableButton'; 
+import CopyableButton from '../../components/UI/CopyableButton/CopyableButton'; 
 import { FcClock, FcOk, FcCancel } from 'react-icons/fc';
 import { FloatButton } from 'antd';
 

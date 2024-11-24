@@ -9,7 +9,7 @@ import UserOrders from '../../components/UserComponents/UserOrders';
 import UserReturns from '../../components/UserComponents/UserReturns';
 import UserExchanges from '../../components/UserComponents/UserExchanges';
 import UserModels from '../../components/UserComponents/UserModels';
-import ReturnRequestModal from '../../components/modals/ReturnRequestModal';
+import ReturnRequestModal from '../../components/FuctionalComponents/modals/ReturnRequestModal';
 
 const UserAccount = observer(() => {
   const { user } = useContext(Context);

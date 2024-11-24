@@ -1,7 +1,7 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchOneThing } from '../../http/thingAPI';
-import FaqAccordion from '../../components/FaqAccordion/FaqAccordion';
+import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
 import { Context } from '../../index';
 import { FaShoppingCart, FaEdit } from 'react-icons/fa';
 import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, TERMS_ROUTE } from '../../utils/consts';

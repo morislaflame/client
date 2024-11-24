@@ -6,7 +6,7 @@ import { registration, login } from '../http/userAPI';
 import { observer } from 'mobx-react-lite';
 import { Context } from "../index";
 import styles from './Auth.module.css';
-import MyButton from '../components/MyButton/MyButton';
+import MyButton from '../components/UI/MyButton/MyButton';
 import { message } from 'antd'; // Импортируем компонент message из antd
 
 const Auth = observer(() => {

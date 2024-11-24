@@ -7,8 +7,8 @@ import { GiHighHeel } from 'react-icons/gi';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { AutoComplete } from 'antd';
-import CopyableButton from '../CopyableButton/CopyableButton';
-import LoadingIndicator from '../LoadingIndicator/LoadingIndicator';
+import CopyableButton from '../UI/CopyableButton/CopyableButton';
+import LoadingIndicator from '../UI/LoadingIndicator/LoadingIndicator';
 
 const UserOrders = observer(({ orders, sliderSettings }) => {
   const { order } = useContext(Context); // Access OrderStore from context
