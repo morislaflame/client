@@ -13,82 +13,89 @@ import { CgCloseO } from "react-icons/cg";
 import { LoadingOutlined } from "@ant-design/icons";
 
 const Basket = observer(() => {
-    const { thing } = useContext(Context);
+    const { model } = useContext(Context);
     const navigate = useNavigate();
-    const [promoCodeInput, setPromoCodeInput] = useState('');
-    const [appliedPromoCode, setAppliedPromoCode] = useState('');
-    const [isApplyingPromo, setIsApplyingPromo] = useState(false); // Состояние для анимации загрузки
+    const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        thing.loadBasket();
-        thing.loadUserPromoCodes();
-    }, [thing]);
+        model.loadBasket();
+    }, [model]);
 
-    const handleRemove = async (thingId) => {
+    const handleRemove = async (basketItemId) => {
+        setIsLoading(true);
         try {
-            await thing.removeFromBasket(thingId);
+            await model.removeFromBasket(basketItemId);
             if (window.Telegram?.WebApp?.HapticFeedback) {
                 window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
               }
         } catch (error) {
             message.error('Error when removing an item from the cart: ' + error.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
     const handleClearBasket = async () => {
+        setIsLoading(true);
         try {
-            await thing.clearBasket();
+            await model.clearBasket();
             if (window.Telegram?.WebApp?.HapticFeedback) {
                 window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
               }
         } catch (error) {
             message.error('Error when clearing the cart: ' + error.message);
+        } finally {
+            setIsLoading(false);
         }
     };
 
-    const handleApplyPromoCode = async (promoCode) => {
-        const promoCodeToApply = promoCode || promoCodeInput;
-        if (!promoCodeToApply) {
-            message.error('Please enter the promocode');
-            return;
-        }
-        if (window.Telegram?.WebApp?.HapticFeedback) {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-          }
-        setIsApplyingPromo(true); // Устанавливаем состояние загрузки в true
-        const result = await thing.applyPromoCode(promoCodeToApply);
-        setIsApplyingPromo(false); // Устанавливаем состояние загрузки в false после завершения
+    if (isLoading) {
+        return <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />} />;
+    }
 
-        if (!result.success) {
-            message.error(result.message || 'Error when applying promocode');
-        } else {
-            setAppliedPromoCode(promoCodeToApply);
-            setPromoCodeInput('');
-        }
-    };
+    // const handleApplyPromoCode = async (promoCode) => {
+    //     const promoCodeToApply = promoCode || promoCodeInput;
+    //     if (!promoCodeToApply) {
+    //         message.error('Please enter the promocode');
+    //         return;
+    //     }
+    //     if (window.Telegram?.WebApp?.HapticFeedback) {
+    //         window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    //       }
+    //     setIsApplyingPromo(true); // Устанавливаем состояние загрузки в true
+    //     const result = await thing.applyPromoCode(promoCodeToApply);
+    //     setIsApplyingPromo(false); // Устанавливаем состояние загрузки в false после завершения
 
-    const handleRemovePromoCode = async () => {
-        await thing.removePromoCode();
-        if (window.Telegram?.WebApp?.HapticFeedback) {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-          }
-        setAppliedPromoCode('');
-    };
+    //     if (!result.success) {
+    //         message.error(result.message || 'Error when applying promocode');
+    //     } else {
+    //         setAppliedPromoCode(promoCodeToApply);
+    //         setPromoCodeInput('');
+    //     }
+    // };
 
-    const handlePayment = () => {
-        const unavailableItems = thing.basket.filter(item => item.status !== 'available');
-        if (unavailableItems.length > 0) {
-            message.error('Some items are not available for payment. Please remove them from your cart.');
-            return;
-        }
-        if (window.Telegram?.WebApp?.HapticFeedback) {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-          }
-        navigate('/payment', { state: { totalAmount: thing.totalPrice } });
-    };
+    // const handleRemovePromoCode = async () => {
+    //     await thing.removePromoCode();
+    //     if (window.Telegram?.WebApp?.HapticFeedback) {
+    //         window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    //       }
+    //     setAppliedPromoCode('');
+    // };
+
+    // const handlePayment = () => {
+    //     const unavailableItems = thing.basket.filter(item => item.status !== 'available');
+    //     if (unavailableItems.length > 0) {
+    //         message.error('Some items are not available for payment. Please remove them from your cart.');
+    //         return;
+    //     }
+    //     if (window.Telegram?.WebApp?.HapticFeedback) {
+    //         window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+    //       }
+    //     navigate('/payment', { state: { totalAmount: thing.totalPrice } });
+    // };
     
 
-    if (thing.basket.length === 0) {
+    if (model.basket.length === 0) {
         return <div className={styles.basket_empty}>Your Cart Is Empty</div>;
     }
 
@@ -110,13 +117,14 @@ const Basket = observer(() => {
             
             <div className={styles.topic_back}><BackButton/><h2>Your cart</h2></div>
             <div className={styles.basket_items}>
-                {thing.basket.map(item => {
+                {model.basket.map(item => {
+                    const modelProduct = item.modelProduct;
                     const basketItemContent = (
                         <div className={styles.basket_item}>
                             <div className={styles.item_inner}>
                                 <div className={styles.img_brands}>
-                                    {item.images && item.images.length > 0 ? (
-                                        <img src={process.env.REACT_APP_API_URL + item.images[0].img} alt={item.name} className={styles.basket_item_img} />
+                                    {modelProduct.images && modelProduct.images.length > 0 ? (
+                                        <img src={process.env.REACT_APP_API_URL + modelProduct.images[0].img} alt={modelProduct.name} className={styles.basket_item_img} />
                                     ) : (
                                         <img src="/path/to/default/image.png" alt="Нет изображения" className={styles.basket_item_img} />
                                     )}
@@ -126,17 +134,17 @@ const Basket = observer(() => {
                                     <div className={styles.info_brand}>
                                         <div className={styles.items_name_price}>
                                             <div className={styles.brands_basket}>
-                                                {item.brands && item.brands.length > 0 ? (
-                                                    item.brands.map(brand => (
+                                                {modelProduct.adultPlatforms && modelProduct.adultPlatforms.length > 0 ? (
+                                                    modelProduct.adultPlatforms.map(adultPlatform => (
                                                         <div
-                                                            key={brand.id}
-                                                            style={brandStyles[brand.id] || { color: 'black' }}
+                                                            key={adultPlatform.id}
+                                                            style={brandStyles[adultPlatform.id] || { color: 'black' }}
                                                             className={styles.brand_item_basket}
                                                         >
-                                                            {brandIcons[brand.id] && (
+                                                            {brandIcons[adultPlatform.id] && (
                                                                 <img
-                                                                    src={brandIcons[brand.id]}
-                                                                    alt={`${brand.name} icon`}
+                                                                    src={brandIcons[adultPlatform.id]}
+                                                                    alt={`${adultPlatform.name} icon`}
                                                                     className={styles.brands_icons_basket}
                                                                 />
                                                             )}
@@ -148,15 +156,15 @@ const Basket = observer(() => {
                                             </div>
                                             <span className={styles.basket_item_name}>{item.name}</span>
                                             <div className={styles.thing_info}>
-                                                <span className={styles.info}>Start: {item.info.start}</span>
-                                                <span className={styles.info}>Content: {item.info.content}</span>
+                                                <span className={styles.info}>Start: {modelProduct.info.start}</span>
+                                                <span className={styles.info}>Content: {modelProduct.info.content}</span>
                                             </div>
-                                            {item.originalPrice && item.price !== item.originalPrice && (
+                                            {modelProduct.originalPrice && modelProduct.priceUSD !== modelProduct.originalPrice && (
                                                 <span className={styles.basket_item_original_price} style={{ textDecoration: 'line-through', color: 'grey' }}>
-                                                    ${item.originalPrice}
+                                                    ${modelProduct.originalPrice}
                                                 </span>
                                             )}
-                                            <span className={styles.basket_item_price}>${item.price}</span>
+                                            <span className={styles.basket_item_price}>${modelProduct.priceUSD}</span>
                                         </div>
                                     </div>
                                 </div>
@@ -171,16 +179,16 @@ const Basket = observer(() => {
                         </div>
                     );
 
-                    return item.status !== 'available' ? (
+                    return modelProduct.status !== 'AVAILABLE' ? (
                         <Badge.Ribbon
-                            key={item.id}
+                            key={modelProduct.id}
                             text="SOLD"
                             color='red'
                         >
                             {basketItemContent}
                         </Badge.Ribbon>
                     ) : (
-                        <React.Fragment key={item.id}>
+                        <React.Fragment key={modelProduct.id}>
                             {basketItemContent}
                         </React.Fragment>
                     );
@@ -188,7 +196,7 @@ const Basket = observer(() => {
                 <button className={styles.clear_basket} onClick={handleClearBasket}>Clear cart</button>
             </div>
 
-            <div className={styles.promo_code_section}>
+            {/* <div className={styles.promo_code_section}>
                 <div className={styles.promocodes}>
                     <h3>Apply Promocode</h3>
                     {appliedPromoCode || thing.promoCode ? (
@@ -233,19 +241,18 @@ const Basket = observer(() => {
                         <p></p>
                     )}
                 </div>
-            </div>
+            </div> */}
             
 
-            <div className={styles.basket_total}>
-                <h3>Total amount: ${thing.totalPrice}</h3>
-                {thing.discount > 0 && <p>Discount: ${thing.discount}</p>}
+            {/* <div className={styles.basket_total}>
+                <h3>Total amount: ${model.modelProduct.priceUSD}</h3>
+                {model.discount > 0 && <p>Discount: ${model.discount}</p>}
                 <MyButton 
                     style={{width: 'calc(var(--index)* 25)'}}
                     text={'Go to payment'} 
-                    onClick={handlePayment}
-                    disabled={thing.basket.some(item => item.status !== 'available')}
+                    onClick={""}
                 ></MyButton>
-            </div>
+            </div> */}
         </div>
     );
 });

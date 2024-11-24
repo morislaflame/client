@@ -28,7 +28,7 @@ export default class ModelStore {
         try {
             const data = await fetchBasket();
             runInAction(() => {
-                this.basket = data.items || [];
+                this.basket = data || [];
             });
         } catch (error) {
             console.error('Error loading basket:', error);
@@ -65,8 +65,9 @@ export default class ModelStore {
     }
 
     isItemInBasket(modelProductId) {
-        return this.basket.some(item => item.id === Number(modelProductId));
+        return this.basket.some(item => item.modelProductId === Number(modelProductId));
     }
+    
 
     // getters and setters
 

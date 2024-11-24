@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { fetchOneThing } from '../../http/thingAPI';
+import { fetchModelProductById } from '../../http/modelProductAPI';
 import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
 import { Context } from '../../index';
 import { FaShoppingCart, FaEdit } from 'react-icons/fa';
@@ -17,11 +17,11 @@ import { FloatButton, Button, Spin } from 'antd';
 import { LoadingOutlined } from "@ant-design/icons";
 
 const ModelPage = observer(() => {
-  const [thing, setThing] = useState({ info: {}, images: [], brands: [], type: {} });
+  const [models, setModels] = useState({ info: {}, images: [], adultPlatforms: [], country: {} });
   const [loading, setLoading] = useState(true);
   const [addingToBasket, setAddingToBasket] = useState(false); // Добавлено состояние для анимации загрузки
   const { id } = useParams();
-  const { thing: thingStore, user } = useContext(Context);
+  const { model, user } = useContext(Context);
 
   const navigate = useNavigate();
 
@@ -29,23 +29,23 @@ const ModelPage = observer(() => {
     // Scroll to top when the component mounts
     window.scrollTo({ top: 0, behavior: 'smooth' });
   
-    fetchOneThing(id).then(data => {
-      setThing(data);
+    fetchModelProductById(id).then(data => {
+      setModels(data);
       setLoading(false);
     });
   
     // Only load the basket if the user is authenticated
     if (user.isAuth) {
-      thingStore.loadBasket();
+      model.loadBasket();
     }
-  }, [id, thingStore, user.isAuth]); // Added user.isAuth to dependency array
+  }, [id, model, user.isAuth]); // Added user.isAuth to dependency array
   
 
   const handleAddToBasket = async () => {
     if (user.isAuth) {
       setAddingToBasket(true); // Устанавливаем состояние загрузки в true
       try {
-        await thingStore.addToBasket(id);
+        await model.addToBasket(id);
         message.success('Added to cart');
 
         if (window.Telegram?.WebApp?.HapticFeedback) {
@@ -63,7 +63,7 @@ const ModelPage = observer(() => {
   };
 
   // Проверяем, находится ли товар в корзине
-  const isInBasket = thingStore.isItemInBasket(id);
+  const isInBasket = model.isItemInBasket(id);
 
   // Проверяем, является ли пользователь администратором
   const isAdmin = user.isAuth && user.user.role === 'ADMIN';
@@ -84,7 +84,7 @@ const ModelPage = observer(() => {
     <div className={styles.thing_content}>
       <div className={styles.topic_back}>
         <BackButton />
-        <h2 className={styles.topic}>{thing.name}</h2>
+        <h2 className={styles.topic}>{models.name}</h2>
       </div>
       <div className={styles.main_model}>
         <div className={styles.photo}>
@@ -92,7 +92,7 @@ const ModelPage = observer(() => {
             arrows
             className={styles.thing_carousel}
           >
-            {thing.images.map((image, index) => (
+            {models.images.map((image, index) => (
               <div key={index}>
                 <Image
                   className={styles.photos}
@@ -111,17 +111,17 @@ const ModelPage = observer(() => {
             <div className={styles.brands}>
               <span>Platforms available:</span>
               <div className={styles.brands_icons_container}>
-                {thing.brands && thing.brands.length > 0 ? (
-                  thing.brands.map(brand => (
+                {models.adultPlatforms && models.adultPlatforms.length > 0 ? (
+                  models.adultPlatforms.map(adultPlatform => (
                     <div
-                      key={brand.id}
-                      style={brandStyles[brand.id] || { color: 'black' }}
+                      key={adultPlatform.id}
+                      style={brandStyles[adultPlatform.id] || { color: 'black' }}
                       className={styles.brand_item}
                     >
-                      {brandIcons[brand.id] && (
+                      {brandIcons[adultPlatform.id] && (
                         <img
-                          src={brandIcons[brand.id]}
-                          alt={`${brand.name} icon`}
+                          src={brandIcons[adultPlatform.id]}
+                          alt={`${adultPlatform.name} icon`}
                           className={styles.brands_icons}
                         />
                       )}
@@ -133,29 +133,29 @@ const ModelPage = observer(() => {
               </div>
             </div>
             {/* Отображение типа товара */}
-            {thing.type && (
+            {models.country && (
                 <div className={styles.type_item}>
                   <span>Where she's from:</span>
-                  <div className={styles.type}><span>{thing.type.name}</span></div>
+                  <div className={styles.type}><span>{models.country.name}</span></div>
                 </div>
               )}
           </div>
-          {thing.info && (
+          {models.info && (
             <div className={styles.des_str}>
               
-              <div className={styles.info_str}><span>Age:</span> <div>{thing.info.age}</div></div>
-              <div className={styles.info_str}><span>Smartphone:</span> <div>{thing.info.smartphone}</div></div>
-              <div className={styles.info_str}><span>% For Her:</span> <div>{thing.info.percent}</div></div>
-              <div className={styles.info_str}><span>Time Per Day (hours):</span> <div>{thing.info.time}</div></div>
-              <div className={styles.info_str}><span>English Skills (1-10):</span> <div>{thing.info.english}</div></div>
-              <div className={styles.info_str}><span>Content:</span> <div>{thing.info.content}</div></div>
-              <div className={styles.info_str}><span>When Can She Start:</span> <div>{thing.info.start}</div></div>
-              <div className={styles.info_str}><span>Social Media Set Up:</span> <div>{thing.info.socialmedia}</div></div>
-              <div className={styles.info_str}><span>Comfortable With TikTok:</span> <div>{thing.info.tiktok}</div></div>
-              <div className={styles.info_str}><span>Any Countries Blocked?:</span> <div>{thing.info.cblocked}</div></div>
-              <div className={styles.info_str}><span>OF Verified:</span> <div>{thing.info.ofverif}</div></div>
-              <div className={styles.info_str}><span>Contract Signed:</span> <div>{thing.info.contract}</div></div>
-              <div className={styles.info_str}><span>Does she need account access:</span> <div>{thing.info.girlmsg}</div></div>
+              <div className={styles.info_str}><span>Age:</span> <div>{models.info.age}</div></div>
+              <div className={styles.info_str}><span>Smartphone:</span> <div>{models.info.smartphone}</div></div>
+              <div className={styles.info_str}><span>% For Her:</span> <div>{models.info.percent}</div></div>
+              <div className={styles.info_str}><span>Time Per Day (hours):</span> <div>{models.info.time}</div></div>
+              <div className={styles.info_str}><span>English Skills (1-10):</span> <div>{models.info.english}</div></div>
+              <div className={styles.info_str}><span>Content:</span> <div>{models.info.content}</div></div>
+              <div className={styles.info_str}><span>When Can She Start:</span> <div>{models.info.start}</div></div>
+              <div className={styles.info_str}><span>Social Media Set Up:</span> <div>{models.info.socialmedia}</div></div>
+              <div className={styles.info_str}><span>Comfortable With TikTok:</span> <div>{models.info.tiktok}</div></div>
+              <div className={styles.info_str}><span>Any Countries Blocked?:</span> <div>{models.info.cblocked}</div></div>
+              <div className={styles.info_str}><span>OF Verified:</span> <div>{models.info.ofverif}</div></div>
+              <div className={styles.info_str}><span>Contract Signed:</span> <div>{models.info.contract}</div></div>
+              <div className={styles.info_str}><span>Does she need account access:</span> <div>{models.info.girlmsg}</div></div>
               
             </div>
           )}
@@ -165,10 +165,10 @@ const ModelPage = observer(() => {
 
 
       {/* Условный рендеринг блока price_n_buy */}
-      {thing.status === 'available' && thing.moderationStatus === 'approved' && (
+      {models.status === 'AVAILABLE' && models.moderationStatus === 'APPROVED' && (
         <div className={styles.price_n_buy}>
           <div className={styles.inside}>
-            <span className={styles.price}>${thing.price}</span>
+            <span className={styles.price}>${models.priceUSD}</span>
             <div className={styles.add_to_card}>
               <button
                 className={styles.buy}
@@ -202,25 +202,12 @@ const ModelPage = observer(() => {
           <div style={{display: 'flex', flexDirection: 'column', width: '100%', alignItems: 'center'}}>
               <div className={styles.info_str}>
                       <span>Link:</span>
-                      <div><a href={thing.info.link} target="_blank" rel="noopener noreferrer">{thing.info.link}</a></div>
+                      <div><a href={models.info.link} target="_blank" rel="noopener noreferrer">{models.info.link}</a></div>
                     </div>
-              <div className={styles.info_str}>
-                <span>Is Scout Model:</span> <div>{thing.isScoutModel ? 'Yes' : 'No'}</div>
-              </div>
-              {thing.isScoutModel && thing.scout && (
-                <>
-                  <div className={styles.info_str}>
-                    <span>Scout ID:</span> <div>{thing.scout.id}</div>
-                  </div>
-                  <div className={styles.info_str}>
-                    <span>Scout Username:</span> <div>{thing.scout.username}</div>
-                  </div>
-                </>
-              )}
           </div>
             <Button
               type="primary"
-              onClick={() => navigate(`${EDIT_THING_ROUTE}/${thing.id}`)}
+              onClick={() => navigate(`${EDIT_THING_ROUTE}/${models.id}`)}
               loading={loading} // Добавлено свойство loading
             >
               <FaEdit /> Edit model
