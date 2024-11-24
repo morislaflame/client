@@ -5,7 +5,7 @@ import SellerModels from '../../components/SellerComponents/SellerModels';
 import SellerOrders from '../../components/SellerComponents/SellerOrders'; // Импортируем SellerOrders
 import CreateSellerModel from '../../components/SellerComponents/modals/CreateSellerModel';
 import styles from './SellerAccount.module.css';
-import BackButtons from '../../components/BackButton/Backbuttons';
+import BackButtons from '../../components/UI/BackButton/Backbuttons';
 import { MdStar } from "react-icons/md";
 import { GoNote } from "react-icons/go";
 import { IoIosReturnLeft } from "react-icons/io";

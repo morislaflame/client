@@ -6,7 +6,7 @@ import { observer } from 'mobx-react-lite';
 import { Button, Form, Input, InputNumber, Select, Upload, message, Checkbox } from 'antd';
 import { MAIN_ROUTE } from '../../utils/consts';
 import styles from './ThingEditPage.module.css';
-import BackButton from '../../components/BackButton/BackButton';
+import BackButton from '../../components/UI/BackButton/BackButton';
 import { UploadOutlined } from '@ant-design/icons';
 import { fetchScouts } from '../../http/scoutAPI';
 

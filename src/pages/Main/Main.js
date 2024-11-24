@@ -8,7 +8,7 @@ import MyButton from '../../components/UI/MyButton/MyButton';
 
 const StorySlider = React.lazy(() => import('../../components/ShopComponents/StorySlider/StorySlider'));
 const Reviews = React.lazy(() => import('../../components/MainComponents/Reviews/Reviews'));
-const ProductSlider = React.lazy(() => import('../../components/ShopComponents/ProductSlider/ProductSlider'));
+const ProductSlider = React.lazy(() => import('../../components/FuctionalComponents/ProductSlider/ProductSlider'));
 
 export default function Main() {
   const navigate = useNavigate();

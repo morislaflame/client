@@ -9,10 +9,10 @@ import { Skeleton } from 'antd';
 import Placeholder from '../../../icons/placeholder.jpg';
 
 
-const ModelItem = ({thing}) => {
+const ModelItem = ({model}) => {
     const navigate = useNavigate();
 
-    const previewImage = thing.images && thing.images.length > 0 ? thing.images[0].img : Placeholder;
+    const previewImage = model.images && model.images.length > 0 ? model.images[0].img : Placeholder;
 
     const brandStyles = {
         1: { color: '#008ccf' },
@@ -27,23 +27,23 @@ const ModelItem = ({thing}) => {
     };
 
     return (
-        <div className={'card_list'} onClick={() => navigate(THING_ROUTE + "/" + thing.id)}>
+        <div className={'card_list'} onClick={() => navigate(THING_ROUTE + "/" + model.id)}>
             <div className={'card'}>
-                {thing ? ( // Проверяем, загружен ли контент
+                {model ? ( // Проверяем, загружен ли контент
                     <>
-                        <img className={'card_img'} src={process.env.REACT_APP_API_URL + previewImage} alt={thing.name}/>
+                        <img className={'card_img'} src={process.env.REACT_APP_API_URL + previewImage} alt={model.name}/>
                         <div className="descript">
-                            {thing.brands && thing.brands.length > 0 ? (
-                                thing.brands.map(brand => (
+                            {model.adultPlatforms && model.adultPlatforms.length > 0 ? (
+                                model.adultPlatforms.map(adultPlatform => (
                                     <div 
-                                        key={brand.id} 
-                                        style={brandStyles[brand.id] || { color: 'black' }}  
+                                        key={adultPlatform.id} 
+                                        style={brandStyles[adultPlatform.id] || { color: 'black' }}  
                                         className="brand-item"
                                     >
-                                        {brandIcons[brand.id] && (
+                                        {brandIcons[adultPlatform.id] && (
                                             <img 
-                                                src={brandIcons[brand.id]} 
-                                                alt={`${brand.name} icon`} 
+                                                src={brandIcons[adultPlatform.id]} 
+                                                alt={`${adultPlatform.name} icon`} 
                                                 className="brand-icon"
                                             />
                                         )}
@@ -55,14 +55,14 @@ const ModelItem = ({thing}) => {
                         </div>
                         <div className="thing-all">
                             <div className="thingName">
-                                {thing.name}
+                                {model.name}
                             </div>
                             <div className="thing-info">
-                                <div><b>Content:</b> {thing.info && thing.info.content ? thing.info.content : 'N/A'}</div>
-                                <div><b>OF Verified:</b> {thing.info && thing.info.ofverif ? thing.info.ofverif : 'N/A'}</div>
+                                <div><b>Content:</b> {model.info && model.info.content ? model.info.content : 'N/A'}</div>
+                                <div><b>OF Verified:</b> {model.info && model.info.ofverif ? model.info.ofverif : 'N/A'}</div>
                             </div>
                             <div className="thing-price">
-                                ${thing.price}
+                                ${model.priceUSD}
                             </div>
                         </div>
                     </>

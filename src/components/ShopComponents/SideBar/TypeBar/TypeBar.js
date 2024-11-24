@@ -5,18 +5,18 @@ import { AutoComplete } from 'antd';
 import './TypeBar.css';
 
 const TypeBar = observer(() => {
-    const { thing } = useContext(Context);
+    const { model } = useContext(Context);
     const [searchTerm, setSearchTerm] = useState("");
 
-    const options = thing.types.map(type => ({
-        value: type.name,
-        label: type.name
+    const options = model.countries.map(country => ({
+        value: country.name,
+        label: country.name
     }));
 
     const handleSelect = (value) => {
-        const selectedType = thing.types.find(type => type.name === value);
-        if (selectedType) {
-            thing.setSelectedType(selectedType);
+        const selectedCountry = model.countries.find(country => country.name === value);
+        if (selectedCountry) {
+            model.setSelectedCountry(selectedCountry);
         }
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred('light');

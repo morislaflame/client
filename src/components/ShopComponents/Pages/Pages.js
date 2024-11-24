@@ -5,11 +5,11 @@ import { Pagination } from 'antd';
 import './Pages.css';
 
 const Pages = observer(() => {
-  const { thing } = useContext(Context);
-  const totalPages = Math.ceil(thing.totalCount / thing.limit);
+  const { model } = useContext(Context);
+  const totalPages = Math.ceil(model.totalCount / model.limit);
 
   const handlePageChange = (page) => {
-    thing.setPage(page);
+    model.setPage(page);
     if (window.Telegram?.WebApp?.HapticFeedback) {
       window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
     }
@@ -18,9 +18,9 @@ const Pages = observer(() => {
 
   return (
     <Pagination
-      current={thing.page}
-      total={thing.totalCount}
-      pageSize={thing.limit}
+      current={model.page}
+      total={model.totalCount}
+      pageSize={model.limit}
       onChange={handlePageChange}
       style={{ margin: 'calc(var(--index) * 3) 0', textAlign: 'center', display: 'flex', justifyContent: 'center' }}
     />

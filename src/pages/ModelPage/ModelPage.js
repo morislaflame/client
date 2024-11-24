@@ -10,13 +10,13 @@ import { message, Image, Carousel } from 'antd';
 import OnlyIcon from '../../icons/onlyfans.png';
 import MymIcon from '../../icons/Mym.png';
 import FanslyIcon from '../../icons/fansly.png';
-import BackButton from '../../components/BackButton/BackButton';
+import BackButton from '../../components/UI/BackButton/BackButton';
 import { IoMdLock } from "react-icons/io";
-import styles from './ThingPage.module.css';
+import styles from './ModelPage.module.css';
 import { FloatButton, Button, Spin } from 'antd';
 import { LoadingOutlined } from "@ant-design/icons";
 
-const ThingPage = observer(() => {
+const ModelPage = observer(() => {
   const [thing, setThing] = useState({ info: {}, images: [], brands: [], type: {} });
   const [loading, setLoading] = useState(true);
   const [addingToBasket, setAddingToBasket] = useState(false); // Добавлено состояние для анимации загрузки
@@ -238,4 +238,4 @@ const ThingPage = observer(() => {
   );
 });
 
-export default ThingPage;
+export default ModelPage;

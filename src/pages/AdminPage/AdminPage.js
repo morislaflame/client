@@ -1,7 +1,7 @@
 import React from 'react';
 import styles from './AdminPage.module.css';
 import PendingModels from '../../components/AdminComponents/PendingModels';
-import BackButton from '../../components/BackButton/BackButton';
+import BackButton from '../../components/UI/BackButton/BackButton';
 import AdminControls from '../../components/AdminComponents/AdminControls';
 import UserSearch from '../../components/AdminComponents/UserSearch';
 

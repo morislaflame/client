@@ -1,30 +1,30 @@
 import { observer } from "mobx-react-lite";
 import React, { useState, useContext, useEffect } from "react";
-import { Context } from "../../../index";
-import { fetchPriceRange } from "../../../http/thingAPI";
+import { Context } from "../../../../index";
+import { fetchPriceRange } from "../../../../http/thingAPI";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import './PriceSlider.css';
 
 const PriceSlider = observer(() => {
-    const { thing } = useContext(Context);
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(10000);
-    const [currentPriceRange, setCurrentPriceRange] = useState([minPrice, maxPrice]);
+    const { model } = useContext(Context);
+    const [minPriceUSD, setMinPriceUSD] = useState(0);
+    const [maxPriceUSD, setMaxPriceUSD] = useState(10000);
+    const [currentPriceRange, setCurrentPriceRange] = useState([minPriceUSD, maxPriceUSD]);
 
     useEffect(() => {
         fetchPriceRange().then(data => {
-            setMinPrice(data.minPrice);
-            setMaxPrice(data.maxPrice);
-            setCurrentPriceRange([data.minPrice, data.maxPrice]);
-            console.log("Initial global prices set: ", { min: data.minPrice, max: data.maxPrice });
+            setMinPriceUSD(data.minPriceUSD);
+            setMaxPriceUSD(data.maxPriceUSD);
+            setCurrentPriceRange([data.minPriceUSD, data.maxPriceUSD]);
+            console.log("Initial global prices set: ", { min: data.minPriceUSD, max: data.maxPriceUSD });
         }).catch(err => console.error("Error fetching price range: ", err));
     }, []);
 
     // Добавляем useEffect для отслеживания изменений в thing.priceRange
     useEffect(() => {
-        setCurrentPriceRange([thing.priceRange.min, thing.priceRange.max]);
-    }, [thing.priceRange]);
+        setCurrentPriceRange([model.priceRange.min, model.priceRange.max]);
+    }, [model.priceRange]);
 
     const handleSliderChange = (value) => {
         setCurrentPriceRange(value);
@@ -36,7 +36,7 @@ const PriceSlider = observer(() => {
 
     const applyPriceFilter = () => {
         console.log("Applying price filter with values: ", { min: currentPriceRange[0], max: currentPriceRange[1] });
-        thing.setPriceRange({ min: currentPriceRange[0], max: currentPriceRange[1] });
+        model.setPriceRange({ min: currentPriceRange[0], max: currentPriceRange[1] });
     };
 
     return (
@@ -48,8 +48,8 @@ const PriceSlider = observer(() => {
             
             <Slider
                 range
-                min={minPrice}
-                max={maxPrice}
+                min={minPriceUSD}
+                max={maxPriceUSD}
                 value={currentPriceRange}
                 onChange={handleSliderChange}
             />

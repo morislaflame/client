@@ -12,6 +12,7 @@ import ReturnStore from './store/ReturnStore';
 import ExchangeStore from './store/ExchangeStore';
 import SellerStore from './store/SellerStore';
 import AdminStore from './store/AdminStore';
+import ModelStore from './store/ModelStore';
 
 export const Context = createContext(null)
 
@@ -27,6 +28,7 @@ root.render(
     exchange: new ExchangeStore(),
     seller: new SellerStore(),
     admin: new AdminStore(),
+    model: new ModelStore(),
   }}>
     <App />
   </Context.Provider>

@@ -2,7 +2,7 @@ import React, { useContext, useEffect, Suspense } from 'react';
 import styles from './Shop.module.css'
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
-import { fetchBrands, fetchTypes } from '../../http/thingAPI';
+import { fetchAdultPlatforms, fetchCountries } from '../../http/modelProductAPI';
 import Pages from '../../components/ShopComponents/Pages/Pages';
 import StorySlider from '../../components/ShopComponents/StorySlider/StorySlider';
 import { FloatButton, Skeleton } from "antd";
@@ -13,22 +13,22 @@ const Reviews = React.lazy(() => import('../../components/MainComponents/Reviews
 const ModelList = React.lazy(() => import('../../components/ShopComponents/ModelList/ModelList'));
 
 const Shop = observer(() => {
-  const {thing} = useContext(Context);
+  const {model} = useContext(Context);
 
   useEffect(() => {
     window.scrollTo(0, 0);
     const savedPage = sessionStorage.getItem('currentPage');
     if (savedPage) {
-      thing.setPage(Number(savedPage));
+      model.setPage(Number(savedPage));
     }
 
-    fetchTypes().then(data => thing.setTypes(data));
-    fetchBrands().then(data => thing.setBrands(data));
-  }, [thing]);
+    fetchCountries().then(data => model.setCountries(data));
+    fetchAdultPlatforms().then(data => model.setAdultPlatforms(data));
+  }, [model]);
 
   useEffect(() => {
-    sessionStorage.setItem('currentPage', thing.page);
-  }, [thing.page]);
+    sessionStorage.setItem('currentPage', model.page);
+  }, [model.page]);
 
   return (
     <div className={styles.main_shop}>

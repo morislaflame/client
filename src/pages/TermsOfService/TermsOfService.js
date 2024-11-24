@@ -1,6 +1,6 @@
 import React from 'react';
 import './TermsOfService.css';
-import BackButton from '../../components/BackButton/BackButton';
+import BackButton from '../../components/UI/BackButton/BackButton';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from 'react-icons/si';
 
 const TermsOfService = () => {

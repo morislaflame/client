@@ -5,7 +5,7 @@ import { observer } from 'mobx-react-lite';
 import Modal from 'react-bootstrap/Modal';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import BackButton from '../../components/BackButton/BackButton';
+import BackButton from '../../components/UI/BackButton/BackButton';
 import styles from './AllUsersPage.module.css'
 import { AutoComplete, message, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';

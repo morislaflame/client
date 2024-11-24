@@ -7,7 +7,7 @@ import MymIcon from '../icons/Mym.png';
 import FanslyIcon from '../icons/fansly.png';
 import OnlyIcon from '../icons/onlyfans.png';
 import { observer } from 'mobx-react-lite';
-import BackButton from '../components/BackButton/BackButton';
+import BackButton from '../components/UI/BackButton/BackButton';
 import { message, Badge, Spin } from 'antd';
 import { CgCloseO } from "react-icons/cg";
 import { LoadingOutlined } from "@ant-design/icons";

@@ -1,7 +1,7 @@
 import React from 'react';
-import { Button, Flex } from 'antd';
+import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
-import { SHOP_ROUTE } from '../../utils/consts';
+import { SHOP_ROUTE } from '../../../utils/consts';
 import styles from './BackButtons.module.css';
 import { IoArrowBackCircleSharp } from "react-icons/io5";
 

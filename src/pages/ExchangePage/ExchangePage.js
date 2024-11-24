@@ -10,7 +10,7 @@ import styles from './ExchangePage.module.css';
 import { message, Select, Input, Skeleton } from 'antd'; // Импортируем необходимые компоненты, включая Skeleton
 import { ExchangeOffcanvas, ExchangeOffcanvasBody, ExchangeOffcanvasHeader } from '../../components/StyledComponents';
 import { PAYMENT_ROUTE } from '../../utils/consts';
-import BackButton from '../../components/BackButton/BackButton';
+import BackButton from '../../components/UI/BackButton/BackButton';
 import Pages from '../../components/ShopComponents/Pages/Pages';
 import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
 import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук

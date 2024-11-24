@@ -2,7 +2,7 @@ import Admin from "./pages/Admin/Admin";
 import Basket from "./pages/Basket";
 import Shop from "./pages/Shop/Shop";
 import Auth from "./pages/Auth";
-import ThingPage from "./pages/ThingPage/ThingPage";
+import ModelPage from "./pages/ModelPage/ModelPage";
 import { 
     ADMIN_ROUTE, 
     BASKET_ROUTE, 
@@ -135,7 +135,7 @@ export const publicRoutes = [
     },
     {
         path: THING_ROUTE + '/:id',
-        Component: <ThingPage />
+        Component: <ModelPage />
     },
     {
         path: TERMS_ROUTE,

@@ -1,16 +1,16 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
-import { Context } from "../../../index";
+import { Context } from "../../../../index";
 import './BrandBar.css';
 
 const BrandBar = observer(() => {
-    const { thing } = useContext(Context);
+    const { model } = useContext(Context);
 
-    const handleBrandClick = (brand) => {
-        if (thing.selectedBrands.includes(brand.id)) {
-            thing.setSelectedBrands(thing.selectedBrands.filter(id => id !== brand.id));
+    const handleAdultPlatformClick = (adultPlatform) => {
+        if (model.selectedAdultPlatforms.includes(adultPlatform.id)) {
+            model.setSelectedAdultPlatforms(model.selectedAdultPlatforms.filter(id => id !== adultPlatform.id));
         } else {
-            thing.setSelectedBrands([...thing.selectedBrands, brand.id]);
+            model.setSelectedAdultPlatforms([...model.selectedAdultPlatforms, adultPlatform.id]);
         }
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
@@ -19,13 +19,13 @@ const BrandBar = observer(() => {
 
     return (
         <div className={'brand_bar'}>
-            {thing.brands.map(brand =>
+            {model.adultPlatforms.map(adultPlatform =>
                 <button
-                    className={`brand_button ${thing.selectedBrands.includes(brand.id) ? 'selected' : ''}`}
-                    key={brand.id}
-                    onClick={() => handleBrandClick(brand)}
+                    className={`brand_button ${model.selectedAdultPlatforms.includes(adultPlatform.id) ? 'selected' : ''}`}
+                    key={adultPlatform.id}
+                    onClick={() => handleAdultPlatformClick(adultPlatform)}
                 >
-                    {brand.name}
+                    {adultPlatform.name}
                 </button>
             )}
         </div>

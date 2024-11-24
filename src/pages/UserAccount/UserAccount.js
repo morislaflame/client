@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styles from './UserAccount.module.css';
-import BackButton from '../../components/BackButton/BackButton';
+import BackButton from '../../components/UI/BackButton/BackButton';
 import UserOrders from '../../components/UserComponents/UserOrders';
 import UserReturns from '../../components/UserComponents/UserReturns';
 import UserExchanges from '../../components/UserComponents/UserExchanges';

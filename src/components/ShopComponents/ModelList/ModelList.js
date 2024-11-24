@@ -3,11 +3,11 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../index";
 import ModelItem from "../ModelItem/ModelItem";
 import { Skeleton } from 'antd';
-import { fetchThings } from '../../../http/thingAPI';
+import { fetchModelProducts } from '../../../http/modelProductAPI';
 import './ModelList.css';
 
 const ModelList = observer(() => {
-    const { thing } = useContext(Context);
+    const { model } = useContext(Context);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -15,16 +15,16 @@ const ModelList = observer(() => {
         const loadThings = async () => {
             setLoading(true);
             try {
-                const data = await fetchThings(
-                    thing.selectedType.id,
-                    thing.selectedBrands,
-                    thing.page,
+                const data = await fetchModelProducts(
+                    model.selectedCountry.id,
+                    model.selectedAdultPlatforms,
+                    model.page,
                     20,
-                    thing.priceRange.min,
-                    thing.priceRange.max
+                    model.priceRange.min,
+                    model.priceRange.max
                 );
-                thing.setThings(data.rows);
-                thing.setTotalCount(data.count);
+                model.setModelProducts(data.rows);
+                model.setTotalCount(data.count);
             } catch (error) {
                 console.error('Error loading models:', error);
             } finally {
@@ -33,7 +33,7 @@ const ModelList = observer(() => {
         };
 
         loadThings();
-    }, [thing.page, thing.selectedType, thing.selectedBrands, thing.priceRange]);
+    }, [model.page, model.selectedCountry, model.selectedAdultPlatforms, model.priceRange]);
 
     return (
         <div className="thing-list">
@@ -47,8 +47,8 @@ const ModelList = observer(() => {
                     </div>
                 ))
             ) : (
-                thing.things.map(thing =>
-                    <ModelItem key={thing.id} thing={thing} />
+                model.modelProducts.map(model =>
+                    <ModelItem key={model.id} model={model} />
                 )
             )}
         </div>
