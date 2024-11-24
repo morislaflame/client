@@ -1,7 +1,7 @@
 import { $authHost, $host } from './index';
 
-export const fetchModelProducts = async (typeId, brandIds, page, limit = 20, minPriceUSD, maxPriceUSD) => {
-    const { data } = await $authHost.get('api/model-product', { params: { typeId, brandIds, page, limit, minPriceUSD, maxPriceUSD } });
+export const fetchModelProducts = async (countryId, adultPlatformIds, page, limit = 20, minPriceUSD, maxPriceUSD) => {
+    const { data } = await $authHost.get('api/model-product', { params: { countryId, adultPlatformIds, page, limit, minPriceUSD, maxPriceUSD } });
     return data;
 };
 

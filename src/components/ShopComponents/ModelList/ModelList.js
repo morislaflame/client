@@ -1,12 +1,12 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../index";
-import ThingItem from "../ThingItem/ThingItem";
+import ModelItem from "../ModelItem/ModelItem";
 import { Skeleton } from 'antd';
 import { fetchThings } from '../../../http/thingAPI';
-import './ThingList.css';
+import './ModelList.css';
 
-const ThingList = observer(() => {
+const ModelList = observer(() => {
     const { thing } = useContext(Context);
     const [loading, setLoading] = useState(true);
 
@@ -48,11 +48,11 @@ const ThingList = observer(() => {
                 ))
             ) : (
                 thing.things.map(thing =>
-                    <ThingItem key={thing.id} thing={thing} />
+                    <ModelItem key={thing.id} thing={thing} />
                 )
             )}
         </div>
     );
 });
 
-export default React.memo(ThingList);
+export default React.memo(ModelList);

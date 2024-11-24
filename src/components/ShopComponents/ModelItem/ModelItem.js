@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-import './ThingItem.css';
+import './ModelItem.css';
 import { THING_ROUTE } from "../../../utils/consts";
 import MymIcon from '../../../icons/Mym.png';
 import FanslyIcon from '../../../icons/fansly.png';
@@ -9,7 +9,7 @@ import { Skeleton } from 'antd';
 import Placeholder from '../../../icons/placeholder.jpg';
 
 
-const ThingItem = ({thing}) => {
+const ModelItem = ({thing}) => {
     const navigate = useNavigate();
 
     const previewImage = thing.images && thing.images.length > 0 ? thing.images[0].img : Placeholder;
@@ -74,4 +74,4 @@ const ThingItem = ({thing}) => {
     );
 };
 
-export default ThingItem;
+export default ModelItem;

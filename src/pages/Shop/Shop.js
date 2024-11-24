@@ -10,7 +10,7 @@ import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqA
 
 const SideBar = React.lazy(() => import('../../components/ShopComponents/SideBar/SideBar'));
 const Reviews = React.lazy(() => import('../../components/MainComponents/Reviews/Reviews'));
-const ThingList = React.lazy(() => import('../../components/ShopComponents/ModelList/ThingList'));
+const ModelList = React.lazy(() => import('../../components/ShopComponents/ModelList/ModelList'));
 
 const Shop = observer(() => {
   const {thing} = useContext(Context);
@@ -42,7 +42,7 @@ const Shop = observer(() => {
       </div>
       <div className={styles.mainlist}>
         <Suspense fallback={<Skeleton active />}>
-          <ThingList/>
+          <ModelList/>
         </Suspense>
         <Pages/>
       </div>
