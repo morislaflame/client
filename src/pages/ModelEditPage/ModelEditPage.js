@@ -4,15 +4,15 @@ import { fetchModelProductById, fetchCountries, fetchAdultPlatforms } from '../.
 import { updateModelProduct } from '../../http/sellerAPI';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
-import { Button, Form, Input, InputNumber, Select, Upload, message, Checkbox } from 'antd';
+import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
 import { MAIN_ROUTE } from '../../utils/consts';
-import styles from './ThingEditPage.module.css';
+import styles from './ModelEditPage.module.css';
 import BackButton from '../../components/UI/BackButton/BackButton';
 import { UploadOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
 
-const ThingEditPage = observer(() => {
+const ModelEditPage = observer(() => {
   const { id } = useParams();
   const { user } = useContext(Context);
   const navigate = useNavigate();
@@ -251,4 +251,4 @@ const handleValuesChange = (changedValues, allValues) => {
   );
 });
 
-export default ThingEditPage;
+export default ModelEditPage;

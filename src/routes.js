@@ -35,7 +35,7 @@ import AllOrdersPage from "./pages/AllOrdersPage/AllOrdersPage";
 import AllUsersPage from "./pages/AllUsersPage/AllUsersPage";
 import AllReturnsPage from "./pages/AllReturnPage/AllReturnPage";
 import ExchangePage from "./pages/ExchangePage/ExchangePage";
-import ThingEditPage from "./pages/ThingEditPage/ThingEditPage"; // Добавьте эту строку
+import ModelEditPage from "./pages/ModelEditPage/ModelEditPage"; // Добавьте эту строку
 import AllExchangesPage from "./pages/AllExchangesPage/AllExchangesPage";
 import SellerAccount from "./pages/SellerAccount/SellerAccount";
 import EditSellerModel from "./pages/EditSellerModel/EditSellerModel";
@@ -90,7 +90,7 @@ export const authRoutes = (user) => {
         });
         routes.push({
             path: EDIT_THING_ROUTE + '/:id', 
-            Component: <ThingEditPage />
+            Component: <ModelEditPage />
         });
         routes.push({
             path: ALL_EXCHANGES_ROUTE, 
