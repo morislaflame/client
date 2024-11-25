@@ -6,7 +6,7 @@ import styles from './ReturnRequestModal.module.css';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { Context } from '../../../index';
-import { CustomOffcanvas, CustomOffcanvasBody, CustomOffcanvasHeader } from '../../StyledComponents';
+import { CustomOffcanvas, CustomOffcanvasBody, CustomOffcanvasHeader } from '../../NonUsedComponents/StyledComponents';
 import useCryptoRates from '../../../hooks/useCryptoRates';
 import { wallets } from '../../../utils/cryptoWallets'; 
 import { LoadingOutlined } from '@ant-design/icons';

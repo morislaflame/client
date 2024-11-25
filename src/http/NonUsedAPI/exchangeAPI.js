@@ -1,4 +1,4 @@
-import { $authHost } from "./index";
+import { $authHost } from "../index";
 
 export const createExchangeRequest = async (exchangeData) => {
     const { data } = await $authHost.post('api/exchange', exchangeData);

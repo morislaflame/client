@@ -18,7 +18,7 @@ import {
     deleteThingAsAdmin 
 } from "../http/userAPI";
 
-import { fetchUserExchangeRequests, createExchangeRequest } from "../http/exchangeAPI"; // Добавьте необходимые методы
+import { fetchUserExchangeRequests, createExchangeRequest } from "../http/NonUsedAPI/exchangeAPI"; // Добавьте необходимые методы
 
 export default class UserStore {
     constructor() {

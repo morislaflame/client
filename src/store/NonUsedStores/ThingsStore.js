@@ -1,8 +1,8 @@
 // store/ThingStore.js
 
 import { makeAutoObservable, action, runInAction } from "mobx";
-import { fetchBasket, addToBasket, removeFromBasket, clearBasket, applyPromoCode, removePromoCode } from "../http/basketAPI";
-import { fetchUserPromoCodes } from "../http/userAPI";
+import { fetchBasket, addToBasket, removeFromBasket, clearBasket, applyPromoCode, removePromoCode } from "../../http/basketAPI";
+import { fetchUserPromoCodes } from "../../http/userAPI";
 
 export default class ThingStore {
     constructor() {

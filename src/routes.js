@@ -1,4 +1,4 @@
-import Admin from "./pages/Admin/Admin";
+import Admin from "./pages/NonUsedPages/Admin/Admin";
 import Basket from "./pages/Basket";
 import Shop from "./pages/Shop/Shop";
 import Auth from "./pages/Auth";
@@ -30,13 +30,13 @@ import TermsOfService from "./pages/TermsOfService/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import PaymentPage from "./pages/Payment/PaymentPage";
 import UserInfoPage from "./pages/UserInfoPage/UserInfoPage";
-import UserAccount from "./pages/UserAccount/UserAccount";
+import UserAccount from "./pages/NonUsedPages/UserAccount/UserAccount";
 import AllOrdersPage from "./pages/AllOrdersPage/AllOrdersPage";
 import AllUsersPage from "./pages/AllUsersPage/AllUsersPage";
 import AllReturnsPage from "./pages/AllReturnPage/AllReturnPage";
-import ExchangePage from "./pages/ExchangePage/ExchangePage";
+import ExchangePage from "./pages/NonUsedPages/ExchangePage/ExchangePage";
 import ModelEditPage from "./pages/ModelEditPage/ModelEditPage"; // Добавьте эту строку
-import AllExchangesPage from "./pages/AllExchangesPage/AllExchangesPage";
+import AllExchangesPage from "./pages/NonUsedPages/AllExchangesPage/AllExchangesPage";
 import SellerAccount from "./pages/SellerAccount/SellerAccount";
 import EditSellerModel from "./pages/EditSellerModel/EditSellerModel";
 import AdminPage from "./pages/AdminPage/AdminPage";

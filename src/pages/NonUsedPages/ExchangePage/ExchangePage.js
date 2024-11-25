@@ -1,25 +1,25 @@
 import React, { useContext, useEffect, useState, Suspense } from 'react'; // Добавлен Suspense
 import axios from 'axios'; // Импортируем axios
 import { observer } from 'mobx-react-lite';
-import { Context } from '../../index';
-import ThingListForExchange from '../../components/ThingListForExchange/ThingListForExchange';
-import { fetchOneThing } from '../../http/thingAPI'; // Удален fetchThings
+import { Context } from '../../../index';
+import ThingListForExchange from '../../../components/NonUsedComponents/ThingListForExchange/ThingListForExchange';
+import { fetchOneThing } from '../../../http/NonUsedAPI/thingAPI'; // Удален fetchThings
 import { Button, Offcanvas } from 'react-bootstrap';
 import { useNavigate, useParams } from 'react-router-dom';
 import styles from './ExchangePage.module.css';
 import { message, Select, Input, Skeleton } from 'antd'; // Импортируем необходимые компоненты, включая Skeleton
-import { ExchangeOffcanvas, ExchangeOffcanvasBody, ExchangeOffcanvasHeader } from '../../components/StyledComponents';
-import { PAYMENT_ROUTE } from '../../utils/consts';
-import BackButton from '../../components/UI/BackButton/BackButton';
-import Pages from '../../components/ShopComponents/Pages/Pages';
-import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
-import useCryptoRates from '../../hooks/useCryptoRates'; // Импортируем хук
-import { wallets } from '../../utils/cryptoWallets'; // Импортируем wallets
+import { ExchangeOffcanvas, ExchangeOffcanvasBody, ExchangeOffcanvasHeader } from '../../../components/NonUsedComponents/StyledComponents';
+import { PAYMENT_ROUTE } from '../../../utils/consts';
+import BackButton from '../../../components/UI/BackButton/BackButton';
+import Pages from '../../../components/ShopComponents/Pages/Pages';
+import FaqAccordion from '../../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
+import useCryptoRates from '../../../hooks/useCryptoRates'; // Импортируем хук
+import { wallets } from '../../../utils/cryptoWallets'; // Импортируем wallets
 import { LuArrowRightLeft } from "react-icons/lu";
 import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
-const SideBar = React.lazy(() => import('../../components/ShopComponents/SideBar/SideBar')); // Ленивая загрузка SideBar
+const SideBar = React.lazy(() => import('../../../components/ShopComponents/SideBar/SideBar')); // Ленивая загрузка SideBar
 
 const ExchangePage = observer(() => {
     const { thing, user, exchange } = useContext(Context); // Используем exchange из контекста

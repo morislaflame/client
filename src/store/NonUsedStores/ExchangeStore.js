@@ -9,7 +9,7 @@ import {
   rejectExchangeRequest,
   confirmPayment,
   confirmRefund,
-} from '../http/exchangeAPI';
+} from '../../http/NonUsedAPI/exchangeAPI';
 
 export default class ExchangeStore {
   constructor() {

@@ -1,10 +1,10 @@
 import { observer } from "mobx-react-lite";
 import React, { useContext, useEffect, useState } from "react";
-import { Context } from "../../index";
+import { Context } from "../../../index";
 import styles from './ThingListForExchange.module.css';
 import ThingItemForExchange from "../ThingItemForExchange/ThingItemForExchange";
 import { Skeleton } from 'antd'; // Импортируем Skeleton
-import { fetchThings } from '../../http/thingAPI'; // Импортируем fetchThings
+import { fetchThings } from '../../../http/NonUsedAPI/thingAPI'; // Импортируем fetchThings
 
 const ThingListForExchange = observer(({ selectedThingId, onSelectThing }) => {
     const { thing } = useContext(Context);

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import { Skeleton } from 'antd';
-import { fetchThings } from '../../../http/thingAPI';
+import { fetchThings } from '../../../http/NonUsedAPI/thingAPI';
 import './ProductSlider.css';
 
 const ProductSlider = () => {

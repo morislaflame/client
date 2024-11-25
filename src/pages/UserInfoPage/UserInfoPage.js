@@ -1,10 +1,10 @@
 import { useParams } from 'react-router-dom';
 import useUserData from '../../hooks/useUserData';
 import BackButton from '../../components/UI/BackButton/BackButton';
-import styles from '../UserAccount/UserAccount.module.css'
+import styles from '../NonUsedPages/UserAccount/UserAccount.module.css'
 import UserOrders from '../../components/UserComponents/UserOrders'; 
 import UserReturns from '../../components/UserComponents/UserReturns';
-import UserExchanges from '../../components/UserComponents/UserExchanges';
+import UserExchanges from '../../components/NonUsedComponents/UserExchanges';
 
 const UserInfoPage = () => {
     const { id } = useParams(); 

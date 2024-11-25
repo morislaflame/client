@@ -1,7 +1,7 @@
 // components/UserExchanges.js
 import React, { useContext, useEffect, useState, useMemo } from 'react';
 import Slider from 'react-slick';
-import styles from './UserComponents.module.css';
+import styles from '../UserComponents/UserComponents.module.css';
 import { FcCancel, FcClock, FcOk } from 'react-icons/fc';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';

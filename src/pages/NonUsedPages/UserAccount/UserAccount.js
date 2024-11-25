@@ -1,15 +1,15 @@
 import React, { useContext, useState, useCallback } from 'react';
-import { Context } from '../../index';
+import { Context } from '../../../index';
 import { observer } from 'mobx-react-lite';
 import { Spinner } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import styles from './UserAccount.module.css';
-import BackButton from '../../components/UI/BackButton/BackButton';
-import UserOrders from '../../components/UserComponents/UserOrders';
-import UserReturns from '../../components/UserComponents/UserReturns';
-import UserExchanges from '../../components/UserComponents/UserExchanges';
-import UserModels from '../../components/UserComponents/UserModels';
-import ReturnRequestModal from '../../components/FuctionalComponents/modals/ReturnRequestModal';
+import BackButton from '../../../components/UI/BackButton/BackButton';
+import UserOrders from '../../../components/UserComponents/UserOrders';
+import UserReturns from '../../../components/UserComponents/UserReturns';
+import UserExchanges from '../../../components/NonUsedComponents/UserExchanges';
+import UserModels from '../../../components/UserComponents/UserModels';
+import ReturnRequestModal from '../../../components/FuctionalComponents/modals/ReturnRequestModal';
 
 const UserAccount = observer(() => {
   const { user } = useContext(Context);

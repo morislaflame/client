@@ -3,7 +3,7 @@ import { message, QRCode, Select } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Context } from '../../index';
 import { createOrder } from '../../http/orderAPI';
-import { createExchangeRequest } from '../../http/exchangeAPI';
+import { createExchangeRequest } from '../../http/NonUsedAPI/exchangeAPI';
 import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
 import styles from './PaymentPage.module.css';
 import BackButton from "../../components/UI/BackButton/BackButton";

@@ -1,10 +1,10 @@
 import React from 'react';
 import { useNavigate } from "react-router-dom";
 import styles from './ThingItemForExchange.module.css'
-import { THING_ROUTE } from "../../utils/consts";
-import MymIcon from '../../icons/Mym.png';
-import FanslyIcon from '../../icons/fansly.png';
-import OnlyIcon from '../../icons/onlyfans.png'
+import { THING_ROUTE } from "../../../utils/consts";
+import MymIcon from '../../../icons/Mym.png';
+import FanslyIcon from '../../../icons/fansly.png';
+import OnlyIcon from '../../../icons/onlyfans.png'
 
 
 const ThingItemForExchange = ({thing}) => {

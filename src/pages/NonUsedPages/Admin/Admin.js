@@ -1,22 +1,22 @@
 import React, { useState, useEffect, useContext } from 'react';
-import CreateBrand from '../../components/AdminComponents/adminModals/CreateAdultPlatform';
+import CreateBrand from '../../../components/AdminComponents/adminModals/CreateAdultPlatform';
 // import CreateModel from '../../components/AdminComponents/adminModals/CreateModel';
-import CreateType from '../../components/AdminComponents/adminModals/CreateCountry';
-import { Context } from '../../index';
-import CreateStory from '../../components/AdminComponents/adminModals/CreateStory';
+import CreateType from '../../../components/AdminComponents/adminModals/CreateCountry';
+import { Context } from '../../../index';
+import CreateStory from '../../../components/AdminComponents/adminModals/CreateStory';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { observer } from 'mobx-react-lite';
 import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
-import { ALL_EXCHANGES_ROUTE, ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, THING_ROUTE, ALL_USERS_ROUTE } from '../../utils/consts';
-import { fetchNewOrders, confirmOrder, rejectOrder } from '../../http/orderAPI';
-import { fetchPendingReturns, approveReturn, rejectReturn } from '../../http/orderAPI';
-import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../http/exchangeAPI'; // Импортируем API для обменов
-import CreatePromoCode from '../../components/AdminComponents/adminModals/CreatePromoCode';
+import { ALL_EXCHANGES_ROUTE, ALL_ORDERS_ROUTE, ALL_RETURNS_ROUTE, THING_ROUTE, ALL_USERS_ROUTE } from '../../../utils/consts';
+import { fetchNewOrders, confirmOrder, rejectOrder } from '../../../http/orderAPI';
+import { fetchPendingReturns, approveReturn, rejectReturn } from '../../../http/orderAPI';
+import { fetchAllExchangeRequests, approveExchangeRequest, rejectExchangeRequest, confirmPayment, confirmRefund } from '../../../http/NonUsedAPI/exchangeAPI'; // Импортируем API для обменов
+import CreatePromoCode from '../../../components/AdminComponents/adminModals/CreatePromoCode';
 import styles from './Admin.module.css'
 import { message, Input, Modal as AntdModal, AutoComplete, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
-import CopyableButton from '../../components/UI/CopyableButton/CopyableButton';
+import CopyableButton from '../../../components/UI/CopyableButton/CopyableButton';
 
 const { confirm } = AntdModal;
 

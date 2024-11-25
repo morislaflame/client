@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { fetchAllExchangeRequests } from '../../http/exchangeAPI';
+import { fetchAllExchangeRequests } from '../../../http/NonUsedAPI/exchangeAPI';
 import Form from 'react-bootstrap/Form';
-import BackButton from '../../components/UI/BackButton/BackButton';
+import BackButton from '../../../components/UI/BackButton/BackButton';
 import styles from './AllExchangesPage.module.css';
 import { useNavigate } from 'react-router-dom';
-import { THING_ROUTE } from '../../utils/consts';
-import CopyableButton from '../../components/UI/CopyableButton/CopyableButton'; // Импортируем CopyableButton
+import { THING_ROUTE } from '../../../utils/consts';
+import CopyableButton from '../../../components/UI/CopyableButton/CopyableButton'; // Импортируем CopyableButton
 import { FcCancel, FcClock, FcOk } from 'react-icons/fc'; // Импортируем иконки
 import { FloatButton } from 'antd';
 
