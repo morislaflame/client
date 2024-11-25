@@ -21,6 +21,8 @@ import {
     EDIT_THING_ROUTE,
     SELLER_ACCOUNT_ROUTE,
     EDIT_SELLER_MODEL_ROUTE,
+    ALL_SELLERS_ROUTE,
+    SELLER_INFO_ROUTE,
 } from "./utils/consts";
 import Main from "./pages/Main/Main";
 import TermsOfService from "./pages/TermsOfService/TermsOfService";
@@ -35,6 +37,8 @@ import ModelEditPage from "./pages/AllAdminPages/ModelEditPage/ModelEditPage";
 import SellerAccount from "./pages/SellerAccount/SellerAccount";
 import EditSellerModel from "./pages/EditSellerModel/EditSellerModel";
 import AdminPage from "./pages/AdminPage/AdminPage";
+import AllSellersPage from "./pages/AllAdminPages/AllSellersPage/AllSellersPage";
+import SellerInfoPage from "./pages/AllAdminPages/SellerInfoPage/SellerInfoPage";
 
 
 
@@ -82,6 +86,14 @@ export const authRoutes = (user) => {
         routes.push({
             path: EDIT_THING_ROUTE + '/:id', 
             Component: <ModelEditPage />
+        });
+        routes.push({
+            path: ALL_SELLERS_ROUTE,
+            Component: <AllSellersPage />
+        });
+        routes.push({
+            path: SELLER_INFO_ROUTE + '/:id',
+            Component: <SellerInfoPage />
         });
     } else {
         console.log("User is not admin");

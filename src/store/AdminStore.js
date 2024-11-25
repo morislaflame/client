@@ -30,7 +30,10 @@ import {
   createStory,
   fetchStories,
   deleteStory,
+  
 } from "../http/adminAPI";
+
+import { getAllSellers, getSellerById } from "../http/sellerAPI";
 
 export default class AdminStore {
     // Состояния
@@ -41,6 +44,7 @@ export default class AdminStore {
     countries = [];
     commissionRates = [];
     stories = [];
+    sellers = [];
     
     // Загрузка состояний
     isLoadingPendingModels = false;
@@ -48,6 +52,7 @@ export default class AdminStore {
     isLoadingUsers = false;
     isLoadingCommissionRates = false;
     isLoadingStories = false;
+    isLoadingSellers = false;
   
     constructor() {
       makeAutoObservable(this, {
@@ -81,6 +86,8 @@ export default class AdminStore {
         loadStories: action,
         createStory: action,
         deleteStory: action,
+        loadSellers: action,
+        getSellerById: action,
       });
     }
   
@@ -378,6 +385,33 @@ export default class AdminStore {
         } catch (error) {
           console.error("Error deleting story:", error);
           throw error; // Позволяет обработать ошибку в компоненте
+        }
+    };
+
+    loadSellers = async () => {
+        this.isLoadingSellers = true;
+        try {
+            const data = await getAllSellers();
+            runInAction(() => {
+                this.sellers = data;
+            });
+        } catch (error) {
+            console.error("Error fetching sellers:", error);
+            throw error;
+        } finally {
+            runInAction(() => {
+                this.isLoadingSellers = false;
+            });
+        }
+    };
+
+    getSellerById = async (sellerId) => {
+        try {
+            const data = await getSellerById(sellerId);
+            return data;
+        } catch (error) {
+            console.error("Error fetching seller by ID:", error);
+            throw error;
         }
     };
       
