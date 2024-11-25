@@ -62,9 +62,6 @@ const UserInfoPage = () => {
         return <div>User not found</div>;
     }
 
-    if (!userData.orders || !userData.returns || !userData.exchangeRequests) {
-        return <div>User info not found</div>;
-    }
 
     return (
         <div className={styles.user_info}>
@@ -79,11 +76,11 @@ const UserInfoPage = () => {
             </div>
             
             <h3>Корзина</h3>
-            {userData.basket && userData.basket.basket_things.length > 0 ? (
+            {userData.basketItems && userData.basketItems.length > 0 ? (
                 <div className={styles.basket}>
-                    {userData.basket.basket_things.map(basketThing => (
-                        <div key={basketThing.id}>
-                            <span>{basketThing.thing.name}</span> — <span>${basketThing.thing.price}</span>
+                    {userData.basketItems.map(basketItem => (
+                        <div key={basketItem.id}>
+                            <span>{basketItem.modelProduct.name}</span> — <span>${basketItem.modelProduct.priceUSD}</span>
                         </div>
                     ))}
                 </div>

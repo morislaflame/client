@@ -1,9 +1,11 @@
 // hooks/useUserData.js
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import { getUserById, fetchMyInfo } from '../http/userAPI';
 import { message } from 'antd';
+import { Context } from '../index';
 
 const useUserData = (id) => {
+  const { admin } = useContext(Context);
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(true);
 
@@ -12,9 +14,9 @@ const useUserData = (id) => {
       try {
         let data;
         if (id) {
-          data = await getUserById(id);
+          data = await admin.getUserById(id);
         } else {
-          data = await fetchMyInfo();
+          data = await admin.fetchMyInfo();
         }
         console.log('полученные данные', data);
         setUserData(data);

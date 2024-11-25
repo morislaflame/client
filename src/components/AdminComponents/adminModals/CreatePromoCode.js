@@ -1,39 +1,65 @@
-import React, { useState } from "react";
-import { Button, Modal, Form, Input, Select, Checkbox, InputNumber, message } from 'antd';
-import { createPromoCode, generateOneTimePromoCodes, createPersonalPromoCode } from "../../../http/promocodeAPI";
+import React, { useState, useContext } from "react";
+import { observer } from "mobx-react-lite"; // Если вы используете MobX
+import { Button, Modal, Form, Input, Select, InputNumber, message } from 'antd';
+import { Context } from "../../../index";
 
 const { Option } = Select;
 
 const CreatePromoCode = ({ show, onHide }) => {
-    const [mode, setMode] = useState('create'); // Режим создания промокодов
+    const { admin } = useContext(Context);
+
+    const [mode, setMode] = useState('shared'); // Режим создания промокодов: 'shared' или 'one-time'
     const [code, setCode] = useState('');
     const [discountValue, setDiscountValue] = useState(0);
-    const [isOneTime, setIsOneTime] = useState(false);
-    const [isPercentage, setIsPercentage] = useState(false); // Новое состояние для процентной скидки
-    const [count, setCount] = useState(1); // Для генерации одноразовых промокодов
-    const [userId, setUserId] = useState(''); // Для создания персонального промокода
-    const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
+    const [isPercentage, setIsPercentage] = useState(false); // Для определения типа скидки
+    const [userId, setUserId] = useState(''); // Для создания одноразового промокода
+    const [loading, setLoading] = useState(false); // Состояние загрузки
 
     const handleSubmit = async () => {
-        setLoading(true); // Устанавливаем состояние загрузки в true
+        setLoading(true);
         try {
-            if (mode === 'create') {
-                // Создание обычного промокода
-                await createPromoCode({ code, discountValue, isOneTime, isPercentage });
-            } else if (mode === 'generate') {
-                // Генерация одноразовых промокодов
-                await generateOneTimePromoCodes(count, discountValue);
-            } else if (mode === 'personal') {
-                // Создание персонального промокода
-                await createPersonalPromoCode({ code, discountValue, userId, isPercentage });
+            const discountType = isPercentage ? 'PERCENTAGE' : 'FIXED'; // Определяем тип скидки
+
+            if (mode === 'shared') {
+                // Создание общего промокода
+                if (!code) {
+                    message.error('Пожалуйста, введите код промокода.');
+                    setLoading(false);
+                    return;
+                }
+
+                await admin.createSharedPromoCode({
+                    code,
+                    discountValue,
+                    discountType
+                });
+            } else if (mode === 'one-time') {
+                // Создание одноразового промокода
+                if (!userId) {
+                    message.error('Пожалуйста, введите ID пользователя.');
+                    setLoading(false);
+                    return;
+                }
+
+                await admin.createOneTimePromoCode({
+                    forUserId: userId,
+                    discountValue,
+                    discountType
+                });
             }
+
             message.success('Промокод успешно создан!');
-            onHide(); // Закрываем модальное окно после выполнения действия
+            onHide(); // Закрываем модальное окно
+            // Очистка полей формы после успешного создания
+            setCode('');
+            setDiscountValue(0);
+            setIsPercentage(false);
+            setUserId('');
         } catch (e) {
             console.error('Ошибка при выполнении операции с промокодом', e);
             message.error('Ошибка при создании промокода: ' + (e.response?.data?.message || e.message));
         } finally {
-            setLoading(false); // Возвращаем состояние загрузки в false
+            setLoading(false);
         }
     };
 
@@ -43,130 +69,69 @@ const CreatePromoCode = ({ show, onHide }) => {
             onCancel={onHide}
             footer={null}
             title={
-                mode === 'create' ? 'Создать новый промокод' :
-                mode === 'generate' ? 'Генерация одноразовых промокодов' :
-                mode === 'personal' ? 'Создать персональный промокод' : ''
+                mode === 'shared' ? 'Создать общий промокод' :
+                mode === 'one-time' ? 'Создать одноразовый промокод' : ''
             }
             centered
         >
             <Form layout="vertical">
                 <Form.Item label="Тип промокода">
                     <Select value={mode} onChange={value => setMode(value)}>
-                        <Option value="create">Обычный промокод</Option>
-                        <Option value="generate">Генерация одноразовых промокодов</Option>
-                        <Option value="personal">Персональный промокод</Option>
+                        <Option value="shared">Общий промокод</Option>
+                        <Option value="one-time">Одноразовый промокод</Option>
                     </Select>
                 </Form.Item>
 
-                {mode === 'create' && (
+                {mode === 'shared' && (
                     <>
-                        <Form.Item label="Код промокода">
+                        <Form.Item label="Код промокода" required>
                             <Input
                                 value={code}
                                 onChange={e => setCode(e.target.value)}
                                 placeholder="Введите код промокода"
                             />
                         </Form.Item>
-
-                        <Form.Item label="Значение скидки">
-                            <InputNumber
-                                value={discountValue}
-                                onChange={value => setDiscountValue(value)}
-                                placeholder="Введите размер скидки"
-                                style={{ width: '100%' }}
-                                min={0}
-                            />
-                        </Form.Item>
-
-                        <Form.Item>
-                            <Checkbox
-                                checked={isOneTime}
-                                onChange={e => setIsOneTime(e.target.checked)}
-                            >
-                                Одноразовый промокод
-                            </Checkbox>
-                        </Form.Item>
-
-                        <Form.Item>
-                            <Checkbox
-                                checked={isPercentage}
-                                onChange={e => setIsPercentage(e.target.checked)}
-                            >
-                                Процентная скидка
-                            </Checkbox>
-                        </Form.Item>
                     </>
                 )}
 
-                {mode === 'generate' && (
+                {mode === 'one-time' && (
                     <>
-                        <Form.Item label="Количество одноразовых промокодов">
-                            <InputNumber
-                                value={count}
-                                onChange={value => setCount(value)}
-                                placeholder="Введите количество"
-                                style={{ width: '100%' }}
-                                min={1}
-                            />
-                        </Form.Item>
-
-                        <Form.Item label="Значение скидки для всех промокодов">
-                            <InputNumber
-                                value={discountValue}
-                                onChange={value => setDiscountValue(value)}
-                                placeholder="Введите размер скидки"
-                                style={{ width: '100%' }}
-                                min={0}
-                            />
-                        </Form.Item>
-                    </>
-                )}
-
-                {mode === 'personal' && (
-                    <>
-                        <Form.Item label="Код персонального промокода">
-                            <Input
-                                value={code}
-                                onChange={e => setCode(e.target.value)}
-                                placeholder="Введите код промокода"
-                            />
-                        </Form.Item>
-
-                        <Form.Item label="Значение скидки">
-                            <InputNumber
-                                value={discountValue}
-                                onChange={value => setDiscountValue(value)}
-                                placeholder="Введите размер скидки"
-                                style={{ width: '100%' }}
-                                min={0}
-                            />
-                        </Form.Item>
-
-                        <Form.Item label="ID пользователя">
+                        <Form.Item label="ID пользователя" required>
                             <Input
                                 value={userId}
                                 onChange={e => setUserId(e.target.value)}
                                 placeholder="Введите ID пользователя"
                             />
                         </Form.Item>
-
-                        <Form.Item>
-                            <Checkbox
-                                checked={isPercentage}
-                                onChange={e => setIsPercentage(e.target.checked)}
-                            >
-                                Процентная скидка
-                            </Checkbox>
-                        </Form.Item>
                     </>
                 )}
+
+                <Form.Item label="Значение скидки" required>
+                    <InputNumber
+                        value={discountValue}
+                        onChange={value => setDiscountValue(value)}
+                        placeholder="Введите размер скидки"
+                        style={{ width: '100%' }}
+                        min={0}
+                    />
+                </Form.Item>
+
+                <Form.Item label="Тип скидки" required>
+                    <Select
+                        value={isPercentage ? 'PERCENTAGE' : 'FIXED'}
+                        onChange={value => setIsPercentage(value === 'PERCENTAGE')}
+                        placeholder="Выберите тип скидки"
+                    >
+                        <Option value="FIXED">Фиксированная скидка</Option>
+                        <Option value="PERCENTAGE">Процентная скидка</Option>
+                    </Select>
+                </Form.Item>
 
                 <Form.Item>
                     <Button onClick={onHide} style={{ marginRight: 8 }}>Отмена</Button>
                     <Button type="primary" onClick={handleSubmit} loading={loading}>
-                        {mode === 'create' && 'Создать'}
-                        {mode === 'generate' && 'Сгенерировать'}
-                        {mode === 'personal' && 'Создать персональный промокод'}
+                        {mode === 'shared' && 'Создать общий промокод'}
+                        {mode === 'one-time' && 'Создать одноразовый промокод'}
                     </Button>
                 </Form.Item>
             </Form>
@@ -174,4 +139,4 @@ const CreatePromoCode = ({ show, onHide }) => {
     );
 };
 
-export default CreatePromoCode;
+export default observer(CreatePromoCode); // Оборачиваем в observer, если используете MobX
