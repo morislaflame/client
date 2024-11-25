@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Slider from 'react-slick';
 import { Skeleton } from 'antd';
-import { fetchThings } from '../../../http/NonUsedAPI/thingAPI';
+import { fetchModelProducts } from '../../../http/modelProductAPI';
 import './ProductSlider.css';
 
 const ProductSlider = () => {
@@ -9,7 +9,7 @@ const ProductSlider = () => {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    fetchThings()
+    fetchModelProducts()
       .then(data => {
         setProducts(data.rows);
       })

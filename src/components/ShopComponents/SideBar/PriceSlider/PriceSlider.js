@@ -1,7 +1,7 @@
 import { observer } from "mobx-react-lite";
 import React, { useState, useContext, useEffect } from "react";
 import { Context } from "../../../../index";
-import { fetchPriceRange } from "../../../../http/NonUsedAPI/thingAPI";
+import { fetchPriceRange } from "../../../../http/modelProductAPI";
 import Slider from 'rc-slider';
 import 'rc-slider/assets/index.css';
 import './PriceSlider.css';
