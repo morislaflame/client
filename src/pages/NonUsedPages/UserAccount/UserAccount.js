@@ -7,7 +7,6 @@ import styles from './UserAccount.module.css';
 import BackButton from '../../../components/UI/BackButton/BackButton';
 import UserOrders from '../../../components/UserComponents/UserOrders';
 import UserReturns from '../../../components/UserComponents/UserReturns';
-import UserExchanges from '../../../components/NonUsedComponents/UserExchanges';
 import UserModels from '../../../components/UserComponents/UserModels';
 import ReturnRequestModal from '../../../components/FuctionalComponents/modals/ReturnRequestModal';
 
@@ -96,8 +95,6 @@ const UserAccount = observer(() => {
       <UserOrders sliderSettings={sliderSettings} />
 
       <UserReturns sliderSettings={sliderSettings} />
-
-      <UserExchanges sliderSettings={sliderSettings} />
 
       <ReturnRequestModal
         show={showReturnModal}

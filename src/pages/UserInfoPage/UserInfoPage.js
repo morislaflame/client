@@ -4,7 +4,6 @@ import BackButton from '../../components/UI/BackButton/BackButton';
 import styles from '../NonUsedPages/UserAccount/UserAccount.module.css'
 import UserOrders from '../../components/UserComponents/UserOrders'; 
 import UserReturns from '../../components/UserComponents/UserReturns';
-import UserExchanges from '../../components/NonUsedComponents/UserExchanges';
 
 const UserInfoPage = () => {
     const { id } = useParams(); 
@@ -92,8 +91,6 @@ const UserInfoPage = () => {
             <UserOrders orders={userData.orders} sliderSettings={sliderSettings} />
 
             <UserReturns returns={userData.returns} sliderSettings={sliderSettings} />
-
-            <UserExchanges exchanges={userData.exchangeRequests} sliderSettings={sliderSettings} />
         </div>
     );
 };

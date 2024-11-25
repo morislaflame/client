@@ -20,12 +20,12 @@ export const clearBasket = async () => {
     return data;
 }
 
-export const applyPromoCode = async (code) => {
-    const { data } = await $authHost.post('api/basket/applyPromoCode', { code });
-    return data;
-}
+// export const applyPromoCode = async (code) => {
+//     const { data } = await $authHost.post('api/basket/applyPromoCode', { code });
+//     return data;
+// }
 
-export const removePromoCode = async () => {
-    const { data } = await $authHost.post('api/basket/removePromoCode');
-    return data;
-}
+// export const removePromoCode = async () => {
+//     const { data } = await $authHost.post('api/basket/removePromoCode');
+//     return data;
+// }
