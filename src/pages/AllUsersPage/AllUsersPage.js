@@ -1,155 +1,192 @@
+// src/pages/Admin/AllUsersPage.js
+
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../../index';
-import Form from 'react-bootstrap/Form';
 import { observer } from 'mobx-react-lite';
-import Modal from 'react-bootstrap/Modal';
-import Button from 'react-bootstrap/Button';
 import { useNavigate } from 'react-router-dom';
+import {
+  AutoComplete,
+  message,
+  Spin,
+  FloatButton,
+  Select,
+  Button,
+  Popconfirm,
+  Typography,
+  Space,
+} from 'antd';
+import {
+  LoadingOutlined,
+  SearchOutlined,
+  DeleteOutlined,
+  EyeOutlined,
+} from '@ant-design/icons';
 import BackButton from '../../components/UI/BackButton/BackButton';
-import styles from './AllUsersPage.module.css'
-import { AutoComplete, message, Spin } from 'antd';
-import { LoadingOutlined } from '@ant-design/icons';
-import { FloatButton } from 'antd';
+import styles from './AllUsersPage.module.css';
+
+const { Option } = Select;
+const { Title, Text } = Typography;
 
 const AllUsersPage = observer(() => {
-  const { user } = useContext(Context);
+  const { admin } = useContext(Context);
   const [userId, setUserId] = useState('');
   const [filteredUsers, setFilteredUsers] = useState([]);
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [userToDelete, setUserToDelete] = useState(null);
-  const [isSearching, setIsSearching] = useState(false); // Добавлено состояние для анимации загрузки
+  const [isSearching, setIsSearching] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
-    loadUsers();
-  }, []);
-
-  const loadUsers = async () => {
-    await user.fetchAllUsers();
-  };
+    admin.loadUsers();
+  }, [admin]);
 
   useEffect(() => {
     if (userId) {
-      const filtered = user.users
+      const filtered = admin.users
         .filter(u => u.id.toString().includes(userId))
         .slice(0, 5);
       setFilteredUsers(filtered);
     } else {
       setFilteredUsers([]);
     }
-  }, [userId, user.users]);
+  }, [userId, admin.users]);
 
   const handleSearch = async (id) => {
-    setIsSearching(true); // Устанавливаем состояние загрузки в true
+    if (!id) {
+      message.warning('Пожалуйста, введите ID пользователя для поиска.');
+      return;
+    }
+    setIsSearching(true);
     try {
-      const result = await user.getUserById(id);
+      const result = await admin.getUserById(id);
       if (result) {
         navigate(`/user/${result.id}`);
+      } else {
+        message.error('Пользователь не найден');
       }
     } catch (error) {
       console.error('Ошибка при поиске пользователя:', error);
       message.error('Пользователь не найден');
     } finally {
-      setIsSearching(false); // Устанавливаем состояние загрузки в false после завершения
+      setIsSearching(false);
     }
   };
 
-  const handleEmailClick = (id) => {
-    setUserId(id);
-    setFilteredUsers([]);
-  };
-
-  const handleRoleChange = async (userId, currentRole) => {
-    const newRole = currentRole === 'USER' ? 'ADMIN' : 'USER'; // Переключаем роль
-    await user.updateUserRole(userId, newRole);
-  };
-
-  const confirmDeleteUser = (user) => {
-    setUserToDelete(user);
-    setShowDeleteModal(true);
-  };
-
-  const handleDeleteUser = async () => {
-    if (userToDelete) {
-      await user.removeUser(userToDelete.id);
-      setShowDeleteModal(false);
-      loadUsers();
+  const handleRoleChange = async (userId, newRole) => {
+    try {
+      await admin.changeUserRole(userId, newRole);
+      message.success('Роль пользователя успешно изменена!');
+    } catch (error) {
+      console.error('Ошибка при изменении роли пользователя:', error);
+      message.error('Ошибка при изменении роли пользователя');
     }
   };
+
+  const handleDeleteUser = async (userId) => {
+    try {
+      await admin.deleteUser(userId);
+      message.success('Пользователь успешно удален!');
+    } catch (error) {
+      console.error('Ошибка при удалении пользователя:', error);
+      message.error('Ошибка при удалении пользователя');
+    }
+  };
+
+  const autoCompleteOptions = filteredUsers.map(u => ({
+    value: u.id.toString(),
+    label: (
+      <Space>
+        <Text strong>ID:</Text> {u.id}
+        <Text strong>Email:</Text> {u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}
+      </Space>
+    ),
+  }));
+
+  const roleOptions = ['USER', 'ADMIN', 'SELLER'];
 
   return (
     <div className={styles.container}>
       <div className={styles.topic_back}>
         <BackButton />
-        <h2>All Users</h2>
+        <Title level={2}>Все пользователи</Title>
       </div>
 
       <div className={styles.search_section}>
-        <Form.Group className="mt-3">
-          <AutoComplete
-            style={{ width: '100%' }}
-            options={filteredUsers.map(u => ({
-              value: u.id.toString(),
-              label: `ID: ${u.id} - ${u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}`
-            }))}
-            value={userId}
-            onChange={setUserId}
-            onSelect={handleSearch}
-            placeholder="Введите ID пользователя"
-          />
-        </Form.Group>
-
-        <button
+        <AutoComplete
+          style={{ width: '100%', marginBottom: '16px' }}
+          options={autoCompleteOptions}
+          value={userId}
+          onChange={setUserId}
+          onSelect={handleSearch}
+          placeholder="Введите ID пользователя"
+          notFoundContent={isSearching ? <Spin indicator={<LoadingOutlined spin />} /> : null}
+          filterOption={(inputValue, option) =>
+            option.value.toLowerCase().includes(inputValue.toLowerCase())
+          }
+        />
+        <Button
+          type="primary"
+          icon={<SearchOutlined />}
           onClick={() => handleSearch(userId)}
-          className={styles.src_btn}
-          disabled={isSearching}
+          loading={isSearching}
+          block
         >
-          {isSearching ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : 'Найти пользователя'}
-        </button>
+          Найти пользователя
+        </Button>
       </div>
 
       {/* Список всех пользователей */}
-      <h3>Пользователи</h3>
+      <Title level={3}>Пользователи</Title>
       <div className={styles.all_users}>
-        {user.users.map((u) => (
-          <div key={u.id} className={styles.user}>
-            <span>UserName: <strong>{u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}</strong></span>
-            <span>ID: <strong>{u.id}</strong></span>
-            <Form.Check
-              type="switch"
-              id={`toggle-role-${u.id}`}
-              label={u.role === 'USER' ? 'USER' : 'ADMIN'}
-              checked={u.role === 'ADMIN'}
-              onChange={() => handleRoleChange(u.id, u.role)}
-            />
-            <div className={styles.buttons}>
-              <button onClick={() => navigate(`/user/${u.id}`)} className={styles.u_info}>Посмотреть</button>
-              <button onClick={() => confirmDeleteUser(u)} className={styles.u_delete}>Удалить</button>
+        {admin.isLoadingUsers ? (
+          <Spin tip="Загрузка пользователей..." />
+        ) : (
+          admin.users.map((u) => (
+            <div key={u.id} className={styles.user}>
+              <div className={styles.user_info}>
+                <Text>
+                  <strong>Имя пользователя:</strong> {u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}
+                </Text>
+                <Text>
+                  <strong>ID:</strong> {u.id}
+                </Text>
+              </div>
+              <div className={styles.user_actions}>
+                <Select
+                  defaultValue={u.role}
+                  style={{ width: 150, marginRight: '16px' }}
+                  onChange={(value) => handleRoleChange(u.id, value)}
+                >
+                  {roleOptions.map(role => (
+                    <Option key={role} value={role}>
+                      {role}
+                    </Option>
+                  ))}
+                </Select>
+                <Space>
+                  <Button
+                    type="primary"
+                    icon={<EyeOutlined />}
+                    onClick={() => navigate(`/user/${u.id}`)}
+                  >
+                    Посмотреть
+                  </Button>
+                  <Popconfirm
+                    title={`Вы уверены, что хотите удалить пользователя ${u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}?`}
+                    onConfirm={() => handleDeleteUser(u.id)}
+                    okText="Да"
+                    cancelText="Нет"
+                  >
+                    <Button type="primary" danger icon={<DeleteOutlined />}>
+                      Удалить
+                    </Button>
+                  </Popconfirm>
+                </Space>
+              </div>
             </div>
-          </div>
-        ))}
+          ))
+        )}
       </div>
 
-      {/* Модальное окно для подтверждения удаления */}
-      <Modal show={showDeleteModal} onHide={() => setShowDeleteModal(false)}>
-        <Modal.Header closeButton>
-          <Modal.Title>Подтверждение удаления</Modal.Title>
-        </Modal.Header>
-        <Modal.Body>
-          Вы точно хотите удалить пользователя {userToDelete?.email || `@${userToDelete?.username}` || `Telegram ID: ${userToDelete?.telegramId}`}?
-        </Modal.Body>
-        <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowDeleteModal(false)}>
-            Отмена
-          </Button>
-          <Button variant="danger" onClick={handleDeleteUser}>
-            Удалить
-          </Button>
-        </Modal.Footer>
-      </Modal>
-      <FloatButton.BackTop 
-        type='dark'
-      />
+      <FloatButton.BackTop type='primary' />
     </div>
   );
 });

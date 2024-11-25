@@ -218,13 +218,13 @@ export default class AdminStore {
       }
     };
   
-    changeUserRole = async (userId, role) => {
+    changeUserRole = async (userId, newRole) => {
       try {
-        await changeUserRole(userId, role);
+        await changeUserRole(userId, newRole);
         runInAction(() => {
           const user = this.users.find((u) => u.id === userId);
           if (user) {
-            user.role = role;
+            user.role = newRole;
           }
         });
       } catch (error) {

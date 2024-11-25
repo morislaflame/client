@@ -51,8 +51,8 @@ export const getUserById = async (userId) => {
     return data;
 };
 
-export const changeUserRole = async (userId, role) => {
-    const { data } = await $authHost.put(`api/user/role`, { userId, role });
+export const changeUserRole = async (userId, newRole) => {
+    const { data } = await $authHost.put(`api/user/role`, { userId, newRole });
     return data;
 };
 
