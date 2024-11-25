@@ -1,4 +1,4 @@
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import { Drawer, Button } from 'antd';
 import styles from './Menu.module.css';
 import { Context } from '../../../index';
@@ -18,10 +18,12 @@ import { FaTelegram } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
 import { FaUsers } from 'react-icons/fa';
 import { IoShieldCheckmarkSharp } from 'react-icons/io5';
+import BecomeSellerModal from '../../FuctionalComponents/modals/BecomeSellerModal/BecomeSellerModal';
 
 const Menu = ({ open, onClose }) => {
   const { user } = useContext(Context);
   const navigate = useNavigate();
+  const [isSellerModalVisible, setIsSellerModalVisible] = useState(false);
 
   const logOut = () => {
     user.logout();
@@ -33,8 +35,34 @@ const Menu = ({ open, onClose }) => {
   };
 
   return (
-    <Drawer title="Menu" onClose={onClose} open={open} width="auto">
-      <h3>Navigation</h3>
+    <Drawer onClose={onClose} open={open} width="auto">
+      <div className={styles.userinfo}>
+          <p>
+            {user.user.email || user.user.username || `Telegram ID: ${user.user.telegramId}`}
+          </p>
+          {user.user.role === 'ADMIN' && (
+              <Button
+                type="primary"
+                block
+                onClick={() => {
+                  navigate(ADMIN_ROUTE);
+                  onClose();
+                }}
+                style={{ marginTop: '8px' }}
+              >
+                Админка
+              </Button>
+            )}
+
+            {user.isAuth && user.user.role !== 'SELLER' && user.user.role !== 'ADMIN' && (
+              <button
+                onClick={() => setIsSellerModalVisible(true)}
+                className={styles.become_seller_button}
+              >
+                Become a seller
+              </button>
+            )}
+      </div>
       <div className={styles.links_container}>
         {user.isAuth ? (
           <>
@@ -54,19 +82,7 @@ const Menu = ({ open, onClose }) => {
                 <AiFillDollarCircle /> Seller Account
               </NavLink>
             )}
-            {user.user.role === 'ADMIN' && (
-              <Button
-                type="primary"
-                block
-                onClick={() => {
-                  navigate(ADMIN_ROUTE);
-                  onClose();
-                }}
-                style={{ marginTop: '8px' }}
-              >
-                Админка
-              </Button>
-            )}
+            
            
           </>
         ) : (
@@ -79,7 +95,7 @@ const Menu = ({ open, onClose }) => {
             }}
             style={{ marginTop: '8px' }}
           >
-            Авторизация
+            Login
           </Button>
         )}
         {/* Другие ссылки */}
@@ -88,21 +104,21 @@ const Menu = ({ open, onClose }) => {
           onClick={onClose}
           className={styles.menuLink}
         >
-          <FaCartShopping /> Магазин
+          <FaCartShopping /> Shop
         </NavLink>
         <NavLink
           to={PRIVACY_ROUTE}
           onClick={onClose}
           className={styles.menuLink}
         >
-          <FaUsers /> Реферальная программа
+          <FaUsers /> Referral Program
         </NavLink>
         <NavLink
           to={TERMS_ROUTE}
           onClick={onClose}
           className={styles.menuLink}
         >
-          <IoShieldCheckmarkSharp /> Условия гарантии
+          <IoShieldCheckmarkSharp /> Terms of Warranty
         </NavLink>
         <a
           href="https://t.me/express_model_marketplace"
@@ -111,18 +127,23 @@ const Menu = ({ open, onClose }) => {
           target="_blank"
           rel="noopener noreferrer"
         >
-          <FaTelegram /> Мы в Telegram
+          <FaTelegram /> Our Telegram
         </a>
-        <Button
-              type="primary"
-              danger
-              block
-              onClick={logOut}
-              style={{ marginTop: '8px' }}
-            >
-              Выйти
-            </Button>
+        
       </div>
+      <Button
+        type="primary"
+        danger
+        block
+        onClick={logOut}
+        style={{ fontWeight: 500 }}
+      >
+        Log Out
+      </Button>
+      <BecomeSellerModal 
+        visible={isSellerModalVisible} 
+        onClose={() => setIsSellerModalVisible(false)} 
+      />
     </Drawer>
   );
 };

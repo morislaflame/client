@@ -41,7 +41,8 @@ export const fetchMyPurchasedThings = async () => {
   return data;
 };
 
-export const becomeSeller = async () => {
-    const { data } = await $authHost.post('api/user/become-seller');
+export const becomeSeller = async (sellerData) => {
+    const { data } = await $authHost.post('api/user/become-seller', sellerData);
+    localStorage.setItem('token', data.token);
     return data;
 };

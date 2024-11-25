@@ -3,6 +3,7 @@ import {
     fetchMyInfo, 
     fetchMyPurchasedThings,
     telegramAuth,
+    becomeSeller
 } from "../http/userAPI";
 
 
@@ -25,6 +26,7 @@ export default class UserStore {
                 setLoading: action,
                 loadPurchasedThings: action,
                 logout: action,
+                becomeSeller: action,
             }
         )
     }
@@ -112,6 +114,26 @@ export default class UserStore {
         this._userInfo = { ...this._userInfo, ...updatedData };
     }
 
+    // Добавляем новый метод
+    async becomeSeller(sellerData) {
+        this.setLoading(true);
+        try {
+            const data = await becomeSeller(sellerData);
+            runInAction(() => {
+                // Обновляем роль пользователя и токен
+                this.setUser({ ...this._user, role: 'SELLER' });
+                this.updateUserInfo(data);
+                this.setLoading(false);
+            });
+            return data;
+        } catch (error) {
+            console.error('Error becoming seller:', error);
+            runInAction(() => {
+                this.setLoading(false);
+            });
+            throw error;
+        }
+    }
 
     get users() {
         return this._users;

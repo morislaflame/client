@@ -117,6 +117,14 @@ b, strong {
   color: rgb(255 255 255 / 45%);
 }
 
+.ant-drawer-header {
+  padding: calc(var(--index) * 2) calc(var(--index) * 2) 0 !important;
+}
+
+.ant-drawer-body {
+  padding: calc(var(--index) * 2) !important;
+}
+
 .ant-tag {
   font-size: calc(var(--index) * 1) !important;
 }
@@ -217,6 +225,16 @@ b, strong {
   min-width: calc(var(--index)* 8);
 }
 
+.ant-btn-dangerous {
+  background: linear-gradient(150deg, #eb1506cf, #740c04) !important;
+  border: 0;
+  color: #fff;
+  border-radius: calc(var(--index)* 0.7);
+  font-size: calc(var(--index) * 1.3);
+  padding: calc(var(--index)* 0.7) calc(var(--index)* 2);
+  min-width: calc(var(--index)* 8);
+}
+
 .ant-btn-default {
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
   background: linear-gradient(150deg, #2e2c33, #707070d4);
@@ -234,4 +252,9 @@ b, strong {
 
 .slick-next:before {
   color: #00000000;
+}
+
+.ant-checkbox-wrapper {
+  color: white;
+  gap: calc(var(--index) * 0.5);
 }

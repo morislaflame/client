@@ -33,9 +33,10 @@ const Auth = observer(() => {
       localStorage.setItem('redirectAfterReload', SHOP_ROUTE);
       window.location.reload(); // Перезагружаем страницу
     } catch (e) {
-      // Используем antd message для отображения ошибок
-      message.error(e.response.data.message);
+      console.error('Error during registration or login:', e);
+      message.error(e.response?.data?.message || 'An unexpected error occurred.');
     }
+    
   };
 
   // После перезагрузки проверяем, есть ли сохранённый маршрут и перенаправляем

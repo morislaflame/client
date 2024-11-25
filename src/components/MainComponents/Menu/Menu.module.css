@@ -1,16 +1,52 @@
+.userinfo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: calc(var(--index) * 0.5);
+    background: linear-gradient(to right bottom, #2d252f, #211F25, #211923);
+    border-radius: calc(var(--index) * 0.7);
+    padding: calc(var(--index) * 0.7);
+    margin-bottom: calc(var(--index) * 1);
+}
+
+.userinfo p {
+    font-size: calc(var(--index) * 1.3);
+    font-weight: 500;
+    margin: 0;
+}
+
+.become_seller_button {
+    padding: calc(var(--index)* 0.7);
+    background: linear-gradient(150deg, #ac57ed, #6b3ce6);
+    color: white;
+    border-radius: calc(var(--index)* 0.7);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-size: calc(var(--index) * 1.3);
+    font-weight: 500;
+    height: fit-content;
+    border: none;
+    width: 100%;
+}
+
 .links_container {
     display: flex;
     flex-direction: column;
     gap: calc(var(--index) * 0.5);
-    margin-top: calc(var(--index) * 1.5);
-    
+    background: linear-gradient(to right bottom, #2d252f, #211F25, #211923);
+    border-radius: calc(var(--index) * 0.7);
+    padding: calc(var(--index) * 0.7);
+    margin-bottom: calc(var(--index) * 1);
 }
 
 .menuLink {
     color: white;
     text-decoration: none;
     font-size: calc(var(--index) * 0.7);
-    font-weight: bold;
+    font-weight: 500;
     display: flex;
     align-items: center;
     gap: calc(var(--index) * 0.5);
@@ -20,7 +56,6 @@
 @media (max-width: 768px) {
     .links_container {
         gap: calc(var(--index) * 1);
-        margin-top: calc(var(--index) * 3);
     }
 
     .menuLink {
