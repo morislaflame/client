@@ -46,6 +46,7 @@
     height: calc(var(--index) * 44) !important;
     object-fit: cover; /* Масштабирует изображение, заполняя контейнер, сохраняя пропорции */
     object-position: center; /* Центрирует изображение в контейнере */
+    
 }
 
 .price_n_buy {
