@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react';
 import CreateAdultPlatform from './adminModals/CreateAdultPlatform';
-import CreateModel from './adminModals/CreateModel';
+import CreateSellerModel from '../SellerComponents/modals/CreateSellerModel';
 import CreateCountry from './adminModals/CreateCountry';
 import CreateStory from './adminModals/CreateStory';
 import CreatePromoCode from './adminModals/CreatePromoCode';
@@ -25,7 +25,7 @@ const AdminControls = () => {
         <button onClick={() => setModelVisible(true)}>Добавить модель</button>
       </div>
       <CreateAdultPlatform show={adultPlatformVisible} onHide={() => setAdultPlatformVisible(false)} />
-      <CreateModel show={modelVisible} onHide={() => setModelVisible(false)} />
+      <CreateSellerModel show={modelVisible} onHide={() => setModelVisible(false)} />
       <CreateCountry show={countryVisible} onHide={() => setCountryVisible(false)} />
       <CreateStory show={storyVisible} onHide={() => setStoryVisible(false)} />
       <CreatePromoCode show={promoVisible} onHide={() => setPromoVisible(false)} />

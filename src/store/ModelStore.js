@@ -8,6 +8,8 @@ import {
     clearBasket
 } from "../http/basketAPI";
 
+import { fetchCountries, fetchAdultPlatforms } from "../http/modelProductAPI";
+
 export default class ModelStore {
     countries = [];
     adultPlatforms = [];
@@ -67,6 +69,29 @@ export default class ModelStore {
     isItemInBasket(modelProductId) {
         return this.basket.some(item => item.modelProductId === Number(modelProductId));
     }
+
+    loadCountries = async () => {
+        try {
+            const countriesData = await fetchCountries(); // Предполагается, что fetchCountries импортирован
+        runInAction(() => {
+                this.setCountries(countriesData);
+            });
+        } catch (error) {
+            console.error('Error loading countries:', error);
+        }
+    }
+
+    loadAdultPlatforms = async () => {
+        try {
+            const adultPlatformsData = await fetchAdultPlatforms(); // Предполагается, что fetchAdultPlatforms импортирован
+        runInAction(() => {
+            this.setAdultPlatforms(adultPlatformsData);
+        });
+    } catch (error) {
+        console.error('Error loading adult platforms:', error);
+        }
+    }
+
     
 
     // getters and setters

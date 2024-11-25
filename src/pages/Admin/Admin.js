@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useContext } from 'react';
 import CreateBrand from '../../components/AdminComponents/adminModals/CreateAdultPlatform';
-import CreateModel from '../../components/AdminComponents/adminModals/CreateModel';
+// import CreateModel from '../../components/AdminComponents/adminModals/CreateModel';
 import CreateType from '../../components/AdminComponents/adminModals/CreateCountry';
 import { Context } from '../../index';
 import CreateStory from '../../components/AdminComponents/adminModals/CreateStory';
@@ -252,7 +252,7 @@ const Admin = observer(() => {
         <button onClick={() => setModelVisible(true)}>Добавить модель</button>
       </div>
       <CreateBrand show={brandVisible} onHide={() => setBrandVisible(false)} />
-      <CreateModel show={modelVisible} onHide={() => setModelVisible(false)} />
+      {/* <CreateModel show={modelVisible} onHide={() => setModelVisible(false)} /> */}
       <CreateType show={typeVisible} onHide={() => setTypeVisible(false)} />
       <CreateStory show={storyVisible} onHide={() => setStoryVisible(false)} />
       <CreatePromoCode show={promoVisible} onHide={() => setPromoVisible(false)}/>

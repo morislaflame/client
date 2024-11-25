@@ -1,14 +1,13 @@
 import React, { useContext, useState, useEffect, useCallback } from "react";
 import { Button, Modal, Form, Input, InputNumber, Select, Row, Col, message, AutoComplete } from 'antd';
-import { Context } from "../../../index";
-import { fetchBrands, fetchTypes } from '../../../http/thingAPI'; // Импортируем только необходимые функции
 import { observer } from "mobx-react-lite";
+import { Context } from "../../../index";
 import ImageUploader from '../../UI/ImageUploader/ImageUploader';
 
 const { Option } = Select;
 
 const CreateSellerModel = observer(({ show, onHide }) => {
-    const { thing, user, seller } = useContext(Context); // Добавили seller
+    const { seller, model } = useContext(Context); // Используем ModelStore и SellerStore из контекста
     const [form] = Form.useForm();
     const [files, setFiles] = useState([]);
     const [info, setInfo] = useState([{
@@ -28,23 +27,20 @@ const CreateSellerModel = observer(({ show, onHide }) => {
         girlmsg: 'Yes',
         number: Date.now(),
     }]);
-    const [selectedBrands, setSelectedBrands] = useState([]);
     const [loading, setLoading] = useState(false);
 
     useEffect(() => {
         const loadData = async () => {
             try {
-                const typesData = await fetchTypes();
-                thing.setTypes(typesData);
-    
-                const brandsData = await fetchBrands();
-                thing.setBrands(brandsData);
+                // Используем методы ModelStore для загрузки данных
+                await model.loadCountries(); // Предполагается, что такой метод существует
+                await model.loadAdultPlatforms(); // Предполагается, что такой метод существует
             } catch (error) {
                 message.error('Ошибка при загрузке данных: ' + error.message);
             }
         };
         loadData();
-    }, [thing]);
+    }, [model]);
 
     const changeInfo = useCallback((key, value, number) => {
         setInfo(prevInfo =>
@@ -52,15 +48,17 @@ const CreateSellerModel = observer(({ show, onHide }) => {
         );
     }, []);
 
-    const handleBrandChange = (value) => {
-        setSelectedBrands(thing.brands.filter(brand => value.includes(brand.id)));
+    const handleAdultPlatformChange = (value) => {
+        // Устанавливаем выбранные платформы в ModelStore
+        const selected = model.adultPlatforms.filter(platform => value.includes(platform.id));
+        model.setSelectedAdultPlatforms(selected);
     };
 
-    const handleTypeSelect = (value, option) => {
-        form.setFieldsValue({ typeId: option.id });
+    const handleCountrySelect = (value, option) => {
+        form.setFieldsValue({ countryId: option.id });
     };
 
-    const addThing = async () => {
+    const addModel = async () => {
         setLoading(true);
         try {
             const values = await form.validateFields();
@@ -99,15 +97,15 @@ const CreateSellerModel = observer(({ show, onHide }) => {
 
             const formData = new FormData();
             formData.append('name', values.name);
-            formData.append('priceUSD', values.price); // Изменили 'price' на 'priceUSD'
-            formData.append('countryId', values.typeId); // Изменили 'typeId' на 'countryId'
+            formData.append('priceUSD', values.priceUSD); // Убедитесь, что поле названо правильно
+            formData.append('countryId', values.countryId);
             formData.append('info', JSON.stringify(info[0])); // Если info — массив с одним объектом
 
-            const brandIds = selectedBrands.map(b => b.id);
-            formData.append('adultPlatformIds', JSON.stringify(brandIds)); // Изменили 'brandIds' на 'adultPlatformIds'
+            const adultPlatformIds = model.selectedAdultPlatforms.map(b => b.id);
+            formData.append('adultPlatformIds', JSON.stringify(adultPlatformIds));
 
             files.forEach(file => {
-                formData.append('img', file);
+                formData.append('img', file.originFileObj || file); // Убедитесь, что добавляются файлы корректно
             });
 
             // Используем метод из SellerStore для создания модели
@@ -133,21 +131,22 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                 girlmsg: '',
                 number: Date.now(),
             }]);
-            setSelectedBrands([]);
+            model.setSelectedAdultPlatforms([]);
         } catch (error) {
             if (error.errorFields) {
                 message.error('Пожалуйста, заполните все обязательные поля!');
             } else {
-                message.error('Ошибка при добавлении модели: ' + error.message);
+                message.error('Ошибка при добавлении модели: ' + (error.response?.data?.message || error.message));
             }
         } finally {
             setLoading(false);
         }
     };
 
-    const typeOptions = thing.types.map(type => ({
-        value: type.name,
-        id: type.id,
+    // Формируем опции для стран
+    const countryOptions = model.countries.map(country => ({
+        value: country.name,
+        id: country.id,
     }));
 
     return (
@@ -162,13 +161,13 @@ const CreateSellerModel = observer(({ show, onHide }) => {
             <Form form={form} layout="vertical">
                 <Form.Item
                     label="Страна"
-                    name="typeId"
+                    name="countryId"
                     rules={[{ required: true, message: 'Пожалуйста, выберите страну!' }]}
                 >
                     <AutoComplete
-                        options={typeOptions}
+                        options={countryOptions}
                         placeholder="Начните вводить страну"
-                        onSelect={(value, option) => handleTypeSelect(value, option)}
+                        onSelect={(value, option) => handleCountrySelect(value, option)}
                         filterOption={(inputValue, option) =>
                             option.value.toLowerCase().includes(inputValue.toLowerCase())
                         }
@@ -176,22 +175,23 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                 </Form.Item>
 
                 <Form.Item
-                    name="brandIds"
+                    name="adultPlatformIds"
                     label="Выберите платформы"
                     rules={[{ required: true, message: 'Пожалуйста, выберите платформы' }]}
                 >
                     <Select
                         mode="multiple"
                         placeholder="Выберите платформы"
-                        onChange={handleBrandChange}
+                        onChange={handleAdultPlatformChange}
                     >
-                        {thing.brands.map(brand => (
-                            <Option value={brand.id} key={brand.id}>
-                                {brand.name}
+                        {model.adultPlatforms.map(adultPlatform => (
+                            <Option value={adultPlatform.id} key={adultPlatform.id}>
+                                {adultPlatform.name}
                             </Option>
                         ))}
                     </Select>
                 </Form.Item>
+
                 <Form.Item
                     name="name"
                     label="Имя Модели"
@@ -199,9 +199,10 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                 >
                     <Input placeholder="Введите имя модели" />
                 </Form.Item>
+
                 <Form.Item
-                    name="price"
-                    label="Цена модели"
+                    name="priceUSD"
+                    label="Цена модели (USD)"
                     rules={[{ required: true, message: 'Пожалуйста, введите цену модели!' }]}
                 >
                     <InputNumber
@@ -211,13 +212,14 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                     />
                 </Form.Item>
 
-                <Form.Item label="Изображения">
+                <Form.Item label="Изображения" required>
                     <ImageUploader images={files} setImages={setFiles} />
                 </Form.Item>
+
                 <div style={{ marginBottom: '20px' }}>
                     <Row gutter={16}>
                         <Col span={12}>
-                            <Form.Item label="Возраст">
+                            <Form.Item label="Возраст" required>
                                 <Input
                                     value={info[0].age}
                                     onChange={e => changeInfo('age', e.target.value, info[0].number)}
@@ -226,7 +228,7 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Смартфон">
+                            <Form.Item label="Смартфон" required>
                                 <Input
                                     value={info[0].smartphone}
                                     onChange={e => changeInfo('smartphone', e.target.value, info[0].number)}
@@ -235,7 +237,7 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Процент">
+                            <Form.Item label="Процент" required>
                                 <Input
                                     value={info[0].percent}
                                     onChange={e => changeInfo('percent', e.target.value, info[0].number)}
@@ -245,7 +247,7 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Время">
+                            <Form.Item label="Время" required>
                                 <Input
                                     value={info[0].time}
                                     onChange={e => changeInfo('time', e.target.value, info[0].number)}
@@ -255,7 +257,7 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                             </Form.Item>
                         </Col>
                         <Col span={12}>
-                            <Form.Item label="Английский">
+                            <Form.Item label="Английский" required>
                                 <Input
                                     value={info[0].english}
                                     onChange={e => changeInfo('english', e.target.value, info[0].number)}
@@ -263,95 +265,100 @@ const CreateSellerModel = observer(({ show, onHide }) => {
                                     suffix="/10"
                                 />
                             </Form.Item>
-                        </Col><Col span={12}>
-                            <Form.Item label="Контент">
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Контент" required>
                                 <Input
                                     value={info[0].content}
                                     onChange={e => changeInfo('content', e.target.value, info[0].number)}
                                     placeholder="Контент"
                                 />
                             </Form.Item>
-                        </Col><Col span={12}>
-                            <Form.Item label="Контракт">
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Контракт" required>
                                 <Input
                                     value={info[0].contract}
                                     onChange={e => changeInfo('contract', e.target.value, info[0].number)}
                                     placeholder="Контракт"
                                 />
                             </Form.Item>
-                        </Col><Col span={12}>
-                            <Form.Item label="Когда начнет">
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Когда начнет" required>
                                 <Input
                                     value={info[0].start}
                                     onChange={e => changeInfo('start', e.target.value, info[0].number)}
                                     placeholder="Старт"
                                 />
                             </Form.Item>
-                        </Col><Col span={12}>
-                            <Form.Item label="Соц. сети">
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Соц. сети" required>
                                 <Input
                                     value={info[0].socialmedia}
                                     onChange={e => changeInfo('socialmedia', e.target.value, info[0].number)}
                                     placeholder="Соц. сети"
                                 />
                             </Form.Item>
-                        </Col><Col span={12}>
-                            <Form.Item label="ТикТок">
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="ТикТок" required>
                                 <Input
                                     value={info[0].tiktok}
                                     onChange={e => changeInfo('tiktok', e.target.value, info[0].number)}
                                     placeholder="ТикТок"
                                 />
                             </Form.Item>
-                        </Col><Col span={12}>
-                            <Form.Item label="Блок. страны">
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Блок. страны" required>
                                 <Input
                                     value={info[0].cblocked}
                                     onChange={e => changeInfo('cblocked', e.target.value, info[0].number)}
                                     placeholder="Блок. страны"
                                 />
                             </Form.Item>
-                        </Col><Col span={12}>
-                            <Form.Item label="OF верификация">
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="OF верификация" required>
                                 <Input
                                     value={info[0].ofverif}
                                     onChange={e => changeInfo('ofverif', e.target.value, info[0].number)}
                                     placeholder="OF верификация"
                                 />
                             </Form.Item>
-                        </Col><Col span={12}>
-                            <Form.Item label="Контакт(ссылка)">
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Контакт (ссылка)" required>
                                 <Input
                                     value={info[0].link}
                                     onChange={e => changeInfo('link', e.target.value, info[0].number)}
-                                    placeholder="Контакт(ссылка)"
+                                    placeholder="Контакт (ссылка)"
                                 />
                             </Form.Item>
-                        </Col><Col span={12}>
-                            <Form.Item label="Доступ к аккаунту?">
+                        </Col>
+                        <Col span={12}>
+                            <Form.Item label="Доступ к аккаунту?" required>
                                 <Input
                                     value={info[0].girlmsg}
                                     onChange={e => changeInfo('girlmsg', e.target.value, info[0].number)}
-                                    placeholder="доступ"
+                                    placeholder="Доступ"
                                 />
                             </Form.Item>
                         </Col>
                     </Row>
                 </div>
+
                 <Form.Item>
-                    <Button type="primary" onClick={addThing} block loading={loading}>
+                    <Button type="primary" onClick={addModel} block loading={loading}>
                         Добавить
                     </Button>
                 </Form.Item>
             </Form>
         </Modal>
     );
+
 });
 
 export default CreateSellerModel;
-
-
-
-
-
-
