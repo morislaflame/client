@@ -1,12 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
 import Form from 'react-bootstrap/Form';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from '../utils/consts';
-import { registration, login } from '../http/userAPI';
+import { LOGIN_ROUTE, REGISTRATION_ROUTE, SHOP_ROUTE } from '../../utils/consts';
+import { registration, login } from '../../http/userAPI';
 import { observer } from 'mobx-react-lite';
-import { Context } from "../index";
+import { Context } from "../../index";
 import styles from './Auth.module.css';
-import MyButton from '../components/UI/MyButton/MyButton';
+import MyButton from '../../components/UI/MyButton/MyButton';
 import { message } from 'antd'; // Импортируем компонент message из antd
 
 const Auth = observer(() => {

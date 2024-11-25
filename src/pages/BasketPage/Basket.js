@@ -1,13 +1,13 @@
 import React, { useEffect, useState, useContext } from 'react';
 import styles from './Basket.module.css';
 import { useNavigate } from 'react-router-dom';
-import { Context } from '../index';
-import MyButton from '../components/UI/MyButton/MyButton';
-import MymIcon from '../icons/Mym.png';
-import FanslyIcon from '../icons/fansly.png';
-import OnlyIcon from '../icons/onlyfans.png';
+import { Context } from '../../index';
+import MyButton from '../../components/UI/MyButton/MyButton';
+import MymIcon from '../../icons/Mym.png';
+import FanslyIcon from '../../icons/fansly.png';
+import OnlyIcon from '../../icons/onlyfans.png';
 import { observer } from 'mobx-react-lite';
-import BackButton from '../components/UI/BackButton/BackButton';
+import BackButton from '../../components/UI/BackButton/BackButton';
 import { message, Badge, Spin } from 'antd';
 import { CgCloseO } from "react-icons/cg";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -52,48 +52,6 @@ const Basket = observer(() => {
     if (isLoading) {
         return <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />} />;
     }
-
-    // const handleApplyPromoCode = async (promoCode) => {
-    //     const promoCodeToApply = promoCode || promoCodeInput;
-    //     if (!promoCodeToApply) {
-    //         message.error('Please enter the promocode');
-    //         return;
-    //     }
-    //     if (window.Telegram?.WebApp?.HapticFeedback) {
-    //         window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-    //       }
-    //     setIsApplyingPromo(true); // Устанавливаем состояние загрузки в true
-    //     const result = await thing.applyPromoCode(promoCodeToApply);
-    //     setIsApplyingPromo(false); // Устанавливаем состояние загрузки в false после завершения
-
-    //     if (!result.success) {
-    //         message.error(result.message || 'Error when applying promocode');
-    //     } else {
-    //         setAppliedPromoCode(promoCodeToApply);
-    //         setPromoCodeInput('');
-    //     }
-    // };
-
-    // const handleRemovePromoCode = async () => {
-    //     await thing.removePromoCode();
-    //     if (window.Telegram?.WebApp?.HapticFeedback) {
-    //         window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-    //       }
-    //     setAppliedPromoCode('');
-    // };
-
-    // const handlePayment = () => {
-    //     const unavailableItems = thing.basket.filter(item => item.status !== 'available');
-    //     if (unavailableItems.length > 0) {
-    //         message.error('Some items are not available for payment. Please remove them from your cart.');
-    //         return;
-    //     }
-    //     if (window.Telegram?.WebApp?.HapticFeedback) {
-    //         window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-    //       }
-    //     navigate('/payment', { state: { totalAmount: thing.totalPrice } });
-    // };
-    
 
     if (model.basket.length === 0) {
         return <div className={styles.basket_empty}>Your Cart Is Empty</div>;
@@ -196,63 +154,6 @@ const Basket = observer(() => {
                 <button className={styles.clear_basket} onClick={handleClearBasket}>Clear cart</button>
             </div>
 
-            {/* <div className={styles.promo_code_section}>
-                <div className={styles.promocodes}>
-                    <h3>Apply Promocode</h3>
-                    {appliedPromoCode || thing.promoCode ? (
-                        <div className={styles.applied_promocode}>
-                            <p>Promocode: {appliedPromoCode || thing.promoCode.code}</p>
-                            <button onClick={handleRemovePromoCode}>Remove</button>
-                        </div>
-                    ) : (
-                        <>
-                            <input
-                                type="text"
-                                value={promoCodeInput}
-                                onChange={(e) => setPromoCodeInput(e.target.value)}
-                                placeholder="Enter promo code"
-                                className={styles.apply_promo_input}
-                            />
-                            <button onClick={() => handleApplyPromoCode()} disabled={isApplyingPromo}>
-                                {isApplyingPromo ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />} /> : 'Apply'}
-                            </button>
-                        </>
-                    )}
-                </div>
-
-                <div className={styles.user_promocodes}>
-                    {thing.userPromoCodes.length > 0 ? (
-                        <div>
-                            <h3>Your Promocodes:</h3>
-                            <div className={styles.user_promocodes_list}>
-                                {thing.userPromoCodes.map(promo => (
-                                    <button
-                                        key={promo.id}
-                                        onClick={() => handleApplyPromoCode(promo.code)}
-                                        className={styles.user_promocode_item}
-                                        disabled={appliedPromoCode === promo.code || isApplyingPromo}
-                                    >
-                                        {isApplyingPromo && appliedPromoCode !== promo.code ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />} /> : (appliedPromoCode === promo.code ? `${promo.code} applied` : `${promo.code} ${promo.isPercentage ? promo.discountValue + '%' : '$' + promo.discountValue}`)}
-                                    </button>
-                                ))}
-                            </div>
-                        </div>
-                    ) : (
-                        <p></p>
-                    )}
-                </div>
-            </div> */}
-            
-
-            {/* <div className={styles.basket_total}>
-                <h3>Total amount: ${model.modelProduct.priceUSD}</h3>
-                {model.discount > 0 && <p>Discount: ${model.discount}</p>}
-                <MyButton 
-                    style={{width: 'calc(var(--index)* 25)'}}
-                    text={'Go to payment'} 
-                    onClick={""}
-                ></MyButton>
-            </div> */}
         </div>
     );
 });

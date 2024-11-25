@@ -1,7 +1,7 @@
 // src/pages/Admin/AllUsersPage.js
 
 import React, { useState, useEffect, useContext } from 'react';
-import { Context } from '../../index';
+import { Context } from '../../../index';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
 import {
@@ -21,7 +21,7 @@ import {
   DeleteOutlined,
   EyeOutlined,
 } from '@ant-design/icons';
-import BackButton from '../../components/UI/BackButton/BackButton';
+import BackButton from '../../../components/UI/BackButton/BackButton';
 import styles from './AllUsersPage.module.css';
 
 const { Option } = Select;

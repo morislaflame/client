@@ -1,13 +1,13 @@
 // client/src/pages/AllReturnPage/AllReturnPage.js
 
 import React, { useState, useEffect } from 'react';
-import { fetchAllReturns } from '../../http/orderAPI'; 
+import { fetchAllReturns } from '../../../http/orderAPI'; 
 import Form from 'react-bootstrap/Form';
-import BackButton from '../../components/UI/BackButton/BackButton';
+import BackButton from '../../../components/UI/BackButton/BackButton';
 import styles from './AllReturnPage.module.css'
-import { THING_ROUTE } from '../../utils/consts';
+import { THING_ROUTE } from '../../../utils/consts';
 import { useNavigate } from 'react-router-dom';
-import CopyableButton from '../../components/UI/CopyableButton/CopyableButton'; // Импортируем CopyableButton
+import CopyableButton from '../../../components/UI/CopyableButton/CopyableButton'; // Импортируем CopyableButton
 import { FcCancel, FcClock, FcOk } from 'react-icons/fc'; // Импортируем иконки
 import { FloatButton } from 'antd';
 

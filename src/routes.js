@@ -1,6 +1,6 @@
-import Basket from "./pages/Basket";
+import Basket from "./pages/BasketPage/Basket";
 import Shop from "./pages/Shop/Shop";
-import Auth from "./pages/Auth";
+import Auth from "./pages/AuthPage/Auth";
 import ModelPage from "./pages/ModelPage/ModelPage";
 import { 
     ADMIN_ROUTE, 
@@ -26,12 +26,12 @@ import Main from "./pages/Main/Main";
 import TermsOfService from "./pages/TermsOfService/TermsOfService";
 import PrivacyPolicy from "./pages/PrivacyPolicy/PrivacyPolicy";
 import PaymentPage from "./pages/Payment/PaymentPage";
-import UserInfoPage from "./pages/UserInfoPage/UserInfoPage";
+import UserInfoPage from "./pages/AllAdminPages/UserInfoPage/UserInfoPage";
 import UserAccount from "./pages/NonUsedPages/UserAccount/UserAccount";
-import AllOrdersPage from "./pages/AllOrdersPage/AllOrdersPage";
-import AllUsersPage from "./pages/AllUsersPage/AllUsersPage";
-import AllReturnsPage from "./pages/AllReturnPage/AllReturnPage";
-import ModelEditPage from "./pages/ModelEditPage/ModelEditPage"; 
+import AllOrdersPage from "./pages/AllAdminPages/AllOrdersPage/AllOrdersPage";
+import AllUsersPage from "./pages/AllAdminPages/AllUsersPage/AllUsersPage";
+import AllReturnsPage from "./pages/AllAdminPages/AllReturnPage/AllReturnPage";
+import ModelEditPage from "./pages/AllAdminPages/ModelEditPage/ModelEditPage"; 
 import SellerAccount from "./pages/SellerAccount/SellerAccount";
 import EditSellerModel from "./pages/EditSellerModel/EditSellerModel";
 import AdminPage from "./pages/AdminPage/AdminPage";

@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
-import { fetchAllOrders } from '../../http/orderAPI'; 
+import { fetchAllOrders } from '../../../http/orderAPI'; 
 import Form from 'react-bootstrap/Form';
-import BackButton from '../../components/UI/BackButton/BackButton';
+import BackButton from '../../../components/UI/BackButton/BackButton';
 import styles from './AllOrdersPage.module.css'
 import { useNavigate } from 'react-router-dom';
-import { THING_ROUTE } from '../../utils/consts';
-import CopyableButton from '../../components/UI/CopyableButton/CopyableButton'; 
+import { THING_ROUTE } from '../../../utils/consts';
+import CopyableButton from '../../../components/UI/CopyableButton/CopyableButton'; 
 import { FcClock, FcOk, FcCancel } from 'react-icons/fc';
 import { FloatButton } from 'antd';
 
