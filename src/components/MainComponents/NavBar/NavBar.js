@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { Context } from '../../../index';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { IoCart } from 'react-icons/io5';
+import { IoMdHeart } from "react-icons/io";
 import { AiFillDollarCircle } from 'react-icons/ai';
 import { PiListBold } from 'react-icons/pi';
 import EMM from '../../../icons/EMM2.png';
@@ -48,7 +48,7 @@ const NavBar = observer(() => {
                 onClick={() => navigate(BASKET_ROUTE)}
                 style={{ position: 'relative' }}
               >
-                <IoCart />
+                <IoMdHeart />
                 {model.basket.length > 0 && (
                   <span
                     style={{
