@@ -6,20 +6,20 @@ import { IoCart } from 'react-icons/io5';
 import { AiFillDollarCircle } from 'react-icons/ai';
 import { PiListBold } from 'react-icons/pi';
 import EMM from '../../../icons/EMM2.png';
-import Menu from '../../FuctionalComponents/Menu/Menu';
+import Menu from '../Menu/Menu';
 import { BASKET_ROUTE, SELLER_ACCOUNT_ROUTE, SHOP_ROUTE } from '../../../utils/consts';
 import './NavBar.css';
 
 const NavBar = observer(() => {
-  const { user, thing } = useContext(Context);
+  const { user, model } = useContext(Context);
   const [drawerOpen, setDrawerOpen] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (user.isAuth) {
-      thing.loadBasket();
+      model.loadBasket();
     }
-  }, [user.isAuth, thing]);
+  }, [user.isAuth, model]);
 
   return (
     <div className="navbar">
@@ -49,7 +49,7 @@ const NavBar = observer(() => {
                 style={{ position: 'relative' }}
               >
                 <IoCart />
-                {thing.basket.length > 0 && (
+                {model.basket.length > 0 && (
                   <span
                     style={{
                       position: 'absolute',
@@ -64,7 +64,7 @@ const NavBar = observer(() => {
                       lineHeight: '1',
                     }}
                   >
-                    {thing.basket.length}
+                    {model.basket.length}
                   </span>
                 )}
               </button>
