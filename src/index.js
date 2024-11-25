@@ -8,7 +8,7 @@ import ReviewStore from './store/ReviewStore';
 import { SDKProvider } from '@telegram-apps/sdk-react';
 import OrderStore from './store/OrderStore';
 import ReturnStore from './store/ReturnStore';
-import ExchangeStore from './store/NonUsedStores/ExchangeStore';
+// import ExchangeStore from './store/NonUsedStores/ExchangeStore';
 import SellerStore from './store/SellerStore';
 import AdminStore from './store/AdminStore';
 import ModelStore from './store/ModelStore';
@@ -23,7 +23,7 @@ root.render(
     review: new ReviewStore(),
     order: new OrderStore(),
     return: new ReturnStore(),
-    exchange: new ExchangeStore(),
+    // exchange: new ExchangeStore(),
     seller: new SellerStore(),
     admin: new AdminStore(),
     model: new ModelStore(),

@@ -6,7 +6,6 @@ import { observer } from 'mobx-react-lite';
 import { Context } from './index';
 import { check, telegramAuth } from './http/userAPI';
 import './App.css';
-import Chat from './components/FuctionalComponents/ChatForm/ChatForm';
 import Footer from './components/MainComponents/Footer/Footer';
 import LoadingIndicator from './components/UI/LoadingIndicator/LoadingIndicator';
 

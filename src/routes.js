@@ -1,4 +1,3 @@
-import Admin from "./pages/NonUsedPages/Admin/Admin";
 import Basket from "./pages/Basket";
 import Shop from "./pages/Shop/Shop";
 import Auth from "./pages/Auth";
@@ -18,10 +17,8 @@ import {
     USER_ACCOUNT_ROUTE, 
     ALL_ORDERS_ROUTE, 
     ALL_USERS_ROUTE, 
-    ALL_RETURNS_ROUTE, 
-    EXCHANGE_ROUTE,
-    EDIT_THING_ROUTE, 
-    ALL_EXCHANGES_ROUTE,
+    ALL_RETURNS_ROUTE,
+    EDIT_THING_ROUTE,
     SELLER_ACCOUNT_ROUTE,
     EDIT_SELLER_MODEL_ROUTE,
 } from "./utils/consts";
@@ -34,9 +31,7 @@ import UserAccount from "./pages/NonUsedPages/UserAccount/UserAccount";
 import AllOrdersPage from "./pages/AllOrdersPage/AllOrdersPage";
 import AllUsersPage from "./pages/AllUsersPage/AllUsersPage";
 import AllReturnsPage from "./pages/AllReturnPage/AllReturnPage";
-import ExchangePage from "./pages/NonUsedPages/ExchangePage/ExchangePage";
-import ModelEditPage from "./pages/ModelEditPage/ModelEditPage"; // Добавьте эту строку
-import AllExchangesPage from "./pages/NonUsedPages/AllExchangesPage/AllExchangesPage";
+import ModelEditPage from "./pages/ModelEditPage/ModelEditPage"; 
 import SellerAccount from "./pages/SellerAccount/SellerAccount";
 import EditSellerModel from "./pages/EditSellerModel/EditSellerModel";
 import AdminPage from "./pages/AdminPage/AdminPage";
@@ -59,10 +54,6 @@ export const authRoutes = (user) => {
         {
             path: PAYMENT_ROUTE,
             Component: <PaymentPage />
-        },
-        {
-            path: EXCHANGE_ROUTE, // Маршрут для запроса обмена
-            Component: <ExchangePage />
         },
     ];
     
@@ -91,10 +82,6 @@ export const authRoutes = (user) => {
         routes.push({
             path: EDIT_THING_ROUTE + '/:id', 
             Component: <ModelEditPage />
-        });
-        routes.push({
-            path: ALL_EXCHANGES_ROUTE, 
-            Component: <AllExchangesPage />
         });
     } else {
         console.log("User is not admin");

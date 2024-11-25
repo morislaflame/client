@@ -3,7 +3,6 @@ import { message, QRCode, Select } from 'antd';
 import { useNavigate, useLocation } from 'react-router-dom';
 import { Context } from '../../index';
 import { createOrder } from '../../http/orderAPI';
-import { createExchangeRequest } from '../../http/NonUsedAPI/exchangeAPI';
 import { USER_ACCOUNT_ROUTE } from "../../utils/consts";
 import styles from './PaymentPage.module.css';
 import BackButton from "../../components/UI/BackButton/BackButton";
@@ -14,20 +13,12 @@ import { Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 
 const PaymentPage = () => {
-  const { thing, exchange } = useContext(Context);
+  const { thing } = useContext(Context);
   const navigate = useNavigate();
-  const location = useLocation();
 
-  // Проверяем, пришел ли пользователь для доплаты при обмене
-  const isExchangePayment = location.state?.exchange || false;
-
-  // Если это доплата при обмене, получаем необходимые данные
-  const exchangeData = isExchangePayment ? location.state : null;
 
   // Получаем общую сумму заказа
-  const totalAmountUSD = isExchangePayment
-    ? exchangeData.priceDifference
-    : thing.totalPrice || 0;
+  const totalAmountUSD = thing.totalPrice || 0;
 
   const { cryptoRates, fetchCryptoRates } = useCryptoRates();
 
@@ -54,19 +45,7 @@ const PaymentPage = () => {
     try {
       const cryptoPaymentAmount = parseFloat(convertAmountForCrypto(wallets[selectedCrypto].currency));
 
-      if (isExchangePayment) {
-        const { thingId, selectedThingId, userComment } = exchangeData;
-        await createExchangeRequest({
-          oldThingId: thingId,
-          newThingId: selectedThingId,
-          userComment,
-          cryptoCurrency: wallets[selectedCrypto].currency,
-          cryptoTransactionHash,
-          cryptoPaymentAmount,
-        });
-        message.success('Awaiting confirmation!');
-        navigate(USER_ACCOUNT_ROUTE);
-      } else {
+      
         await createOrder({
           cryptoCurrency: wallets[selectedCrypto].currency,
           cryptoTransactionHash,
@@ -75,7 +54,7 @@ const PaymentPage = () => {
         await thing.clearBasket();
         message.success('Awaiting confirmation!');
         navigate(USER_ACCOUNT_ROUTE);
-      }
+      
     } catch (error) {
       message.error('Error in payment processing');
       console.error('Error in payment processing:', error);

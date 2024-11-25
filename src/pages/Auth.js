@@ -10,7 +10,7 @@ import MyButton from '../components/UI/MyButton/MyButton';
 import { message } from 'antd'; // Импортируем компонент message из antd
 
 const Auth = observer(() => {
-  const { user, thing } = useContext(Context);
+  const { user, model } = useContext(Context);
   const location = useLocation();
   const navigate = useNavigate();
   const isLogin = location.pathname === LOGIN_ROUTE;
@@ -27,7 +27,7 @@ const Auth = observer(() => {
       }
       user.setUser(data);
       user.setIsAuth(true);
-      await thing.loadBasket();
+      await model.loadBasket();
 
       // Сохраняем маршрут магазина в localStorage перед перезагрузкой
       localStorage.setItem('redirectAfterReload', SHOP_ROUTE);

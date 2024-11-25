@@ -18,14 +18,12 @@ import {
     deleteThingAsAdmin 
 } from "../http/userAPI";
 
-import { fetchUserExchangeRequests, createExchangeRequest } from "../http/NonUsedAPI/exchangeAPI"; // Добавьте необходимые методы
 
 export default class UserStore {
     constructor() {
         this._isAuth = false
         this._user = {}
         this._users = [];
-        this._exchangeRequests = [];
         this._userInfo = null
         this._loading = true
         this._purchasedThings = [];
@@ -39,7 +37,6 @@ export default class UserStore {
                 fetchAllUsers: action,
                 updateUserRole: action,
                 removeUser: action,
-                setExchangeRequests: action, 
                 loadUserInfo: action,
                 updateUserInfo: action,
                 setUserInfo: action,
@@ -71,10 +68,6 @@ export default class UserStore {
 
     setUsers(users) {
         this._users = users;
-    }
-
-    setExchangeRequests(exchangeRequests) {
-        this._exchangeRequests = exchangeRequests;
     }
 
     setPurchasedThings(purchasedThings) {
@@ -163,29 +156,6 @@ export default class UserStore {
         this._userInfo = { ...this._userInfo, ...updatedData };
     }
 
-    async fetchExchangeRequests() {
-        try {
-            const exchangeRequests = await fetchUserExchangeRequests();
-            runInAction(() => {
-                this.setExchangeRequests(exchangeRequests);
-            });
-        } catch (error) {
-            console.error("Error fetching exchange requests:", error);
-        }
-    }
-
-    async createExchangeRequest(orderThingId, newThingId, userComment) {
-        try {
-            const exchangeRequest = await createExchangeRequest(orderThingId, newThingId, userComment);
-            runInAction(() => {
-                this._exchangeRequests.push(exchangeRequest);
-            });
-            return exchangeRequest;
-        } catch (error) {
-            console.error("Error creating exchange request:", error);
-            throw error;
-        }
-    }
 
     async searchUserByEmail(email) {
         try {
@@ -326,9 +296,6 @@ export default class UserStore {
         return this._users;
     }
 
-    get exchangeRequests() {
-        return this._exchangeRequests;
-    }
 
     get isAuth() {
         return this._isAuth
