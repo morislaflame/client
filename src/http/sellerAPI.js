@@ -28,8 +28,8 @@ export const fetchMyInformation = async () => {
     return data;
 };
 
-export const updateMyInformation = async (formData) => {
-    const { data } = await $authHost.put('api/seller/profile', formData);
+export const updateMyInformation = async (sellerName, sellerInfo) => {
+    const { data } = await $authHost.put('api/seller/profile', { sellerName, sellerInfo });
     return data;
 };
 

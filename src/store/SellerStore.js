@@ -105,14 +105,15 @@ export default class SellerStore {
         }
     }   
 
-    updateSellerInfo = async (formData) => {
+    updateSellerInfo = async (sellerName, sellerInfo) => {
         try {
-          const updatedInfo = await updateMyInformation(formData);
+          const updatedInfo = await updateMyInformation(sellerName, sellerInfo);
           runInAction(() => {
-            this.sellerInfo = updatedInfo;
+            this.sellerInfo = updatedInfo.sellerInformation;
           });
         } catch (error) {
           console.error("Error updating seller information:", error);
+          throw error;
         }
     }
 

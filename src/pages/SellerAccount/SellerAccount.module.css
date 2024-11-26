@@ -46,6 +46,22 @@
     
 }
 
+.shop_name {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--index) * 1);
+}
+
+.change_info_button {
+    background-color: #211F25;
+    border: none;
+    color: white;
+    font-weight: 500;
+    font-size: calc(var(--index) * 1);
+    padding: calc(var(--index) * 0.3) calc(var(--index) * 1);
+    border-radius: calc(var(--index) * 0.7);
+}
+
 .shop_name_rating {
     display: flex;
     width: 100%;

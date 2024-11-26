@@ -11,11 +11,13 @@ import { GoNote } from "react-icons/go";
 import { IoIosReturnLeft } from "react-icons/io";
 import { FaComment } from "react-icons/fa";
 import { IoWomanSharp } from "react-icons/io5";
+import ChangeInfoModal from '../../components/SellerComponents/modals/ChangeInfoModal';
 
 const SellerAccount = observer(() => {
   const { seller } = useContext(Context);
   const [showCreateModal, setShowCreateModal] = useState(false);
-  const [selectedTab, setSelectedTab] = useState('models'); // Добавили состояние
+  const [selectedTab, setSelectedTab] = useState('models');
+  const [changeInfoModalVisible, setChangeInfoModalVisible] = useState(false);
 
   useEffect(() => {
     seller.loadMyInformation();
@@ -31,7 +33,15 @@ const SellerAccount = observer(() => {
       </div>
       <div className={styles.shop_menu}>
         <div className={styles.shop_name_rating}>
-          <h3>{sellerInfo.sellerInformation?.sellerName}</h3>
+          <div className={styles.shop_name}>
+            <h3>{sellerInfo.sellerInformation?.sellerName}</h3>
+            <button 
+            onClick={() => setChangeInfoModalVisible(true)}
+            className={styles.change_info_button}
+          >
+              Change info
+            </button>
+          </div>
           <div className={styles.shop_rating}>
             <h5>{sellerInfo.sellerInformation?.sellerRating}</h5>
             <MdStar style={{color: '#FFD700'}} />
@@ -89,7 +99,12 @@ const SellerAccount = observer(() => {
           {/* Здесь вы можете добавить компонент для отзывов */}
         </div>
       )}
+      <ChangeInfoModal
+        visible={changeInfoModalVisible}
+        onClose={() => setChangeInfoModalVisible(false)}
+      />
     </div>
+    
   );
 });
 
