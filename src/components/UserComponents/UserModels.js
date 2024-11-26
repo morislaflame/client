@@ -4,7 +4,6 @@ import React, { useContext, useEffect, useState, useCallback } from 'react';
 import styles from './UserComponents.module.css';
 import { GiHighHeel } from 'react-icons/gi';
 import { Dropdown } from 'antd';
-import { LiaExchangeAltSolid } from 'react-icons/lia';
 import { IoReturnDownBackOutline } from 'react-icons/io5';
 import { SlOptionsVertical } from 'react-icons/sl';
 import { THING_ROUTE } from '../../utils/consts';
@@ -15,15 +14,14 @@ import LoadingIndicator from '../UI/LoadingIndicator/LoadingIndicator';
 import placeholder from '../../icons/placeholder.jpg';
 
 const UserModels = observer(({ handleShow }) => {
-  const { user, exchange, return: returnStore } = useContext(Context);
+  const { user, return: returnStore } = useContext(Context);
   const navigate = useNavigate();
   const [openDropdowns, setOpenDropdowns] = useState({});
 
   useEffect(() => {
-    user.loadPurchasedThings(); // Загрузка купленных вещей
-    exchange.loadUserExchangeRequests();
+    user.loadPurchasedThings(); 
     returnStore.loadUserReturns();
-  }, [user, exchange, returnStore]);
+  }, [user, returnStore]);
 
   const handleDropdownVisibleChange = useCallback((flag, thingId) => {
     if (window.Telegram?.WebApp?.HapticFeedback) {
@@ -40,9 +38,8 @@ const UserModels = observer(({ handleShow }) => {
       if (window.Telegram?.WebApp?.HapticFeedback) {
         window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
       }
-      if (action === 'exchange') {
-        navigate(`/exchange/${thingItem.id}`);
-      } else if (action === 'return') {
+      
+      if (action === 'return') {
         handleShow(thingItem);
       }
 
@@ -55,15 +52,9 @@ const UserModels = observer(({ handleShow }) => {
   );
 
   const getDropdownMenu = useCallback(
-    (thingItem, hasExchangeRequest, hasReturnRequest) => ({
+    (thingItem, hasReturnRequest) => ({
       items: [
-        {
-          key: 'exchange',
-          icon: <LiaExchangeAltSolid />,
-          disabled: hasExchangeRequest,
-          label: hasExchangeRequest ? 'Exchange request sent' : 'Request an exchange',
-          onClick: () => handleMenuClick('exchange', thingItem),
-        },
+       
         {
           key: 'return',
           icon: <IoReturnDownBackOutline />,
@@ -78,10 +69,9 @@ const UserModels = observer(({ handleShow }) => {
   );
 
   const { purchasedThings } = user;
-  const { exchangeRequests } = exchange;
   const { returns } = returnStore;
 
-  if (user.loading || exchange.loading || returnStore.loading) {
+  if (user.loading || returnStore.loading) {
     return <div><LoadingIndicator/></div>;
   }
 
@@ -91,10 +81,6 @@ const UserModels = observer(({ handleShow }) => {
       {purchasedThings && purchasedThings.length > 0 ? (
         <div className={styles.things_list}>
           {purchasedThings.map((thingItem) => {
-            const hasExchangeRequest = exchangeRequests?.some(
-              (exchangeItem) =>
-                exchangeItem.oldThingId === thingItem.id && exchangeItem.status === 'pending'
-            );
 
             const hasReturnRequest = returns?.some(
               (returnItem) =>
@@ -126,7 +112,7 @@ const UserModels = observer(({ handleShow }) => {
                   </div>
                   <div className={styles.dropdownmenusection}>
                     <Dropdown
-                      menu={getDropdownMenu(thingItem, hasExchangeRequest, hasReturnRequest)}
+                      menu={getDropdownMenu(thingItem, hasReturnRequest)}
                       trigger={['click']}
                       onOpenChange={(flag) => handleDropdownVisibleChange(flag, thingItem.id)}
                       open={openDropdowns[thingItem.id] || false}

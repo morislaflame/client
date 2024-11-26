@@ -29,10 +29,6 @@ const UserAccount = observer(() => {
     }
   }, []);
 
-  const handleExchangeRequest = useCallback((thingItem) => {
-    navigate(`/exchange/${thingItem.id}`);
-  }, [navigate]);
-
 
   const sliderSettings = {
     dots: false,
@@ -89,7 +85,6 @@ const UserAccount = observer(() => {
 
       <UserModels
         handleShow={handleShowReturnModal}
-        handleExchangeRequest={handleExchangeRequest}
       />
 
       <UserOrders sliderSettings={sliderSettings} />
