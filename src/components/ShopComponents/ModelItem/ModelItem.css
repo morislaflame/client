@@ -9,7 +9,7 @@
 @media (max-width: 600px) {
     .card_list {
         width: 50%;
-        padding: calc(var(--index) * 0.4);
+        padding: calc(var(--index) * 0.5);
     }
   }
 

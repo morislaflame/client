@@ -3,7 +3,8 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { fetchModelProductById } from '../../http/modelProductAPI';
 import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
 import { Context } from '../../index';
-import { FaShoppingCart, FaEdit } from 'react-icons/fa';
+import { FaEdit } from 'react-icons/fa';
+import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
 import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, TERMS_ROUTE } from '../../utils/consts';
 import { observer } from 'mobx-react-lite';
 import { message, Image, Carousel } from 'antd';
@@ -159,23 +160,19 @@ const ModelPage = observer(() => {
               
             </div>
           )}
+          
         </div>
-      </div>
-      
-
-
-      {/* Условный рендеринг блока price_n_buy */}
-      {models.status === 'AVAILABLE' && models.moderationStatus === 'APPROVED' && (
         <div className={styles.price_n_buy}>
           <div className={styles.inside}>
             <span className={styles.price}>${models.priceUSD}</span>
+            {models.status === 'AVAILABLE' && models.moderationStatus === 'APPROVED' && (
             <div className={styles.add_to_card}>
               <button
                 className={styles.buy}
                 onClick={handleAddToBasket}
                 disabled={isInBasket || addingToBasket} // Блокируем кнопку, если товар уже в корзине или идет добавление
               >
-                {addingToBasket ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : isInBasket ? 'Added' : 'Add to cart'}
+                {addingToBasket ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : isInBasket ? 'Added' : 'Create Order'}
               </button>
               <Button
                 className={styles.shopping_card}
@@ -183,16 +180,23 @@ const ModelPage = observer(() => {
                 onClick={() => navigate(BASKET_ROUTE)}
                 style={{ height: '100%' }}
               >
-                <FaShoppingCart size={28} />
+                {isInBasket ? <IoMdHeart style={{color: '#ff0000', fontSize: 'calc(var(--index) * 3)'}}/> : <IoMdHeart style={{fontSize: 'calc(var(--index) * 3)'}}/>}
               </Button>
             </div>
+            )}
           </div>
           
           <div className={styles.warranty} onClick={() => navigate(TERMS_ROUTE)}>
             <span>14-days warranty</span> <IoMdLock className={styles.btn_icn}/>
           </div>
+          
         </div>
-      )}
+
+      </div>
+      
+      
+        
+      
 
       {/* Кнопка редактирования для администратора */}
       {isAdmin && (

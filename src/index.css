@@ -258,3 +258,7 @@ b, strong {
   color: white;
   gap: calc(var(--index) * 0.5);
 }
+
+.ant-image {
+  display: flex;
+}
