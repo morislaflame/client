@@ -4,6 +4,8 @@ import { Context } from '../../../index';
 import { observer } from 'mobx-react-lite';
 import { Card, Space, Button, message, Modal, Descriptions, Rate, List, Divider } from 'antd';
 import { UserOutlined, ShopOutlined, StarOutlined, MailOutlined, IdcardOutlined } from '@ant-design/icons';
+import styles from './SellerInfoPage.module.css';
+import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 
 const SellerInfoPage = observer(() => {
     const { id } = useParams();
@@ -56,7 +58,8 @@ const SellerInfoPage = observer(() => {
     }
 
     return (
-        <Card title="Информация о продавце" style={{ margin: 20 }}>
+        <div className={styles.seller_info}>
+            <TopicBack title="Seller Profile" />
             <Space direction="vertical" style={{ width: '100%' }}>
                 <Descriptions bordered>
                     <Descriptions.Item label="ID" span={3}>
@@ -120,7 +123,7 @@ const SellerInfoPage = observer(() => {
                     </>
                 )}
             </Space>
-        </Card>
+        </div>
     );
 });
 

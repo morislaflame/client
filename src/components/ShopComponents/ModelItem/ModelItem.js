@@ -4,7 +4,7 @@ import './ModelItem.css';
 import { THING_ROUTE } from "../../../utils/consts";
 import MymIcon from '../../../icons/Mym.png';
 import FanslyIcon from '../../../icons/fansly.png';
-import OnlyIcon from '../../../icons/onlyfans.png'
+import OnlyIcon from '../../../icons/onlyfans.png';
 import { Skeleton } from 'antd';
 import Placeholder from '../../../icons/placeholder.jpg';
 

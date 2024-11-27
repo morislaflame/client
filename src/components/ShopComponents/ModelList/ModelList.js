@@ -40,7 +40,7 @@ const ModelList = observer(() => {
             {loading ? (
                 Array.from({ length: 20 }).map((_, index) => (
                     <div key={index} className="thing-item-skeleton">
-                        <div className="skeleton-image">
+                        <div className="skeleton-image" >
                         <Skeleton.Image style={{ width: '100%', height: '250px', borderRadius: 'calc(var(--index)* 1)' }} active />
                         <Skeleton active paragraph={{ rows: 1, width: '80%' }} />
                         </div>
@@ -48,7 +48,7 @@ const ModelList = observer(() => {
                 ))
             ) : (
                 model.modelProducts.map(model =>
-                    <ModelItem key={model.id} model={model} />
+                    <ModelItem key={model.id} model={model}/>
                 )
             )}
         </div>

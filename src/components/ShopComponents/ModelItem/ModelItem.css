@@ -4,28 +4,34 @@
 
 .card_list {
     width: 50%;
+    padding: calc(var(--index)* 0.5);
+    animation: linear card-scroll-animation;
+    animation-timeline: view();
+    animation-range: entry 10% cover 50%;
 }
 
-@media (max-width: 600px) {
-    .card_list {
-        width: 50%;
-        padding: calc(var(--index) * 0.5);
+@keyframes card-scroll-animation {
+    entry 0% {
+        opacity: 0;
+        transform: translateY(50px);
     }
-  }
+    
+    entry 100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
 
 .card {
     width: 100%;
     height: 100%;
-    cursor: pointer; 
-    /* padding: calc(var(--index)* 0.8);  */
+    cursor: pointer;
     display: flex;
     align-items: center;
     border-style: solid;
     border-radius: calc(var(--index) * 1);
-    cursor: pointer;
     border-width: 1px;
     background: linear-gradient(to right bottom, #2d252f, #211F25, #211923);
-    
 }
 
 .card_img {

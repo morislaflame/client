@@ -1,0 +1,15 @@
+.topic_back {
+    display: flex;
+    width: 100%;
+    justify-content: left;
+    align-items: center;
+    gap: calc(var(--index) * 1);
+    color: var(--color-text);
+}
+
+.topic_back h2 {
+    margin-bottom: 0;
+    font-size: calc(var(--index) * 2.5);
+    font-weight: bolder;
+}
+
