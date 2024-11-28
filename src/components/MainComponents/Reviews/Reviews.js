@@ -6,7 +6,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import { HiMiniPencilSquare, HiMiniTrash } from "react-icons/hi2";
 import { message, Image, Modal, Card, Button, Form, Input, Spin } from 'antd';
-import styles from './Reviews.module.css'
+import styles from './Reviews.module.css';
 import StarRating from '../../UI/StarRating/StarRating';
 import StarRatingInput from '../../UI/StarRatingInput/StarRatingInput';
 import ImageUploader from '../../UI/ImageUploader/ImageUploader';
@@ -201,7 +201,7 @@ const Reviews = observer(() => {
 
             <Modal 
                 title={editMode ? 'Edit feedback' : 'Write feedback'}
-                open={showReviewModal}
+                visible={showReviewModal}
                 onCancel={closeReviewModal}
                 footer={[
                     <Button key="cancel" onClick={closeReviewModal}>
@@ -214,7 +214,7 @@ const Reviews = observer(() => {
             >
                 <Form layout="vertical">
                     <Form.Item>
-                        <StarRatingInput rating={newReviewRating} setRating={setNewReviewRating} />
+                        <StarRatingInput value={newReviewRating} onChange={setNewReviewRating} />
                     </Form.Item>
                     <Form.Item>
                         <TextArea
