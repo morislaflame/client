@@ -3,30 +3,30 @@
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    gap: calc(var(--index) * 0.5);
-    background: linear-gradient(to right bottom, #2d252f, #211F25, #211923);
-    border-radius: calc(var(--index) * 0.7);
-    padding: calc(var(--index) * 0.7);
-    margin-bottom: calc(var(--index) * 1);
+    gap: var(--small-gap);
+    background: var(--card-background);
+    border-radius: var(--small-border-radius);
+    padding: var(--medium-padding);
+    margin-bottom: var(--main-margin);
 }
 
 .userinfo p {
-    font-size: calc(var(--index) * 1.3);
-    font-weight: 500;
+    font-size: var(--main-font-size);
+    font-weight: var(--medium-font-weight);
     margin: 0;
 }
 
 .become_seller_button {
-    padding: calc(var(--index)* 0.7);
+    padding: var(--medium-padding);
     background: linear-gradient(150deg, #ac57ed, #6b3ce6);
     color: white;
-    border-radius: calc(var(--index)* 0.7);
+    border-radius: var(--small-border-radius);
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: calc(var(--index) * 1.3);
-    font-weight: 500;
+    font-size: var(--main-font-size);
+    font-weight: var(--main-font-weight);
     height: fit-content;
     border: none;
     width: 100%;
@@ -35,30 +35,30 @@
 .links_container {
     display: flex;
     flex-direction: column;
-    gap: calc(var(--index) * 0.5);
-    background: linear-gradient(to right bottom, #2d252f, #211F25, #211923);
-    border-radius: calc(var(--index) * 0.7);
-    padding: calc(var(--index) * 0.7);
-    margin-bottom: calc(var(--index) * 1);
+    gap: var(--small-gap);
+    background: var(--card-background);
+    border-radius: var(--small-border-radius);
+    padding: var(--medium-padding);
+    margin-bottom: var(--main-margin);
 }
 
 .menuLink {
     color: white;
     text-decoration: none;
-    font-size: calc(var(--index) * 0.7);
-    font-weight: 500;
+    font-size: var(--main-font-size);
+    font-weight: var(--main-font-weight);
     display: flex;
     align-items: center;
-    gap: calc(var(--index) * 0.5);
+    gap: var(--small-gap);
 }
 
 
 @media (max-width: 768px) {
     .links_container {
-        gap: calc(var(--index) * 1);
+        gap: var(--main-gap);
     }
 
     .menuLink {
-        font-size: calc(var(--index) * 1.3);
+        font-size: var(--main-font-size);
     }
 }

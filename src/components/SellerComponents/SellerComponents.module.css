@@ -10,7 +10,7 @@
 
 .card_list {
     width: 48%;
-    padding: calc(var(--index) * 1) 0;
+    padding: var(--main-padding) 0;
 }
 
 .seller_card {
@@ -20,9 +20,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    border-radius: calc(var(--index) * 1);
+    border-radius: var(--main-border-radius);
     cursor: pointer;
-    background-color: #211F25;
+    background: var(--card-background);
   }
 
   .seller_card_image_wrapper {
@@ -32,19 +32,19 @@
   .seller_card_image {
     width: 100%;
     height: calc(var(--index) * 18);
-    border-top-left-radius: calc(var(--index) * 1);
-    border-top-right-radius: calc(var(--index) * 1);
+    border-top-left-radius: var(--main-border-radius);
+    border-top-right-radius: var(--main-border-radius);
     object-fit: cover; 
     object-position: center; 
   }
   
   .seller_card_content {
-    padding: 0 calc(var(--index) * 1) calc(var(--index) * 1);
+    padding: 0 var(--main-padding) var(--main-padding);
     display: flex;
     width: 100%;
     flex-direction: column;
     align-items: center;
-    gap: calc(var(--index)* 1);
+    gap: var(--main-gap);
   }
 
   .brand_name {
@@ -52,9 +52,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    padding: 0 calc(var(--index) * 1) calc(var(--index) * 1);
-    gap: calc(var(--index) * 0.7);
-    border-bottom: 1px solid #d2d2d266;
+    padding: 0 var(--main-padding) var(--main-padding);
+    gap: var(--medium-gap);
+    border-bottom: 1px solid var(--line-color);
   }
 
   .seller_card_brands {
@@ -65,7 +65,7 @@
   }
   
   .seller_brand_icon {
-    width: calc(var(--index) * 1.6); 
+    width: var(--card-icon-size); 
     height: auto;
   }
   
@@ -79,11 +79,11 @@
   .seller_card_header span {
     display: flex;
     align-items: center;
-    gap: calc(var(--index) * 0.5);
-    color: white;
+    gap: var(--small-gap);
+    color: var(--color-text);
     text-decoration: none;
-    font-weight: 500;
-    font-size: calc(var(--index) * 1.4);
+    font-weight: var(--main-font-weight);
+    font-size: var(--medium-font-size);
   }
 
   .moderation_status {
@@ -94,7 +94,7 @@
   }
 
   .moderation_status span {
-    font-size: calc(var(--index) * 1.2);
+    font-size: var(--main-font-size);
     margin-inline-end: 0;
   }
   
@@ -102,26 +102,26 @@
     display: flex;
     justify-content: space-between;
     width: 100%;
-    font-size: calc(var(--index) * 1.2);
-    gap: calc(var(--index) * 1);
+    font-size: var(--main-font-size);
+    gap: var(--main-gap);
     /* padding: calc(var(--index) * 1) 0; */
   }
 
   .edit_button {
     background-color: #ffffff21;
-    color: white;
+    color: var(--color-text);
     border: none;
-    padding: calc(var(--index)* 0.2) calc(var(--index)* 1);
-    border-radius: calc(var(--index)* 0.5);
+    padding: var(--smallest-padding) var(--main-padding);
+    border-radius: var(--smallest-border-radius);
     width: 50%;
   }
 
   .delete_button {
     background-color: #ff030321;
-    color: white;
+    color: var(--color-text);
     border: none;
-    padding: calc(var(--index)* 0.2) calc(var(--index)* 1);
-    border-radius: calc(var(--index)* 0.5);
+    padding: var(--smallest-padding) var(--main-padding);
+    border-radius: var(--smallest-border-radius);
     width: 50%;
   }
 
@@ -131,7 +131,7 @@
     display: flex;
     flex-direction: column;
     width: 100%;
-    gap: calc(var(--index) * 1);
+    gap: var(--main-gap);
 }
 
 .models_header {
@@ -139,15 +139,15 @@
     width: 100%;
     justify-content: left;
     align-items: center;
-    gap: calc(var(--index) * 1);
+    gap: var(--main-gap);
 }
 
 .add_model_button {
-    background-color: #211F25;
+    background-color: var(--action-button-color);
     border: none;
-    color: white;
-    font-weight: 500;
-    font-size: calc(var(--index) * 1.2);
-    padding: calc(var(--index) * 0.3) calc(var(--index) * 2);
-    border-radius: calc(var(--index) * 0.7);
+    color: var(--color-text);
+    font-weight: var(--main-font-weight);
+    font-size: var(--main-font-size);
+    padding: var(--small-padding) var(--big-padding);
+    border-radius: var(--small-border-radius);
 }

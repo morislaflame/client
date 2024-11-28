@@ -3,13 +3,13 @@
     width: 100%;
     justify-content: left;
     align-items: center;
-    gap: calc(var(--index) * 1);
+    gap: var(--main-gap);
     color: var(--color-text);
 }
 
 .topic_back h2 {
     margin-bottom: 0;
-    font-size: calc(var(--index) * 2.5);
-    font-weight: bolder;
+    font-size: var(--title-font-size);
+    font-weight: var(--title-font-weight);
 }
 

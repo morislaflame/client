@@ -1,6 +1,6 @@
 .backbutton {
     color: white;
-    font-size: calc(var(--index) * 2.5);
+    font-size: var(--title-font-size);
     padding: 0;
 }
 

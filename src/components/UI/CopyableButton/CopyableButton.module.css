@@ -4,7 +4,7 @@
     text-align: center;
     justify-content: center;
     align-items: center;
-    gap: calc(var(--index) * 1);
+    gap: var(--main-gap);
   }
 
   .copyable_address {
@@ -16,7 +16,7 @@
     background: linear-gradient(150deg, #272525d4, #403d4561, #423f3fd4);
     border: 0;
     color: #fff;
-    border-radius: calc(var(--index) * 1);
-    padding: calc(var(--index) * 1);
-    font-size: calc(var(--index) * 0.7) !important;
+    border-radius: var(--small-border-radius);
+    padding: var(--main-padding);
+    font-size: var(--smallest-font-size) !important;
   }
