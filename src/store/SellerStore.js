@@ -8,7 +8,8 @@ import {
     createSellerReview, 
     getSellerReviews,
     updateMyInformation,
-    fetchMyInformation
+    fetchMyInformation,
+    getSellerById
 } from "../http/sellerAPI";
 
 export default class SellerStore {
@@ -29,6 +30,7 @@ export default class SellerStore {
             getSellerReviews: action,
             updateMyInfo: action,
             fetchMyInformation: action,
+            getSellerById: action,
         });
     }
 
@@ -142,6 +144,18 @@ export default class SellerStore {
           runInAction(() => {
             this.sellerReviewsLoading = false;
           });
+        }
+    }
+
+    getSellerById = async (sellerId) => {
+        try {
+            const data = await getSellerById(sellerId);
+            runInAction(() => {
+                this.sellerInfo = data;
+            });
+        } catch (error) {
+            console.error("Error fetching seller by ID:", error);
+            throw error;
         }
     }
 }

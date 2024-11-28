@@ -18,3 +18,4 @@ export const SELLER_ACCOUNT_ROUTE = '/seller';
 export const EDIT_SELLER_MODEL_ROUTE = '/seller/edit-model';
 export const ALL_SELLERS_ROUTE = '/admin/sellers';
 export const SELLER_INFO_ROUTE = '/admin/seller/:id';
+export const SELLER_PROFILE_ROUTE = '/seller/:id';

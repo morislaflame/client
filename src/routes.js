@@ -23,6 +23,7 @@ import {
     EDIT_SELLER_MODEL_ROUTE,
     ALL_SELLERS_ROUTE,
     SELLER_INFO_ROUTE,
+    SELLER_PROFILE_ROUTE,
 } from "./utils/consts";
 import Main from "./pages/Main/Main";
 import TermsOfService from "./pages/TermsOfService/TermsOfService";
@@ -39,7 +40,7 @@ import EditSellerModel from "./pages/EditSellerModel/EditSellerModel";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import AllSellersPage from "./pages/AllAdminPages/AllSellersPage/AllSellersPage";
 import SellerInfoPage from "./pages/AllAdminPages/SellerInfoPage/SellerInfoPage";
-
+import SellerProfile from "./pages/SellerProfile/SellerProfile";
 
 
 
@@ -58,6 +59,10 @@ export const authRoutes = (user) => {
         {
             path: PAYMENT_ROUTE,
             Component: <PaymentPage />
+        },
+        {
+            path: SELLER_PROFILE_ROUTE + '/:id',
+            Component: <SellerProfile />
         },
     ];
     

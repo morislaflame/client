@@ -5,13 +5,13 @@ import SellerModels from '../../components/SellerComponents/SellerModels';
 import SellerOrders from '../../components/SellerComponents/SellerOrders'; // Импортируем SellerOrders
 import CreateSellerModel from '../../components/SellerComponents/modals/CreateSellerModel';
 import styles from './SellerAccount.module.css';
-import BackButtons from '../../components/UI/BackButton/Backbuttons';
 import { MdStar } from "react-icons/md";
 import { GoNote } from "react-icons/go";
 import { IoIosReturnLeft } from "react-icons/io";
 import { FaComment } from "react-icons/fa";
 import { IoWomanSharp } from "react-icons/io5";
 import ChangeInfoModal from '../../components/SellerComponents/modals/ChangeInfoModal';
+import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 
 const SellerAccount = observer(() => {
   const { seller } = useContext(Context);
@@ -27,10 +27,7 @@ const SellerAccount = observer(() => {
 
   return (
     <div className={styles.sellerAccount}>
-      <div className={styles.topic_back}>
-        <BackButtons />
-        <h2>Seller Account</h2>
-      </div>
+      <TopicBack title="Seller Account" />
       <div className={styles.shop_menu}>
         <div className={styles.shop_name_rating}>
           <div className={styles.shop_name}>

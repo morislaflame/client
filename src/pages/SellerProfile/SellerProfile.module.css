@@ -1,0 +1,59 @@
+.sellerProfile {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: calc(var(--index) * 1);
+    gap: calc(var(--index) * 2);
+    color: white;
+    min-height: 100vh;
+}
+
+.sellerProfile h5 {
+    margin-bottom: 0;
+    font-weight: bold;
+    font-size: calc(var(--index) * 1.4);
+}
+
+.sellerProfile h2 {
+    margin-bottom: 0;
+    font-size: calc(var(--index) * 2.5);
+    font-weight: bolder;
+}
+
+.sellerProfile h3 {
+    margin-bottom: 0;
+    font-size: calc(var(--index) * 2);
+    font-weight: bold;
+}
+
+
+.shop_menu {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    background: linear-gradient(to right bottom, #25032C, #211F25);
+    border-radius: calc(var(--index) * 1);
+    padding: calc(var(--index) * 1);
+    
+}
+
+.shop_name {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--index) * 1);
+}
+
+
+.shop_name_rating {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    padding-bottom: calc(var(--index) * 1);
+}
+
+.shop_rating {
+    display: flex;
+    align-items: center;
+    gap: calc(var(--index) * 0.5);
+}
