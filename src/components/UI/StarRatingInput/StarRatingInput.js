@@ -11,23 +11,16 @@ const StarRatingInput = ({ value = 0, onChange }) => {
             {[...Array(5)].map((_, index) => {
                 const ratingValue = index + 1;
                 return (
-                    <label key={index}>
-                        <input 
-                            type="radio" 
-                            name="rating" 
-                            value={ratingValue}
-                            onClick={() => onChange(ratingValue)}
-                            style={{ display: 'none' }}
-                        />
+                    <span key={index} onClick={() => onChange(ratingValue)}>
                         <MdStar
-                            className={styles.star} 
-                            color={ratingValue <= (hover || value) ? "#FFD700" : "#e4e5e9"} 
+                            className={styles.star}
+                            color={ratingValue <= (hover || value) ? "#FFD700" : "#e4e5e9"}
                             size={35}
                             onMouseEnter={() => setHover(ratingValue)}
                             onMouseLeave={() => setHover(0)}
                             style={{ cursor: 'pointer' }}
                         />
-                    </label>
+                    </span>
                 );
             })}
         </div>

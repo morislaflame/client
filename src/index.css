@@ -1,7 +1,37 @@
 :root {
   --index: calc(1vw + 1vh);
   --color-text: rgb(255 255 255 / 88%);
+
   --main-padding: calc(var(--index) * 1);
+  --small-padding: calc(var(--index) * 0.5);
+
+  --main-margin: calc(var(--index) * 1);
+  --small-margin: calc(var(--index) * 0.5);
+
+  --main-border-radius: calc(var(--index) * 1);
+  --small-border-radius: calc(var(--index) * 0.7);
+
+  --small-font-size: calc(var(--index) * 1);
+  --main-font-size: calc(var(--index) * 1.2);
+  --medium-font-size: calc(var(--index) * 1.4);
+  --caption-font-size: calc(var(--index) * 2);
+  --title-font-size: calc(var(--index) * 2.5);
+
+  --main-font-weight: 500;
+  --medium-font-weight: 600;
+  --caption-font-weight: bold;
+  --title-font-weight: bolder;
+
+  --card-icon-size: calc(var(--index) * 1.5);
+
+  --menu-background: linear-gradient(to right bottom, #25032C, #211F25);
+  
+  --info-item-background: #25032C;
+
+  --card-background:  linear-gradient(to right bottom, #2d252f, #211F25, #211923);
+
+  
+
   width: 100vw;
   
 }

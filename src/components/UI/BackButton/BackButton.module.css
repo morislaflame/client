@@ -3,6 +3,7 @@
     position: absolute;
     left: calc(var(--index) * 1.5);
     font-size: calc(var(--index) * 3);
+    padding: 0;
 }
 
 .backbutton:hover {

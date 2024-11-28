@@ -201,7 +201,7 @@ const Reviews = observer(() => {
 
             <Modal 
                 title={editMode ? 'Edit feedback' : 'Write feedback'}
-                visible={showReviewModal}
+                open={showReviewModal}
                 onCancel={closeReviewModal}
                 footer={[
                     <Button key="cancel" onClick={closeReviewModal}>

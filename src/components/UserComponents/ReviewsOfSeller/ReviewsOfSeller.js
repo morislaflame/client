@@ -11,7 +11,7 @@ const ReviewsOfSeller = observer(({ reviews }) => {
                 <div key={review.id} className={styles.review}>
                     <div className={styles.review_body}>
                         <div className="d-flex justify-content-between">
-                            <h5>{review.user.username}</h5>
+                            <h5>{review.user.email}</h5>
                             <StarRating rating={review.rating} readonly />
                         </div>
                         <p>{review.text}</p>

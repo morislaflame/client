@@ -78,11 +78,14 @@ const SellerProfile = observer(() => {
             {selectedTab === 'reviews' && (
                 <ReviewsOfSeller reviews={seller.sellerReviews} />
             )}
-            <AddSellerReview
-                visible={showAddReviewModal}
-                onClose={() => setShowAddReviewModal(false)}
-                sellerId={id}
-            />
+            {showAddReviewModal && (
+                <AddSellerReview
+                    visible={showAddReviewModal}
+                    onClose={() => setShowAddReviewModal(false)}
+                    sellerId={id}
+                />
+            )}
+
         </div>
         
     );

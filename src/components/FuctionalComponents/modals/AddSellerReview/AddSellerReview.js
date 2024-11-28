@@ -13,6 +13,7 @@ const AddSellerReview = ({ visible, onClose, sellerId }) => {
         setLoading(true);
         try {
             await seller.addSellerReview(sellerId, values);
+            await seller.loadSellerReviews(sellerId);
             message.success('Отзыв успешно добавлен!');
             form.resetFields();
             onClose();
@@ -25,7 +26,6 @@ const AddSellerReview = ({ visible, onClose, sellerId }) => {
         }
     };
 
-    // Сброс полей формы при закрытии модального окна
     useEffect(() => {
         if (!visible) {
             form.resetFields();
@@ -35,7 +35,7 @@ const AddSellerReview = ({ visible, onClose, sellerId }) => {
     return (
         <Modal
             title="Добавить отзыв"
-            visible={visible}
+            open={visible}
             onCancel={onClose}
             onOk={() => form.submit()}
             confirmLoading={loading}

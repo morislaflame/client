@@ -1,6 +1,4 @@
-:root {
-    --index: calc(1vw + 1vh);
-}
+
 .thing_content {
     width: 100vw;
     min-height: 100vh;
@@ -213,7 +211,7 @@ hr {
     background: linear-gradient(150deg, #ac57ed, #6b3ce6);
     color: #fff;
     padding: calc(var(--index) * 1) calc(var(--index) * 2);
-    border-radius: calc(var(--index) * 0.7);
+    border-radius: calc(var(--index) * 1);
     border: 0;
 }
 
