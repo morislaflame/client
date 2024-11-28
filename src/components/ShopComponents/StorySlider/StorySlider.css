@@ -83,6 +83,10 @@
     transform: translateX(-50%);
     z-index: 1001;
     color: #fff;
+    border-radius: calc(var(--index)* 1);
+    padding: calc(var(--index)* 2) calc(var(--index)* 4);
+    font-size: calc(var(--index)* 1.5);
+    font-weight: 600;
     border: none;
     cursor: pointer;
   }
@@ -95,7 +99,7 @@
 .main-container {
     max-width: 100%; /* Или установите конкретную ширину, например, 600px */
     overflow: hidden; /* Предотвращает выход содержимого за пределы контейнера */
-    margin: 0 auto; /* Центрируем контейнер, если задана конкретная ширина */
+    margin: 0 auto; 
     padding: calc(var(--index) * 1);
   }
   

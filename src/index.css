@@ -31,6 +31,16 @@ iframe {
   display: none;
 }
 
+.container {
+  display: flex;
+    flex-direction: column;
+    width: 100%;
+    padding: calc(var(--index) * 1);
+    gap: calc(var(--index) * 2);
+    color: white;
+    min-height: 100vh;
+}
+
 .ant-select .ant-select-selection-placeholder {
   overflow: hidden;
   white-space: nowrap;

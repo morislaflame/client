@@ -84,7 +84,7 @@ const ModelPage = observer(() => {
   return (
     <div className={styles.thing_content}>
       <div className={styles.topic_back}>
-        <BackButton />
+        <BackButton style={{padding: '0'}}/>
         <h2 className={styles.topic}>{models.name}</h2>
       </div>
       <div className={styles.main_model}>
