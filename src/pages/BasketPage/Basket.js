@@ -2,12 +2,11 @@ import React, { useEffect, useState, useContext } from 'react';
 import styles from './Basket.module.css';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../../index';
-import MyButton from '../../components/UI/MyButton/MyButton';
 import MymIcon from '../../icons/Mym.png';
 import FanslyIcon from '../../icons/fansly.png';
 import OnlyIcon from '../../icons/onlyfans.png';
 import { observer } from 'mobx-react-lite';
-import BackButton from '../../components/UI/BackButton/BackButton';
+import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 import { message, Badge, Spin } from 'antd';
 import { CgCloseO } from "react-icons/cg";
 import { LoadingOutlined } from "@ant-design/icons";
@@ -71,9 +70,8 @@ const Basket = observer(() => {
     };
 
     return (
-        <div className={styles.basket_page}>
-            
-            <div className={styles.topic_back}><BackButton/><h2>Your cart</h2></div>
+        <div className="container">
+            <TopicBack title="Your Favorites" />
             <div className={styles.basket_items}>
                 {model.basket.map(item => {
                     const modelProduct = item.modelProduct;

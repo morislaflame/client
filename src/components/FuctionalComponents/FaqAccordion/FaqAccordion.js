@@ -1,6 +1,5 @@
 import React from 'react';
 import { Collapse } from 'antd';
-import './FaqAccordion.css';
 
 const FaqAccordion = () => {
   const faqItems = [

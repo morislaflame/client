@@ -1,9 +1,7 @@
-// client/src/pages/AllReturnPage/AllReturnPage.js
-
 import React, { useState, useEffect } from 'react';
 import { fetchAllReturns } from '../../../http/orderAPI'; 
 import Form from 'react-bootstrap/Form';
-import BackButton from '../../../components/UI/BackButton/BackButton';
+import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 import styles from './AllReturnPage.module.css'
 import { THING_ROUTE } from '../../../utils/consts';
 import { useNavigate } from 'react-router-dom';
@@ -37,11 +35,8 @@ const AllReturnsPage = () => {
     );
 
     return (
-        <div className={styles.container}>
-            <div className={styles.topic_back}>
-                <BackButton/>
-                <h2>Все возвраты</h2>
-            </div>
+        <div className="container">
+            <TopicBack title="Все возвраты" />
             <div className={styles.search_section}>
                 <Form.Control
                     type="text"

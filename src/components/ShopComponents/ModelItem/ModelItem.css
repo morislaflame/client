@@ -1,25 +1,6 @@
-:root {
-    --index: calc(1vw + 1vh);
-  }
-
 .card_list {
     width: 50%;
-    padding: calc(var(--index)* 0.5);
-    animation: linear card-scroll-animation;
-    animation-timeline: view();
-    animation-range: entry 10% cover 50%;
-}
-
-@keyframes card-scroll-animation {
-    entry 0% {
-        opacity: 0;
-        transform: translateY(50px);
-    }
-    
-    entry 100% {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    padding: var(--small-padding);
 }
 
 .card {
@@ -29,16 +10,15 @@
     display: flex;
     align-items: center;
     border-style: solid;
-    border-radius: calc(var(--index) * 1);
-    border-width: 1px;
-    background: linear-gradient(to right bottom, #2d252f, #211F25, #211923);
+    border-radius: var(--main-border-radius);
+    background: var(--card-background);
 }
 
 .card_img {
     width: 100%;
     height: calc(var(--index) * 18);
-    border-top-left-radius: calc(var(--index) * 1);
-    border-top-right-radius: calc(var(--index) * 1);
+    border-top-left-radius: var(--main-border-radius);
+    border-top-right-radius: var(--main-border-radius);
     object-fit: cover; 
     object-position: center; 
 }
@@ -47,8 +27,7 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: calc(var(--index) * 1);
-    font-size: calc(var(--index) * 1); 
+    gap: var(--main-gap); 
 }
 
 .carousel-item {
@@ -56,7 +35,7 @@
 }
 
 .brand-icon {
-    width: calc(var(--index) * 1.5); 
+    width: var(--card-icon-size); 
     height: auto; 
 }
 
@@ -67,7 +46,7 @@
     justify-content: center;
     gap: calc(var(--index)* 2);
     flex-wrap: wrap;
-    padding: calc(var(--index)* 1.2) calc(var(--index)* 0.7) calc(var(--index)* 0.5) calc(var(--index)* 0.7);
+    padding: calc(var(--index)* 1.2) var(--main-padding) var(--small-padding);
 }
 
 .thing-all {
@@ -75,32 +54,32 @@
     flex-direction: column;
     justify-content: center;
     text-align: center;
-    padding: 0 calc(var(--index) * 0.6) calc(var(--index) * 0.6);
-    gap: calc(var(--index) * 0.6);
+    padding: 0 var(--medium-padding) var(--medium-padding);
+    gap: var(--medium-gap);
     width: 90%;
-    color: white;
+    color: var(--color-text);
 }
 
 .thingName {
-    font-size: calc(var(--index) * 1.7);
+    font-size: var(--card-name-font-size);
 }
 
 .thing-info {
-    font-size: calc(var(--index) * 1);
+    font-size: var(--small-font-size);
     color: #b3b2b2;
     display: flex;
     flex-direction: column;
-    gap: calc(var(--index)* 0.6);
+    gap: var(--medium-gap);
     border-bottom: 1px solid #d2d2d266;
     border-top: 1px solid #d2d2d266;
-    padding: calc(var(--index)* 0.8) 0;
+    padding: var(--medium-padding) 0;
 }
 
 .thing-price {
-    font-size: calc(var(--index) * 1.5);
+    font-size: var(--card-price-font-size);
 }
 
 .thing-info div b {
-    font-weight: 500;
+    font-weight: var(--main-font-weight);
 }
 

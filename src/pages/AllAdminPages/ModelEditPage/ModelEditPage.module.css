@@ -1,29 +1,9 @@
-.edit_page {
-    display: flex;
-    flex-direction: column;
-    padding: calc(var(--index) * 1);
-    color: white;
-    background-color: #030107;
-}
-
-.topic_back {
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: calc(var(--index) * 1);
-}
-
-.topic_back h2 {
-    margin: 0 !important;
-}
-
 .photo {
     width: 30%;
 }
 
 .photos {
-    border-radius: calc(var(--index) * 1) calc(var(--index) * 1) ;
+    border-radius: var(--main-border-radius) var(--main-border-radius) ;
     display: block;
     width: 100%;
     height: calc(var(--index) * 20);

@@ -1,7 +1,4 @@
 
-
-
-/* Стили для оверлея */
 .story-slider-overlay {
     position: fixed;
     top: 0;
@@ -33,10 +30,10 @@
   .close-stories-button {
     background: none;
     border: none;
-    color: white;
+    color: var(--color-text);
     font-size: calc(var(--index) * 3);
     cursor: pointer;
-    margin: calc(var(--index) * 1);
+    margin: var(--main-margin);
   }
   
   /* Стили для кружков */
@@ -82,8 +79,8 @@
     left: 50%;
     transform: translateX(-50%);
     z-index: 1001;
-    color: #fff;
-    border-radius: calc(var(--index)* 1);
+    color: var(--color-text);
+    border-radius: var(--main-border-radius);
     padding: calc(var(--index)* 2) calc(var(--index)* 4);
     font-size: calc(var(--index)* 1.5);
     font-weight: 600;
@@ -92,33 +89,26 @@
   }
   
   .story-link-button:hover {
-    background-color: #0056b3; /* Цвет при наведении */
+    background-color: #0056b3;
   }
 
-/* Основной контейнер */
 .main-container {
-    max-width: 100%; /* Или установите конкретную ширину, например, 600px */
-    overflow: hidden; /* Предотвращает выход содержимого за пределы контейнера */
+    max-width: 100%;
+    overflow: hidden; 
     margin: 0 auto; 
-    padding: calc(var(--index) * 1);
+    padding: var(--main-padding);
   }
   
-  /* Контейнер с кружочками */
   .story-circle-container {
     display: flex;
-    flex-direction: row; /* Располагаем кружочки горизонтально */
+    flex-direction: row;
     align-items: center;
-    overflow-x: auto; /* Включаем горизонтальную прокрутку при переполнении */
-    overflow-y: hidden; /* Скрываем вертикальную прокрутку */
-    -webkit-overflow-scrolling: touch; /* Плавная прокрутка на iOS */
-    scrollbar-width: none; /* Скрываем полосу прокрутки в Firefox */
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch; 
+    scrollbar-width: none; 
   }
   
   .story-circle-container::-webkit-scrollbar {
-    display: none; /* Скрываем полосу прокрутки в Chrome, Safari, Opera */
+    display: none;
   }
-  
- 
-    
-  
-  

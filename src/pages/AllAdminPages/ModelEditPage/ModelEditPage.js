@@ -7,7 +7,7 @@ import { observer } from 'mobx-react-lite';
 import { Button, Form, Input, InputNumber, Select, Upload, message } from 'antd';
 import { MAIN_ROUTE } from '../../../utils/consts';
 import styles from './ModelEditPage.module.css';
-import BackButton from '../../../components/UI/BackButton/BackButton';
+import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 import { UploadOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
@@ -128,11 +128,8 @@ const handleValuesChange = (changedValues, allValues) => {
   ];
 
   return (
-    <div className={styles.edit_page}>
-      <div className={styles.topic_back}>
-        <BackButton />
-        <h2>Editing</h2>
-      </div>
+    <div className="container">
+      <TopicBack title="Editing" />
       
       <Form
         form={form}

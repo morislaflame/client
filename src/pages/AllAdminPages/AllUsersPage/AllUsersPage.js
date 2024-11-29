@@ -21,7 +21,7 @@ import {
   DeleteOutlined,
   EyeOutlined,
 } from '@ant-design/icons';
-import BackButton from '../../../components/UI/BackButton/BackButton';
+import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 import styles from './AllUsersPage.module.css';
 
 const { Option } = Select;
@@ -103,11 +103,8 @@ const AllUsersPage = observer(() => {
   const roleOptions = ['USER', 'ADMIN', 'SELLER'];
 
   return (
-    <div className={styles.container}>
-      <div className={styles.topic_back}>
-        <BackButton />
-        <Title level={2}>Все пользователи</Title>
-      </div>
+    <div className="container">
+        <TopicBack title="Все пользователи" />
 
       <div className={styles.search_section}>
         <AutoComplete

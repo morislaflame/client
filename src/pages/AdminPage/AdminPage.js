@@ -1,16 +1,12 @@
 import React from 'react';
-import styles from './AdminPage.module.css';
+import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 import PendingModels from '../../components/AdminComponents/PendingModels';
-import BackButton from '../../components/UI/BackButton/BackButton';
 import AdminControls from '../../components/AdminComponents/AdminControls';
 import UserSearch from '../../components/AdminComponents/UserSearch';
 
 const AdminPage = () => {
-    return <div className={styles.container}>
-                <div className={styles.topic_back}>
-                    <BackButton />
-                    <h2>Admin панель</h2>
-                </div>
+    return <div className="container">
+                <TopicBack title="Admin панель" />
                 <AdminControls />
                 <UserSearch />
                 <PendingModels />

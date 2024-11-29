@@ -58,8 +58,8 @@ const SellerInfoPage = observer(() => {
     }
 
     return (
-        <div className={styles.seller_info}>
-            <TopicBack title="Seller Profile" />
+        <div className="container">
+            <TopicBack title="Профиль продавца" />
             <Space direction="vertical" style={{ width: '100%' }}>
                 <Descriptions bordered>
                     <Descriptions.Item label="ID" span={3}>

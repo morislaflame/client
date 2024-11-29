@@ -2,7 +2,6 @@ import { observer } from "mobx-react-lite";
 import React, { useContext } from "react";
 import { Context } from "../../../index";
 import { Pagination } from 'antd';
-import './Pages.css';
 
 const Pages = observer(() => {
   const { model } = useContext(Context);

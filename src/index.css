@@ -9,6 +9,7 @@
   --small-gap: calc(var(--index) * 0.5);
 
   --big-padding: calc(var(--index) * 2);
+  --medium-big-padding: calc(var(--index) * 1.5);
   --main-padding: calc(var(--index) * 1);
   --medium-padding: calc(var(--index) * 0.7);
   --small-padding: calc(var(--index) * 0.5);
@@ -27,6 +28,8 @@
   --medium-font-size: calc(var(--index) * 1.4);
   --caption-font-size: calc(var(--index) * 2);
   --title-font-size: calc(var(--index) * 2.5);
+  --card-name-font-size: calc(var(--index) * 1.7);
+  --card-price-font-size: calc(var(--index) * 1.5);
 
   --main-font-weight: 500;
   --medium-font-weight: 600;
@@ -76,11 +79,12 @@ iframe {
 
 .container {
   display: flex;
+  background-color: #030107;
     flex-direction: column;
     width: 100%;
-    padding: calc(var(--index) * 1);
-    gap: calc(var(--index) * 2);
-    color: white;
+    padding: var(--main-padding) var(--main-padding) var(--big-padding);
+    gap: var(--big-gap);
+    color: var(--color-text);
     min-height: 100vh;
 }
 
@@ -283,7 +287,7 @@ b, strong {
 .ant-btn-dangerous {
   background: linear-gradient(150deg, #eb1506cf, #740c04) !important;
   border: 0;
-  color: #fff;
+  color: var(--color-text) !important;
   border-radius: var(--small-border-radius);
   font-size: var(--main-font-size);
   padding: var(--medium-padding) var(--main-padding);
@@ -316,4 +320,22 @@ b, strong {
 
 .ant-image {
   display: flex;
+}
+
+.ant-pagination .ant-pagination-prev .ant-pagination-item-link, .ant-pagination .ant-pagination-next .ant-pagination-item-link {
+    background-color: var(--action-button-color);
+}
+
+.ant-pagination .ant-pagination-prev button, .ant-pagination .ant-pagination-next button {
+    color: var(--color-text);
+}
+
+.ant-pagination .ant-pagination-disabled .ant-pagination-item-link, .ant-pagination .ant-pagination-disabled:hover .ant-pagination-item-link {
+    color: #ffffff61;
+    cursor: not-allowed;
+}
+
+.ant-skeleton.ant-skeleton-active .ant-skeleton-image {
+    background: linear-gradient(90deg, rgba(0, 0, 0, 0.06) 25%, rgb(0 0 0 / 28%) 37%, rgba(0, 0, 0, 0.06) 63%);
+    background-size: 400% 100%;
 }

@@ -11,7 +11,7 @@
   .product-card img {
     width: 100%;
     height: calc(var(--index) * 15);
-    border-radius: calc(var(--index) * 0.7);
+    border-radius: var(--small-border-radius);
     object-fit: cover;
     object-position: center;
   }

@@ -12,7 +12,7 @@
 
 .topic {
     font-size: calc(var(--index) * 5);
-    color: white;
+    color: var(--color-text);
 }
 
 .topic_back {
@@ -20,12 +20,12 @@
     width: 100%;
     justify-content: center;
     align-items: center;
-    margin-bottom: calc(var(--index) * 1);
+    margin-bottom: var(--main-margin);
 }
 
 .main_model {
     width: 100%;
-    padding: 0 calc(var(--index) * 2);
+    padding: 0 var(--main-padding);
     display: flex;
     flex-direction: column;
     justify-content: center;

@@ -8,7 +8,7 @@ import { fetchCountries, fetchAdultPlatforms } from '../../http/modelProductAPI'
 import { Context } from '../../index';
 import styles from './EditSellerModel.module.css';
 import { SELLER_ACCOUNT_ROUTE } from '../../utils/consts';
-import BackButton from '../../components/UI/BackButton/BackButton';
+import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 import LoadingIndicator from '../../components/UI/LoadingIndicator/LoadingIndicator';
 
 const { Option } = Select;
@@ -131,11 +131,8 @@ const EditSellerModel = () => {
   }
 
   return (
-    <div className={styles.editModel}>
-      <div className={styles.topic_back}>
-        <BackButton />
-        <h2>Edit Model</h2>
-      </div>
+    <div className="container">
+        <TopicBack title="Edit Model" />
       <Form
         form={form}
         layout="vertical"
@@ -230,7 +227,9 @@ const EditSellerModel = () => {
           </Form.Item>
         </div>
 
-        <div className={styles.confirm_btn_container}>
+        
+      </Form>
+      <div className={styles.confirm_btn_container}>
           <button 
             className={styles.confirm_btn} 
             type="submit"
@@ -239,7 +238,6 @@ const EditSellerModel = () => {
             Update Model
           </button>
         </div>
-      </Form>
     </div>
   );
 };

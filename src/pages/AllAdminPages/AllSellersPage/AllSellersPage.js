@@ -5,6 +5,7 @@ import { Table, Card, Space, Button, message, Modal, AutoComplete } from 'antd';
 import { UserOutlined, ShopOutlined, StarOutlined } from '@ant-design/icons';
 import { useNavigate } from 'react-router-dom';
 import { SELLER_INFO_ROUTE } from '../../../utils/consts';
+import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 
 const AllSellersPage = observer(() => {
     const { admin } = useContext(Context);
@@ -98,8 +99,10 @@ const AllSellersPage = observer(() => {
     const dataSource = selectedSeller ? [selectedSeller] : admin.sellers;
 
     return (
-        <Card title="Управление продавцами" style={{ margin: 20 }}>
-            <Space direction="vertical" style={{ width: '100%', marginBottom: 16 }}>
+        <div className="container">
+            <TopicBack title="Все продавцы" />
+            <Card title="Управление продавцами">
+                <Space direction="vertical" style={{ width: '100%', marginBottom: 16 }}>
                 <AutoComplete
                     value={searchText}
                     options={options}
@@ -121,7 +124,8 @@ const AllSellersPage = observer(() => {
                     }}
                 />
             </Space>
-        </Card>
+            </Card>
+        </div>
     );
 });
 
