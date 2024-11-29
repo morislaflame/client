@@ -1,7 +1,7 @@
 .backbutton {
     color: white;
     position: absolute;
-    left: calc(var(--index) * 1.5);
+    left: calc(var(--index) * 1);
     font-size: calc(var(--index) * 3);
     padding: 0;
 }

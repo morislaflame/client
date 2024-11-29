@@ -26,7 +26,7 @@ const SellerAccount = observer(() => {
   const { sellerInfo } = seller;
 
   return (
-    <div className={styles.sellerAccount}>
+    <div className="container">
       <TopicBack title="Seller Account" />
       <div className={styles.shop_menu}>
         <div className={styles.shop_name_rating}>

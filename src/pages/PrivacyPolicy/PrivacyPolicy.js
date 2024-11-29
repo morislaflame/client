@@ -1,13 +1,10 @@
 import React from 'react';
-import BackButton from '../../components/UI/BackButton/BackButton';
+import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 
 const PrivacyPolicy = () => {
   return (
-    <div className="content">
-      <div className='topic_back'>
-        <BackButton/>
-        <h1>Referral program</h1>
-      </div>
+    <div className="container">
+      <TopicBack title='Referral program'/>
       <div className='terms-of-service-content'>
         <div className='terms-of-service-content-eng'>
           <p>If your friend buys a model on our trading platform, you will receive 10% of the deal amount, and your friend will also receive a 10% discount.</p>

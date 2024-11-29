@@ -1,6 +1,6 @@
 import { useParams } from 'react-router-dom';
 import useUserData from '../../../hooks/useUserData';
-import BackButton from '../../../components/UI/BackButton/BackButton';
+import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 import styles from '../NonUsedPages/UserAccount/UserAccount.module.css'
 import UserOrders from '../../../components/UserComponents/UserOrders'; 
 import UserReturns from '../../../components/UserComponents/UserReturns';
@@ -63,11 +63,8 @@ const UserInfoPage = () => {
 
 
     return (
-        <div className={styles.user_info}>
-            <div className={styles.topic_back}>
-                <BackButton/>
-                <h2>User Info</h2>
-            </div>
+        <div className="container">
+            <TopicBack title='User Info'/>
             <div className={styles.user}>
                 <p>Email: {userData.email || `@${userData.username}` || `Telegram ID: ${userData.telegramId}`}</p>
                 <p>Роль: {userData.role}</p>

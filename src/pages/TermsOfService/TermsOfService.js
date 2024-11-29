@@ -1,15 +1,12 @@
 import React from 'react';
 import './TermsOfService.css';
-import BackButton from '../../components/UI/BackButton/BackButton';
+import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 import { SiTether, SiBitcoinsv, SiEthereum, SiLitecoin } from 'react-icons/si';
 
 const TermsOfService = () => {
   return (
-    <div className="content">
-      <div className='topic_back'>
-        <BackButton/>
-        <h1>Warranty terms and conditions</h1>
-      </div>
+    <div className="container">
+      <TopicBack title='Warranty terms and conditions'/>
       
 
       <div className='terms-of-service-content'>
