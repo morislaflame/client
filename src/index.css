@@ -16,6 +16,7 @@
   --smallest-padding: calc(var(--index) * 0.2);
 
   --big-margin: calc(var(--index) * 2);
+  --medium-margin: calc(var(--index) * 1.5);
   --main-margin: calc(var(--index) * 1);
   --small-margin: calc(var(--index) * 0.5);
 
@@ -95,6 +96,12 @@ iframe {
   margin-bottom: 0;
   font-weight: bold;
   font-size: var(--medium-font-size);
+}
+
+.container h4 {
+  margin-bottom: 0;
+  font-size: var(--card-name-font-size);
+  font-weight: var(--medium-font-weight);
 }
 
 .container h2 {
@@ -298,13 +305,16 @@ b, strong {
   box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
   background: linear-gradient(150deg, #0689c2d4, #292587);
   border: 0;
-  color: #fff;
-  border-radius: calc(var(--index)* 0.7);
-  padding: calc(var(--index)* 0.7) calc(var(--index)* 2);
+  color: var(--color-text);
+  border-radius: var(--small-border-radius);
+  font-size: var(--medium-font-size);
+  font-weight: 400;
+  padding: var(--medium-padding) var(--main-padding);
   min-width: calc(var(--index)* 8);
 }
 
 .ant-btn-dangerous {
+  box-shadow: 0 2px 0 rgba(5, 145, 255, 0.1);
   background: linear-gradient(150deg, #eb1506cf, #740c04) !important;
   border: 0;
   color: var(--color-text) !important;
@@ -318,9 +328,10 @@ b, strong {
   box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
   background: linear-gradient(150deg, #2e2c33, #707070d4);
   border: 0;
-  color: #fff;
-  border-radius: calc(var(--index)* 0.7);
-  padding: calc(var(--index)* 0.7) calc(var(--index)* 2);
+  color: var(--color-text);
+  border-radius: var(--small-border-radius);
+  font-size: var(--medium-font-size);
+  padding: var(--medium-padding) var(--main-padding);
   min-width: calc(var(--index)* 8);
 }
 

@@ -10,6 +10,7 @@ import {
   TERMS_ROUTE,
   ADMIN_ROUTE,
   LOGIN_ROUTE,
+  MAIN_ROUTE,
 } from '../../../utils/consts';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaUserAlt } from 'react-icons/fa';
@@ -120,15 +121,13 @@ const Menu = ({ open, onClose }) => {
         >
           <IoShieldCheckmarkSharp /> Terms of Warranty
         </NavLink>
-        <a
-          href="https://t.me/express_model_marketplace"
+        <NavLink
+          to={MAIN_ROUTE}
           onClick={onClose}
           className={styles.menuLink}
-          target="_blank"
-          rel="noopener noreferrer"
         >
-          <FaTelegram /> Our Telegram
-        </a>
+          <FaTelegram /> About Us
+        </NavLink>
         
       </div>
       <Button

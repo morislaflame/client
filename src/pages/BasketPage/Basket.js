@@ -7,9 +7,10 @@ import FanslyIcon from '../../icons/fansly.png';
 import OnlyIcon from '../../icons/onlyfans.png';
 import { observer } from 'mobx-react-lite';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
-import { message, Badge, Spin } from 'antd';
-import { CgCloseO } from "react-icons/cg";
+import { message, Badge, Spin, Button } from 'antd';
 import { LoadingOutlined } from "@ant-design/icons";
+import { FaMessage } from "react-icons/fa6";
+import { RxCross2 } from "react-icons/rx";
 
 const Basket = observer(() => {
     const { model } = useContext(Context);
@@ -78,7 +79,13 @@ const Basket = observer(() => {
                     const basketItemContent = (
                         <div className={styles.basket_item}>
                             <div className={styles.item_inner}>
-                                <div className={styles.img_brands}>
+                                <button
+                                    onClick={() => handleRemove(item.id)}
+                                    className={styles.delete}
+                                >
+                                    <RxCross2 />
+                                </button>
+                                <div className={styles.img}>
                                     {modelProduct.images && modelProduct.images.length > 0 ? (
                                         <img src={process.env.REACT_APP_API_URL + modelProduct.images[0].img} alt={modelProduct.name} className={styles.basket_item_img} />
                                     ) : (
@@ -86,9 +93,8 @@ const Basket = observer(() => {
                                     )}
                                 </div>
                                 
-                                <div className={styles.basket_item_info}>
-                                    <div className={styles.info_brand}>
-                                        <div className={styles.items_name_price}>
+                                <div className={styles.item_info}>
+                                        <div className={styles.model_info}>
                                             <div className={styles.brands_basket}>
                                                 {modelProduct.adultPlatforms && modelProduct.adultPlatforms.length > 0 ? (
                                                     modelProduct.adultPlatforms.map(adultPlatform => (
@@ -110,28 +116,28 @@ const Basket = observer(() => {
                                                     <div>Unknown Brand</div>
                                                 )}
                                             </div>
-                                            <span className={styles.basket_item_name}>{item.name}</span>
-                                            <div className={styles.thing_info}>
-                                                <span className={styles.info}>Start: {modelProduct.info.start}</span>
-                                                <span className={styles.info}>Content: {modelProduct.info.content}</span>
-                                            </div>
-                                            {modelProduct.originalPrice && modelProduct.priceUSD !== modelProduct.originalPrice && (
-                                                <span className={styles.basket_item_original_price} style={{ textDecoration: 'line-through', color: 'grey' }}>
-                                                    ${modelProduct.originalPrice}
-                                                </span>
-                                            )}
-                                            <span className={styles.basket_item_price}>${modelProduct.priceUSD}</span>
+                                            <h5 className={styles.basket_item_name}>{modelProduct.name} - ${modelProduct.priceUSD}</h5>
                                         </div>
-                                    </div>
+                                        {modelProduct.seller && (
+                                            <div className={styles.seller_info}>
+                                                <span>Seller: {modelProduct.seller.sellerInformation.sellerName}</span>
+                                            </div>
+                                        )}
+                                        <div className={styles.model_actions}>
+                                            <button 
+                                                className={styles.message_button} 
+                                                onClick={() => navigate(`/model/${modelProduct.modelId}`)}>
+                                                <span>Seller Chat</span>
+                                            </button>
+                                            <Button type='primary' onClick={() => navigate(`/model/${modelProduct.modelId}`)}>
+                                                Buy now
+                                            </Button>
+                                            
+                                        </div>
                                 </div>
+                                
                             </div>
-                            <div onClick={() => handleRemove(item.id)} style={{
-                                height: 'calc(var(--index)* 17)',
-                                display: 'flex',
-                                alignItems: 'center',
-                            }}>
-                                <CgCloseO className={styles.basket_item_remove}/>
-                            </div>
+                            
                         </div>
                     );
 
