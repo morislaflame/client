@@ -6,6 +6,7 @@ import { Card, Space, Button, message, Modal, Descriptions, Rate, List, Divider 
 import { UserOutlined, ShopOutlined, StarOutlined, MailOutlined, IdcardOutlined } from '@ant-design/icons';
 import styles from './SellerInfoPage.module.css';
 import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
+import StarRating from '../../../components/UI/StarRating/StarRating';
 
 const SellerInfoPage = observer(() => {
     const { id } = useParams();
@@ -97,9 +98,8 @@ const SellerInfoPage = observer(() => {
                     )}
                     
                     <Descriptions.Item label="Рейтинг" span={3}>
-                        <StarOutlined /> 
-                        <Rate disabled defaultValue={seller.sellerInformation?.sellerRating || 0} />
-                        ({seller.sellerInformation?.sellerRating || 0})
+                    {seller.sellerInformation?.sellerRating.toFixed(1) || 0}
+                    <StarRating rating={seller.sellerInformation?.sellerRating.toFixed(1) || 0} readonly />
                     </Descriptions.Item>
                 </Descriptions>
 

@@ -40,7 +40,8 @@ const SellerProfile = observer(() => {
                             
                         </div>
                         <div className={styles.shop_rating}>
-                            <StarRating rating={sellerInfo?.sellerInformation?.sellerRating || 0} readonly />
+                            {sellerInfo?.sellerInformation?.sellerRating.toFixed(1) || 0}
+                            <StarRating rating={sellerInfo?.sellerInformation?.sellerRating.toFixed(1) || 0} readonly />
                         </div>
                     </div>
                     <div className={styles.shop_info}>

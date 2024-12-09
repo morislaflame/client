@@ -238,6 +238,7 @@ b, strong {
   border: 1px solid var(--line-color);
   margin: var(--main-margin);
   line-height: 1.78;
+  font-size: var(--main-font-size);
 }
 
 .ant-collapse>.ant-collapse-item >.ant-collapse-header {
@@ -256,7 +257,7 @@ b, strong {
 
 .ant-collapse .ant-collapse-content>.ant-collapse-content-box {
   padding: 12px 16px;
-  font-size: calc(var(--index) * 1.2);
+  font-size: var(--main-font-size);
 }
 
 .ant-card .ant-card-body {

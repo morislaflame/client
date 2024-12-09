@@ -5,13 +5,13 @@ import SellerModels from '../../components/SellerComponents/SellerModels';
 import SellerOrders from '../../components/SellerComponents/SellerOrders'; // Импортируем SellerOrders
 import CreateSellerModel from '../../components/SellerComponents/modals/CreateSellerModel';
 import styles from './SellerAccount.module.css';
-import { MdStar } from "react-icons/md";
 import { GoNote } from "react-icons/go";
 import { IoIosReturnLeft } from "react-icons/io";
 import { FaComment } from "react-icons/fa";
 import { IoWomanSharp } from "react-icons/io5";
 import ChangeInfoModal from '../../components/SellerComponents/modals/ChangeInfoModal';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
+import StarRating from '../../components/UI/StarRating/StarRating';
 
 const SellerAccount = observer(() => {
   const { seller } = useContext(Context);
@@ -40,8 +40,8 @@ const SellerAccount = observer(() => {
             </button>
           </div>
           <div className={styles.shop_rating}>
-            <h5>{sellerInfo.sellerInformation?.sellerRating}</h5>
-            <MdStar style={{color: '#FFD700'}} />
+          {sellerInfo.sellerInformation?.sellerRating.toFixed(1) || 0}
+          <StarRating rating={sellerInfo.sellerInformation?.sellerRating.toFixed(1) || 0} readonly />
           </div>
         </div>
         <div className={styles.shop_info}>
