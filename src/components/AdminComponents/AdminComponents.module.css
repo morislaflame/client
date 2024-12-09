@@ -46,18 +46,7 @@
     padding: var(--main-padding);
 }
 
-.all_btn {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: linear-gradient(150deg, #0689c2d4, #292587);
-    border: 0;
-    color: var(--color-text);
-    border-radius: var(--main-border-radius);
-    padding: var(--main-padding);
-    font-size: var(--main-font-size);
-}
+
 
 .container button:hover {
     background-color: #D90429;

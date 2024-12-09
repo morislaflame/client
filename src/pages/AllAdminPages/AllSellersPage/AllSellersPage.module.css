@@ -1,0 +1,86 @@
+.search_section {
+    display: flex;
+    color: var(--color-text);
+    width: 100%;
+    flex-direction: column;
+    gap: var(--main-gap);
+    justify-content: center;
+    background: var(--card-background);
+    padding: var(--main-padding);
+    border-radius: var(--main-border-radius);
+    font-size: var(--main-font-size);
+}
+
+.all_sellers {
+    display: flex;
+    flex-direction: column;
+    gap: calc(var(--index) * 1);
+}
+
+.seller {
+    display: flex;
+    flex-direction: column;
+    background: var(--card-background);
+    padding: var(--main-padding);
+    border-radius: var(--main-border-radius);
+    gap: var(--main-gap);
+}
+
+
+.seller_info {
+    display: flex;
+    width: 100%;
+    flex-direction: column;
+    gap: var(--main-gap);
+    justify-content: center;
+    align-items: flex-start;
+    font-size: var(--main-font-size);
+}
+
+.seller_info_item {
+    display: flex;
+    justify-content: space-between;
+    padding: 0 0 var(--main-padding) ;
+    width: 100%;
+    border-bottom: 1px solid var(--line-color);
+}
+
+.seller_info span {
+    display: flex; 
+    gap: var(--small-gap);
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+.seller_mail_id {
+    display: flex;
+    flex-direction: column;
+    gap: var(--main-gap);
+}
+
+.seller_rating {
+    display: flex;
+    gap: var(--small-gap);
+    align-items: center;
+    font-size: var(--medium-font-size);
+}
+
+.shop_info {
+    display: flex;  
+    justify-content: space-between;
+    width: 100%;
+    gap: var(--main-gap);
+    align-items: center;
+}
+
+.shop_info_item {
+    display: flex;
+    flex-direction: column;
+    gap: var(--small-gap);
+    max-width: 70%;
+    flex-wrap: wrap;
+}
+
+.shop_info_item span {
+    flex-wrap: wrap;
+}

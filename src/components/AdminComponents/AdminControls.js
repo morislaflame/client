@@ -18,11 +18,11 @@ const AdminControls = () => {
   return (
     <>
       <div className={styles.admin_buttons}>
-        <button onClick={() => setCountryVisible(true)}>Добавить страну</button>
-        <button onClick={() => setAdultPlatformVisible(true)}>Добавить платформу</button>
-        <button onClick={() => setStoryVisible(true)}>Добавить историю</button>
-        <button onClick={() => setPromoVisible(true)}>Добавить промокод</button>
-        <button onClick={() => setModelVisible(true)}>Добавить модель</button>
+        <button onClick={() => setCountryVisible(true)}>Add country</button>
+        <button onClick={() => setAdultPlatformVisible(true)}>Add adult platform</button>
+        <button onClick={() => setStoryVisible(true)}>Add story</button>
+        <button onClick={() => setPromoVisible(true)}>Add promo code</button>
+        <button onClick={() => setModelVisible(true)}>Add model</button>
       </div>
       <CreateAdultPlatform show={adultPlatformVisible} onHide={() => setAdultPlatformVisible(false)} />
       <CreateSellerModel show={modelVisible} onHide={() => setModelVisible(false)} />

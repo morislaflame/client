@@ -20,28 +20,28 @@ const NewOrders = observer(() => {
   const handleConfirmOrder = async (orderId) => {
     try {
       await admin.confirmOrder(orderId);
-      message.success('Заказ подтвержден');
+      message.success('Order confirmed');
       admin.loadNewOrders();
     } catch (error) {
-      message.error('Ошибка при подтверждении заказа');
-      console.error('Ошибка при подтверждении заказа:', error);
+      message.error('Error confirming order');
+      console.error('Error confirming order:', error);
     }
   };
 
   const handleRejectOrder = async (orderId) => {
     try {
       await admin.rejectOrder(orderId);
-      message.success('Заказ отклонен');
+      message.success('Order rejected');
       admin.loadNewOrders();
     } catch (error) {
-      message.error('Ошибка при отклонении заказа');
-      console.error('Ошибка при отклонении заказа:', error);
+      message.error('Error rejecting order');
+      console.error('Error rejecting order:', error);
     }
   };
 
   return (
     <div className={styles.orders}>
-      <h3>Новые заказы</h3>
+      <h3>New orders</h3>
       {admin.newOrders.length > 0 ? (
         <List
           dataSource={admin.newOrders}
@@ -52,7 +52,7 @@ const NewOrders = observer(() => {
             return (
               <List.Item className={styles.order_item}>
                 <div className={styles.order_details}>
-                  <span>Заказ №{order.id}</span>
+                  <span>Order №{order.id}</span>
                   <span
                     onClick={() => navigate(`/user/${order.userId}`)}
                     style={{ textDecoration: 'underline' }}
@@ -79,8 +79,8 @@ const NewOrders = observer(() => {
                 </div>
 
                 <div className={styles.refund_section}>
-                  <span className={styles.valuta}>Валюта: <strong>{order.cryptoCurrency}</strong></span>
-                  <span className={styles.valuta}>Сумма: <strong>{order.cryptoPaymentAmount}</strong></span>
+                  <span className={styles.valuta}>Currency: <strong>{order.cryptoCurrency}</strong></span>
+                  <span className={styles.valuta}>Amount: <strong>{order.cryptoPaymentAmount}</strong></span>
                   <div className={styles.hash}>
                     <span>Transaction Hash:</span>
                     <CopyableButton
@@ -91,29 +91,29 @@ const NewOrders = observer(() => {
                   </div>
                 </div>
                 {hasUnavailableItems && (
-                  <p style={{ color: 'red' }}>Некоторые товары в этом заказе недоступны для подтверждения.</p>
+                  <p style={{ color: 'red' }}>Some items in this order are not available for confirmation.</p>
                 )}
                 <div className={styles.confirm_reject}>
                   <button
                     onClick={() => admin.showConfirm(
-                      'Подтвердите действие',
-                      'Вы уверены, что хотите подтвердить этот заказ?',
+                      'Confirm action',
+                      'Are you sure you want to confirm this order?',
                       () => handleConfirmOrder(order.id)
                     )}
                     className={styles.confirm}
                     disabled={hasUnavailableItems}
                   >
-                    Подтвердить
+                    Confirm
                   </button>
                   <button
                     onClick={() => admin.showConfirm(
-                      'Подтвердите действие',
-                      'Вы уверены, что хотите отклонить этот заказ?',
+                      'Confirm action',
+                      'Are you sure you want to reject this order?',
                       () => handleRejectOrder(order.id)
                     )}
                     className={styles.reject}
                   >
-                    Отклонить
+                    Reject
                   </button>
                 </div>
               </List.Item>
@@ -121,10 +121,10 @@ const NewOrders = observer(() => {
           }}
         />
       ) : (
-        <p>Нет новых заказов.</p>
+        <p>No new orders.</p>
       )}
       <Button onClick={() => navigate('/admin/orders')} className={styles.all_btn}>
-        Посмотреть все заказы
+        View all orders
       </Button>
     </div>
   );

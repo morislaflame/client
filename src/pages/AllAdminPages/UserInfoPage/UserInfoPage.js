@@ -22,10 +22,16 @@ const UserInfoPage = () => {
         <div className="container">
             <TopicBack title={`User Info`} />
             <div className={styles.user}>
-                <h4>Email: {userData.email || `@${userData.username}` || `Telegram ID: ${userData.telegramId}`}</h4>
                 <div className={styles.user_info}>
-                    <span>{userData.role}</span>
-                    <span>ID: {userData.id}</span>
+                    <h4>{userData.email || `@${userData.username}` || `Telegram ID: ${userData.telegramId}`}</h4>
+                    <div className={styles.user_role}>
+                        <span>{userData.role}</span>
+                        <span>ID: {userData.id}</span>
+                    </div>
+                </div>
+                <div className={styles.user_orders}>
+                    <span>Orders</span>
+                    <span>Returns</span>
                 </div>
             </div>
             

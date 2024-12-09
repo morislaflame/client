@@ -156,6 +156,7 @@ iframe {
   color: rgb(255 255 255 / 74%);
   text-align: center;
   font-size: calc(var(--index) * 1.2);
+  height: fit-content;
 }
 
 .ant-select:hover .ant-select-clear {
@@ -313,6 +314,11 @@ b, strong {
   font-weight: 400;
   padding: var(--medium-padding) var(--main-padding);
   min-width: calc(var(--index)* 8);
+  height: fit-content;
+}
+
+.ant-btn-primary:hover {
+  background: linear-gradient(150deg, #082836d4, #292587);
 }
 
 .ant-btn-dangerous {
@@ -324,6 +330,7 @@ b, strong {
   font-size: var(--main-font-size);
   padding: var(--medium-padding) var(--main-padding);
   min-width: calc(var(--index)* 8);
+  height: fit-content;
 }
 
 .ant-btn-default {
@@ -335,6 +342,7 @@ b, strong {
   font-size: var(--main-font-size);
   padding: var(--medium-padding) var(--main-padding);
   min-width: calc(var(--index)* 8);
+  height: fit-content;
 }
 
 

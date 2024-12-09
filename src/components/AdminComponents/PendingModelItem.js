@@ -32,13 +32,6 @@ const PendingModelItem = ({ model, onApprove, onReject }) => {
     3: MymIcon,
   };
 
-  // Отображение цвета статуса модерации
-  const statusColors = {
-    'APPROVED': 'green',
-    'PENDING': 'blue',
-    'REJECTED': 'red',
-  };
-
   const rejectionReasons = ["REASON1", "REASON2", "REASON3"]; // Замените на реальные причины
 
   const showRejectModal = () => {

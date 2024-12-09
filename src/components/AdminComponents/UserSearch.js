@@ -3,7 +3,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../../index';
 import { useNavigate } from 'react-router-dom';
-import { message, AutoComplete, Spin } from 'antd';
+import { message, AutoComplete, Spin, Button } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import styles from './AdminComponents.module.css';
 import { ALL_SELLERS_ROUTE } from '../../utils/consts';
@@ -59,20 +59,22 @@ const UserSearch = () => {
         onSelect={handleSearch}
         placeholder="Введите ID пользователя"
       />
-      <button
+      <Button
+        type="primary"
         onClick={() => navigate('/admin/users')}
         className={styles.all_btn}
         disabled={isSearching}
       >
         {isSearching ? <Spin indicator={<LoadingOutlined style={{ color: 'white' }} spin />} /> : 'Все пользователи'}
-      </button>
-      <button
+      </Button>
+      <Button
+        type="primary"
         onClick={() => navigate(ALL_SELLERS_ROUTE)}
         className={styles.all_btn}
         disabled={isSearching}
       >
         Все продавцы
-      </button>
+      </Button>
     </div>
   );
 };

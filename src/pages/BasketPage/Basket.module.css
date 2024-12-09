@@ -132,7 +132,6 @@
     font-weight: var(--small-font-weight);
     padding: var(--medium-padding) var(--main-padding);
     min-width: calc(var(--index)* 8);
-    height: 32px;
     text-align: center;
     align-items: center;
     justify-content: center;

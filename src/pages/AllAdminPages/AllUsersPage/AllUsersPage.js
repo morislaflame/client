@@ -23,6 +23,7 @@ import {
 } from '@ant-design/icons';
 import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 import styles from './AllUsersPage.module.css';
+import LoadingIndicator from '../../../components/UI/LoadingIndicator/LoadingIndicator';
 
 const { Option } = Select;
 const { Title, Text } = Typography;
@@ -104,10 +105,7 @@ const AllUsersPage = observer(() => {
 
   return (
     <div className="container">
-        <TopicBack title="Все пользователи" />
-
-      
-      
+        <TopicBack title="All Users" />
       <div className={styles.all_users}>
         <div className={styles.search_section}>
           <AutoComplete
@@ -116,7 +114,7 @@ const AllUsersPage = observer(() => {
             value={userId}
             onChange={setUserId}
             onSelect={handleSearch}
-            placeholder="Введите ID пользователя"
+            placeholder="Enter user ID"
             notFoundContent={isSearching ? <Spin indicator={<LoadingOutlined spin />} /> : null}
             filterOption={(inputValue, option) =>
               option.value.toLowerCase().includes(inputValue.toLowerCase())
@@ -129,17 +127,17 @@ const AllUsersPage = observer(() => {
             loading={isSearching}
             block
           >
-            Найти пользователя
+            Find user
           </Button>
         </div>
         {admin.isLoadingUsers ? (
-          <Spin tip="Загрузка пользователей..." />
+          <LoadingIndicator />
         ) : (
           admin.users.map((u) => (
             <div key={u.id} className={styles.user}>
               <div className={styles.user_info}>
                 <span>
-                  <strong>Имя пользователя:</strong> {u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}
+                  <strong>User name:</strong> {u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}
                 </span>
                 <span>
                   <strong>ID:</strong> {u.id}
@@ -163,16 +161,16 @@ const AllUsersPage = observer(() => {
                     icon={<EyeOutlined />}
                     onClick={() => navigate(`/user/${u.id}`)}
                   >
-                    Посмотреть
+                    View
                   </Button>
                   <Popconfirm
-                    title={`Вы уверены, что хотите удалить пользователя ${u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}?`}
+                    title={`Are you sure you want to delete user ${u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}?`}
                     onConfirm={() => handleDeleteUser(u.id)}
-                    okText="Да"
-                    cancelText="Нет"
+                    okText="Yes"
+                    cancelText="No"
                   >
                     <Button type="primary" danger icon={<DeleteOutlined />}>
-                      Удалить
+                      Delete
                     </Button>
                   </Popconfirm>
                 </div>

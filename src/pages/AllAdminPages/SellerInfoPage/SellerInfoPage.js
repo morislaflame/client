@@ -2,21 +2,23 @@ import React, { useContext, useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Context } from '../../../index';
 import { observer } from 'mobx-react-lite';
-import { Card, Space, Button, message, Modal, Descriptions, Rate, List, Divider } from 'antd';
-import { UserOutlined, ShopOutlined, StarOutlined, MailOutlined, IdcardOutlined } from '@ant-design/icons';
+import { Card, Button, message, Modal, Spin } from 'antd';
 import styles from './SellerInfoPage.module.css';
 import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 import StarRating from '../../../components/UI/StarRating/StarRating';
+import LoadingIndicator from '../../../components/UI/LoadingIndicator/LoadingIndicator';
 
 const SellerInfoPage = observer(() => {
     const { id } = useParams();
     const navigate = useNavigate();
-    const { admin } = useContext(Context);
+    const { admin, seller: sellerStore } = useContext(Context);
     const [seller, setSeller] = useState(null);
     const [loading, setLoading] = useState(true);
+    const [showAllReviews, setShowAllReviews] = useState(false);
 
     useEffect(() => {
         loadSellerInfo();
+        sellerStore.loadSellerReviews(id);
     }, [id]);
 
     const loadSellerInfo = async () => {
@@ -24,7 +26,7 @@ const SellerInfoPage = observer(() => {
             const data = await admin.getSellerById(id);
             setSeller(data);
         } catch (error) {
-            message.error('Ошибка при загрузке информации о продавце');
+            message.error('Error loading seller info');
             console.error('Error loading seller:', error);
         } finally {
             setLoading(false);
@@ -33,96 +35,97 @@ const SellerInfoPage = observer(() => {
 
     const handleRoleChange = async () => {
         Modal.confirm({
-            title: 'Подтверждение',
-            content: 'Вы уверены, что хотите снять статус продавца? Все его товары будут удалены.',
-            okText: 'Да',
-            cancelText: 'Нет',
+            title: 'Confirmation',
+            content: 'Are you sure you want to remove the seller status? All his products will be deleted.',
+            okText: 'Yes',
+            cancelText: 'No',
             onOk: async () => {
                 try {
                     await admin.changeUserRole(id, 'USER');
-                    message.success('Статус продавца успешно снят');
+                    message.success('Seller status successfully removed');
                     navigate('/admin/sellers');
                 } catch (error) {
-                    message.error('Ошибка при изменении роли пользователя');
+                    message.error('Error changing user role');
                     console.error('Error changing user role:', error);
                 }
             }
         });
     };
 
+    const toggleShowAllReviews = () => {
+        setShowAllReviews(!showAllReviews);
+    };
+
     if (loading) {
-        return <Card loading={true} />;
+        return <LoadingIndicator />;
     }
 
     if (!seller) {
-        return <Card><h2>Продавец не найден</h2></Card>;
+        return <Card><h2>Seller not found</h2></Card>;
     }
 
     return (
         <div className="container">
-            <TopicBack title="Профиль продавца" />
-            <Space direction="vertical" style={{ width: '100%' }}>
-                <Descriptions bordered>
-                    <Descriptions.Item label="ID" span={3}>
-                        <IdcardOutlined /> {seller.id}
-                    </Descriptions.Item>
-                    
-                    {seller.email && (
-                        <Descriptions.Item label="Email" span={3}>
-                            <MailOutlined /> {seller.email}
-                        </Descriptions.Item>
-                    )}
-                    
-                    {seller.username && (
-                        <Descriptions.Item label="Username" span={3}>
-                            <UserOutlined /> {seller.username}
-                        </Descriptions.Item>
-                    )}
-                    
-                    {seller.telegramId && (
-                        <Descriptions.Item label="Telegram ID" span={3}>
-                            <UserOutlined /> {seller.telegramId}
-                        </Descriptions.Item>
-                    )}
+            <TopicBack title="Seller profile" />
+            
+                <div className={styles.seller_info}>
+                    <div className={styles.seller_info_item}>
+                        <div className={styles.seller_mail_id}>
+                            {seller.email && (
+                                <h4>{seller.email}</h4> 
+                            )}
+                            {seller.username && (
+                                <h4>@{seller.username}</h4>
+                            )}
+                            {seller.telegramId && (
+                                <h4>Telegram ID: {seller.telegramId}</h4>
+                            )}
+                            <h4>ID: {seller.id}</h4>
+                        </div>
+                        <div className={styles.seller_rating}>
+                            <span>{seller.sellerInformation?.sellerRating.toFixed(1) || 0}</span>
+                            <StarRating rating={seller.sellerInformation?.sellerRating.toFixed(1) || 0} readonly />
+                        </div>
+                    </div>
                     
                     {seller.sellerInformation?.sellerName && (
-                        <Descriptions.Item label="Название магазина" span={3}>
-                            <ShopOutlined /> {seller.sellerInformation.sellerName}
-                        </Descriptions.Item>
+                        <span>Shop name: <strong>{seller.sellerInformation.sellerName}</strong></span>
                     )}
                     
                     {seller.sellerInformation?.sellerInfo && (
-                        <Descriptions.Item label="Информация о продавце" span={3}>
-                            {seller.sellerInformation.sellerInfo}
-                        </Descriptions.Item>
+                        <span>Shop info: <strong>{seller.sellerInformation.sellerInfo}</strong></span>
                     )}
-                    
-                    <Descriptions.Item label="Рейтинг" span={3}>
-                    {seller.sellerInformation?.sellerRating.toFixed(1) || 0}
-                    <StarRating rating={seller.sellerInformation?.sellerRating.toFixed(1) || 0} readonly />
-                    </Descriptions.Item>
-                </Descriptions>
+                </div>
 
-                {seller.sellerReviews && seller.sellerReviews.length > 0 && (
-                    <>
-                        <Divider>Отзывы</Divider>
-                        <List
-                            itemLayout="vertical"
-                            dataSource={seller.sellerReviews}
-                            renderItem={review => (
-                                <List.Item>
-                                    <List.Item.Meta
-                                        title={`${review.user.username || review.user.email || 'Аноним'}`}
-                                        description={
-                                            <Rate disabled defaultValue={review.rating} />
-                                        }
-                                    />
-                                </List.Item>
+                {sellerStore.sellerReviewsLoading ? (
+                    <Spin tip="Loading reviews..." />
+                ) : (
+                    sellerStore.sellerReviews.length > 0 && (
+                        <>
+                            <h3>Reviews</h3>
+                            <div className={styles.reviews}>
+                                {sellerStore.sellerReviews
+                                    .slice(0, showAllReviews ? sellerStore.sellerReviews.length : 5)
+                                    .map(review => (
+                                        <div key={review.id} className={styles.review}>
+                                            <div className={styles.review_user}>
+                                                <strong>{review.user.username || review.user.email || 'Аноним'}</strong>
+                                                <StarRating rating={review.rating} readonly />
+                                            </div>
+                                            <div className={styles.review_comment}>
+                                                {review.text}
+                                            </div>
+                                        </div>
+                                    ))}
+                            </div>
+                            {sellerStore.sellerReviews.length > 5 && (
+                                <Button onClick={toggleShowAllReviews}>
+                                    {showAllReviews ? 'Hide' : 'Show all'}
+                                </Button>
                             )}
-                        />
-                    </>
+                        </>
+                    )
                 )}
-            </Space>
         </div>
     );
 });
