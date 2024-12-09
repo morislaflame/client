@@ -1,0 +1,54 @@
+.user {
+        background: var(--card-background);
+        padding: var(--main-padding);
+        border-radius: var(--main-border-radius);
+        display: flex;
+        width: 100%;
+        flex-direction: column;
+        align-items: center;
+        gap: var(--small-gap);
+        font-size: var(--medium-font-size);
+}
+
+.user h4 {
+    border-bottom: 1px solid var(--line-color);
+    padding: var(--small-padding);
+}
+
+.user_info {
+    display: flex;
+    gap: var(--small-gap);
+    justify-content: space-between;
+    font-size: var(--main-font-size);
+    font-weight: 500;
+}
+
+.basket {
+    display: flex;
+    background: var(--card-background);
+    padding: var(--main-padding);
+    border-radius: var(--main-border-radius);
+    flex-direction: column;
+    gap: var(--small-gap);
+}
+
+.basket_item {
+    display: flex;
+    align-items: center;
+    width: 100%;
+}
+
+.basket_item span {
+    font-weight: 500;
+    width: 40%;
+    justify-content: center;
+    text-align: center;
+}
+
+.basket_item img {
+    width: 40%;
+    height: calc(var(--index) * 10);
+    object-fit: cover;
+    border-radius: var(--small-border-radius);
+}
+

@@ -1,212 +1,276 @@
-// store/OrderStore.js
-
-import { makeAutoObservable, action, runInAction } from 'mobx';
-import {
+import { makeAutoObservable, runInAction } from "mobx";
+import { 
   createOrder,
-  fetchUserOrders,
-  fetchNewOrders,
-  fetchAllOrders,
-  confirmOrder,
-  rejectOrder,
-  fetchOrderDetails,
-} from '../http/orderAPI';
+  getMyOrders, 
+  getOrderById, 
+  completeOrder, 
+  applyPromoCode, 
+  removePromoCode, 
+  getMyReturns, 
+  getReturnById, 
+  createReturn 
+} from "../http/orderAPI";
+
+import {
+  getAllOrders,
+  deleteOrder,
+  getReturnPendingOrders,
+  getUserOrders,
+  getAllReturns, 
+  approveReturn, 
+  rejectReturn, 
+  deleteReturn 
+} from "../http/adminAPI";
 
 export default class OrderStore {
-  constructor() {
-    this._orders = [];
-    this._newOrders = [];
-    this._allOrders = [];
-    this._orderDetails = null;
-    this._loading = false;
 
-    makeAutoObservable(this, {
-      setOrders: action,
-      setNewOrders: action,
-      setAllOrders: action,
-      setOrderDetails: action,
-      setLoading: action,
-      loadUserOrders: action,
-      loadNewOrders: action,
-      loadAllOrders: action,
-      loadOrderDetails: action,
-      createNewOrder: action,
-      confirmExistingOrder: action,
-      rejectExistingOrder: action,
-      updateOrderStatus: action,
-    });
-  }
+  orders = [];
+  returns = [];
+  currentOrder = null;
+  currentReturn = null;
 
-  // Сеттеры
-  setOrders(orders) {
-    this._orders = orders;
-  }
+  // Новые состояния для админа
+  pendingReturns = [];
+  isLoadingOrders = false;
+  isLoadingReturns = false;
 
-  setNewOrders(newOrders) {
-    this._newOrders = newOrders;
-  }
-
-  setAllOrders(allOrders) {
-    this._allOrders = allOrders;
-  }
-
-  setOrderDetails(orderDetails) {
-    this._orderDetails = orderDetails;
-  }
-
-  setLoading(loading) {
-    this._loading = loading;
-  }
-
-  // Методы для работы с заказами
-  async loadUserOrders() {
-    this.setLoading(true);
-    try {
-      const data = await fetchUserOrders();
-      runInAction(() => {
-        this.setOrders(data);
-        this.setLoading(false);
-      });
-    } catch (error) {
-      console.error('Ошибка при загрузке заказов пользователя:', error);
-      runInAction(() => {
-        this.setLoading(false);
-      });
+    constructor() {
+        makeAutoObservable(this);
     }
-  }
 
-  async loadNewOrders() {
-    this.setLoading(true);
-    try {
-      const data = await fetchNewOrders();
-      runInAction(() => {
-        this.setNewOrders(data);
-        this.setLoading(false);
-      });
-    } catch (error) {
-      console.error('Ошибка при загрузке новых заказов:', error);
-      runInAction(() => {
-        this.setLoading(false);
-      });
+    loadMyOrders = async () => {
+        try {
+            const data = await getMyOrders();
+            runInAction(() => {
+                this.orders = data;
+            });
+        } catch (error) {
+            console.error('Error loading orders:', error);
+        }
     }
-  }
 
-  async loadAllOrders() {
-    this.setLoading(true);
-    try {
-      const data = await fetchAllOrders();
-      runInAction(() => {
-        this.setAllOrders(data);
-        this.setLoading(false);
-      });
-    } catch (error) {
-      console.error('Ошибка при загрузке всех заказов:', error);
-      runInAction(() => {
-        this.setLoading(false);
-      });
+    loadMyReturns = async () => {
+        try {
+            const data = await getMyReturns();
+            runInAction(() => {
+                this.returns = data;
+            });
+        } catch (error) {
+            console.error('Error loading returns:', error);
+        }
     }
-  }
 
-  async loadOrderDetails(orderId) {
-    this.setLoading(true);
-    try {
-      const data = await fetchOrderDetails(orderId);
-      runInAction(() => {
-        this.setOrderDetails(data);
-        this.setLoading(false);
-      });
-    } catch (error) {
-      console.error('Ошибка при загрузке деталей заказа:', error);
-      runInAction(() => {
-        this.setLoading(false);
-      });
+    createOrder = async (orderData) => {
+        try {
+            const data = await createOrder(orderData);
+            runInAction(() => {
+                this.orders.push(data);
+                this.currentOrder = data;
+            });
+            return data;
+        } catch (error) {
+            console.error('Error creating order:', error);
+        }
     }
-  }
 
-  async createNewOrder(orderData) {
-    this.setLoading(true);
-    try {
-      const data = await createOrder(orderData);
-      runInAction(() => {
-        this._orders.push(data);
-        this.setLoading(false);
-      });
-      return data;
-    } catch (error) {
-      console.error('Ошибка при создании заказа:', error);
-      runInAction(() => {
-        this.setLoading(false);
-      });
-      throw error;
+    getOrderById = async (id) => {
+        try {
+            const data = await getOrderById(id);
+            runInAction(() => {
+                this.currentOrder = data;
+            });
+            return data;
+        } catch (error) {
+            console.error('Error loading order:', error);
+        }
     }
-  }
 
-  async confirmExistingOrder(orderId) {
-    this.setLoading(true);
-    try {
-      const data = await confirmOrder(orderId);
-      runInAction(() => {
-        this.updateOrderStatus(orderId, 'confirmed');
-        this.setLoading(false);
-      });
-      return data;
-    } catch (error) {
-      console.error('Ошибка при подтверждении заказа:', error);
-      runInAction(() => {
-        this.setLoading(false);
-      });
-      throw error;
+    completeOrder = async (id) => {
+        try {
+            const data = await completeOrder(id);
+            runInAction(() => {
+                this.orders = this.orders.map(order => 
+                    order.id === id ? { ...order, status: 'completed' } : order
+                );
+                if (this.currentOrder?.id === id) {
+                    this.currentOrder = { ...this.currentOrder, status: 'completed' };
+                }
+            });
+            return data;
+        } catch (error) {
+            console.error('Error completing order:', error);
+        }
     }
-  }
 
-  async rejectExistingOrder(orderId) {
-    this.setLoading(true);
-    try {
-      const data = await rejectOrder(orderId);
-      runInAction(() => {
-        this.updateOrderStatus(orderId, 'rejected');
-        this.setLoading(false);
-      });
-      return data;
-    } catch (error) {
-      console.error('Ошибка при отклонении заказа:', error);
-      runInAction(() => {
-        this.setLoading(false);
-      });
-      throw error;
+    applyPromoCode = async (orderId, promocode) => {
+        try {
+            const data = await applyPromoCode(orderId, promocode);
+            runInAction(() => {
+                if (this.currentOrder?.id === orderId) {
+                    this.currentOrder = data;
+                }
+            });
+            return data;
+        } catch (error) {
+            console.error('Error applying promocode:', error);
+        }
     }
-  }
 
-  updateOrderStatus(orderId, status) {
-    const updateStatus = (orders) => {
-      const index = orders.findIndex((order) => order.id === orderId);
-      if (index !== -1) {
-        orders[index].status = status;
-      }
-    };
+    removePromoCode = async (orderId) => {
+        try {
+            const data = await removePromoCode(orderId);
+            runInAction(() => {
+                if (this.currentOrder?.id === orderId) {
+                    this.currentOrder = data;
+                }
+            });
+            return data;
+        } catch (error) {
+            console.error('Error removing promocode:', error);
+        }
+    }
 
-    updateStatus(this._orders);
-    updateStatus(this._newOrders);
-    updateStatus(this._allOrders);
-  }
+    getReturnById = async (id) => {
+        try {
+            const data = await getReturnById(id);
+            runInAction(() => {
+                this.currentReturn = data;
+            });
+            return data;
+        } catch (error) {
+            console.error('Error loading return:', error);
+        }
+    }
 
-  // Геттеры
-  get orders() {
-    return this._orders;
-  }
+    createReturn = async (orderId, reason) => {
+        try {
+            const data = await createReturn(orderId, reason);
+            runInAction(() => {
+                this.returns.push(data);
+                this.currentReturn = data;
+            });
+            return data;
+        } catch (error) {
+            console.error('Error creating return:', error);
+        }
+    }
 
-  get newOrders() {
-    return this._newOrders;
-  }
+    // Админские методы
+    loadAllOrders = async () => {
+        this.isLoadingOrders = true;
+        try {
+            const data = await getAllOrders();
+            runInAction(() => {
+                this.orders = data;
+            });
+        } catch (error) {
+            console.error('Error loading all orders:', error);
+        } finally {
+            runInAction(() => {
+                this.isLoadingOrders = false;
+            });
+        }
+    }
 
-  get allOrders() {
-    return this._allOrders;
-  }
+    loadPendingReturns = async () => {
+        try {
+            const data = await getReturnPendingOrders();
+            runInAction(() => {
+                this.pendingReturns = data;
+            });
+        } catch (error) {
+            console.error('Error loading pending returns:', error);
+        }
+    }
 
-  get orderDetails() {
-    return this._orderDetails;
-  }
+    getUserOrders = async (userId) => {
+        try {
+            const data = await getUserOrders(userId);
+            runInAction(() => {
+                this.orders = data;
+            });
+            return data;
+        } catch (error) {
+            console.error('Error loading user orders:', error);
+        }
+    }
 
-  get loading() {
-    return this._loading;
-  }
+    deleteOrderAdmin = async (orderId) => {
+        try {
+            await deleteOrder(orderId);
+            runInAction(() => {
+                this.orders = this.orders.filter(order => order.id !== orderId);
+            });
+        } catch (error) {
+            console.error('Error deleting order:', error);
+            throw error;
+        }
+    }
+
+    loadAllReturns = async (status) => {
+        this.isLoadingReturns = true;
+        try {
+            const data = await getAllReturns(status);
+            runInAction(() => {
+                this.returns = data;
+            });
+        } catch (error) {
+            console.error('Error loading returns:', error);
+        } finally {
+            runInAction(() => {
+                this.isLoadingReturns = false;
+            });
+        }
+    }
+
+    approveReturnAdmin = async (returnId) => {
+        try {
+            await approveReturn(returnId);
+            runInAction(() => {
+                this.pendingReturns = this.pendingReturns.filter(
+                    returnItem => returnItem.id !== returnId
+                );
+                const returnIndex = this.returns.findIndex(r => r.id === returnId);
+                if (returnIndex !== -1) {
+                    this.returns[returnIndex] = { ...this.returns[returnIndex], status: 'APPROVED' };
+                }
+            });
+        } catch (error) {
+            console.error('Error approving return:', error);
+            throw error;
+        }
+    }
+
+    rejectReturnAdmin = async (returnId, reason) => {
+        try {
+            await rejectReturn(returnId, reason);
+            runInAction(() => {
+                this.pendingReturns = this.pendingReturns.filter(
+                    returnItem => returnItem.id !== returnId
+                );
+                const returnIndex = this.returns.findIndex(r => r.id === returnId);
+                if (returnIndex !== -1) {
+                    this.returns[returnIndex] = { ...this.returns[returnIndex], status: 'REJECTED' };
+                }
+            });
+        } catch (error) {
+            console.error('Error rejecting return:', error);
+            throw error;
+        }
+    }
+
+    deleteReturnAdmin = async (returnId) => {
+        try {
+            await deleteReturn(returnId);
+            runInAction(() => {
+                this.returns = this.returns.filter(returnItem => returnItem.id !== returnId);
+                this.pendingReturns = this.pendingReturns.filter(
+                    returnItem => returnItem.id !== returnId
+                );
+            });
+        } catch (error) {
+            console.error('Error deleting return:', error);
+            throw error;
+        }
+    }
 }

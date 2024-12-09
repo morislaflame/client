@@ -128,8 +128,8 @@
     border: 0;
     color: var(--color-text);
     border-radius: var(--small-border-radius);
-    font-size: var(--medium-font-size);
-    font-weight: 400;
+    font-size: var(--main-font-size);
+    font-weight: var(--small-font-weight);
     padding: var(--medium-padding) var(--main-padding);
     min-width: calc(var(--index)* 8);
     height: 32px;

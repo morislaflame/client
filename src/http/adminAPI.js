@@ -116,3 +116,45 @@ export const deleteStory = async (id) => {
     const { data } = await $authHost.delete(`api/story/${id}`);
     return data;
 }
+
+
+export const getAllOrders = async () => {
+    const { data } = await $authHost.get('api/order');
+    return data;
+};
+
+export const deleteOrder = async (id) => {
+    const { data } = await $authHost.delete(`api/order/${id}`);
+    return data;
+};
+
+export const getReturnPendingOrders = async () => {
+    const { data } = await $authHost.get('api/return/pending');
+    return data;
+};
+
+export const getUserOrders = async (userId) => {
+    const { data } = await $authHost.get(`api/order/user/${userId}`);
+    return data;
+};
+
+
+export const getAllReturns = async (status) => {
+    const { data } = await $authHost.get(`api/return/${status}`);
+    return data;
+};
+
+export const approveReturn = async (returnId) => {
+    const { data } = await $authHost.post(`api/return/${returnId}/approve`);
+    return data;
+};
+
+export const rejectReturn = async (returnId) => {
+    const { data } = await $authHost.post(`api/return/${returnId}/reject`);
+    return data;
+};
+
+export const deleteReturn = async (returnId) => {
+    const { data } = await $authHost.delete(`api/return/${returnId}`);
+    return data;
+};

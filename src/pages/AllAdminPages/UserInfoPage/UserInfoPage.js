@@ -1,58 +1,15 @@
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import useUserData from '../../../hooks/useUserData';
 import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
-import styles from '../../NonUsedPages/UserAccount/UserAccount.module.css'
+import styles from './UserInfoPage.module.css'
+import { THING_ROUTE } from '../../../utils/consts';
 import UserOrders from '../../../components/UserComponents/UserOrders'; 
 import UserReturns from '../../../components/UserComponents/UserReturns';
 
 const UserInfoPage = () => {
     const { id } = useParams(); 
     const { userData, loading } = useUserData(id);
-
-
-    const sliderSettings = {
-        dots: false,
-        infinite: false,
-        speed: 500,
-        autoplay: false,
-        slidesToShow: 1,
-        arrows: false,
-        centerMode: true,
-        centerPadding: "20px",
-        focusOnSelect: true,
-        adaptiveHeight: true,
-        appendDots: dots => (
-            <div
-              style={{
-                color: 'white',
-                borderRadius: "10px",
-                padding: "10px"
-              }}
-            >
-              <ul style={{ margin: "0px" }}> {dots} </ul>
-            </div>
-          ),
-        responsive: [
-            {
-                breakpoint: 1024,
-                settings: {
-                    slidesToShow: 4,
-                },
-            },
-            {
-                breakpoint: 768,
-                settings: {
-                    slidesToShow: 2,
-                },
-            },
-            {
-                breakpoint: 480,
-                settings: {
-                    slidesToShow: 1,
-                },
-            },
-        ],
-    };
+    const navigate = useNavigate();
 
     if (loading) {
         return <div>Loading...</div>;
@@ -61,21 +18,26 @@ const UserInfoPage = () => {
         return <div>User not found</div>;
     }
 
-
     return (
         <div className="container">
             <TopicBack title={`User Info`} />
             <div className={styles.user}>
-                <p>Email: {userData.email || `@${userData.username}` || `Telegram ID: ${userData.telegramId}`}</p>
-                <p>Роль: {userData.role}</p>
-                <p>ID: {userData.id}</p>
+                <h4>Email: {userData.email || `@${userData.username}` || `Telegram ID: ${userData.telegramId}`}</h4>
+                <div className={styles.user_info}>
+                    <span>{userData.role}</span>
+                    <span>ID: {userData.id}</span>
+                </div>
             </div>
             
-            <h3>Корзина</h3>
+            <h3>Liked</h3>
             {userData.basketItems && userData.basketItems.length > 0 ? (
-                <div className={styles.basket}>
+                <div 
+                    className={styles.basket}
+                    onClick={() => navigate(THING_ROUTE + "/" + userData.basketItems[0].modelProduct.id)}
+                >
                     {userData.basketItems.map(basketItem => (
-                        <div key={basketItem.id}>
+                        <div key={basketItem.id} className={styles.basket_item}>
+                            <img src={`${process.env.REACT_APP_API_URL}/${basketItem.modelProduct.images[0].img}`} alt={basketItem.modelProduct.name} />
                             <span>{basketItem.modelProduct.name}</span> — <span>${basketItem.modelProduct.priceUSD}</span>
                         </div>
                     ))}
@@ -85,9 +47,9 @@ const UserInfoPage = () => {
             )}
             
 
-            <UserOrders orders={userData.orders} sliderSettings={sliderSettings} />
+            {/* <UserOrders orders={userData.orders} sliderSettings={sliderSettings} />
 
-            <UserReturns returns={userData.returns} sliderSettings={sliderSettings} />
+            <UserReturns returns={userData.returns} sliderSettings={sliderSettings} /> */}
         </div>
     );
 };

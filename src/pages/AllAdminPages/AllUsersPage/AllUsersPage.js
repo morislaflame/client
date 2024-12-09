@@ -106,51 +106,50 @@ const AllUsersPage = observer(() => {
     <div className="container">
         <TopicBack title="Все пользователи" />
 
-      <div className={styles.search_section}>
-        <AutoComplete
-          style={{ width: '100%', marginBottom: '16px' }}
-          options={autoCompleteOptions}
-          value={userId}
-          onChange={setUserId}
-          onSelect={handleSearch}
-          placeholder="Введите ID пользователя"
-          notFoundContent={isSearching ? <Spin indicator={<LoadingOutlined spin />} /> : null}
-          filterOption={(inputValue, option) =>
-            option.value.toLowerCase().includes(inputValue.toLowerCase())
-          }
-        />
-        <Button
-          type="primary"
-          icon={<SearchOutlined />}
-          onClick={() => handleSearch(userId)}
-          loading={isSearching}
-          block
-        >
-          Найти пользователя
-        </Button>
-      </div>
-
-      {/* Список всех пользователей */}
-      <Title level={3}>Пользователи</Title>
+      
+      
       <div className={styles.all_users}>
+        <div className={styles.search_section}>
+          <AutoComplete
+            style={{ width: '100%'}}
+            options={autoCompleteOptions}
+            value={userId}
+            onChange={setUserId}
+            onSelect={handleSearch}
+            placeholder="Введите ID пользователя"
+            notFoundContent={isSearching ? <Spin indicator={<LoadingOutlined spin />} /> : null}
+            filterOption={(inputValue, option) =>
+              option.value.toLowerCase().includes(inputValue.toLowerCase())
+            }
+          />
+          <Button
+            type="primary"
+            icon={<SearchOutlined />}
+            onClick={() => handleSearch(userId)}
+            loading={isSearching}
+            block
+          >
+            Найти пользователя
+          </Button>
+        </div>
         {admin.isLoadingUsers ? (
           <Spin tip="Загрузка пользователей..." />
         ) : (
           admin.users.map((u) => (
             <div key={u.id} className={styles.user}>
               <div className={styles.user_info}>
-                <Text>
+                <span>
                   <strong>Имя пользователя:</strong> {u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}
-                </Text>
-                <Text>
+                </span>
+                <span>
                   <strong>ID:</strong> {u.id}
-                </Text>
+                </span>
               </div>
               <div className={styles.user_actions}>
                 <Select
                   defaultValue={u.role}
-                  style={{ width: 150, marginRight: '16px' }}
                   onChange={(value) => handleRoleChange(u.id, value)}
+                  style={{ flex: 1}}
                 >
                   {roleOptions.map(role => (
                     <Option key={role} value={role}>
@@ -158,7 +157,7 @@ const AllUsersPage = observer(() => {
                     </Option>
                   ))}
                 </Select>
-                <Space>
+                <div className={styles.user_actions_buttons}>
                   <Button
                     type="primary"
                     icon={<EyeOutlined />}
@@ -176,7 +175,7 @@ const AllUsersPage = observer(() => {
                       Удалить
                     </Button>
                   </Popconfirm>
-                </Space>
+                </div>
               </div>
             </div>
           ))
