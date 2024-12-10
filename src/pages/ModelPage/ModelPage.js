@@ -5,7 +5,7 @@ import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqA
 import { Context } from '../../index';
 import { FaEdit } from 'react-icons/fa';
 import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
-import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, TERMS_ROUTE, SELLER_PROFILE_ROUTE } from '../../utils/consts';
+import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, TERMS_ROUTE, SELLER_INFO_ROUTE } from '../../utils/consts';
 import { observer } from 'mobx-react-lite';
 import { message, Image, Carousel } from 'antd';
 import OnlyIcon from '../../icons/onlyfans.png';
@@ -165,7 +165,7 @@ const ModelPage = observer(() => {
             <div className={styles.seller_info}>
               <h4>Продавец:</h4>
               <Button 
-                onClick={() => navigate(`${SELLER_PROFILE_ROUTE}/${models.seller.id}`)}
+                onClick={() => navigate(`${SELLER_INFO_ROUTE}/${models.seller.id}`)}
                 type="link"
                 className={styles.seller_link}
               >

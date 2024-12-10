@@ -40,9 +40,8 @@ import SellerAccount from "./pages/SellerAccount/SellerAccount";
 import EditSellerModel from "./pages/EditSellerModel/EditSellerModel";
 import AdminPage from "./pages/AdminPage/AdminPage";
 import AllSellersPage from "./pages/AllAdminPages/AllSellersPage/AllSellersPage";
-import SellerInfoPage from "./pages/AllAdminPages/SellerInfoPage/SellerInfoPage";
-import SellerProfile from "./pages/SellerProfile/SellerProfile";
 import AllUserOrdersPage from "./pages/AllUserOrdersPage/AllUserOrdersPage";
+import SellerInfoPage from "./pages/AllAdminPages/SellerInfoPage/SellerInfoPage";
 
 
 
@@ -61,10 +60,6 @@ export const authRoutes = (user) => {
         {
             path: PAYMENT_ROUTE,
             Component: <PaymentPage />
-        },
-        {
-            path: SELLER_PROFILE_ROUTE + '/:id',
-            Component: <SellerProfile />
         },
         {
             path: ALL_USER_ORDERS_ROUTE,
@@ -102,10 +97,7 @@ export const authRoutes = (user) => {
             path: ALL_SELLERS_ROUTE,
             Component: <AllSellersPage />
         });
-        routes.push({
-            path: SELLER_INFO_ROUTE + '/:id',
-            Component: <SellerInfoPage />
-        });
+        
     } else {
         console.log("User is not admin");
     }
@@ -154,5 +146,9 @@ export const publicRoutes = [
     {
         path: PRIVACY_ROUTE,
         Component: <PrivacyPolicy />
-    }
+    },
+    {
+        path: SELLER_INFO_ROUTE + '/:id',
+        Component: <SellerInfoPage />
+    },
 ];
