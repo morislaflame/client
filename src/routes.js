@@ -23,7 +23,6 @@ import {
     EDIT_SELLER_MODEL_ROUTE,
     ALL_SELLERS_ROUTE,
     SELLER_INFO_ROUTE,
-    SELLER_PROFILE_ROUTE,
     ALL_USER_ORDERS_ROUTE,
 } from "./utils/consts";
 import Main from "./pages/Main/Main";
