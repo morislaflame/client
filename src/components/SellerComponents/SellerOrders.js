@@ -21,7 +21,7 @@ const SellerOrders = observer(() => {
             }
         };
         loadMyOrders();
-    }, [seller.myOrders]);
+    }, []);
 
     return <div className={styles.seller_orders}>
         {loading ? <Spin /> : 
