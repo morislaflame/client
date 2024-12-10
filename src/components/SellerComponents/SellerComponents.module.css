@@ -10,7 +10,7 @@
 
 .card_list {
     width: 48%;
-    padding: var(--main-padding) 0;
+    padding: var(--small-padding) 0;
 }
 
 .seller_card {
@@ -140,6 +140,7 @@
     justify-content: left;
     align-items: center;
     gap: var(--main-gap);
+    margin-top: var(--small-margin);
 }
 
 .add_model_button {

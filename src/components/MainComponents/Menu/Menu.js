@@ -3,7 +3,6 @@ import { Drawer, Button } from 'antd';
 import styles from './Menu.module.css';
 import { Context } from '../../../index';
 import {
-  USER_ACCOUNT_ROUTE,
   SELLER_ACCOUNT_ROUTE,
   SHOP_ROUTE,
   PRIVACY_ROUTE,
@@ -68,13 +67,6 @@ const Menu = ({ open, onClose }) => {
       <div className={styles.links_container}>
         {user.isAuth ? (
           <>
-            <NavLink
-              to={USER_ACCOUNT_ROUTE}
-              onClick={onClose}
-              className={styles.menuLink}
-            >
-              <FaUserAlt /> My Account
-            </NavLink>
             {user.user.role === 'SELLER' && (
               <NavLink
                 to={SELLER_ACCOUNT_ROUTE}

@@ -12,6 +12,7 @@ import { IoWomanSharp } from "react-icons/io5";
 import ChangeInfoModal from '../../components/SellerComponents/modals/ChangeInfoModal';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 import StarRating from '../../components/UI/StarRating/StarRating';
+import SellerReviews from '../../components/SellerComponents/SellerReviews';
 
 const SellerAccount = observer(() => {
   const { seller } = useContext(Context);
@@ -55,9 +56,6 @@ const SellerAccount = observer(() => {
             <button className={styles.menu_link} onClick={() => setSelectedTab('orders')}>
               <GoNote />My Orders
             </button>
-            <button className={styles.menu_link} onClick={() => setSelectedTab('returns')}>
-              <IoIosReturnLeft />My Returns
-            </button>
             <button className={styles.menu_link} onClick={() => setSelectedTab('reviews')}>
               <FaComment />My Reviews
             </button>
@@ -93,7 +91,7 @@ const SellerAccount = observer(() => {
       {selectedTab === 'reviews' && (
         <div className={styles.reviews}>
           <h3>My Reviews</h3>
-          {/* Здесь вы можете добавить компонент для отзывов */}
+          <SellerReviews reviews={sellerInfo.sellerReviews} />
         </div>
       )}
       <ChangeInfoModal

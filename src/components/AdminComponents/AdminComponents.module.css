@@ -46,8 +46,6 @@
     padding: var(--main-padding);
 }
 
-
-
 .container button:hover {
     background-color: #D90429;
     border-color: #003049;

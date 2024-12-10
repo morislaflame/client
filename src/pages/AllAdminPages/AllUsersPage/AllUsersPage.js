@@ -52,7 +52,7 @@ const AllUsersPage = observer(() => {
 
   const handleSearch = async (id) => {
     if (!id) {
-      message.warning('Пожалуйста, введите ID пользователя для поиска.');
+      message.warning('Please enter user ID for search.');
       return;
     }
     setIsSearching(true);
@@ -61,11 +61,11 @@ const AllUsersPage = observer(() => {
       if (result) {
         navigate(`/user/${result.id}`);
       } else {
-        message.error('Пользователь не найден');
+        message.error('User not found');
       }
     } catch (error) {
-      console.error('Ошибка при поиске пользователя:', error);
-      message.error('Пользователь не найден');
+      console.error('Error finding user:', error);
+      message.error('User not found');
     } finally {
       setIsSearching(false);
     }
@@ -74,20 +74,20 @@ const AllUsersPage = observer(() => {
   const handleRoleChange = async (userId, newRole) => {
     try {
       await admin.changeUserRole(userId, newRole);
-      message.success('Роль пользователя успешно изменена!');
+      message.success('User role successfully changed!');
     } catch (error) {
-      console.error('Ошибка при изменении роли пользователя:', error);
-      message.error('Ошибка при изменении роли пользователя');
+      console.error('Error changing user role:', error);
+      message.error('Error changing user role');
     }
   };
 
   const handleDeleteUser = async (userId) => {
     try {
       await admin.deleteUser(userId);
-      message.success('Пользователь успешно удален!');
+      message.success('User successfully deleted!');
     } catch (error) {
-      console.error('Ошибка при удалении пользователя:', error);
-      message.error('Ошибка при удалении пользователя');
+      console.error('Error deleting user:', error);
+      message.error('Error deleting user');
     }
   };
 

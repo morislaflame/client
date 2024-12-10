@@ -65,8 +65,8 @@
     display: flex;
     flex-direction: column;
     gap: var(--medium-gap);
-    height: 80px;
     flex-wrap: wrap;
+    padding: 0;
 }
 
 .menu_link {
@@ -79,6 +79,7 @@
     font-size: var(--main-font-size);
     border: none;
     background-color: transparent;
+    padding: 0;
 }
 
 .total_info {

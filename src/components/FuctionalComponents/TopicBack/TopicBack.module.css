@@ -5,6 +5,7 @@
     align-items: center;
     gap: var(--main-gap);
     color: var(--color-text);
+    margin-bottom: var(--main-margin);
 }
 
 .topic_back h2 {

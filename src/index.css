@@ -88,7 +88,7 @@ iframe {
     flex-direction: column;
     width: 100%;
     padding: var(--main-padding) var(--main-padding) var(--big-padding);
-    gap: var(--big-gap);
+    gap: var(--main-gap);
     color: var(--color-text);
     min-height: 100vh;
 }
