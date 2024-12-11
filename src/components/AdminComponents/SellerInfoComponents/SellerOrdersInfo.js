@@ -2,39 +2,10 @@ import React from 'react';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { Context } from '../../../index';
-import { Tag } from 'antd';
 import styles from './SellerInfoComponents.module.css';
+import OrderTags from '../../../components/UI/OrderTags/OrderTags';
+import FormatDate from '../../../components/UI/FormatDate/FormatDate';
 
-const getStatusColor = (status) => {
-    switch (status) {
-        case 'CREATED':
-            return 'blue';
-        case 'PAID':
-            return 'orange';
-        case 'COMPLETED':
-            return 'green';
-        case 'RETURN_PENDING':
-            return 'orange';
-        case 'RETURN_REJECTED':
-            return 'red';
-        case 'RETURN_APPROVED':
-            return 'green';
-        case 'CLOSED':
-            return 'gray';
-        default:
-            return 'gray';
-    }
-};
-
-const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString('ru-RU', {
-        year: 'numeric',
-        month: 'long',
-        day: 'numeric',
-        hour: '2-digit',
-        minute: '2-digit'
-    });
-};
 
 const SellerOrdersInfo = observer(() => {
     const { seller } = useContext(Context);
@@ -51,9 +22,7 @@ const SellerOrdersInfo = observer(() => {
                                 <div className={styles.order_id}>
                                     Order #{order.id}
                                 </div>
-                                <Tag color={getStatusColor(order.status)}>
-                                    {order.status}
-                                </Tag>
+                                <OrderTags status={order.status} />
                             </div>
 
                             <div className={styles.order_details}>
@@ -65,21 +34,21 @@ const SellerOrdersInfo = observer(() => {
                                         <strong>Price:</strong> ${order.totalPriceUSD}
                                     </p>
                                     <p>
-                                        <strong>Created:</strong> {formatDate(order.createdAt)}
+                                        <strong>Created:</strong> <FormatDate date={order.createdAt} />
                                     </p>
                                     {order.payedAt && (
                                         <p>
-                                            <strong>Paid:</strong> {formatDate(order.payedAt)}
+                                            <strong>Paid:</strong> <FormatDate date={order.payedAt} />
                                         </p>
                                     )}
                                     {order.completedAt && (
                                         <p>
-                                            <strong>Completed:</strong> {formatDate(order.completedAt)}
+                                            <strong>Completed:</strong> <FormatDate date={order.completedAt} />
                                         </p>
                                     )}
                                     {order.closedAt && (
                                         <p>
-                                            <strong>Closed:</strong> {formatDate(order.closedAt)}
+                                            <strong>Closed:</strong> <FormatDate date={order.closedAt} />
                                         </p>
                                     )}
                                 </div>
@@ -89,9 +58,7 @@ const SellerOrdersInfo = observer(() => {
                                         <h4>Returns:</h4>
                                         {order.returns.map(returnItem => (
                                             <div key={returnItem.id} className={styles.return_item}>
-                                                <Tag color={getStatusColor(returnItem.status)}>
-                                                    {returnItem.status}
-                                                </Tag>
+                                                <OrderTags status={returnItem.status} />
                                                 <p>
                                                     <strong>Reason:</strong> {returnItem.reason}
                                                 </p>
@@ -99,7 +66,7 @@ const SellerOrdersInfo = observer(() => {
                                                     <strong>Refund Amount:</strong> ${returnItem.refundAmountUSD}
                                                 </p>
                                                 <p>
-                                                    <strong>Created:</strong> {formatDate(returnItem.createdAt)}
+                                                    <strong>Created:</strong> <FormatDate date={returnItem.createdAt} />
                                                 </p>
                                             </div>
                                         ))}

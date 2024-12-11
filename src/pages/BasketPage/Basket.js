@@ -118,7 +118,7 @@ const Basket = observer(() => {
                                             </div>
                                             <h5 className={styles.basket_item_name}>{modelProduct.name} - ${modelProduct.priceUSD}</h5>
                                         </div>
-                                        {modelProduct.seller && (
+                                        {modelProduct.seller?.sellerInformation && (
                                             <div className={styles.seller_info}>
                                                 <span>Seller: {modelProduct.seller.sellerInformation.sellerName}</span>
                                             </div>

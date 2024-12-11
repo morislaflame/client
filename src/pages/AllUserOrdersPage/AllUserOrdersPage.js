@@ -2,11 +2,13 @@ import React, { useEffect, useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import { useNavigate } from 'react-router-dom';
-import { ORDER_ROUTE, SELLER_INFO_ROUTE } from '../../utils/consts';
 import styles from './AllUserOrdersPage.module.css';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
-import { Tag, Button, Space, Typography } from 'antd';
+import { Button, Space, Typography } from 'antd';
 import Search from '../../components/UI/Search/Search';
+import OrderTags from '../../components/UI/OrderTags/OrderTags';
+import FormatDate from '../../components/UI/FormatDate/FormatDate';
+import OrderCard from '../../components/OrderComponents/OrderCard/OrderCard';
 
 const { Text } = Typography;
 
@@ -46,31 +48,6 @@ const AllUserOrdersPage = observer(() => {
     )
   });
 
-  const getStatusColor = (status) => {
-    switch (status) {
-        case 'CREATED':
-            return 'blue';
-        case 'PAID':
-            return 'orange';
-        case 'COMPLETED':
-            return 'green';
-        case 'RETURN_PENDING':
-            return 'orange';
-        case 'RETURN_REJECTED':
-            return 'red';
-        case 'RETURN_APPROVED':
-            return 'green';
-        case 'CLOSED':
-            return 'gray';
-        default:
-            return 'gray';
-    }
-  };
-
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleDateString();
-  };
-
   return (
     <div className="container">
       <TopicBack title="My Orders" />
@@ -85,50 +62,7 @@ const AllUserOrdersPage = observer(() => {
       ) : (
         <div className={styles.ordersList}>
           {filteredOrders.map((order) => (
-            <div key={order.id} className={styles.orderCard}>
-              <div className={styles.orderInfo}>
-                <div className={styles.orderId}>
-                  <h3>Order #{order.id}</h3>
-                  <Tag color={getStatusColor(order.status)}>{order.status}</Tag>
-                </div>
-                <div className={styles.orderTotal}>
-                  <p>Total: ${order.totalPriceUSD}</p>
-                  <p>{formatDate(order.createdAt)}</p>
-                </div>
-                <div className={styles.orderSeller}>
-                  <span>Seller: {order.seller.email}</span>
-                  <Button 
-                    type="ghost"
-                    onClick={() => navigate(`${SELLER_INFO_ROUTE}/${order.seller.id}`)}
-                  >
-                    View profile
-                  </Button>
-                </div>
-              </div>
-              
-              {order.modelProduct && (
-                <div className={styles.productInfo}>
-                  {order.modelProduct.images && order.modelProduct.images[0] && (
-                    <img 
-                      src={process.env.REACT_APP_API_URL + order.modelProduct.images[0].img}
-                      alt={order.modelProduct.name}
-                      className={styles.productImage}
-                    />
-                  )}
-                  <div className={styles.productParams}>
-                    <span>Model: {order.modelProduct.name}</span>
-                  </div>
-                </div>
-              )}
-
-              <Button 
-                type="primary"
-                className={styles.viewButton}
-                onClick={() => navigate(`${ORDER_ROUTE}/${order.id}`)}
-              >
-                View details
-              </Button>
-            </div>
+            <OrderCard key={order.id} order={order} />
           ))}
         </div>
       )}

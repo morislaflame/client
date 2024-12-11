@@ -358,6 +358,17 @@ b, strong {
   height: fit-content;
 }
 
+.ant-btn-ghost {
+  box-shadow: 0 2px 0 rgba(0, 0, 0, 0.02);
+  background: linear-gradient(150deg, #ac57ed, #6b3ce6);
+  border: 0;
+  color: var(--color-text);
+  border-radius: var(--small-border-radius);
+  font-size: var(--main-font-size);
+  padding: var(--medium-padding) var(--main-padding);
+  min-width: calc(var(--index)* 8);
+  height: fit-content;
+}
 
 .slick-dots li.slick-active button:before {
     opacity: .75;
