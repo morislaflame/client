@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../index';
 import styles from './OrderPage.module.css';
-
+import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 const OrderPage = observer(() => {
   const { order } = useContext(Context);
   const { id } = useParams();
@@ -17,9 +17,8 @@ const OrderPage = observer(() => {
   }
 
   return (
-    <div className={styles.orderContainer}>
-      <h1>Детали заказа #{order.currentOrder.id}</h1>
-      
+    <div className="container">
+      <TopicBack title={`Order #${order.currentOrder.id}`} />
       <div className={styles.orderDetails}>
         <div className={styles.mainInfo}>
           <h2>Основная информация</h2>

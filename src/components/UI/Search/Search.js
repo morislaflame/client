@@ -1,75 +1,52 @@
 import React, { useState, useEffect } from 'react';
-import { AutoComplete, Button, Spin, Space, Typography } from 'antd';
-import { SearchOutlined, LoadingOutlined } from '@ant-design/icons';
+import { AutoComplete, Spin } from 'antd';
+import { LoadingOutlined } from '@ant-design/icons';
 import styles from './Search.module.css';
-
-const { Text } = Typography;
 
 const Search = ({ 
     data,
     onSelect,
+    onSearch,
     placeholder,
-    buttonText = "Search",
     formatOption = (item) => ({
         value: item.id.toString(),
         label: item.id.toString()
-    })
+    }),
+    onFilter = (searchValue, item) => 
+        item.id.toString().includes(searchValue)
 }) => {
     const [searchValue, setSearchValue] = useState('');
-    const [filteredItems, setFilteredItems] = useState([]);
     const [isSearching, setIsSearching] = useState(false);
+    const [filteredData, setFilteredData] = useState(data);
 
     useEffect(() => {
-        if (searchValue) {
-            const filtered = data
-                .filter(item => item.id.toString().includes(searchValue))
-                .slice(0, 5);
-            setFilteredItems(filtered);
-        } else {
-            setFilteredItems([]);
-        }
-    }, [searchValue, data]);
+        setFilteredData(data);
+    }, [data]);
 
     const handleSearch = (value) => {
-        if (!value) return;
-        setIsSearching(true);
-        try {
-            const foundItem = data.find(item => item.id.toString() === value);
-            if (foundItem) {
-                onSelect(value);
-            }
-        } catch (error) {
-            console.error('Error finding item:', error);
-        } finally {
-            setIsSearching(false);
+        setSearchValue(value);
+        if (value) {
+            const filtered = data.filter(item => onFilter(value, item));
+            setFilteredData(filtered);
+        } else {
+            setFilteredData(data);
         }
+        onSearch?.(value, filteredData);
     };
 
-    const options = filteredItems.map(formatOption);
+    const options = data.map(formatOption);
 
     return (
         <div className={styles.search_section}>
             <AutoComplete
-                style={{ width: '100%' }}
-                options={options}
                 value={searchValue}
-                onChange={setSearchValue}
-                onSelect={handleSearch}
+                options={options}
+                onChange={handleSearch}
                 placeholder={placeholder}
+                allowClear
+                style={{ width: '100%' }}
                 notFoundContent={isSearching ? <Spin indicator={<LoadingOutlined spin />} /> : null}
-                filterOption={(inputValue, option) =>
-                    option.value.toLowerCase().includes(inputValue.toLowerCase())
-                }
             />
-            <Button
-                type="primary"
-                icon={<SearchOutlined />}
-                onClick={() => handleSearch(searchValue)}
-                loading={isSearching}
-                block
-            >
-                {buttonText}
-            </Button>
         </div>
     );
 };

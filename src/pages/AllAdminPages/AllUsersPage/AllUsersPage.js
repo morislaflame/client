@@ -4,70 +4,39 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../../../index';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import {
-  AutoComplete,
-  message,
-  Spin,
-  FloatButton,
-  Select,
-  Button,
-  Popconfirm,
-  Typography,
-  Space,
-} from 'antd';
-import {
-  LoadingOutlined,
-  SearchOutlined,
-  DeleteOutlined,
-  EyeOutlined,
-} from '@ant-design/icons';
+import { Select, Button, Popconfirm, Typography, Space, message, FloatButton } from 'antd';
 import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 import styles from './AllUsersPage.module.css';
 import LoadingIndicator from '../../../components/UI/LoadingIndicator/LoadingIndicator';
+import Search from '../../../components/UI/Search/Search';
+import { EyeOutlined, DeleteOutlined } from '@ant-design/icons';
 
 const { Option } = Select;
-const { Title, Text } = Typography;
+const { Text } = Typography;
 
 const AllUsersPage = observer(() => {
   const { admin } = useContext(Context);
-  const [userId, setUserId] = useState('');
-  const [filteredUsers, setFilteredUsers] = useState([]);
-  const [isSearching, setIsSearching] = useState(false);
   const navigate = useNavigate();
+  const [filteredUsers, setFilteredUsers] = useState([]);
 
   useEffect(() => {
     admin.loadUsers();
   }, [admin]);
 
   useEffect(() => {
-    if (userId) {
-      const filtered = admin.users
-        .filter(u => u.id.toString().includes(userId))
-        .slice(0, 5);
+    setFilteredUsers(admin.users);
+  }, [admin.users]);
+
+  const handleSearch = (value) => {
+    if (value) {
+      const filtered = admin.users.filter(user => 
+        user.id.toString().includes(value) ||
+        user.email?.toLowerCase().includes(value.toLowerCase()) ||
+        user.username?.toLowerCase().includes(value.toLowerCase())
+      );
       setFilteredUsers(filtered);
     } else {
-      setFilteredUsers([]);
-    }
-  }, [userId, admin.users]);
-
-  const handleSearch = async (id) => {
-    if (!id) {
-      message.warning('Please enter user ID for search.');
-      return;
-    }
-    setIsSearching(true);
-    try {
-      const result = await admin.getUserById(id);
-      if (result) {
-        navigate(`/user/${result.id}`);
-      } else {
-        message.error('User not found');
-      }
-    } catch (error) {
-      console.error('Error finding user:', error);
-      message.error('User not found');
-    } finally {
-      setIsSearching(false);
+      setFilteredUsers(admin.users);
     }
   };
 
@@ -91,63 +60,46 @@ const AllUsersPage = observer(() => {
     }
   };
 
-  const autoCompleteOptions = filteredUsers.map(u => ({
-    value: u.id.toString(),
+  const formatUserOption = (user) => ({
+    value: user.id.toString(),
     label: (
       <Space>
-        <Text strong>ID:</Text> {u.id}
-        <Text strong>Email:</Text> {u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}
+        <Text strong>ID:</Text> {user.id}
+        <Text strong>Email:</Text> {user.email || `@${user.username}` || `Telegram ID: ${user.telegramId}`}
       </Space>
-    ),
-  }));
+    )
+  });
 
   const roleOptions = ['USER', 'ADMIN', 'SELLER'];
 
   return (
     <div className="container">
-        <TopicBack title="All Users" />
+      <TopicBack title="All Users" />
       <div className={styles.all_users}>
-        <div className={styles.search_section}>
-          <AutoComplete
-            style={{ width: '100%'}}
-            options={autoCompleteOptions}
-            value={userId}
-            onChange={setUserId}
-            onSelect={handleSearch}
-            placeholder="Enter user ID"
-            notFoundContent={isSearching ? <Spin indicator={<LoadingOutlined spin />} /> : null}
-            filterOption={(inputValue, option) =>
-              option.value.toLowerCase().includes(inputValue.toLowerCase())
-            }
-          />
-          <Button
-            type="primary"
-            icon={<SearchOutlined />}
-            onClick={() => handleSearch(userId)}
-            loading={isSearching}
-            block
-          >
-            Find user
-          </Button>
-        </div>
+        <Search 
+          data={admin.users}
+          onSearch={handleSearch}
+          placeholder="Enter user ID or email"
+          formatOption={formatUserOption}
+        />
         {admin.isLoadingUsers ? (
           <LoadingIndicator />
         ) : (
-          admin.users.map((u) => (
-            <div key={u.id} className={styles.user}>
+          filteredUsers.map((user) => (
+            <div key={user.id} className={styles.user}>
               <div className={styles.user_info}>
                 <span>
-                  <strong>User name:</strong> {u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}
+                  <strong>User name:</strong> {user.email || `@${user.username}` || `Telegram ID: ${user.telegramId}`}
                 </span>
                 <span>
-                  <strong>ID:</strong> {u.id}
+                  <strong>ID:</strong> {user.id}
                 </span>
               </div>
               <div className={styles.user_actions}>
                 <Select
-                  defaultValue={u.role}
-                  onChange={(value) => handleRoleChange(u.id, value)}
-                  style={{ flex: 1}}
+                  defaultValue={user.role}
+                  onChange={(value) => handleRoleChange(user.id, value)}
+                  style={{ flex: 1 }}
                 >
                   {roleOptions.map(role => (
                     <Option key={role} value={role}>
@@ -159,13 +111,13 @@ const AllUsersPage = observer(() => {
                   <Button
                     type="primary"
                     icon={<EyeOutlined />}
-                    onClick={() => navigate(`/user/${u.id}`)}
+                    onClick={() => navigate(`/user/${user.id}`)}
                   >
                     View
                   </Button>
                   <Popconfirm
-                    title={`Are you sure you want to delete user ${u.email || `@${u.username}` || `Telegram ID: ${u.telegramId}`}?`}
-                    onConfirm={() => handleDeleteUser(u.id)}
+                    title={`Are you sure you want to delete user ${user.email || `@${user.username}` || `Telegram ID: ${user.telegramId}`}?`}
+                    onConfirm={() => handleDeleteUser(user.id)}
                     okText="Yes"
                     cancelText="No"
                   >
