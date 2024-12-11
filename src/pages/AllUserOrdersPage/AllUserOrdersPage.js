@@ -1,112 +1,170 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
-import { Tabs, Spin, Empty, message } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { ORDER_ROUTE, SELLER_INFO_ROUTE } from '../../utils/consts';
 import styles from './AllUserOrdersPage.module.css';
-import OrderCard from '../../components/UserComponents/UserOrderComponents/OrderCard';
-import ReturnCard from '../../components/UserComponents/UserOrderComponents/ReturnCard';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
+import { Tag, Button, AutoComplete, Space, Typography, Spin } from 'antd';
+import { SearchOutlined, LoadingOutlined } from '@ant-design/icons';
 
-const { TabPane } = Tabs;
+const { Text } = Typography;
 
 const AllUserOrdersPage = observer(() => {
-    const { order } = useContext(Context);
-    const [activeTab, setActiveTab] = useState('1');
-    const [loading, setLoading] = useState(true);
-    const navigate = useNavigate();
+  const { order } = useContext(Context);
+  const navigate = useNavigate();
+  const [orderId, setOrderId] = useState('');
+  const [filteredOrders, setFilteredOrders] = useState([]);
+  const [isSearching, setIsSearching] = useState(false);
 
-    useEffect(() => {
-        loadData();
-    }, []);
+  useEffect(() => {
+    order.loadMyOrders();
+  }, []);
 
-    const loadData = async () => {
-        setLoading(true);
-        try {
-            await Promise.all([
-                order.loadMyOrders(),
-                order.loadMyReturns()
-            ]);
-        } catch (error) {
-            console.error('Error loading orders:', error);
-            message.error('Ошибка при загрузке заказов');
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleCreateReturn = async (orderId, reason) => {
-        try {
-            await order.createReturn(orderId, reason);
-            message.success('Возврат успешно создан');
-            await order.loadMyReturns();
-        } catch (error) {
-            console.error('Error creating return:', error);
-            message.error('Ошибка при создании возврата');
-        }
-    };
-
-    const renderOrders = () => {
-        if (order.orders.length === 0) {
-            return <Empty description="У вас пока нет заказов" />;
-        }
-
-        return (
-            <div className={styles.orders_grid}>
-                {order.orders.map(orderItem => (
-                    <OrderCard 
-                        key={orderItem.id}
-                        order={orderItem}
-                        onCreateReturn={handleCreateReturn}
-                    />
-                ))}
-            </div>
-        );
-    };
-
-    const renderReturns = () => {
-        if (order.returns.length === 0) {
-            return <Empty description="У вас пока нет возвратов" />;
-        }
-
-        return (
-            <div className={styles.returns_grid}>
-                {order.returns.map(returnItem => (
-                    <ReturnCard 
-                        key={returnItem.id}
-                        returnItem={returnItem}
-                    />
-                ))}
-            </div>
-        );
-    };
-
-    if (loading) {
-        return (
-            <div className={styles.loading_container}>
-                <Spin size="large" />
-            </div>
-        );
+  useEffect(() => {
+    if (orderId) {
+      const filtered = order.orders
+        .filter(o => o.id.toString().includes(orderId))
+        .slice(0, 5);
+      setFilteredOrders(filtered);
+    } else {
+      setFilteredOrders([]);
     }
+  }, [orderId, order.orders]);
 
-    return (
-        <div className='container'>
-            <TopicBack title="My Orders" />
-            
-            <Tabs 
-                activeKey={activeTab} 
-                onChange={setActiveTab}
-                className={styles.tabs}
-            >
-                <TabPane tab="Orders" key="1">
-                    {renderOrders()}
-                </TabPane>
-                <TabPane tab="Returns" key="2">
-                    {renderReturns()}
-                </TabPane>
-            </Tabs>
+  const handleSearch = (id) => {
+    if (!id) return;
+    setIsSearching(true);
+    try {
+      const foundOrder = order.orders.find(o => o.id.toString() === id);
+      if (foundOrder) {
+        navigate(`${ORDER_ROUTE}/${id}`);
+      }
+    } catch (error) {
+      console.error('Error finding order:', error);
+    } finally {
+      setIsSearching(false);
+    }
+  };
+
+  const autoCompleteOptions = filteredOrders.map(o => ({
+    value: o.id.toString(),
+    label: (
+      <Space>
+        <Text strong>Order #:</Text> {o.id}
+        <Text strong>Model:</Text> {o.modelProduct?.name}
+        <Text strong>Price:</Text> ${o.totalPriceUSD}
+      </Space>
+    ),
+  }));
+
+  const getStatusColor = (status) => {
+    switch (status) {
+        case 'CREATED':
+            return 'blue';
+        case 'PAID':
+            return 'orange';
+        case 'COMPLETED':
+            return 'green';
+        case 'RETURN_PENDING':
+            return 'orange';
+        case 'RETURN_REJECTED':
+            return 'red';
+        case 'RETURN_APPROVED':
+            return 'green';
+        case 'CLOSED':
+            return 'gray';
+        default:
+            return 'gray';
+    }
+  };
+
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString();
+  };
+
+  return (
+    <div className="container">
+      <TopicBack title="My Orders" />
+      
+      {/* Поиск заказов */}
+      <div className={styles.search_section}>
+        <AutoComplete
+          style={{ width: '100%' }}
+          options={autoCompleteOptions}
+          value={orderId}
+          onChange={setOrderId}
+          onSelect={handleSearch}
+          placeholder="Enter order number"
+          notFoundContent={isSearching ? <Spin indicator={<LoadingOutlined spin />} /> : null}
+          filterOption={(inputValue, option) =>
+            option.value.toLowerCase().includes(inputValue.toLowerCase())
+          }
+        />
+        <Button
+          type="primary"
+          icon={<SearchOutlined />}
+          onClick={() => handleSearch(orderId)}
+          loading={isSearching}
+          block
+        >
+          Find order
+        </Button>
+      </div>
+
+      {/* Список заказов */}
+      {order.orders.length === 0 ? (
+        <p>You have no orders yet</p>
+      ) : (
+        <div className={styles.ordersList}>
+          {order.orders.map((order) => (
+            <div key={order.id} className={styles.orderCard}>
+              <div className={styles.orderInfo}>
+                <div className={styles.orderId}>
+                    <h3>Order #{order.id}</h3>
+                    <Tag color={getStatusColor(order.status)}>{order.status}</Tag>
+                </div>
+                <div className={styles.orderTotal}>
+                    <p>Total: ${order.totalPriceUSD}</p>
+                    <p>{formatDate(order.createdAt)}</p>
+                </div>
+                <div className={styles.orderSeller}>
+                    <span>Seller: {order.seller.email}</span>
+                    <Button onClick={() => navigate(`${SELLER_INFO_ROUTE}/${order.seller.id}`)}>
+                            View profile
+                    </Button>
+                </div>
+              </div>
+              
+              {order.modelProduct && (
+                <div className={styles.productInfo}>
+                    
+                    {order.modelProduct.images && order.modelProduct.images[0] && (
+                      <img 
+                        src={process.env.REACT_APP_API_URL + order.modelProduct.images[0].img} 
+                        alt={order.modelProduct.name}
+                        className={styles.productImage}
+                      />
+                    )}
+                    <div className={styles.productParams}>
+                        <span>Model: {order.modelProduct.name}</span>
+                    </div>
+                  </div>
+                )}
+
+              <Button 
+                type="primary"
+                className={styles.viewButton}
+                onClick={() => navigate(`${ORDER_ROUTE}/${order.id}`)}
+              >
+                View details
+              </Button>
+            </div>
+          ))}
         </div>
-    );
+      )}
+    </div>
+  );
 });
 
 export default AllUserOrdersPage;

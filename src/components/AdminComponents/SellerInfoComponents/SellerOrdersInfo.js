@@ -8,21 +8,21 @@ import styles from './SellerInfoComponents.module.css';
 const getStatusColor = (status) => {
     switch (status) {
         case 'CREATED':
-            return 'default';
+            return 'blue';
         case 'PAID':
-            return 'processing';
+            return 'orange';
         case 'COMPLETED':
-            return 'success';
+            return 'green';
         case 'RETURN_PENDING':
-            return 'warning';
+            return 'orange';
         case 'RETURN_REJECTED':
-            return 'error';
+            return 'red';
         case 'RETURN_APPROVED':
-            return 'warning';
+            return 'green';
         case 'CLOSED':
-            return 'default';
+            return 'gray';
         default:
-            return 'default';
+            return 'gray';
     }
 };
 

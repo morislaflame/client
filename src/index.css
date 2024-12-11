@@ -117,6 +117,12 @@ iframe {
   font-weight: bold;
 }
 
+.container p {
+  margin-bottom: 0;
+  font-size: var(--main-font-size);
+  font-weight: var(--small-font-weight);
+}
+
 .ant-select .ant-select-selection-placeholder {
   overflow: hidden;
   white-space: nowrap;
@@ -216,6 +222,7 @@ b, strong {
 
 .ant-tag {
   font-size: calc(var(--index) * 1) !important;
+  margin-inline-end: 0 !important;
 }
 
 .ant-tag.ant-tag-blue {
@@ -234,6 +241,12 @@ b, strong {
   color: #da0818;
   background: #ff110021;
   border-color: #ff110021;
+}
+
+.ant-tag.ant-tag-orange {
+  color: #eb7f19;
+  background: #ffad0021;
+  border-color: #ffad0021;
 }
 
 .ant-collapse {

@@ -19,4 +19,5 @@ export const EDIT_SELLER_MODEL_ROUTE = '/seller/edit-model';
 export const ALL_SELLERS_ROUTE = '/admin/sellers';
 export const SELLER_INFO_ROUTE = '/seller/:id';
 export const ALL_USER_ORDERS_ROUTE = '/user/orders';
+export const ORDER_ROUTE = '/order/:id';
 
