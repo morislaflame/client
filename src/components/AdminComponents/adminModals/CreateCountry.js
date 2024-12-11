@@ -13,15 +13,15 @@ const CreateCountry = ({ show, onHide }) => {
     setLoading(true);
     try {
       if (!value.trim()) {
-        message.warning('Пожалуйста, введите название страны!');
+        message.warning('Please enter country name!');
         return;
       }
       await admin.createCountry({ name: value });
       setValue('');
-      message.success('Страна успешно добавлена!');
+      message.success('Country successfully added!');
       onHide();
     } catch (error) {
-      message.error('Ошибка при добавлении страны: ' + (error.response?.data?.message || error.message));
+      message.error('Error adding country: ' + (error.response?.data?.message || error.message));
     } finally {
       setLoading(false);
     }
@@ -32,26 +32,26 @@ const CreateCountry = ({ show, onHide }) => {
       open={show}
       onCancel={onHide}
       footer={null}
-      title="Добавить новую страну"
+      title="Add new country"
       centered
     >
       <Form layout="vertical">
         <Form.Item
-          label="Название страны"
-          rules={[{ required: true, message: 'Пожалуйста, введите название страны!' }]}
+          label="Country name"
+          rules={[{ required: true, message: 'Please enter country name!' }]}
         >
           <Input
             value={value}
             onChange={e => setValue(e.target.value)}
-            placeholder="Введите название страны"
+            placeholder="Enter country name"
           />
         </Form.Item>
         <Form.Item>
           <Button onClick={onHide} style={{ marginRight: 8 }}>
-            Закрыть
+            Close
           </Button>
           <Button type="primary" onClick={addCountry} loading={loading}>
-            Добавить
+            Add
           </Button>
         </Form.Item>
       </Form>

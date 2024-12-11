@@ -13,15 +13,15 @@ const CreateAdultPlatform = ({ show, onHide }) => {
     setLoading(true);
     try {
       if (!value.trim()) {
-        message.warning('Пожалуйста, введите название платформы!');
+        message.warning('Platform name is required');
         return;
       }
       await admin.createAdultPlatform({ name: value });
       setValue('');
-      message.success('Платформа успешно добавлена!');
+      message.success('Platform successfully added!');
       onHide();
     } catch (error) {
-      message.error('Ошибка при добавлении платформы: ' + (error.response?.data?.message || error.message));
+      message.error('Error adding platform: ' + (error.response?.data?.message || error.message));
     } finally {
       setLoading(false);
     }
@@ -32,26 +32,26 @@ const CreateAdultPlatform = ({ show, onHide }) => {
       open={show}
       onCancel={onHide}
       footer={null}
-      title="Добавить новую платформу"
+      title="Add new platform"
       centered
     >
       <Form layout="vertical">
         <Form.Item
-          label="Название платформы"
-          rules={[{ required: true, message: 'Пожалуйста, введите название платформы!' }]}
+          label="Platform name"
+          rules={[{ required: true, message: 'Please enter platform name!' }]}
         >
           <Input
             value={value}
             onChange={e => setValue(e.target.value)}
-            placeholder="Введите название платформы"
+            placeholder="Enter platform name"
           />
         </Form.Item>
         <Form.Item>
           <Button onClick={onHide} style={{ marginRight: 8 }}>
-            Закрыть
+            Close
           </Button>
           <Button type="primary" onClick={addAdultPlatform} loading={loading}>
-            Добавить
+            Add
           </Button>
         </Form.Item>
       </Form>

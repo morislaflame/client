@@ -96,11 +96,11 @@ const SellerInfoPage = observer(() => {
             )}
 
             {selectedTab === 'orders' && (
-                <SellerOrdersInfo />
+                <SellerOrdersInfo sellerId={id} />
             )}
 
             {selectedTab === 'reviews' && (
-                <SellerReviewsInfo />
+                <SellerReviewsInfo sellerId={id} />
             )}
         </div>
     );

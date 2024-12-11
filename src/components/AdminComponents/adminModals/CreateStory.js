@@ -39,11 +39,11 @@ const CreateStory = ({ show, onHide }) => {
     setLoading(true);
     try {
       if (!coverImg) {
-        message.error('Выберите обложку истории');
+        message.error('Choose story cover');
         return;
       }
       if (!mainContent) {
-        message.error('Выберите основное содержимое истории (фото или видео)');
+        message.error('Choose story content (photo or video)');
         return;
       }
 
@@ -61,14 +61,14 @@ const CreateStory = ({ show, onHide }) => {
       } else if (allowedVideoTypes.includes(mainContent.type)) {
         formData.append('video', mainContent);
       } else {
-        message.error('Неверный формат основного содержимого. Допустимы изображения или видео.');
+        message.error('Invalid content format. Only images or videos are allowed.');
         return;
       }
 
       // Используем метод из AdminStore
       await admin.createStory(formData);
 
-      message.success('История успешно создана');
+      message.success('Story successfully created');
       onHide();
       form.resetFields();
       setCoverImg(null);
@@ -77,7 +77,7 @@ const CreateStory = ({ show, onHide }) => {
       setMainContentFileList([]);
     } catch (error) {
       const errorMessage = error.response?.data?.message || error.message;
-      message.error('Ошибка при создании истории: ' + errorMessage);
+      message.error('Error creating story: ' + errorMessage);
     } finally {
       setLoading(false);
     }
@@ -89,7 +89,7 @@ const CreateStory = ({ show, onHide }) => {
       onCancel={onHide}
       footer={null}
       centered
-      title="Добавить историю"
+      title="Add story"
     >
       <Form
         form={form}
@@ -98,21 +98,21 @@ const CreateStory = ({ show, onHide }) => {
       >
         <Form.Item
           name="title"
-          label="Заголовок"
-          rules={[{ required: true, message: 'Пожалуйста, введите заголовок истории' }]}
+          label="Title"
+          rules={[{ required: true, message: 'Please enter story title' }]}
         >
-          <Input placeholder="Введите заголовок" />
+          <Input placeholder="Enter story title" />
         </Form.Item>
 
         <Form.Item
           name="link"
-          label="Ссылка"
+          label="Link"
         >
-          <Input placeholder="Введите ссылку (необязательно)" />
+          <Input placeholder="Enter link (optional)" />
         </Form.Item>
 
         <Form.Item
-          label="Обложка истории"
+          label="Story cover"
           required
         >
           <Upload
@@ -126,13 +126,13 @@ const CreateStory = ({ show, onHide }) => {
               setCoverImgFileList([]);
             }}
           >
-            <Button icon={<UploadOutlined />}>Выберите изображение</Button>
+            <Button icon={<UploadOutlined />}>Choose image</Button>
           </Upload>
-          {!coverImg && <div style={{ color: 'red' }}>Пожалуйста, выберите обложку истории</div>}
+          {!coverImg && <div style={{ color: 'red' }}>Please choose story cover</div>}
         </Form.Item>
 
         <Form.Item
-          label="Основное содержимое (фото или видео)"
+          label="Main content (photo or video)"
           required
         >
           <Upload
@@ -146,17 +146,17 @@ const CreateStory = ({ show, onHide }) => {
               setMainContentFileList([]);
             }}
           >
-            <Button icon={<UploadOutlined />}>Выберите фото или видео</Button>
+            <Button icon={<UploadOutlined />}>Choose photo or video</Button>
           </Upload>
-          {!mainContent && <div style={{ color: 'red' }}>Пожалуйста, выберите основное содержимое истории</div>}
+          {!mainContent && <div style={{ color: 'red' }}>Please choose story content</div>}
         </Form.Item>
 
         <Form.Item>
           <Button onClick={onHide} style={{ marginRight: 8 }}>
-            Закрыть
+            Close
           </Button>
           <Button type="primary" htmlType="submit" loading={loading}>
-            Добавить
+            Add
           </Button>
         </Form.Item>
       </Form>

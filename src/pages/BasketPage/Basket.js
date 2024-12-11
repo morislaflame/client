@@ -9,7 +9,6 @@ import { observer } from 'mobx-react-lite';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 import { message, Badge, Spin, Button } from 'antd';
 import { LoadingOutlined } from "@ant-design/icons";
-import { FaMessage } from "react-icons/fa6";
 import { RxCross2 } from "react-icons/rx";
 
 const Basket = observer(() => {
@@ -124,11 +123,11 @@ const Basket = observer(() => {
                                             </div>
                                         )}
                                         <div className={styles.model_actions}>
-                                            <button 
-                                                className={styles.message_button} 
+                                            <Button 
+                                                type='ghost' 
                                                 onClick={() => navigate(`/model/${modelProduct.modelId}`)}>
                                                 <span>Seller Chat</span>
-                                            </button>
+                                            </Button>
                                             <Button type='primary' onClick={() => navigate(`/model/${modelProduct.modelId}`)}>
                                                 Buy now
                                             </Button>

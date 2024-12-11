@@ -23,7 +23,7 @@ const CreatePromoCode = ({ show, onHide }) => {
             if (mode === 'shared') {
                 // Создание общего промокода
                 if (!code) {
-                    message.error('Пожалуйста, введите код промокода.');
+                    message.error('Please enter promo code.');
                     setLoading(false);
                     return;
                 }
@@ -36,7 +36,7 @@ const CreatePromoCode = ({ show, onHide }) => {
             } else if (mode === 'one-time') {
                 // Создание одноразового промокода
                 if (!userId) {
-                    message.error('Пожалуйста, введите ID пользователя.');
+                    message.error('Please enter user ID.');
                     setLoading(false);
                     return;
                 }
@@ -48,7 +48,7 @@ const CreatePromoCode = ({ show, onHide }) => {
                 });
             }
 
-            message.success('Промокод успешно создан!');
+            message.success('Promo code successfully created!');
             onHide(); // Закрываем модальное окно
             // Очистка полей формы после успешного создания
             setCode('');
@@ -56,8 +56,8 @@ const CreatePromoCode = ({ show, onHide }) => {
             setIsPercentage(false);
             setUserId('');
         } catch (e) {
-            console.error('Ошибка при выполнении операции с промокодом', e);
-            message.error('Ошибка при создании промокода: ' + (e.response?.data?.message || e.message));
+            console.error('Error creating promo code', e);
+            message.error('Error creating promo code: ' + (e.response?.data?.message || e.message));
         } finally {
             setLoading(false);
         }
@@ -69,26 +69,26 @@ const CreatePromoCode = ({ show, onHide }) => {
             onCancel={onHide}
             footer={null}
             title={
-                mode === 'shared' ? 'Создать общий промокод' :
-                mode === 'one-time' ? 'Создать одноразовый промокод' : ''
+                mode === 'shared' ? 'Create shared promo code' :
+                mode === 'one-time' ? 'Create one-time promo code' : ''
             }
             centered
         >
             <Form layout="vertical">
-                <Form.Item label="Тип промокода">
+                <Form.Item label="Promo code type">
                     <Select value={mode} onChange={value => setMode(value)}>
-                        <Option value="shared">Общий промокод</Option>
-                        <Option value="one-time">Одноразовый промокод</Option>
+                        <Option value="shared">Shared promo code</Option>
+                        <Option value="one-time">One-time promo code</Option>
                     </Select>
                 </Form.Item>
 
                 {mode === 'shared' && (
                     <>
-                        <Form.Item label="Код промокода" required>
+                        <Form.Item label="Promo code" required>
                             <Input
                                 value={code}
                                 onChange={e => setCode(e.target.value)}
-                                placeholder="Введите код промокода"
+                                placeholder="Enter promo code"
                             />
                         </Form.Item>
                     </>
@@ -96,42 +96,42 @@ const CreatePromoCode = ({ show, onHide }) => {
 
                 {mode === 'one-time' && (
                     <>
-                        <Form.Item label="ID пользователя" required>
+                        <Form.Item label="User ID" required>
                             <Input
                                 value={userId}
                                 onChange={e => setUserId(e.target.value)}
-                                placeholder="Введите ID пользователя"
+                                placeholder="Enter user ID"
                             />
                         </Form.Item>
                     </>
                 )}
 
-                <Form.Item label="Значение скидки" required>
+                <Form.Item label="Discount value" required>
                     <InputNumber
                         value={discountValue}
                         onChange={value => setDiscountValue(value)}
-                        placeholder="Введите размер скидки"
+                        placeholder="Enter discount value"
                         style={{ width: '100%' }}
                         min={0}
                     />
                 </Form.Item>
 
-                <Form.Item label="Тип скидки" required>
+                <Form.Item label="Discount type" required>
                     <Select
                         value={isPercentage ? 'PERCENTAGE' : 'FIXED'}
                         onChange={value => setIsPercentage(value === 'PERCENTAGE')}
-                        placeholder="Выберите тип скидки"
+                        placeholder="Select discount type"
                     >
-                        <Option value="FIXED">Фиксированная скидка</Option>
-                        <Option value="PERCENTAGE">Процентная скидка</Option>
+                        <Option value="FIXED">Fixed discount</Option>
+                        <Option value="PERCENTAGE">Percentage discount</Option>
                     </Select>
                 </Form.Item>
 
                 <Form.Item>
-                    <Button onClick={onHide} style={{ marginRight: 8 }}>Отмена</Button>
+                    <Button onClick={onHide} style={{ marginRight: 8 }}>Cancel</Button>
                     <Button type="primary" onClick={handleSubmit} loading={loading}>
-                        {mode === 'shared' && 'Создать общий промокод'}
-                        {mode === 'one-time' && 'Создать одноразовый промокод'}
+                        {mode === 'shared' && 'Create shared promo code'}
+                        {mode === 'one-time' && 'Create one-time promo code'}
                     </Button>
                 </Form.Item>
             </Form>

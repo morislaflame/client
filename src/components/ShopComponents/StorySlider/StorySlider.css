@@ -81,7 +81,7 @@
     z-index: 1001;
     color: var(--color-text);
     border-radius: var(--main-border-radius);
-    padding: calc(var(--index)* 2) calc(var(--index)* 4);
+    padding: calc(var(--index)* 1) calc(var(--index)* 3);
     font-size: calc(var(--index)* 1.5);
     font-weight: 600;
     border: none;

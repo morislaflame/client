@@ -1,6 +1,6 @@
 import React from 'react';
 import { observer } from 'mobx-react-lite';
-import { Drawer } from 'antd';
+import { Drawer, Button } from 'antd';
 import TypeBar from './TypeBar/TypeBar';
 import BrandBar from './BrandBar/BrandBar';
 import { useState, useContext } from 'react';
@@ -41,9 +41,9 @@ const SideBar = observer(({ name, ...props }) => {
                 <div className="filters-container">
                     <SelectedFilters />
                     <div className="filters-buttons">
-                        <button className="filters-button" onClick={toggleShow}>
+                        <Button type='ghost' className="filters-button" onClick={toggleShow}>
                             Filters
-                        </button>
+                        </Button>
                         {hasFilters && (
                             <button onClick={handleReset} className="reset-filters-button">
                                 Reset filters

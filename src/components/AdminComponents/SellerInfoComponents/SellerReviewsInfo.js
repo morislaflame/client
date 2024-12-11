@@ -6,7 +6,7 @@ import { Button, Spin } from 'antd';
 import StarRating from '../../../components/UI/StarRating/StarRating';
 import styles from './SellerInfoComponents.module.css';
 
-const SellerReviewsInfo = observer(() => {
+const SellerReviewsInfo = observer(({ sellerId }) => {
     const { seller } = useContext(Context);
     const [showAllReviews, setShowAllReviews] = useState(false);
 

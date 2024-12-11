@@ -5,7 +5,7 @@ import { Context } from '../../../index';
 import styles from './SellerInfoComponents.module.css';
 import OrderCard from '../../OrderComponents/OrderCard/OrderCard';
 
-const SellerOrdersInfo = observer(() => {
+const SellerOrdersInfo = observer(({ sellerId }) => {
     const { seller } = useContext(Context);
     const orders = seller.sellerInfo?.sellerOrders || [];
 

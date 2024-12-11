@@ -55,10 +55,10 @@
 
 .menu_link {
     background: var(--action-button-color);
-    padding: var(--small-padding);
+    padding: var(--medium-padding);
     color: var(--color-text);
     border: none;
-    border-radius: var(--main-border-radius);
+    border-radius: var(--small-border-radius);
     font-size: var(--main-font-size);
     flex: 1;
     display: flex;
