@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import { Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
+import { Context } from '../../../index';
 import { ORDER_ROUTE, SELLER_INFO_ROUTE } from '../../../utils/consts';
 import styles from './OrderCard.module.css';
 import OrderTags from '../../UI/OrderTags/OrderTags';
@@ -8,6 +9,38 @@ import FormatDate from '../../UI/FormatDate/FormatDate';
 
 const OrderCard = ({ order }) => {
     const navigate = useNavigate();
+    const { user } = useContext(Context);
+
+    const isAdmin = user.user?.role === 'ADMIN';
+    const isSeller = user.user?.id === order.sellerId;
+    const isBuyer = user.user?.id === order.buyerId;
+
+    const renderUserInfo = () => {
+        if (isAdmin) {
+            return (
+                <>
+                    <div className={styles.orderParticipant}>
+                        <span>Seller: {order.seller.sellerInformation?.sellerName || order.seller.email}</span>
+                        <span>Buyer: {order.buyer.email || `@${order.buyer.username}` || `ID: ${order.buyer.telegramId}`}</span>
+                    </div>
+                </>
+            );
+        }
+
+        if (isSeller) {
+            return (
+                <span>Buyer: {order.buyer.email || `@${order.buyer.username}` || `ID: ${order.buyer.telegramId}`}</span>
+            );
+        }
+
+        if (isBuyer) {
+            return (
+                <span>Seller: {order.seller.sellerInformation?.sellerName || order.seller.email}</span>
+            );
+        }
+
+        return null;
+    };
 
     return (
         <div className={styles.orderCard}>
@@ -21,14 +54,15 @@ const OrderCard = ({ order }) => {
                     <p><FormatDate date={order.createdAt} /></p>
                 </div>
                 <div className={styles.orderSeller}>
-                    <span>Seller: {order.seller.email}</span>
+                    {renderUserInfo()}
                     <Button 
                         type="ghost"
-                        onClick={() => navigate(`${SELLER_INFO_ROUTE}/${order.seller.id}`)}
+                        onClick={() => navigate(`${SELLER_INFO_ROUTE}/${order.sellerId}`)}
                     >
-                        View profile
+                        Go to chat
                     </Button>
                 </div>
+                
             </div>
             
             {order.modelProduct && (

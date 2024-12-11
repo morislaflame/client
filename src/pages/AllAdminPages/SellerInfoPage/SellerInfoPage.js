@@ -10,6 +10,9 @@ import LoadingIndicator from '../../../components/UI/LoadingIndicator/LoadingInd
 import SellerModelsInfo from '../../../components/AdminComponents/SellerInfoComponents/SellerModelsInfo';
 import SellerOrdersInfo from '../../../components/AdminComponents/SellerInfoComponents/SellerOrdersInfo';
 import SellerReviewsInfo from '../../../components/AdminComponents/SellerInfoComponents/SellerReviewsInfo';
+import { GiHighHeel } from 'react-icons/gi';
+import { LuClipboardList } from 'react-icons/lu';
+import { LuMessageSquare } from "react-icons/lu";
 
 const SellerInfoPage = observer(() => {
     const { id } = useParams();
@@ -65,26 +68,28 @@ const SellerInfoPage = observer(() => {
                     </div>
                 </div>
                 
-                {seller.sellerInfo.sellerInformation?.sellerName && (
-                    <span>Shop name: <strong>{seller.sellerInfo.sellerInformation.sellerName}</strong></span>
-                )}
-                
-                {seller.sellerInfo.sellerInformation?.sellerInfo && (
+                <div className={styles.seller_i}>
+                    {seller.sellerInfo.sellerInformation?.sellerName && (
+                        <span>Shop name: <strong>{seller.sellerInfo.sellerInformation.sellerName}</strong></span>
+                    )}
+                    
+                    {seller.sellerInfo.sellerInformation?.sellerInfo && (
                         <span>Shop info: <strong>{seller.sellerInfo.sellerInformation.sellerInfo}</strong></span>
-                )}
-
-                <div className={styles.menu_links}>
-                    <button className={styles.menu_link} onClick={() => setSelectedTab('models')}>
-                        Models
-                    </button>
-                    <button className={styles.menu_link} onClick={() => setSelectedTab('orders')}>
-                        Orders
-                    </button>
-                    <button className={styles.menu_link} onClick={() => setSelectedTab('reviews')}>
-                        Reviews
-                    </button>
+                    )}
                 </div>
             </div>
+
+            <div className={styles.menu_links}>
+                    <button className={styles.menu_link} onClick={() => setSelectedTab('models')}>
+                        <GiHighHeel />Models
+                    </button>
+                    <button className={styles.menu_link} onClick={() => setSelectedTab('orders')}>
+                    <LuClipboardList />Orders
+                    </button>
+                    <button className={styles.menu_link} onClick={() => setSelectedTab('reviews')}>
+                    <LuMessageSquare />Reviews
+                    </button>
+                </div>
 
             {selectedTab === 'models' && (
                 <SellerModelsInfo sellerId={id} />

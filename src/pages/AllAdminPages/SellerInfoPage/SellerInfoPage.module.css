@@ -26,6 +26,12 @@
     flex-wrap: wrap;
 }
 
+.seller_i {
+    display: flex;
+    flex-direction: column;
+    gap: var(--small-gap);
+}
+
 .seller_mail_id {
     display: flex;
     flex-direction: column;
@@ -40,4 +46,23 @@
 }
 
 
+.menu_links {
+    display: flex;
+    gap: var(--small-gap);
+    align-items: center;
+    width: 100%;
+}
 
+.menu_link {
+    background: var(--action-button-color);
+    padding: var(--small-padding);
+    color: var(--color-text);
+    border: none;
+    border-radius: var(--main-border-radius);
+    font-size: var(--main-font-size);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--small-gap);
+}
