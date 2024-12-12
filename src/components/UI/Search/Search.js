@@ -6,18 +6,16 @@ import styles from './Search.module.css';
 const Search = ({ 
     data,
     onSelect,
-    onSearch,
-    placeholder,
+    setFilteredData,
+    searchFields = ['id'],
+    placeholder = "Search...",
     formatOption = (item) => ({
         value: item.id.toString(),
         label: item.id.toString()
-    }),
-    onFilter = (searchValue, item) => 
-        item.id.toString().includes(searchValue)
+    })
 }) => {
     const [searchValue, setSearchValue] = useState('');
     const [isSearching, setIsSearching] = useState(false);
-    const [filteredData, setFilteredData] = useState(data);
 
     useEffect(() => {
         setFilteredData(data);
@@ -26,12 +24,20 @@ const Search = ({
     const handleSearch = (value) => {
         setSearchValue(value);
         if (value) {
-            const filtered = data.filter(item => onFilter(value, item));
+            const filtered = data.filter(item => {
+                return searchFields.some(field => {
+                    const fieldValue = field.split('.').reduce((obj, key) => obj?.[key], item);
+                    if (fieldValue === undefined || fieldValue === null) return false;
+                    
+                    return String(fieldValue)
+                        .toLowerCase()
+                        .includes(value.toLowerCase());
+                });
+            });
             setFilteredData(filtered);
         } else {
             setFilteredData(data);
         }
-        onSearch?.(value, filteredData);
     };
 
     const options = data.map(formatOption);
@@ -42,6 +48,7 @@ const Search = ({
                 value={searchValue}
                 options={options}
                 onChange={handleSearch}
+                onSelect={onSelect}
                 placeholder={placeholder}
                 allowClear
                 style={{ width: '100%' }}

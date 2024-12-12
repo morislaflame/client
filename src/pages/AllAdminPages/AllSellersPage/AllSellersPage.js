@@ -31,18 +31,6 @@ const AllSellersPage = observer(() => {
         }
     };
 
-    const handleSearch = (value) => {
-        if (value) {
-            const filtered = admin.sellers.filter(seller => 
-                seller.id.toString().includes(value) ||
-                seller.sellerInformation?.sellerName?.toLowerCase().includes(value.toLowerCase())
-            );
-            setFilteredSellers(filtered);
-        } else {
-            setFilteredSellers(admin.sellers);
-        }
-    };
-
     const formatSellerOption = (seller) => ({
         value: seller.id.toString(),
         label: (
@@ -61,8 +49,9 @@ const AllSellersPage = observer(() => {
             <div className={styles.all_sellers}>
                 <Search 
                     data={admin.sellers}
-                    onSearch={handleSearch}
-                    placeholder="Search by seller ID"
+                    setFilteredData={setFilteredSellers}
+                    searchFields={['id', 'email', 'username', 'sellerInformation.sellerName']}
+                    placeholder="Search by seller ID or name"
                     formatOption={formatSellerOption}
                 />
                 {admin.isLoadingSellers ? (

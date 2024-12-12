@@ -17,22 +17,6 @@ const UserModelsInfo = observer(({ userId }) => {
         model.loadUserPurchasedModels(userId);
     }, [userId]);
 
-    useEffect(() => {
-        setFilteredModels(model.userPurchasedModels);
-    }, [model.userPurchasedModels]);
-
-    const handleSearch = (value) => {
-        if (value) {
-            const filtered = model.userPurchasedModels.filter(model => 
-                model.id.toString().includes(value) ||
-                model.name.toLowerCase().includes(value.toLowerCase())
-            );
-            setFilteredModels(filtered);
-        } else {
-            setFilteredModels(model.userPurchasedModels);
-        }
-    };
-
     const formatModelOption = (model) => ({
         value: model.id.toString(),
         label: `${model.name} (ID: ${model.id})`
@@ -47,13 +31,10 @@ const UserModelsInfo = observer(({ userId }) => {
             <h3>Purchased Models</h3>
             <Search 
                 data={model.userPurchasedModels}
-                onSearch={handleSearch}
+                setFilteredData={setFilteredModels}
+                searchFields={['id', 'name']}
                 placeholder="Search by model name or ID"
                 formatOption={formatModelOption}
-                onFilter={(searchValue, model) => 
-                    model.id.toString().includes(searchValue) ||
-                    model.name.toLowerCase().includes(searchValue.toLowerCase())
-                }
             />
             {filteredModels.length > 0 ? (
                 <div className={styles.models_grid}>

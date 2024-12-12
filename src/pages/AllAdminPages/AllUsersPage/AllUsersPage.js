@@ -4,7 +4,7 @@ import React, { useState, useEffect, useContext } from 'react';
 import { Context } from '../../../index';
 import { observer } from 'mobx-react-lite';
 import { useNavigate } from 'react-router-dom';
-import { Typography, Space, FloatButton, Button } from 'antd';
+import { Typography, Space, FloatButton } from 'antd';
 import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 import styles from './AllUsersPage.module.css';
 import LoadingIndicator from '../../../components/UI/LoadingIndicator/LoadingIndicator';
@@ -22,23 +22,6 @@ const AllUsersPage = observer(() => {
         admin.loadUsers();
     }, [admin]);
 
-    useEffect(() => {
-        setFilteredUsers(admin.users);
-    }, [admin.users]);
-
-    const handleSearch = (value) => {
-        if (value) {
-            const filtered = admin.users.filter(user => 
-                user.id.toString().includes(value) ||
-                user.email?.toLowerCase().includes(value.toLowerCase()) ||
-                user.username?.toLowerCase().includes(value.toLowerCase())
-            );
-            setFilteredUsers(filtered);
-        } else {
-            setFilteredUsers(admin.users);
-        }
-    };
-
     const formatUserOption = (user) => ({
         value: user.id.toString(),
         label: (
@@ -55,7 +38,8 @@ const AllUsersPage = observer(() => {
             <div className={styles.all_users}>
                 <Search 
                     data={admin.users}
-                    onSearch={handleSearch}
+                    setFilteredData={setFilteredUsers}
+                    searchFields={['id', 'email', 'username', 'telegramId']}
                     placeholder="Enter user ID or email"
                     formatOption={formatUserOption}
                 />
@@ -76,13 +60,12 @@ const AllUsersPage = observer(() => {
                                 </span>
                             </div>
                             <div className={styles.user_actions}>
-                                <Button
-                                    type='primary'
+                                <button
                                     className={styles.view_button}
                                     onClick={() => navigate(`/user/${user.id}`)}
                                 >
                                     <EyeOutlined /> View Details
-                                </Button>
+                                </button>
                             </div>
                         </div>
                     ))
