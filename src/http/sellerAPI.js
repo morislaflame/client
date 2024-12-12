@@ -58,4 +58,10 @@ export const getSellerReviews = async (sellerId) => {
     return data;
 };
 
+export const getSellerModelProducts = async (sellerId) => {
+    const { data } = await $authHost.get(`api/seller/${sellerId}/models`);
+    return data;
+};
+
+
 

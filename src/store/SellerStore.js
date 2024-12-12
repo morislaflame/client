@@ -9,7 +9,8 @@ import {
     getSellerReviews,
     updateMyInformation,
     fetchMyInformation,
-    getSellerById
+    getSellerById,
+    getSellerModelProducts
 } from "../http/sellerAPI";
 
 export default class SellerStore {
@@ -18,6 +19,7 @@ export default class SellerStore {
     sellerReviews = [];
     sellerInfo = {};
     sellerReviewsLoading = false;
+    sellerModelProducts = [];
 
     constructor() {
         makeAutoObservable(this, {
@@ -31,6 +33,7 @@ export default class SellerStore {
             updateMyInfo: action,
             fetchMyInformation: action,
             getSellerById: action,
+            loadSellerModelProducts: action,
         });
     }
 
@@ -155,6 +158,18 @@ export default class SellerStore {
             });
         } catch (error) {
             console.error("Error fetching seller by ID:", error);
+            throw error;
+        }
+    }
+
+    loadSellerModelProducts = async (sellerId) => {
+        try {
+            const data = await getSellerModelProducts(sellerId);
+            runInAction(() => {
+                this.sellerModelProducts = data;
+            });
+        } catch (error) {
+            console.error("Error loading seller model products:", error);
             throw error;
         }
     }

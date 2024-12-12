@@ -35,7 +35,7 @@ const OrderCard = ({ order }) => {
 
         if (isBuyer) {
             return (
-                <span>Seller: {order.seller.sellerInformation?.sellerName || order.seller.email}</span>
+                <span>Seller: {order.seller.sellerInformation?.sellerName}</span>
             );
         }
 

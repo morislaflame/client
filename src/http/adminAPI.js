@@ -133,11 +133,6 @@ export const getReturnPendingOrders = async () => {
     return data;
 };
 
-export const getUserOrders = async (userId) => {
-    const { data } = await $authHost.get(`api/order/user/${userId}`);
-    return data;
-};
-
 
 export const getAllReturns = async (status) => {
     const { data } = await $authHost.get(`api/return/${status}`);

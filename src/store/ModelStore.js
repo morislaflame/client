@@ -1,6 +1,6 @@
 // store/ModelStore.js
 
-import { makeAutoObservable, runInAction } from "mobx";
+import { makeAutoObservable, runInAction, action } from "mobx";
 import {
     fetchBasket,
     addToBasket,
@@ -8,7 +8,7 @@ import {
     clearBasket
 } from "../http/basketAPI";
 
-import { fetchCountries, fetchAdultPlatforms } from "../http/modelProductAPI";
+import { fetchCountries, fetchAdultPlatforms, fetchUserPurchasedModels } from "../http/modelProductAPI";
 
 export default class ModelStore {
     countries = [];
@@ -21,6 +21,8 @@ export default class ModelStore {
     limit = 20;
     basket = [];
     priceRange = { min: 0, max: 10000 };
+    userPurchasedModels = [];
+    purchasedModelsLoading = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -92,7 +94,21 @@ export default class ModelStore {
         }
     }
 
-    
+    loadUserPurchasedModels = async (userId) => {
+        try {
+            this.purchasedModelsLoading = true;
+            const data = await fetchUserPurchasedModels(userId);
+            runInAction(() => {
+                this.userPurchasedModels = data;
+                this.purchasedModelsLoading = false;
+            });
+        } catch (error) {
+            runInAction(() => {
+                this.purchasedModelsLoading = false;
+            });
+            console.error('Error loading user purchased models:', error);
+        }
+    }
 
     // getters and setters
 
@@ -131,5 +147,7 @@ export default class ModelStore {
         this.priceRange = priceRange;
     }
 
-    
+    get getUserPurchasedModels() {
+        return this.userPurchasedModels;
+    }
 }

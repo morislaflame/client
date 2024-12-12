@@ -169,7 +169,7 @@ const ModelPage = observer(() => {
                 type="link"
                 className={styles.seller_link}
               >
-                {models.seller.username || 'Неизвестный продавец'}
+                {models.seller.sellerInformation?.sellerName || 'Неизвестный продавец'}
                 <span className="ms-2">→</span>
               </Button>
             </div>

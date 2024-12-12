@@ -1,6 +1,6 @@
 import React from 'react';
-import StarRating from '../UI/StarRating/StarRating';
 import styles from './SellerComponents.module.css';
+import SellerReviewItem from './SellerReviewItem';
 
 const SellerReviews = ({ reviews }) => {
     if (!reviews || reviews.length === 0) {
@@ -13,21 +13,9 @@ const SellerReviews = ({ reviews }) => {
 
     return (
         <div className={styles.reviews_container}>
+            <h3>My Reviews</h3>
             {reviews.map(review => (
-                <div key={review.id} className={styles.review_item}>
-                    <div className={styles.review_header}>
-                        <div className={styles.user_info}>
-                            <span className={styles.username}>
-                                {review.user.email || `@${review.user.username}` || `Telegram ID: ${review.user.telegramId}`}
-                            </span>
-                            <span className={styles.date}>
-                                {new Date(review.createdAt).toLocaleDateString()}
-                            </span>
-                        </div>
-                        <StarRating rating={review.rating} readonly />
-                    </div>
-                    <p className={styles.review_text}>{review.text}</p>
-                </div>
+                <SellerReviewItem key={review.id} review={review} />
             ))}
         </div>
     );

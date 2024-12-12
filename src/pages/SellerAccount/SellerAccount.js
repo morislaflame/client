@@ -81,16 +81,8 @@ const SellerAccount = observer(() => {
         </div>
       )}
 
-      {selectedTab === 'returns' && (
-        <div className={styles.returns}>
-          <h3>My Returns</h3>
-          {/* Здесь вы можете добавить компонент для возвратов */}
-        </div>
-      )}
-
       {selectedTab === 'reviews' && (
         <div className={styles.reviews}>
-          <h3>My Reviews</h3>
           <SellerReviews reviews={sellerInfo.sellerReviews} />
         </div>
       )}

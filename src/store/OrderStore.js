@@ -8,14 +8,14 @@ import {
   removePromoCode, 
   getMyReturns, 
   getReturnById, 
-  createReturn 
+  createReturn,
+  getUserOrders
 } from "../http/orderAPI";
 
 import {
   getAllOrders,
   deleteOrder,
   getReturnPendingOrders,
-  getUserOrders,
   getAllReturns, 
   approveReturn, 
   rejectReturn, 
@@ -33,6 +33,9 @@ export default class OrderStore {
   pendingReturns = [];
   isLoadingOrders = false;
   isLoadingReturns = false;
+
+  userOrders = [];
+  loading = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -185,13 +188,17 @@ export default class OrderStore {
 
     getUserOrders = async (userId) => {
         try {
+            this.loading = true;
             const data = await getUserOrders(userId);
             runInAction(() => {
-                this.orders = data;
+                this.userOrders = data;
+                this.loading = false;
             });
-            return data;
         } catch (error) {
-            console.error('Error loading user orders:', error);
+            runInAction(() => {
+                this.loading = false;
+            });
+            console.error("Error loading user orders:", error);
         }
     }
 

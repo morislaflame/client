@@ -16,7 +16,7 @@ import { LuMessageSquare } from "react-icons/lu";
 
 const SellerInfoPage = observer(() => {
     const { id } = useParams();
-    const { seller } = useContext(Context);
+    const { seller, user } = useContext(Context);
     const [loading, setLoading] = useState(true);
     const [selectedTab, setSelectedTab] = useState('models');
 
@@ -35,6 +35,8 @@ const SellerInfoPage = observer(() => {
             setLoading(false);
         }
     };
+
+    const isAdmin = user.isAuth && user.user.role === 'ADMIN';
 
     if (loading) {
         return <LoadingIndicator />;
@@ -83,9 +85,11 @@ const SellerInfoPage = observer(() => {
                     <button className={styles.menu_link} onClick={() => setSelectedTab('models')}>
                         <GiHighHeel />Models
                     </button>
-                    <button className={styles.menu_link} onClick={() => setSelectedTab('orders')}>
-                    <LuClipboardList />Orders
-                    </button>
+                    {isAdmin && (    
+                        <button className={styles.menu_link} onClick={() => setSelectedTab('orders')}>
+                            <LuClipboardList />Orders
+                        </button>
+                    )}
                     <button className={styles.menu_link} onClick={() => setSelectedTab('reviews')}>
                     <LuMessageSquare />Reviews
                     </button>
@@ -95,9 +99,14 @@ const SellerInfoPage = observer(() => {
                 <SellerModelsInfo sellerId={id} />
             )}
 
-            {selectedTab === 'orders' && (
-                <SellerOrdersInfo sellerId={id} />
+            {isAdmin && (
+                <div>
+                    {selectedTab === 'orders' && (
+                        <SellerOrdersInfo sellerId={id} />
+                    )}
+                </div>
             )}
+
 
             {selectedTab === 'reviews' && (
                 <SellerReviewsInfo sellerId={id} />

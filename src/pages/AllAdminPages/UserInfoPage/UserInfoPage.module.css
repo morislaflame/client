@@ -16,15 +16,21 @@
     font-size: var(--main-font-size);
     font-weight: 500;
     width: 100%;
+    
+}
+
+.user_name {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
     padding: 0 0 var(--main-padding);
     border-bottom: 1px solid var(--line-color);
 }
 
 .user_role {
     display: flex;
-    gap: var(--small-gap);
+    justify-content: space-between;
     align-items: center;
-    font-size: var(--main-font-size);
 }
 
 .user_orders {
@@ -63,3 +69,23 @@
     border-radius: var(--small-border-radius);
 }
 
+.menu_links {
+    display: flex;
+    gap: var(--small-gap);
+    align-items: center;
+    width: 100%;
+}
+
+.menu_link {
+    background: var(--action-button-color);
+    padding: var(--medium-padding);
+    color: var(--color-text);
+    border: none;
+    border-radius: var(--small-border-radius);
+    font-size: var(--main-font-size);
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--small-gap);
+}

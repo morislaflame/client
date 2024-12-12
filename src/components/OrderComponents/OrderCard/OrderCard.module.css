@@ -1,5 +1,5 @@
 .orderCard {
-    background: var(--menu-background);
+    background: var(--card-background);
     padding: var(--main-padding);
     border-radius: var(--main-border-radius);
     display: flex;

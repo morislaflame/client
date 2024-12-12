@@ -158,3 +158,38 @@
   width: 100%;
   margin-top: var(--main-margin);
 }
+
+.reviews_container {
+  display: flex;
+  flex-direction: column;
+  gap: var(--main-gap);
+}
+
+.reviews {
+  display: flex;
+  flex-direction: column;
+  gap: var(--main-gap);
+}
+
+.review {
+  display: flex;
+  background: var(--card-background);
+  padding: var(--main-padding);
+  border-radius: var(--main-border-radius);
+  flex-direction: column;
+  gap: var(--main-gap);
+  font-size: var(--main-font-size);
+}
+
+.review_user {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review_date {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  width: 100%;
+}

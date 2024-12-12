@@ -25,5 +25,10 @@ export const fetchCountries = async () => {
     return data;
 };
 
+export const fetchUserPurchasedModels = async (userId) => {
+    const { data } = await $authHost.get(`api/model-product/user/${userId}/purchased`);
+    return data;
+};
+
 
 

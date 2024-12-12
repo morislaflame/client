@@ -45,3 +45,8 @@ export const createReturn = async (orderId, reason) => {
   const { data } = await $authHost.post(`/api/return`, { orderId, reason });
   return data;
 };
+
+export const getUserOrders = async (userId) => {
+  const { data } = await $authHost.get(`/api/order/user/${userId}`);
+  return data;
+};

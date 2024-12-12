@@ -1,0 +1,18 @@
+.orders_container {
+    display: flex;
+    flex-direction: column;
+    gap: var(--main-gap);
+    width: 100%;
+}
+
+.orders_list {
+    display: flex;
+    flex-direction: column;
+    gap: var(--main-gap);
+}
+
+.models {
+    display: flex;
+    flex-direction: column;
+    gap: var(--main-gap);
+}

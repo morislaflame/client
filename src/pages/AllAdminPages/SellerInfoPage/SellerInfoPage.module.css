@@ -1,5 +1,5 @@
 .seller_info {
-    background: var(--card-background);
+    background: var(--menu-background);
     padding: var(--main-padding);
     border-radius: var(--main-border-radius);
     display: flex;
