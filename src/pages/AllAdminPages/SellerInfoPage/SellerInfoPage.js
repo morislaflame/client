@@ -49,10 +49,10 @@ const SellerInfoPage = observer(() => {
     return (
         <div className="container">
             <TopicBack title="Seller profile" />
-
-            <div className={styles.seller_info}>
-                <div className={styles.seller_info_item}>
-                    <div className={styles.seller_mail_id}>
+            <div className="container-item">
+                <div className={styles.seller_info}>
+                    <div className={styles.seller_info_item}>
+                        <div className={styles.seller_mail_id}>
                         {seller.sellerInfo.email && (
                             <h4>{seller.sellerInfo.email}</h4> 
                         )}
@@ -66,22 +66,22 @@ const SellerInfoPage = observer(() => {
                     </div>
                     <div className={styles.seller_rating}>
                         <span>{seller.sellerInfo.sellerInformation?.sellerRating.toFixed(1) || 0}</span>
-                        <StarRating rating={seller.sellerInfo.sellerInformation?.sellerRating.toFixed(1) || 0} readonly />
+                            <StarRating rating={seller.sellerInfo.sellerInformation?.sellerRating.toFixed(1) || 0} readonly />
+                        </div>
+                    </div>
+                
+                    <div className={styles.seller_i}>
+                        {seller.sellerInfo.sellerInformation?.sellerName && (
+                            <span>Shop name: <strong>{seller.sellerInfo.sellerInformation.sellerName}</strong></span>
+                        )}
+                        
+                        {seller.sellerInfo.sellerInformation?.sellerInfo && (
+                            <span>Shop info: <strong>{seller.sellerInfo.sellerInformation.sellerInfo}</strong></span>
+                        )}
                     </div>
                 </div>
-                
-                <div className={styles.seller_i}>
-                    {seller.sellerInfo.sellerInformation?.sellerName && (
-                        <span>Shop name: <strong>{seller.sellerInfo.sellerInformation.sellerName}</strong></span>
-                    )}
-                    
-                    {seller.sellerInfo.sellerInformation?.sellerInfo && (
-                        <span>Shop info: <strong>{seller.sellerInfo.sellerInformation.sellerInfo}</strong></span>
-                    )}
-                </div>
-            </div>
 
-            <div className={styles.menu_links}>
+                <div className={styles.menu_links}>
                     <button className={styles.menu_link} onClick={() => setSelectedTab('models')}>
                         <GiHighHeel />Models
                     </button>
@@ -94,20 +94,15 @@ const SellerInfoPage = observer(() => {
                     <LuMessageSquare />Reviews
                     </button>
                 </div>
-
+            </div>
             {selectedTab === 'models' && (
                 <SellerModelsInfo sellerId={id} />
             )}
 
-            {isAdmin && (
-                <div>
-                    {selectedTab === 'orders' && (
-                        <SellerOrdersInfo sellerId={id} />
-                    )}
-                </div>
+            {isAdmin && selectedTab === 'orders' && (
+                <SellerOrdersInfo sellerId={id} />
             )}
-
-
+            
             {selectedTab === 'reviews' && (
                 <SellerReviewsInfo sellerId={id} />
             )}

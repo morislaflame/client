@@ -19,7 +19,12 @@ const UserModelsInfo = observer(({ userId }) => {
 
     const formatModelOption = (model) => ({
         value: model.id.toString(),
-        label: `${model.name} (ID: ${model.id})`
+        label: (
+            <div className="search_options">
+                <span className="search_options_label">{model.name} (ID: {model.id})</span>
+                <span className="search_options_label">Price: ${model.priceUSD}</span>
+            </div>
+        )
     });
 
     if (model.purchasedModelsLoading) {
@@ -27,7 +32,7 @@ const UserModelsInfo = observer(({ userId }) => {
     }
 
     return (
-        <div className={styles.models}>
+        <div className="container-item">
             <h3>Purchased Models</h3>
             <Search 
                 data={model.userPurchasedModels}

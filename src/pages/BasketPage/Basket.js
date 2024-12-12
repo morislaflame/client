@@ -72,7 +72,7 @@ const Basket = observer(() => {
     return (
         <div className="container">
             <TopicBack title="Your Favorites" />
-            <div className={styles.basket_items}>
+            <div className="container-item">
                 {model.basket.map(item => {
                     const modelProduct = item.modelProduct;
                     const basketItemContent = (

@@ -34,10 +34,10 @@ const AllSellersPage = observer(() => {
     const formatSellerOption = (seller) => ({
         value: seller.id.toString(),
         label: (
-            <div>
-                ID: {seller.id}
+            <div className="search_options">
+                <span className="search_options_label">ID: {seller.id}</span>
                 {seller.sellerInformation?.sellerName && 
-                    ` - ${seller.sellerInformation.sellerName}`
+                    <span className="search_options_label">Shop name: {seller.sellerInformation.sellerName}</span>
                 }
             </div>
         )
@@ -46,7 +46,7 @@ const AllSellersPage = observer(() => {
     return (
         <div className="container">
             <TopicBack title="All sellers" />
-            <div className={styles.all_sellers}>
+            <div className="container-item">
                 <Search 
                     data={admin.sellers}
                     setFilteredData={setFilteredSellers}

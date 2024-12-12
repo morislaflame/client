@@ -25,18 +25,19 @@ const SellerReviewsInfo = observer(({ sellerId }) => {
         setIsModalVisible(true);
     };
 
+    if (seller.sellerReviewsLoading) {
+        return <LoadingIndicator />;
+    }
+
     return (
-        <div className={styles.reviews}>
+        <div className="container-item">
             <div className={styles.reviews_header}>
                 <h3>Reviews</h3> 
                 <Button type="primary" onClick={handleAddReview}>Add Review</Button>
             </div>
-            {seller.sellerReviewsLoading ? (
-                <LoadingIndicator />
-            ) : (
-                seller.sellerReviews.length > 0 ? (
+                {seller.sellerReviews.length > 0 ? (
                     <>
-                        <div className={styles.reviews}>
+                        <div className="container-item">
                             {seller.sellerReviews
                                 .slice(0, showAllReviews ? seller.sellerReviews.length : 5)
                                 .map(review => (
@@ -53,8 +54,7 @@ const SellerReviewsInfo = observer(({ sellerId }) => {
                     </>
                 ) : (
                     <div className={styles.no_reviews}>No reviews yet</div>
-                )
-            )}
+                )}
             <AddSellerReview
                 visible={isModalVisible}
                 onClose={() => setIsModalVisible(false)}

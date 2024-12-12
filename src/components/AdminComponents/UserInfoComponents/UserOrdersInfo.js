@@ -4,11 +4,8 @@ import { useContext } from 'react';
 import { Context } from '../../../index';
 import styles from './UserInfoComponents.module.css';
 import OrderCard from '../../OrderComponents/OrderCard/OrderCard';
-import { Space, Typography } from 'antd';
 import Search from '../../UI/Search/Search';
 import LoadingIndicator from '../../UI/LoadingIndicator/LoadingIndicator';
-
-const { Text } = Typography;
 
 const UserOrdersInfo = observer(({ userId }) => {
     const { order } = useContext(Context);
@@ -21,11 +18,11 @@ const UserOrdersInfo = observer(({ userId }) => {
     const formatOrderOption = (order) => ({
         value: order.id.toString(),
         label: (
-            <Space>
-                <Text strong>Order #:</Text> {order.id}
-                <Text strong>Model:</Text> {order.modelProduct?.name}
-                <Text strong>Price:</Text> ${order.totalPriceUSD}
-            </Space>
+            <div className="search_options">
+                <span className="search_options_label">Order #: {order.id}</span>
+                <span className="search_options_label">Model: {order.modelProduct?.name}</span>
+                <span className="search_options_label">Price: ${order.totalPriceUSD}</span>
+            </div>
         )
     });
 
@@ -34,7 +31,7 @@ const UserOrdersInfo = observer(({ userId }) => {
     }
 
     return (
-        <div className={styles.orders_container}>
+        <div className="container-item">
             <h3>User Orders</h3>
             <Search 
                 data={order.userOrders}
@@ -44,7 +41,7 @@ const UserOrdersInfo = observer(({ userId }) => {
                 formatOption={formatOrderOption}
             />
             {filteredOrders.length > 0 ? (
-                <div className={styles.orders_list}>
+                <div className="container-item">
                     {filteredOrders.map((order) => (
                         <OrderCard key={order.id} order={order} />
                     ))}
