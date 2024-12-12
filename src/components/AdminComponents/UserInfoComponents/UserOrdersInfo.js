@@ -2,17 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { Context } from '../../../index';
-import styles from './UserInfoComponents.module.css';
 import OrderCard from '../../OrderComponents/OrderCard/OrderCard';
 import Search from '../../UI/Search/Search';
-import LoadingIndicator from '../../UI/LoadingIndicator/LoadingIndicator';
+import OrdersSkeletons from '../../UI/Skeletons/OrdersSkeletons';
 
 const UserOrdersInfo = observer(({ userId }) => {
     const { order } = useContext(Context);
     const [filteredOrders, setFilteredOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        order.getUserOrders(userId);
+        const loadOrders = async () => {
+            setLoading(true);
+            try {
+                await order.getUserOrders(userId);
+            } catch (error) {
+                console.error('Error loading user orders:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        loadOrders();
     }, [userId]);
 
     const formatOrderOption = (order) => ({
@@ -26,10 +37,6 @@ const UserOrdersInfo = observer(({ userId }) => {
         )
     });
 
-    if (order.loading) {
-        return <LoadingIndicator />;
-    }
-
     return (
         <div className="container-item">
             <h3>User Orders</h3>
@@ -40,17 +47,21 @@ const UserOrdersInfo = observer(({ userId }) => {
                 placeholder="Search by order ID or model name"
                 formatOption={formatOrderOption}
             />
-            {filteredOrders.length > 0 ? (
-                <div className="container-item">
-                    {filteredOrders.map((order) => (
-                        <OrderCard key={order.id} order={order} />
-                    ))}
-                </div>
-            ) : (
-                <div className={styles.no_orders}>
-                    {order.userOrders.length > 0 ? 'No orders found' : 'No orders'}
-                </div>
-            )}
+            <div className="thing-list">
+                {loading ? (
+                    <OrdersSkeletons count={10} />
+                ) : (
+                    filteredOrders.length > 0 ? (
+                        filteredOrders.map((order) => (
+                            <OrderCard key={order.id} order={order} />
+                        ))
+                    ) : (
+                        <span className="no-info-container">
+                            {order.userOrders.length > 0 ? 'No orders found' : 'No orders'}
+                        </span>
+                    )
+                )}
+            </div>
         </div>
     );
 });

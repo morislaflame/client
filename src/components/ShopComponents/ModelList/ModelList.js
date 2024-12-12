@@ -3,7 +3,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Context } from "../../../index";
 import ModelItem from "../ModelItem/ModelItem";
 import { fetchModelProducts } from '../../../http/modelProductAPI';
-import ModelsSkeletonsArray from '../../UI/ModelsSkeletonsArray/ModelsSkeletonsArray';
+import ModelsSkeletonsArray from '../../UI/Skeletons/ModelsSkeletonsArray';
 
 const ModelList = observer(() => {
     const { model } = useContext(Context);

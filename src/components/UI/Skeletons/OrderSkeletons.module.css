@@ -1,0 +1,60 @@
+.orderCardSkeleton {
+    background: var(--card-background);
+    padding: var(--main-padding);
+    border-radius: var(--main-border-radius);
+    display: flex;
+    flex-direction: column;
+    gap: var(--main-gap);
+    width: 100%;
+}
+
+.orderInfo {
+    display: flex;
+    flex-direction: column;
+    gap: var(--small-gap);
+}
+
+.orderHeader {
+    display: flex;
+    flex-direction: column;
+    gap: var(--small-gap);
+}
+
+.orderId {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.orderTotal {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border-bottom: 1px solid var(--line-color);
+    padding-bottom: var(--main-padding);
+}
+
+.orderSeller {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+}
+
+.productInfo {
+    display: flex;
+    width: 100%;
+    gap: var(--small-gap);
+    height: calc(var(--index) * 10);
+}
+
+.productParams {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 70%;
+    height: 100%;
+}
