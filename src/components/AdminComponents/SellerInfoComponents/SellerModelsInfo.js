@@ -2,17 +2,28 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { Context } from '../../../index';
-import ModelInfoCard from './ModelInfoCard';
-import styles from './SellerInfoComponents.module.css';
-import LoadingIndicator from '../../UI/LoadingIndicator/LoadingIndicator';
 import Search from '../../UI/Search/Search';
+import ModelItem from '../../ShopComponents/ModelItem/ModelItem';
+import ModelsSkeletonsArray from '../../UI/ModelsSkeletonsArray/ModelsSkeletonsArray';
 
 const SellerModelsInfo = observer(({ sellerId }) => {
     const { seller } = useContext(Context);
     const [filteredModels, setFilteredModels] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        seller.loadSellerModelProducts(sellerId);
+        const loadModels = async () => {
+            setLoading(true);
+            try {
+                await seller.loadSellerModelProducts(sellerId);
+            } catch (error) {
+                console.error('Error loading seller models:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+        
+        loadModels();
     }, [sellerId]);
 
     const formatModelOption = (model) => ({
@@ -25,10 +36,6 @@ const SellerModelsInfo = observer(({ sellerId }) => {
         )
     });
 
-    if (seller.loading) {
-        return <LoadingIndicator />;
-    }
-
     return (
         <div className="container-item">
             <h3>Seller Models</h3>
@@ -38,15 +45,18 @@ const SellerModelsInfo = observer(({ sellerId }) => {
                 searchFields={['id', 'name', 'priceUSD']}
                 placeholder="Search by model name or ID"
                 formatOption={formatModelOption}
-                
             />
-            <div className={styles.models_list}>
-                {filteredModels.length > 0 ? (
-                    filteredModels.map((model) => (
-                        <ModelInfoCard key={model.id} thing={model} />
-                    ))
+            <div className="thing-list">
+                {loading ? (
+                    <ModelsSkeletonsArray count={20} />
                 ) : (
-                    <span className={styles.placeholder}>No models found for this seller.</span>
+                    filteredModels.length > 0 ? (
+                        filteredModels.map((model) => (
+                            <ModelItem key={model.id} model={model} />
+                        ))
+                    ) : (
+                        <span className="no-info-container">No models found for this seller.</span>
+                    )
                 )}
             </div>
         </div>

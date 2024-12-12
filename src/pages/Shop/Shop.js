@@ -40,7 +40,7 @@ const Shop = observer(() => {
           </Suspense>
         </div>
       </div>
-      <div className={styles.mainlist}>
+      <div className="container">
         <Suspense fallback={<Skeleton active />}>
           <ModelList/>
         </Suspense>

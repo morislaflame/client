@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { Context } from '../../../index';
-import styles from './SellerInfoComponents.module.css';
 import OrderCard from '../../OrderComponents/OrderCard/OrderCard';
 import LoadingIndicator from '../../UI/LoadingIndicator/LoadingIndicator';
 import Search from '../../UI/Search/Search';
@@ -47,7 +46,7 @@ const SellerOrdersInfo = observer(({ sellerId }) => {
                     ))}
                 </div>
             ) : (
-                <div className={styles.no_orders}>No orders found</div>
+                <div className="no-info-container">No orders found</div>
             )}
         </div>
     );

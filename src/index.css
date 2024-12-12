@@ -130,6 +130,16 @@ iframe {
   font-weight: var(--small-font-weight);
 }
 
+.no-info-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  font-size: var(--caption-font-size);
+  font-weight: bold;
+}
+
 .search_options {
   display: flex;
   justify-content: space-between;
@@ -140,6 +150,42 @@ iframe {
   font-size: var(--main-font-size);
   font-weight: var(--small-font-weight);
   gap: var(--small-gap);
+}
+
+
+.thing-list {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  gap: var(--main-gap);
+}
+
+.card_list {
+  width: calc(50% - var(--main-gap) / 2);
+  padding: 0; 
+}
+
+.thing-item-skeleton {
+  width: calc(50% - var(--main-gap) / 2);
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: fit-content;
+}
+
+.skeleton-image {
+  border-radius: var(--main-border-radius);
+  background: var(--card-background);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  padding: var(--main-padding);
+  gap: var(--main-gap);
 }
 
 .ant-select .ant-select-selection-placeholder {

@@ -3,7 +3,6 @@ import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { Context } from '../../../index';
 import { Button } from 'antd';
-import styles from './SellerInfoComponents.module.css';
 import SellerReviewItem from '../../SellerComponents/SellerReviewItem';
 import LoadingIndicator from '../../UI/LoadingIndicator/LoadingIndicator';
 import AddSellerReview from '../../FuctionalComponents/modals/AddSellerReview/AddSellerReview';
@@ -31,7 +30,14 @@ const SellerReviewsInfo = observer(({ sellerId }) => {
 
     return (
         <div className="container-item">
-            <div className={styles.reviews_header}>
+            <div 
+                style={{
+                    display: 'flex', 
+                    alignItems: 'center', 
+                    gap: 'var(--main-gap)', 
+                    width: '100%'
+                }}
+            >
                 <h3>Reviews</h3> 
                 <Button type="primary" onClick={handleAddReview}>Add Review</Button>
             </div>
@@ -45,15 +51,14 @@ const SellerReviewsInfo = observer(({ sellerId }) => {
                                 ))}
                         </div>
                         {seller.sellerReviews.length > 5 && (
-                            <div className={styles.show_more_button}>
-                                <Button onClick={toggleShowAllReviews}>
-                                    {showAllReviews ? 'Hide' : 'Show all reviews'}
-                                </Button>
-                            </div>
+                            <Button onClick={toggleShowAllReviews}>
+                                {showAllReviews ? 'Hide' : 'Show all reviews'}
+                            </Button>
+                           
                         )}
                     </>
                 ) : (
-                    <div className={styles.no_reviews}>No reviews yet</div>
+                    <div className="no-info-container">No reviews yet</div>
                 )}
             <AddSellerReview
                 visible={isModalVisible}

@@ -1,8 +1,3 @@
-.card_list {
-    width: 50%;
-    padding: var(--small-padding);
-}
-
 .card {
     width: 100%;
     height: 100%;
