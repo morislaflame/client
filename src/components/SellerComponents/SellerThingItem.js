@@ -33,7 +33,7 @@ const SellerThingItem = ({ thing, onEdit, onDelete }) => {
   };
 
   return (
-    <div className={styles.card_list}>
+    <div className="card_list">
       <div className={styles.seller_card}>
         <div className={styles.seller_card_image_wrapper} onClick={() => navigate(THING_ROUTE + "/" + thing.id)}>
           <img src={process.env.REACT_APP_API_URL + previewImage} alt={thing.name} className={styles.seller_card_image} />

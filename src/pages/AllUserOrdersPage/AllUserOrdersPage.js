@@ -4,13 +4,26 @@ import { Context } from '../../index';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 import Search from '../../components/UI/Search/Search';
 import OrderCard from '../../components/OrderComponents/OrderCard/OrderCard';
+import OrdersSkeletons from '../../components/UI/Skeletons/OrdersSkeletons';
 
 const AllUserOrdersPage = observer(() => {
     const { order } = useContext(Context);
     const [filteredOrders, setFilteredOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        order.loadMyOrders();
+        const loadOrders = async () => {
+            setLoading(true);
+            try {
+                await order.loadMyOrders();
+            } catch (error) {
+                console.error('Error loading orders:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadOrders();
     }, []);
 
     const formatOrderOption = (order) => ({
@@ -35,15 +48,19 @@ const AllUserOrdersPage = observer(() => {
                     placeholder="Enter order number"
                     formatOption={formatOrderOption}
                 />
-                {filteredOrders.length === 0 ? (
-                    <p>You have no orders yet</p>
-                ) : (
-                    <div className="container-item">
-                        {filteredOrders.map((order) => (
+                <div className="container-item">
+                    {loading ? (
+                        <OrdersSkeletons count={10} />
+                    ) : filteredOrders.length > 0 ? (
+                        filteredOrders.map((order) => (
                             <OrderCard key={order.id} order={order} />
-                        ))}
-                    </div>
-                )}
+                        ))
+                    ) : (
+                        <span className="no-info-container">
+                            {order.orders.length > 0 ? 'No orders found' : 'You have no orders yet'}
+                        </span>
+                    )}
+                </div>
             </div>
         </div>
     );

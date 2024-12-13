@@ -76,7 +76,6 @@ const SellerAccount = observer(() => {
 
       {selectedTab === 'orders' && (
         <div className={styles.orders}>
-          <h3>My Orders</h3>
           <SellerOrders />
         </div>
       )}

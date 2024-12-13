@@ -2,9 +2,10 @@ import React, { useEffect, useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import SellerThingItem from './SellerThingItem';
-import { message, Spin } from 'antd';
+import { message } from 'antd';
 import styles from './SellerComponents.module.css';
 import { useNavigate } from 'react-router-dom';
+import ModelsSkeletonsArray from '../UI/Skeletons/ModelsSkeletonsArray';
 
 const SellerModels = observer(({ onAddModel }) => {
   const { seller } = useContext(Context);
@@ -51,9 +52,9 @@ const SellerModels = observer(({ onAddModel }) => {
           </button>
         </div>
       </div>
-      <div className={styles.seller_thing_list}>
+      <div className="thing-list">
         {loading ? (
-          <Spin />
+          <ModelsSkeletonsArray count={20} />
         ) : myModelProducts && myModelProducts.length > 0 ? (
           myModelProducts.map((thing) => (
             <SellerThingItem
@@ -64,7 +65,7 @@ const SellerModels = observer(({ onAddModel }) => {
             />
           ))
         ) : (
-          <span className={styles.placeholder}>You don't have any Models.</span>
+          <div className="no-info-container">You don't have any Models.</div>
         )}
       </div>
     </div>

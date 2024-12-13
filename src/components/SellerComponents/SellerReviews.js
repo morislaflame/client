@@ -1,24 +1,44 @@
-import React from 'react';
-import styles from './SellerComponents.module.css';
+import React, { useEffect, useState, useContext } from 'react';
+import { observer } from 'mobx-react-lite';
+import { Context } from '../../index';
 import SellerReviewItem from './SellerReviewItem';
+import ReviewsSkeletons from '../UI/Skeletons/ReviewsSkeletons';
 
-const SellerReviews = ({ reviews }) => {
-    if (!reviews || reviews.length === 0) {
-        return (
-            <div className={styles.no_reviews}>
-                <p>No reviews yet</p>
-            </div>
-        );
-    }
+const SellerReviews = observer(() => {
+    const { seller } = useContext(Context);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        const loadReviews = async () => {
+            setLoading(true);
+            try {
+                await seller.loadSellerReviews(seller.sellerInfo.id);
+            } catch (error) {
+                console.error('Error loading seller reviews:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
+
+        loadReviews();
+    }, []);
 
     return (
-        <div className={styles.reviews_container}>
+        <div className="container-item">
             <h3>My Reviews</h3>
-            {reviews.map(review => (
-                <SellerReviewItem key={review.id} review={review} />
-            ))}
+            <div className="container-item">
+                {loading ? (
+                    <ReviewsSkeletons count={5} />
+                ) : seller.sellerReviews.length > 0 ? (
+                    seller.sellerReviews.map(review => (
+                        <SellerReviewItem key={review.id} review={review} />
+                    ))
+                ) : (
+                    <span className="no-info-container">No reviews yet</span>
+                )}
+            </div>
         </div>
     );
-};
+});
 
 export default SellerReviews;

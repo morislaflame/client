@@ -9,14 +9,14 @@ const OrdersSkeletons = ({ count = 10 }) => {
                     <Skeleton.Image 
                         active 
                         style={{ 
-                            width: '30%',
-                            height: 'calc(var(--index) * 10)',
+                            width: '100%',
+                            height: 'calc(var(--index) * 20)',
                             borderRadius: 'var(--small-border-radius)'
                         }} 
                     />
                     <Skeleton 
                         active 
-                        paragraph={{ rows: 3, width: ['60%', '40%', '80%'] }}
+                        paragraph={{ rows: 6, width: ['60%', '40%', '80%'] }}
                         title={false}
                     />
                 </div>
