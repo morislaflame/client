@@ -128,7 +128,6 @@ const CreateStory = ({ show, onHide }) => {
           >
             <Button icon={<UploadOutlined />}>Choose image</Button>
           </Upload>
-          {!coverImg && <div style={{ color: 'red' }}>Please choose story cover</div>}
         </Form.Item>
 
         <Form.Item
@@ -148,11 +147,10 @@ const CreateStory = ({ show, onHide }) => {
           >
             <Button icon={<UploadOutlined />}>Choose photo or video</Button>
           </Upload>
-          {!mainContent && <div style={{ color: 'red' }}>Please choose story content</div>}
         </Form.Item>
 
         <Form.Item>
-          <Button onClick={onHide} style={{ marginRight: 8 }}>
+          <Button onClick={onHide}>
             Close
           </Button>
           <Button type="primary" htmlType="submit" loading={loading}>

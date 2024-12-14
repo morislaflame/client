@@ -1,18 +1,16 @@
 import React, { useEffect, useContext } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams } from 'react-router-dom';
 import { Context } from '../../index';
 import styles from './OrderPage.module.css';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
-import { Tag, Button } from 'antd';
 import OrderTags from '../../components/UI/OrderTags/OrderTags';
 import FormatDate from '../../components/UI/FormatDate/FormatDate';
-import { SELLER_INFO_ROUTE } from '../../utils/consts';
+import SellerInfo from '../../components/OrderComponents/SellerInfo';
 
 const OrderPage = observer(() => {
   const { order } = useContext(Context);
   const { id } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     order.getOrderById(id);
@@ -26,27 +24,15 @@ const OrderPage = observer(() => {
 
   return (
     <div className="container">
-      <TopicBack title={`Order #${currentOrder.id}`} />
-      <div className={styles.orderDetails}>
-      <div className={styles.orderInfo}>
-                <div className={styles.orderId}>
-                  <h3>Order #{currentOrder.id}</h3>
-                  <OrderTags status={currentOrder.status} />
-                </div>
-                <div className={styles.orderTotal}>
-                  <p>Total: ${currentOrder.totalPriceUSD}</p>
-                  <FormatDate date={currentOrder.createdAt} />
-                </div>
-                <div className={styles.orderSeller}>
-                  <span>Seller: {currentOrder.seller.email}</span>
-                  <Button 
-                    type="ghost"
-                    onClick={() => navigate(`${SELLER_INFO_ROUTE}/${currentOrder.seller.id}`)}
-                  >
-                    View profile
-                  </Button>
-                </div>
-              </div>
+      <div style={{display: 'flex', alignItems: 'center', justifyContent: 'space-between'}}>
+        <TopicBack title={`Order #${currentOrder.id}`} />
+        <div style={{display: 'flex', alignItems: 'center', gap: 'var(--main-gap)'}}>
+          <OrderTags status={currentOrder.status} />
+          <FormatDate date={currentOrder.createdAt} />
+        </div>
+      </div>
+      <div className="container-item">
+          <SellerInfo seller={currentOrder.seller} />
 
         {currentOrder.modelProduct && (
           <div className={styles.productInfo}>
@@ -56,7 +42,7 @@ const OrderPage = observer(() => {
             {currentOrder.modelProduct.images && 
              currentOrder.modelProduct.images[0] && (
               <img 
-                src={process.env.REACT_APP_API_URL + currentOrder.modelProduct.images[0].url}
+                src={process.env.REACT_APP_API_URL + currentOrder.modelProduct.images[0].img}
                 alt={currentOrder.modelProduct.name}
                 className={styles.productImage}
               />
@@ -64,6 +50,7 @@ const OrderPage = observer(() => {
           </div>
         )}
       </div>
+      <p>Total: ${currentOrder.totalPriceUSD}</p>
     </div>
   );
 });

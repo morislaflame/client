@@ -2,13 +2,13 @@
 
 import React from 'react';
 import { useNavigate } from "react-router-dom";
-import styles from './AdminComponents.module.css'; // Создайте или используйте соответствующий файл стилей
-import { THING_ROUTE } from "../../utils/consts";
-import MymIcon from '../../icons/Mym.png';
-import FanslyIcon from '../../icons/fansly.png';
-import OnlyIcon from '../../icons/onlyfans.png';
-import Placeholder from '../../icons/placeholder.jpg';
-import { Tag, Modal, Select, message } from 'antd';
+import styles from '../AdminComponents.module.css'; // Создайте или используйте соответствующий файл стилей
+import { THING_ROUTE } from "../../../utils/consts";
+import MymIcon from '../../../icons/Mym.png';
+import FanslyIcon from '../../../icons/fansly.png';
+import OnlyIcon from '../../../icons/onlyfans.png';
+import Placeholder from '../../../icons/placeholder.jpg';
+import { Modal, Select, message, Popconfirm } from 'antd';
 import { useState } from 'react';
 
 const { Option } = Select;
@@ -53,8 +53,13 @@ const PendingModelItem = ({ model, onApprove, onReject }) => {
     setSelectedReason(null);
   };
 
+  const handleApproveConfirm = () => {
+    onApprove(model.id);
+    message.success(`Model ${model.name} has been approved`);
+  };
+
   return (
-    <div className={styles.card_list}>
+    <div className='card_list'>
       <div className={styles.seller_card}>
         <div className={styles.seller_card_image_wrapper} onClick={() => navigate(THING_ROUTE + "/" + model.id)}>
           <img src={process.env.REACT_APP_API_URL + previewImage} alt={model.name} className={styles.seller_card_image} />
@@ -88,9 +93,18 @@ const PendingModelItem = ({ model, onApprove, onReject }) => {
             </div>
           </div>
           <div className={styles.action_buttons}>
-            <button className={styles.approve_button} onClick={() => onApprove(model.id)}>
-              Approve
-            </button>
+            <Popconfirm
+              title="Approve Model"
+              description={`Are you sure you want to approve model ${model.name}?`}
+              onConfirm={handleApproveConfirm}
+              okText="Yes"
+              cancelText="No"
+              placement="topRight"
+            >
+              <button className={styles.approve_button}>
+                Approve
+              </button>
+            </Popconfirm>
             <button className={styles.reject_button} onClick={showRejectModal}>
               Reject
             </button>

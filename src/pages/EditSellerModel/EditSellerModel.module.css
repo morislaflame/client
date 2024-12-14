@@ -1,5 +1,9 @@
 .photo {
-    width: 30%;
+    width: calc(50% - var(--main-gap) / 2);
+    display: flex;
+    flex-direction: column;
+    gap: var(--main-gap);
+    align-items: center;
 }
 
 .photos {
@@ -14,7 +18,7 @@
 .existingImages {
     display: flex;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: var(--main-gap);
 }
 
 .addImages {

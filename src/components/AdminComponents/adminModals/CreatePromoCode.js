@@ -70,7 +70,7 @@ const CreatePromoCode = ({ show, onHide }) => {
             footer={null}
             title={
                 mode === 'shared' ? 'Create shared promo code' :
-                mode === 'one-time' ? 'Create one-time promo code' : ''
+                mode === 'one-time' ? 'Create promo code for user' : ''
             }
             centered
         >
@@ -78,7 +78,7 @@ const CreatePromoCode = ({ show, onHide }) => {
                 <Form.Item label="Promo code type">
                     <Select value={mode} onChange={value => setMode(value)}>
                         <Option value="shared">Shared promo code</Option>
-                        <Option value="one-time">One-time promo code</Option>
+                        <Option value="one-time">Promo code for user</Option>
                     </Select>
                 </Form.Item>
 
@@ -128,10 +128,10 @@ const CreatePromoCode = ({ show, onHide }) => {
                 </Form.Item>
 
                 <Form.Item>
-                    <Button onClick={onHide} style={{ marginRight: 8 }}>Cancel</Button>
+                    <Button onClick={onHide}>Cancel</Button>
                     <Button type="primary" onClick={handleSubmit} loading={loading}>
                         {mode === 'shared' && 'Create shared promo code'}
-                        {mode === 'one-time' && 'Create one-time promo code'}
+                        {mode === 'one-time' && 'Create promo code for user'}
                     </Button>
                 </Form.Item>
             </Form>

@@ -7,6 +7,7 @@ import CreateCountry from './adminModals/CreateCountry';
 import CreateStory from './adminModals/CreateStory';
 import CreatePromoCode from './adminModals/CreatePromoCode';
 import styles from './AdminComponents.module.css';
+import { Button } from 'antd';
 
 const AdminControls = () => {
   const [adultPlatformVisible, setAdultPlatformVisible] = useState(false);
@@ -17,12 +18,17 @@ const AdminControls = () => {
 
   return (
     <>
-      <div className={styles.admin_buttons}>
-        <button onClick={() => setCountryVisible(true)}>Add country</button>
-        <button onClick={() => setAdultPlatformVisible(true)}>Add adult platform</button>
-        <button onClick={() => setStoryVisible(true)}>Add story</button>
-        <button onClick={() => setPromoVisible(true)}>Add promo code</button>
-        <button onClick={() => setModelVisible(true)}>Add model</button>
+      <div className="container-item">
+        <div className={styles.search_section}>
+          <h3>Admin Controls</h3>
+          <div className={styles.admin_buttons}>
+            <Button onClick={() => setCountryVisible(true)}>Add country</Button>
+            <Button onClick={() => setAdultPlatformVisible(true)}>Add adult platform</Button>
+            <Button onClick={() => setStoryVisible(true)}>Add story</Button>
+            <Button onClick={() => setPromoVisible(true)}>Add promo code</Button>
+            <Button onClick={() => setModelVisible(true)}>Add model</Button>
+          </div>
+        </div>
       </div>
       <CreateAdultPlatform show={adultPlatformVisible} onHide={() => setAdultPlatformVisible(false)} />
       <CreateSellerModel show={modelVisible} onHide={() => setModelVisible(false)} />

@@ -1,0 +1,8 @@
+.orderTags {
+    display: flex;
+    flex-direction: column;
+    gap: var(--main-gap);
+    justify-content: center;
+    align-items: end;
+    width: 100%;
+}

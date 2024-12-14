@@ -47,9 +47,7 @@ const CreateAdultPlatform = ({ show, onHide }) => {
           />
         </Form.Item>
         <Form.Item>
-          <Button onClick={onHide} style={{ marginRight: 8 }}>
-            Close
-          </Button>
+          <Button onClick={onHide}>Cancel</Button>
           <Button type="primary" onClick={addAdultPlatform} loading={loading}>
             Add
           </Button>

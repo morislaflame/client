@@ -140,6 +140,13 @@ iframe {
   font-weight: bold;
 }
 
+.container-card {
+  display: flex;
+  padding: var(--main-padding);
+  background: var(--card-background);
+  border-radius: var(--main-border-radius);
+}
+
 .search_options {
   display: flex;
   justify-content: space-between;
@@ -164,6 +171,8 @@ iframe {
   width: calc(50% - var(--main-gap) / 2);
   padding: 0; 
 }
+
+
 
 .thing-item-skeleton {
   width: calc(50% - var(--main-gap) / 2);
@@ -276,18 +285,32 @@ b, strong {
   align-items: center;
   max-width: 100%;
   height: 32px;
-  color: rgb(255 255 255 / 88%);
-  font-size: 14px;
+  color: var(--color-text);
+  font-size: var(--main-font-size);
 }
 
 .ant-form {
+  display: flex;
+  flex-direction: column;
+  gap: var(--main-gap);
   padding: calc(var(--index) * 1);
-  background-color: #211F25;
+  background: var(--card-background);
   border-radius: calc(var(--index)* 1);
 }
 
 .ant-form-item {
-  margin-bottom: calc(var(--index) * 1);
+  margin-bottom: 0;
+}
+
+.ant-col-12 {
+  padding: var(--main-padding);
+}
+
+.ant-form-item .ant-form-item-control-input-content {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--main-gap);
 }
 
 .ant-drawer .ant-drawer-content {
@@ -372,14 +395,29 @@ b, strong {
 
 
 .ant-modal .ant-modal-content {
+  display: flex;
+  flex-direction: column;
+  gap: var(--main-gap);
   position: relative;
-  background-color: #211F25;
+  background: var(--card-background);
   background-clip: padding-box;
   border: 0;
-  border-radius: calc(var(--index) * 1);
+  border-radius: var(--main-border-radius);
   box-shadow: 0 6px 16px 0 rgba(0, 0, 0, 0.08), 0 3px 6px -4px rgba(0, 0, 0, 0.12), 0 9px 28px 8px rgba(0, 0, 0, 0.05);
   pointer-events: auto;
-  padding: 20px 24px;
+  padding: var(--big-padding);
+}
+
+.ant-modal .ant-modal-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--main-gap);
+  font-size: var(--main-font-size);
+  color: var(--color-text);
+}
+
+.ant-modal .ant-modal-body p {
+  margin-bottom: 0;
 }
 
 .ant-modal .ant-modal-header {
@@ -415,13 +453,14 @@ b, strong {
   border-radius: var(--small-border-radius);
   font-size: var(--main-font-size);
   font-weight: 400;
-  padding: var(--small-padding) var(--main-padding);
+  padding: var(--medium-padding) var(--main-padding);
   min-width: calc(var(--index)* 8);
   height: fit-content;
 }
 
 .ant-btn-primary:hover {
   background: linear-gradient(150deg, #082836d4, #292587);
+  color: var(--color-text);
 }
 
 .ant-btn-dangerous {
@@ -431,7 +470,7 @@ b, strong {
   color: var(--color-text) !important;
   border-radius: var(--small-border-radius);
   font-size: var(--main-font-size);
-  padding: var(--small-padding) var(--main-padding);
+  padding: var(--medium-padding) var(--main-padding);
   min-width: calc(var(--index)* 8);
   height: fit-content;
 }
@@ -443,9 +482,14 @@ b, strong {
   color: var(--color-text);
   border-radius: var(--small-border-radius);
   font-size: var(--main-font-size);
-  padding: var(--small-padding) var(--main-padding);
+  padding: var(--medium-padding) var(--main-padding);
   min-width: calc(var(--index)* 8);
   height: fit-content;
+}
+
+.ant-btn-default:not(:disabled):not(.ant-btn-disabled):hover {
+  color: var(--color-text);
+  background: #2e2c33;
 }
 
 .ant-btn-ghost {
@@ -455,9 +499,26 @@ b, strong {
   color: var(--color-text);
   border-radius: var(--small-border-radius);
   font-size: var(--main-font-size);
-  padding: var(--small-padding) var(--main-padding);
+  padding: var(--medium-padding) var(--main-padding);
   min-width: calc(var(--index)* 8);
   height: fit-content;
+}
+
+.ant-upload-wrapper .ant-upload-list .ant-upload-list-item .ant-upload-list-item-actions .anticon {
+  color: var(--color-text);
+}
+
+.ant-upload-wrapper {
+  color: var(--color-text);
+  display: flex;
+  flex-direction: column;
+  gap: var(--main-gap);
+}
+
+.ant-upload-wrapper .ant-upload-list .ant-upload-list-item {
+  font-size: var(--main-font-size);
+  margin-top: 0;
+  padding: var(--small-padding) !important;
 }
 
 .slick-dots li.slick-active button:before {

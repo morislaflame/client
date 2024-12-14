@@ -9,6 +9,7 @@ import { MAIN_ROUTE } from '../../../utils/consts';
 import styles from './ModelEditPage.module.css';
 import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 import { UploadOutlined } from '@ant-design/icons';
+import LoadingIndicator from '../../../components/UI/LoadingIndicator/LoadingIndicator';
 
 const { Option } = Select;
 
@@ -18,6 +19,9 @@ const ModelEditPage = observer(() => {
   const navigate = useNavigate();
 
   const [form] = Form.useForm();
+  const [loading, setLoading] = useState(false);
+  const [initialLoading, setInitialLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const [model, setModel] = useState({
     name: '',
@@ -32,55 +36,128 @@ const ModelEditPage = observer(() => {
   const [adultPlatforms, setAdultPlatforms] = useState([]);
   const [newImages, setNewImages] = useState([]);
   const [imagesToRemove, setImagesToRemove] = useState([]);
-const [loading, setLoading] = useState(false); // Добавляем состояние для загрузки
 
+  useEffect(() => {
+    const loadData = async () => {
+      try {
+        setInitialLoading(true);
+        setError(null);
 
-useEffect(() => {
-  const loadData = async () => {
-    const data = await fetchModelProductById(id);
-    const adultPlatformIds = data.adultPlatforms ? data.adultPlatforms.map(adultPlatform => adultPlatform.id) : [];
-    setModel({ ...data, adultPlatformIds });
-    form.setFieldsValue({
-      name: data.name,
-      priceUSD: data.priceUSD,
-      countryId: data.countryId,
-      adultPlatformIds: adultPlatformIds,
-      ...data.info,
-    });
+        const [modelData, countriesData, platformsData] = await Promise.all([
+          fetchModelProductById(id),
+          fetchCountries(),
+          fetchAdultPlatforms()
+        ]);
+
+        const adultPlatformIds = modelData.adultPlatforms 
+          ? modelData.adultPlatforms.map(platform => platform.id) 
+          : [];
+
+        setModel({ ...modelData, adultPlatformIds });
+        setCountries(countriesData);
+        setAdultPlatforms(platformsData);
+
+        form.setFieldsValue({
+          name: modelData.name,
+          priceUSD: modelData.priceUSD,
+          countryId: modelData.countryId,
+          adultPlatformIds: adultPlatformIds,
+          ...modelData.info,
+        });
+
+      } catch (error) {
+        console.error('Error loading initial data:', error);
+        setError(error.response?.data?.message || 'Error loading initial data');
+        message.error('Error loading initial data');
+      } finally {
+        setInitialLoading(false);
+      }
+    };
+
+    loadData();
+  }, [id, form]);
+
+  const handleValuesChange = (changedValues, allValues) => {
+    try {
+      setModel(prevModel => ({
+        ...prevModel,
+        ...allValues,
+        info: { ...prevModel.info, ...allValues },
+      }));
+    } catch (error) {
+      console.error('Error handling values change:', error);
+      message.error('Error updating form values');
+    }
   };
 
-  loadData();
-  fetchCountries().then(data => setCountries(data));
-  fetchAdultPlatforms().then(data => setAdultPlatforms(data));
-}, [id, form]);
-
-
-const handleValuesChange = (changedValues, allValues) => {
-  setModel(prevModel => ({
-    ...prevModel,
-    ...allValues,
-    info: { ...prevModel.info, ...allValues },
-  }));
-};
-
-
   const handleImageChange = ({ fileList }) => {
-    setNewImages(fileList);
+    try {
+      // Проверка размера файла (например, максимум 5MB)
+      const isLt5M = fileList.every(file => file.size / 1024 / 1024 < 5);
+      
+      if (!isLt5M) {
+        message.error('Image must be less than 5MB!');
+        return;
+      }
+
+      // Проверка типа файла
+      const isValidType = fileList.every(file => {
+        const isJpgOrPng = file.type === 'image/jpeg' || 
+                            file.type === 'image/png' || 
+                            file.type === 'image/webp';
+        if (!isJpgOrPng) {
+          message.error('You can only upload JPG/PNG/WebP files!');
+        }
+        return isJpgOrPng;
+      });
+
+      if (isValidType) {
+        setNewImages(fileList);
+      }
+    } catch (error) {
+      console.error('Error handling image change:', error);
+      message.error('Error handling image change');
+    }
   };
 
   const handleRemoveImage = (imageId) => {
-    setImagesToRemove([...imagesToRemove, imageId]);
-    setModel({
-      ...model,
-      images: model.images.filter(image => image.id !== imageId),
-    });
+    try {
+      setImagesToRemove([...imagesToRemove, imageId]);
+      setModel({
+        ...model,
+        images: model.images.filter(image => image.id !== imageId),
+      });
+    } catch (error) {
+      console.error('Error removing image:', error);
+      message.error('Error removing image');
+    }
   };
 
   const handleSubmit = async () => {
-    setLoading(true); // Устанавливаем состояние загрузки в true
     try {
+      setLoading(true);
+      setError(null);
+
       const values = await form.validateFields();
-  
+
+      // Проверка обязательных полей
+      const requiredFields = [
+        'name',
+        'priceUSD',
+        'countryId',
+        'adultPlatformIds'
+      ];
+
+      const missingFields = requiredFields.filter(field => !values[field]);
+      if (missingFields.length > 0) {
+        throw new Error(`Please fill in the required fields: ${missingFields.join(', ')}`);
+      }
+
+      // Проверка наличия хотя бы одного изображения
+      if (model.images.length === 0 && newImages.length === 0) {
+        throw new Error('You must add at least one image');
+      }
+
       const formData = new FormData();
       formData.append('name', values.name);
       formData.append('priceUSD', values.priceUSD);
@@ -88,41 +165,59 @@ const handleValuesChange = (changedValues, allValues) => {
       formData.append('adultPlatformIds', JSON.stringify(values.adultPlatformIds));
       formData.append('info', JSON.stringify(model.info));
       formData.append('imagesToRemove', JSON.stringify(imagesToRemove));
-  
+
       newImages.forEach(file => {
         formData.append('img', file.originFileObj);
       });
-  
+
       await updateModelProduct(id, formData);
-      message.success('Товар успешно обновлён');
+      message.success('Model updated successfully');
       navigate(`/thing/${id}`);
     } catch (error) {
+      console.error('Error submitting form:', error);
       const errorMessage = error.response?.data?.message || error.message;
-      message.error('Ошибка при обновлении товара: ' + errorMessage);
+      setError(errorMessage);
+      message.error('Error updating model: ' + errorMessage);
     } finally {
-      setLoading(false); // Возвращаем состояние загрузки в false
+      setLoading(false);
     }
   };
-  
 
   if (!user.isAuth || user.user.role !== 'ADMIN') {
     navigate(MAIN_ROUTE);
     return null;
   }
 
+  if (initialLoading) {
+    return <LoadingIndicator />;
+  }
+
+  if (error) {
+    return (
+      <div className="container">
+        <TopicBack title="Error" />
+        <div className={styles.errorContainer}>
+          <h2>An error occurred:</h2>
+          <p>{error}</p>
+          <Button onClick={() => navigate(MAIN_ROUTE)}>Return to main page</Button>
+        </div>
+      </div>
+    );
+  }
+
   const infoFields = [
-    { name: 'age', label: 'Age' },
-    { name: 'smartphone', label: 'Smartphone' },
-    { name: 'percent', label: '% For Her' },
-    { name: 'time', label: 'Time Per Day' },
-    { name: 'english', label: 'English Skills' },
-    { name: 'content', label: 'Content' },
-    { name: 'contract', label: 'Contract Signed' },
-    { name: 'start', label: 'When She Can Start' },
-    { name: 'socialmedia', label: 'Social Media Set Up' },
-    { name: 'tiktok', label: 'Willing To Do TikTok' },
-    { name: 'cblocked', label: 'Does She Need Any Countries Blocked' },
-    { name: 'ofverif', label: 'OF Verified' },
+    { name: 'age', label: 'Age', required: true },
+    { name: 'smartphone', label: 'Smartphone', required: true },
+    { name: 'percent', label: '% For Her', required: true },
+    { name: 'time', label: 'Time Per Day', required: true },
+    { name: 'english', label: 'English Skills', required: true },
+    { name: 'content', label: 'Content', required: true },
+    { name: 'contract', label: 'Contract Signed', required: true },
+    { name: 'start', label: 'When She Can Start', required: true },
+    { name: 'socialmedia', label: 'Social Media Set Up', required: true },
+    { name: 'tiktok', label: 'Willing To Do TikTok', required: true },
+    { name: 'cblocked', label: 'Does She Need Any Countries Blocked', required: true },
+    { name: 'ofverif', label: 'OF Verified', required: true },
     { name: 'link', label: 'Link' },
     { name: 'girlmsg', label: 'Girl Message', as: 'textarea' },
   ];
@@ -139,30 +234,30 @@ const handleValuesChange = (changedValues, allValues) => {
       >
         <Form.Item
           name="name"
-          label="Имя"
-          rules={[{ required: true, message: 'Введите имя модели!' }]}
+          label="Name"
+          rules={[{ required: true, message: 'Enter the model name!' }]}
         >
-          <Input placeholder="Введите имя модели" />
+          <Input placeholder="Enter the model name" />
         </Form.Item>
 
         <Form.Item
           name="priceUSD"
-          label="Цена"
-          rules={[{ required: true, message: 'Введите цену модели!' }]}
+          label="Price"
+          rules={[{ required: true, message: 'Enter the model price!' }]}
         >
           <InputNumber
             min={0}
-            placeholder="Введите цену модели"
+            placeholder="Enter the model price"
             style={{ width: '100%' }}
           />
         </Form.Item>
 
         <Form.Item
           name="countryId"
-          label="Страна"
-          rules={[{ required: true, message: 'Выберите страну модели!' }]}
+          label="Country"
+          rules={[{ required: true, message: 'Select the model country!' }]}
         >
-          <Select placeholder="Выберите страну">
+          <Select placeholder="Select the country">
             {countries.map(country => (
               <Option key={country.id} value={country.id}>
                 {country.name}
@@ -173,12 +268,12 @@ const handleValuesChange = (changedValues, allValues) => {
 
         <Form.Item
           name="adultPlatformIds"
-          label="Платформы"
-          rules={[{ required: true, message: 'Выберите хотя бы один платформу!' }]}
+          label="Platforms"
+          rules={[{ required: true, message: 'Select at least one platform!' }]}
         >
           <Select
             mode="multiple"
-            placeholder="Выберите платформы"
+            placeholder="Select platforms"
             onChange={(value) =>
               setModel(prevModel => ({ ...prevModel, adultPlatformIds: value }))
             }
@@ -196,22 +291,23 @@ const handleValuesChange = (changedValues, allValues) => {
             key={field.name}
             name={field.name}
             label={field.label}
+            rules={field.required ? [{ required: true, message: `Please fill in the field ${field.label}` }] : []}
           >
             {field.as === 'textarea' ? (
-              <Input.TextArea rows={4} placeholder={`Введите ${field.label}`} />
+              <Input.TextArea rows={4} placeholder={`Enter ${field.label}`} />
             ) : (
-              <Input placeholder={`Введите ${field.label}`} />
+              <Input placeholder={`Enter ${field.label}`} />
             )}
           </Form.Item>
         ))}
 
-        <h3>Изображения</h3>
+        <h3>Images</h3>
         <div className={styles.existingImages}>
           {model.images.map(image => (
             <div key={image.id} className={styles.photo}>
               <img
                 src={process.env.REACT_APP_API_URL + image.img}
-                alt="Текущее изображение"
+                alt="Current image"
                 className={styles.photos}
               />
               <Button
@@ -219,13 +315,13 @@ const handleValuesChange = (changedValues, allValues) => {
                 onClick={() => handleRemoveImage(image.id)}
                 style={{ marginTop: '10px' }}
               >
-                Удалить
+                Delete
               </Button>
             </div>
           ))}
         </div>
 
-        <Form.Item label="Добавить новые изображения">
+        <Form.Item label="Add new images">
           <Upload
             listType="picture"
             multiple
@@ -234,13 +330,18 @@ const handleValuesChange = (changedValues, allValues) => {
             fileList={newImages}
             accept="image/*"
           >
-            <Button icon={<UploadOutlined />}>Загрузить изображения</Button>
+            <Button icon={<UploadOutlined />}>Upload images</Button>
           </Upload>
         </Form.Item>
 
         <Form.Item>
-          <Button type="primary" htmlType="submit" loading={loading}>
-            Сохранить изменения
+          <Button 
+            type="primary" 
+            htmlType="submit" 
+            loading={loading}
+            disabled={loading || initialLoading}
+          >
+            {loading ? 'Saving...' : 'Save changes'}
           </Button>
         </Form.Item>
       </Form>

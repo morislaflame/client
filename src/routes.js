@@ -25,6 +25,7 @@ import {
     SELLER_INFO_ROUTE,
     ALL_USER_ORDERS_ROUTE,
     ORDER_ROUTE,
+    ALL_PENDING_MODELS_ROUTE,
 } from "./utils/consts";
 import Main from "./pages/Main/Main";
 import TermsOfService from "./pages/TermsOfService/TermsOfService";
@@ -43,6 +44,7 @@ import AllSellersPage from "./pages/AllAdminPages/AllSellersPage/AllSellersPage"
 import AllUserOrdersPage from "./pages/AllUserOrdersPage/AllUserOrdersPage";
 import SellerInfoPage from "./pages/AllAdminPages/SellerInfoPage/SellerInfoPage";
 import OrderPage from "./pages/OrderPage/OrderPage";
+import AllPendingModels from "./pages/AllAdminPages/AllPendingModels/AllPendingModels";
 
 
 
@@ -101,6 +103,10 @@ export const authRoutes = (user) => {
         routes.push({
             path: ALL_SELLERS_ROUTE,
             Component: <AllSellersPage />
+        });
+        routes.push({
+            path: ALL_PENDING_MODELS_ROUTE,
+            Component: <AllPendingModels />
         });
         
     } else {

@@ -1,115 +1,74 @@
-// import React, { useState, useEffect } from 'react';
-// import { fetchAllOrders } from '../../../http/orderAPI'; 
-// import Form from 'react-bootstrap/Form';
-// import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
-// import styles from './AllOrdersPage.module.css'
-// import { useNavigate } from 'react-router-dom';
-// import { THING_ROUTE } from '../../../utils/consts';
-// import CopyableButton from '../../../components/UI/CopyableButton/CopyableButton'; 
-// import { FcClock, FcOk, FcCancel } from 'react-icons/fc';
-// import { FloatButton } from 'antd';
+import React, { useEffect, useState, useContext } from 'react';
+import { Context } from '../../../index';
+import { observer } from 'mobx-react-lite';
+import OrderCard from '../../../components/OrderComponents/OrderCard/OrderCard';
+import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
+import Search from '../../../components/UI/Search/Search';
+import OrdersSkeletons from '../../../components/UI/Skeletons/OrdersSkeletons';
 
-// const AllOrdersPage = () => {
-//     const [orders, setOrders] = useState([]);
-//     const [searchOrder, setSearchOrder] = useState('');
+const AllOrdersPage = observer(() => {
+    const { order } = useContext(Context);
+    const [filteredOrders, setFilteredOrders] = useState([]);
+    const [loading, setLoading] = useState(true);
 
-//     const navigate = useNavigate()
+    useEffect(() => {
+        const loadOrders = async () => {
+            setLoading(true);
+            try {
+                await order.loadAllOrders();
+            } catch (error) {
+                console.error('Error loading orders:', error);
+            } finally {
+                setLoading(false);
+            }
+        };
 
-//     useEffect(() => {
-//         loadOrders();
-//     }, []);
+        loadOrders();
+    }, [order]);
 
-//     // Функция для загрузки всех заказов
-//     const loadOrders = async () => {
-//         try {
-//             const data = await fetchAllOrders();
-//             setOrders(data);
-//         } catch (error) {
-//             console.error('Ошибка при загрузке заказов:', error);
-//         }
-//     };
+    const formatOrderOption = (order) => ({
+        value: order.id.toString(),
+        label: (
+            <div className="search_options">
+                <span className="search_options_label">Order #{order.id}</span>
+                <span className="search_options_label">
+                    {order.seller?.sellerInformation?.sellerName || order.seller?.email} - ${order.totalPriceUSD}
+                </span>
+            </div>
+        )
+    });
 
-//     // Фильтрация заказов по номеру
-//     const filteredOrders = orders.filter(order => 
-//         order.id.toString().includes(searchOrder)
-//     );
+    return (
+        <div className="container">
+            <TopicBack title="All Orders" />
+            <div className="container-item">
+                <Search 
+                    data={order.orders}
+                    setFilteredData={setFilteredOrders}
+                    searchFields={['id', 'totalPriceUSD', 'seller.email', 'seller.sellerInformation.sellerName', 'buyer.email']}
+                    placeholder="Search by order ID, price, seller or buyer"
+                    formatOption={formatOrderOption}
+                />
 
-//     return (
-//         <div className="container">
-//                 <TopicBack title="Все заказы" />
-//             <div className={styles.search_section}>
-//             <Form.Control
-//                 type="text"
-//                 placeholder="Поиск по номеру заказа"
-//                 value={searchOrder}
-//                 onChange={(e) => setSearchOrder(e.target.value)}
-//             />
-//             </div>
-//             <div className={styles.all_orders}>
-//                 {filteredOrders.map(order => (
-//                     <div key={order.id} className={styles.order_item}>
-//                         <div className={styles.order_details}>
-//                             <span>Заказ №{order.id}</span> 
-//                             <span 
-//                             onClick={() => navigate(`/user/${order.userId}`)} 
-//                             style={{textDecoration: 'underline'}}
-//                             >
-//                             User: <p>{order.user.email || `@${order.user.username}` || `Telegram ID: ${order.user.telegramId}`}</p> 
-//                             </span>
-//                             {order.promo_code ? (
-//                                 <span>
-//                                     Promocode: <p>{order.promo_code.code}</p> - <p>{order.promo_code.isPercentage ? `${order.promo_code.discountValue}%` : `$${order.promo_code.discountValue}`}</p>
-//                                 </span>
-//                             ) : (
-//                                 <></>
-//                             )}
-//                             <span>Валюта: <p>{order.cryptoCurrency}</p></span>
-//                             <div className={styles.hash}>
-//                             <span>Хэш: </span>
-//                             {/* Заменяем кнопку копирования на CopyableButton */}
-//                             <CopyableButton 
-//                                 value={order.cryptoTransactionHash || 'No hash'} 
-//                                 className={styles.copyable_address}
-//                                 title='Copy Hash'
-//                             />
-                            
-//                             </div>
-//                             <span>Сумма: <p>{order.cryptoPaymentAmount}</p></span>
-//                         </div>
-                        
-//                             {order.order_things.map(item => (
-//                             <span 
-//                                 key={item.id} 
-//                                 className={styles.name_price} 
-//                                 onClick={() => navigate(THING_ROUTE + "/" + item.thingId)}
-//                             >
-//                             {item.thing.name} ${item.thing.price}</span>
-//                             ))}
-//                             <span>
-//                                 {order.status === 'created' && (
-//                                     <span className={styles.status}>
-//                                         <FcClock /> В ожидании
-//                                     </span>
-//                                 )}
-//                                 {order.status === 'paid' && (
-//                                     <span className={styles.status}>
-//                                         <FcOk /> Одобрен
-//                                     </span>
-//                                 )}
-//                                 {order.status === 'rejected' && (
-//                                     <span className={styles.status}>
-//                                         <FcCancel /> Отклонен
-//                                     </span>
-//                                 )}
-//                             </span>
-//                     </div>
-//                 ))}
-//             </div>
-//             <FloatButton.BackTop 
-//                 type='dark'
-//             />
-//         </div>
-//     );
-// };
+                <div className="container-item">
+                    {loading ? (
+                        <OrdersSkeletons count={10} />
+                    ) : filteredOrders.length > 0 ? (
+                        filteredOrders.map((order) => (
+                            <OrderCard 
+                                key={order.id} 
+                                order={order}
+                            />
+                        ))
+                    ) : (
+                        <span className="no-info-container">
+                            {order.orders.length > 0 ? 'No orders found' : 'You have no orders yet'}
+                        </span>
+                    )}
+                </div>
+            </div>
+        </div>
+    );
+});
 
-// export default AllOrdersPage;
+export default AllOrdersPage;
