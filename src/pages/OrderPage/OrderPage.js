@@ -7,6 +7,7 @@ import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack'
 import OrderTags from '../../components/UI/OrderTags/OrderTags';
 import FormatDate from '../../components/UI/FormatDate/FormatDate';
 import SellerInfo from '../../components/OrderComponents/SellerInfo';
+import OrderModel from '../../components/OrderComponents/OrderModel';
 
 const OrderPage = observer(() => {
   const { order } = useContext(Context);
@@ -32,22 +33,9 @@ const OrderPage = observer(() => {
         </div>
       </div>
       <div className="container-item">
-          <SellerInfo seller={currentOrder.seller} />
-
+        <SellerInfo seller={currentOrder.seller} />
         {currentOrder.modelProduct && (
-          <div className={styles.productInfo}>
-            <h2>Информация о товаре</h2>
-            <p>Название: {currentOrder.modelProduct.name}</p>
-            <p>Цена: ${currentOrder.modelProduct.priceUSD}</p>
-            {currentOrder.modelProduct.images && 
-             currentOrder.modelProduct.images[0] && (
-              <img 
-                src={process.env.REACT_APP_API_URL + currentOrder.modelProduct.images[0].img}
-                alt={currentOrder.modelProduct.name}
-                className={styles.productImage}
-              />
-            )}
-          </div>
+          <OrderModel modelProduct={currentOrder.modelProduct} />
         )}
       </div>
       <p>Total: ${currentOrder.totalPriceUSD}</p>
