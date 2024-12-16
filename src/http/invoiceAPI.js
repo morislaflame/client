@@ -14,3 +14,8 @@ export const deleteInvoice = async (id) => {
     const response = await $authHost.delete(`/api/invoice/${id}`);
     return response.data;
 };
+
+export const getOrderInvoices = async (orderId) => {
+    const response = await $authHost.get(`/api/invoice/order/${orderId}`);
+    return response.data;
+};

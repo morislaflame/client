@@ -6,7 +6,6 @@ import SellerOrders from '../../components/SellerComponents/SellerOrders'; // И
 import CreateSellerModel from '../../components/SellerComponents/modals/CreateSellerModel';
 import styles from './SellerAccount.module.css';
 import { GoNote } from "react-icons/go";
-import { IoIosReturnLeft } from "react-icons/io";
 import { FaComment } from "react-icons/fa";
 import { IoWomanSharp } from "react-icons/io5";
 import ChangeInfoModal from '../../components/SellerComponents/modals/ChangeInfoModal';

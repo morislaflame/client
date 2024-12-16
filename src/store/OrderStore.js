@@ -23,6 +23,13 @@ import {
   deleteReturn 
 } from "../http/adminAPI";
 
+import { 
+    createInvoice, 
+    getAllInvoice, 
+    deleteInvoice, 
+    getOrderInvoices 
+} from "../http/invoiceAPI";
+
 export default class OrderStore {
 
   orders = [];
@@ -40,6 +47,12 @@ export default class OrderStore {
 
   availablePromoCodes = [];
   isLoadingPromoCodes = false;
+
+  currentInvoice = null;
+  isLoadingInvoice = false;
+  orderInvoices = [];
+  isLoadingOrderInvoices = false;
+  isInvoiceVisible = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -303,5 +316,69 @@ export default class OrderStore {
             console.error('Error deleting return:', error);
             throw error;
         }
+    }
+
+    createInvoice = async (orderId) => {
+        try {
+            this.isLoadingInvoice = true;
+            const data = await createInvoice(orderId);
+            runInAction(() => {
+                this.currentInvoice = data.invoice;
+                this.getOrderInvoices(orderId);
+            });
+            return data.invoice;
+        } catch (error) {
+            console.error('Error creating invoice:', error);
+            throw error;
+        } finally {
+            runInAction(() => {
+                this.isLoadingInvoice = false;
+            });
+        }
+    }
+
+    getAllInvoices = async () => {
+        try {
+            const data = await getAllInvoice();
+            return data;
+        } catch (error) {
+            console.error('Error getting all invoices:', error);
+            throw error;
+        }
+    }
+
+    deleteInvoice = async (id) => {
+        try {
+            await deleteInvoice(id);
+        } catch (error) {
+            console.error('Error deleting invoice:', error);
+            throw error;
+        }
+    }
+
+    getOrderInvoices = async (orderId) => {
+        try {
+            this.isLoadingOrderInvoices = true;
+            const data = await getOrderInvoices(orderId);
+            runInAction(() => {
+                this.orderInvoices = data;
+            });
+            return data;
+        } catch (error) {
+            console.error('Error getting order invoices:', error);
+            throw error;
+        } finally {
+            runInAction(() => {
+                this.isLoadingOrderInvoices = false;
+            });
+        }
+    }
+
+    setIsInvoiceVisible = (value) => {
+        this.isInvoiceVisible = value;
+    }
+
+    setCurrentInvoice = (invoice) => {
+        this.currentInvoice = invoice;
     }
 }
