@@ -5,9 +5,63 @@
     width: 100%;
 }
 
-.productImage {
+.productCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
     width: 100%;
+    height: calc(var(--index) * 18);
+    border-radius: var(--main-border-radius);
+    background: var(--card-background);
+    padding: var(--main-padding);
+    gap: var(--main-gap);
+    cursor: pointer;
+}
+
+.productInfo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 50%;
+    /* padding: 0 var(--main-padding) 0 var(--big-padding); */
+}
+
+.productImage {
+    width: 50%;
     height: 100%;
     object-fit: cover;
-    border-radius: var(--main-radius);
+    border-radius: var(--main-border-radius);
+}
+
+.promoCodeContainer {
+    display: flex;
+    padding: var(--main-padding);
+    border-radius: var(--main-border-radius);
+    background: var(--menu-background);
+}
+
+.promoCodeInput {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--small-gap);
+    width: 100%;
+}
+
+.promoCodesList {
+    display: flex;
+    flex-direction: column;
+    gap: var(--small-gap);
+    width: 100%;
+}
+
+.promoInfo {
+    display: flex;
+    gap: var(--small-gap);
+}
+
+.discountInfo {
+    display: flex;
+    gap: var(--small-gap);
 }

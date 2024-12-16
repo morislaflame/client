@@ -10,9 +10,9 @@ const SellerInfo = ({ seller }) => {
 
   return (
     <div className='container-item'>
-        <div className='container-card'>
+        <div className={styles.promoCodeContainer}>
             <div className={styles.orderSeller}>
-                <span>Seller: {seller.sellerInformation.sellerName}</span>
+                <span>Seller: {seller?.sellerInformation?.sellerName}</span>
                 <Button 
                     type="ghost"
                     onClick={() => navigate(`${SELLER_INFO_ROUTE}/${seller.id}`)}

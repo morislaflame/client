@@ -6,3 +6,20 @@
     align-items: end;
     width: 100%;
 }
+
+
+.orderTotal {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--main-gap);
+    width: 100%;
+}
+
+.orderTotalContainer {
+    display: flex;
+    padding: var(--main-padding);
+    border-radius: var(--main-border-radius);
+    background: linear-gradient(to left top, #1f0325, #211F25, #211F25);
+}

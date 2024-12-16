@@ -30,6 +30,16 @@ export const removePromoCode = async (id) => {
   return data;
 };
 
+export const getMyPromoCodes = async () => {
+  const { data } = await $authHost.get('/api/promocode/my-promocodes');
+  return data;
+};
+
+export const getUserPromoCodes = async (userId) => {
+  const { data } = await $authHost.get(`/api/promocode/user/${userId}`);
+  return data;
+};
+
 
 export const getMyReturns = async () => {
   const { data } = await $authHost.get('/api/return/my-returns');

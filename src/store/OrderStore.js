@@ -9,7 +9,8 @@ import {
   getMyReturns, 
   getReturnById, 
   createReturn,
-  getUserOrders
+  getUserOrders,
+  getMyPromoCodes
 } from "../http/orderAPI";
 
 import {
@@ -36,6 +37,9 @@ export default class OrderStore {
 
   userOrders = [];
   loading = false;
+
+  availablePromoCodes = [];
+  isLoadingPromoCodes = false;
 
     constructor() {
         makeAutoObservable(this);
@@ -105,31 +109,51 @@ export default class OrderStore {
         }
     }
 
+    // В OrderStore.js
+
     applyPromoCode = async (orderId, promocode) => {
         try {
-            const data = await applyPromoCode(orderId, promocode);
+            await applyPromoCode(orderId, promocode);
+            // После применения промокода загружаем обновленный заказ
+            const updatedOrder = await this.getOrderById(orderId);
             runInAction(() => {
-                if (this.currentOrder?.id === orderId) {
-                    this.currentOrder = data;
-                }
+                this.currentOrder = updatedOrder;
             });
-            return data;
+            return updatedOrder;
         } catch (error) {
             console.error('Error applying promocode:', error);
+            throw error;
+        }
+    }
+    
+    removePromoCode = async (orderId) => {
+        try {
+            await removePromoCode(orderId);
+            // После удаления промокода загружаем обновленный заказ
+            const updatedOrder = await this.getOrderById(orderId);
+            runInAction(() => {
+                this.currentOrder = updatedOrder;
+            });
+            return updatedOrder;
+        } catch (error) {
+            console.error('Error removing promocode:', error);
+            throw error;
         }
     }
 
-    removePromoCode = async (orderId) => {
+    loadMyPromoCodes = async () => {
+        this.isLoadingPromoCodes = true;
         try {
-            const data = await removePromoCode(orderId);
+            const data = await getMyPromoCodes();
             runInAction(() => {
-                if (this.currentOrder?.id === orderId) {
-                    this.currentOrder = data;
-                }
+                this.availablePromoCodes = data;
             });
-            return data;
         } catch (error) {
-            console.error('Error removing promocode:', error);
+            console.error('Error loading available promo codes:', error);
+        } finally {
+            runInAction(() => {
+                this.isLoadingPromoCodes = false;
+            });
         }
     }
 

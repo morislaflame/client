@@ -3,11 +3,13 @@ import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../index';
 import styles from './OrderPage.module.css';
+import { Button } from 'antd';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 import OrderTags from '../../components/UI/OrderTags/OrderTags';
 import FormatDate from '../../components/UI/FormatDate/FormatDate';
 import SellerInfo from '../../components/OrderComponents/SellerInfo';
 import OrderModel from '../../components/OrderComponents/OrderModel';
+import OrderPromoCode from '../../components/OrderComponents/OrderPromoCode';
 
 const OrderPage = observer(() => {
   const { order } = useContext(Context);
@@ -37,8 +39,16 @@ const OrderPage = observer(() => {
         {currentOrder.modelProduct && (
           <OrderModel modelProduct={currentOrder.modelProduct} />
         )}
+        <OrderPromoCode orderId={currentOrder.id} />
+        <div className={styles.orderTotalContainer}>
+          <div className={styles.orderTotal}>
+            <h3>Total: ${currentOrder.totalPriceUSD}</h3>
+            <Button type="ghost">
+              Go to payment
+            </Button>
+          </div>
+        </div>
       </div>
-      <p>Total: ${currentOrder.totalPriceUSD}</p>
     </div>
   );
 });
