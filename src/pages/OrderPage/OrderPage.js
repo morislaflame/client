@@ -63,7 +63,7 @@ const OrderPage = observer(() => {
               type="ghost"
               loading={order.isLoadingInvoice}
             >
-              Go to payment
+              Create Invoice
             </Button>
           </div>
         </div>
