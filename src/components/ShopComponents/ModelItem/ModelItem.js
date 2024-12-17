@@ -6,13 +6,15 @@ import MymIcon from '../../../icons/Mym.png';
 import FanslyIcon from '../../../icons/fansly.png';
 import OnlyIcon from '../../../icons/onlyfans.png';
 import { Skeleton } from 'antd';
-import Placeholder from '../../../icons/placeholder.jpg';
-
+import Placeholder from '../../UI/Placeholder/Placeholder';
+import PlaceholderImage from '../../../icons/placeholder.jpg';
 
 const ModelItem = ({model}) => {
     const navigate = useNavigate();
 
-    const previewImage = model.images && model.images.length > 0 ? model.images[0].img : Placeholder;
+    const previewImage = model.images && model.images.length > 0 
+        ? process.env.REACT_APP_API_URL + model.images[0].img 
+        : null;
 
     const brandStyles = {
         1: { color: '#008ccf' },
@@ -29,9 +31,17 @@ const ModelItem = ({model}) => {
     return (
         <div className={'card_list'} onClick={() => navigate(THING_ROUTE + "/" + model.id)}>
             <div className={'card'}>
-                {model ? ( // Проверяем, загружен ли контент
+                {model ? (
                     <>
-                        <img className={'card_img'} src={process.env.REACT_APP_API_URL + previewImage} alt={model.name}/>
+                        {previewImage ? (
+                            <img 
+                            src={PlaceholderImage} 
+                            alt="Placeholder" 
+                            className={`card_img`}
+                        />
+                        ) : (
+                            <Placeholder className={'card_img'} />
+                        )}
                         <div className="descript">
                             {model.adultPlatforms && model.adultPlatforms.length > 0 ? (
                                 model.adultPlatforms.map(adultPlatform => (
@@ -67,7 +77,7 @@ const ModelItem = ({model}) => {
                         </div>
                     </>
                 ) : (
-                    <Skeleton active paragraph={{ rows: 4 }} /> // Добавляем Skeleton для загрузки
+                    <Skeleton active paragraph={{ rows: 4 }} />
                 )}
             </div>
         </div>

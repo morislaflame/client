@@ -36,7 +36,15 @@ const SellerThingItem = ({ thing, onEdit, onDelete }) => {
     <div className="card_list">
       <div className={styles.seller_card}>
         <div className={styles.seller_card_image_wrapper} onClick={() => navigate(THING_ROUTE + "/" + thing.id)}>
-          <img src={process.env.REACT_APP_API_URL + previewImage} alt={thing.name} className={styles.seller_card_image} />
+          {thing.images && thing.images.length > 0 ? (
+            <img 
+              src={process.env.REACT_APP_API_URL + thing.images[0].img} 
+              alt={thing.name} 
+              className={styles.seller_card_image} 
+            />
+          ) : (
+            <Placeholder className={styles.seller_card_image} />
+          )}
         </div>
         <div className={styles.seller_card_content}>
           <div className={styles.brand_name} onClick={() => navigate(THING_ROUTE + "/" + thing.id)}>

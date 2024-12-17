@@ -5,6 +5,7 @@ import { RxCross2 } from "react-icons/rx";
 import MymIcon from '../../../icons/Mym.png';
 import FanslyIcon from '../../../icons/fansly.png';
 import OnlyIcon from '../../../icons/onlyfans.png';
+import Placeholder from '../../UI/Placeholder/Placeholder';
 
 const ModelHelperCard = ({ 
     modelProduct, 
@@ -46,11 +47,7 @@ const ModelHelperCard = ({
                             className={styles.basket_item_img} 
                         />
                     ) : (
-                        <img 
-                            src="/path/to/default/image.png" 
-                            alt="Нет изображения" 
-                            className={styles.basket_item_img} 
-                        />
+                        <Placeholder className={styles.basket_item_img} />
                     )}
                 </div>
                 

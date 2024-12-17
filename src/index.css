@@ -139,6 +139,9 @@ code {
   height: 50vh;
   font-size: var(--caption-font-size);
   font-weight: bold;
+  color: var(--color-text);
+  text-align: center;
+  padding: var(--big-padding);
 }
 
 .container-card {

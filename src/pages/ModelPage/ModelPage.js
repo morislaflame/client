@@ -4,8 +4,8 @@ import { fetchModelProductById } from '../../http/modelProductAPI';
 import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
 import { Context } from '../../index';
 import { FaEdit } from 'react-icons/fa';
-import { IoMdHeart, IoMdHeartEmpty } from 'react-icons/io';
-import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, TERMS_ROUTE, SELLER_INFO_ROUTE } from '../../utils/consts';
+import { IoMdHeart } from 'react-icons/io';
+import { BASKET_ROUTE, EDIT_THING_ROUTE, LOGIN_ROUTE, TERMS_ROUTE, SELLER_INFO_ROUTE, ORDER_ROUTE } from '../../utils/consts';
 import { observer } from 'mobx-react-lite';
 import { message, Image, Carousel } from 'antd';
 import OnlyIcon from '../../icons/onlyfans.png';
@@ -16,13 +16,15 @@ import { IoMdLock } from "react-icons/io";
 import styles from './ModelPage.module.css';
 import { FloatButton, Button, Spin } from 'antd';
 import { LoadingOutlined } from "@ant-design/icons";
+import { CSSTransition } from 'react-transition-group';
 
 const ModelPage = observer(() => {
   const [models, setModels] = useState({ info: {}, images: [], adultPlatforms: [], country: {} });
   const [loading, setLoading] = useState(true);
   const [addingToBasket, setAddingToBasket] = useState(false); // Добавлено состояние для анимации загрузки
+  const [heartAnimation, setHeartAnimation] = useState(false);
   const { id } = useParams();
-  const { model, user } = useContext(Context);
+  const { model, user, order } = useContext(Context);
 
   const navigate = useNavigate();
 
@@ -41,25 +43,62 @@ const ModelPage = observer(() => {
     }
   }, [id, model, user.isAuth]); // Added user.isAuth to dependency array
   
+  const handleCreateOrder = async () => {
+    if (!user.isAuth) {
+      navigate(LOGIN_ROUTE);
+      return;
+    }
 
-  const handleAddToBasket = async () => {
-    if (user.isAuth) {
-      setAddingToBasket(true); // Устанавливаем состояние загрузки в true
-      try {
-        await model.addToBasket(id);
-        message.success('Added to cart');
+    setAddingToBasket(true);
+    try {
+      const newOrder = await order.createOrder({
+        modelProductId: id,
+        chatId: id,
+      });
 
+      if (newOrder?.id) {
         if (window.Telegram?.WebApp?.HapticFeedback) {
           window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
         }
-      } catch (error) {
-        const errorMessage = error.response?.data?.message || error.message;
-        message.error('Error adding to cart: ' + errorMessage);
-      } finally {
-        setAddingToBasket(false); // Устанавливаем состояние загрузки в false после завершения запроса
+        navigate(`${ORDER_ROUTE}/${newOrder.id}`);
       }
-    } else {
-      navigate(LOGIN_ROUTE);
+    } catch (error) {
+      console.error('Error payload:', error.response?.data);
+      message.error('Error creating order: ' + (error.response?.data?.message || error.message));
+    } finally {
+      setAddingToBasket(false);
+    }
+  };
+
+  const handleAddToFavorites = async () => {
+    if (!user.isAuth) {
+        navigate(LOGIN_ROUTE);
+        return;
+    }
+
+    setHeartAnimation(true);
+    try {
+        // Находим элемент корзины для текущего товара
+        const basketItem = model.basket.find(item => item.modelProductId === Number(id));
+        
+        if (basketItem) {
+            // Если товар уже в корзине - удаляем его
+            await model.removeFromBasket(basketItem.id);
+            message.success('Removed from favorites');
+        } else {
+            // Если товара нет в корзине - добавляем
+            await model.addToBasket(id);
+            message.success('Added to favorites');
+        }
+
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+        }
+    } catch (error) {
+        const errorMessage = error.response?.data?.message || error.message;
+        message.error('Error: ' + errorMessage);
+    } finally {
+        setTimeout(() => setHeartAnimation(false), 300);
     }
   };
 
@@ -182,18 +221,49 @@ const ModelPage = observer(() => {
             <div className={styles.add_to_card}>
               <button
                 className={styles.buy}
-                onClick={handleAddToBasket}
-                disabled={isInBasket || addingToBasket} // Блокируем кнопку, если товар уже в корзине или идет добавление
+                onClick={handleCreateOrder}
+                disabled={addingToBasket}
               >
-                {addingToBasket ? <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/> : isInBasket ? 'Added' : 'Create Order'}
+                {addingToBasket ? (
+                  <Spin indicator={<LoadingOutlined style={{color: 'white'}} spin />}/>
+                ) : (
+                  'Create Order'
+                )}
               </button>
               <Button
                 className={styles.shopping_card}
                 type='text'
-                onClick={() => navigate(BASKET_ROUTE)}
+                onClick={handleAddToFavorites}
                 style={{ height: '100%' }}
               >
-                {isInBasket ? <IoMdHeart style={{color: '#ff0000', fontSize: 'calc(var(--index) * 3)'}}/> : <IoMdHeart style={{fontSize: 'calc(var(--index) * 3)'}}/>}
+                <CSSTransition
+                  in={heartAnimation}
+                  timeout={300}
+                  classNames={{
+                    enter: styles.heartEnter,
+                    enterActive: styles.heartEnterActive,
+                    exit: styles.heartExit,
+                    exitActive: styles.heartExitActive,
+                  }}
+                >
+                  <div>
+                    {isInBasket ? (
+                      <IoMdHeart 
+                        style={{
+                          color: '#ff0000', 
+                          fontSize: 'calc(var(--index) * 3)'
+                        }}
+                      />
+                    ) : (
+                      <IoMdHeart 
+                        style={{
+                          color: 'var(--color-text)',
+                          fontSize: 'calc(var(--index) * 3)'
+                        }}
+                      />
+                    )}
+                  </div>
+                </CSSTransition>
               </Button>
             </div>
             )}
@@ -206,11 +276,6 @@ const ModelPage = observer(() => {
         </div>
 
       </div>
-      
-      
-        
-      
-
       {/* Кнопка редактирования для администратора */}
       {isAdmin && (
         <>

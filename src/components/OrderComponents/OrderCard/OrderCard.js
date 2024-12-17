@@ -6,6 +6,8 @@ import { ORDER_ROUTE, SELLER_INFO_ROUTE } from '../../../utils/consts';
 import styles from './OrderCard.module.css';
 import OrderTags from '../../UI/OrderTags/OrderTags';
 import FormatDate from '../../UI/FormatDate/FormatDate';
+import Placeholder from '../../UI/Placeholder/Placeholder';
+import PlaceholderImage from '../../../icons/placeholder.jpg';
 
 const OrderCard = ({ order }) => {
     const navigate = useNavigate();
@@ -67,12 +69,14 @@ const OrderCard = ({ order }) => {
             
             {order.modelProduct && (
                 <div className={styles.productInfo}>
-                    {order.modelProduct.images && order.modelProduct.images[0] && (
+                    {order.modelProduct.images && order.modelProduct.images[0] ? (
                         <img 
-                            src={process.env.REACT_APP_API_URL + order.modelProduct.images[0].img}
-                            alt={order.modelProduct.name}
+                            src={PlaceholderImage} 
+                            alt="Placeholder" 
                             className={styles.productImage}
                         />
+                    ) : (
+                        <Placeholder className={styles.productImage} />
                     )}
                     <div className={styles.productParams}>
                         <span>Model: {order.modelProduct.name}</span>

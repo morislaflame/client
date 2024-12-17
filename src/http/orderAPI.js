@@ -1,6 +1,7 @@
 import { $authHost } from "./index";
 
 export const createOrder = async (order) => {
+  console.log('Sending order:', order);
   const { data } = await $authHost.post('/api/order', order);
   return data;
 };

@@ -26,6 +26,7 @@ import {
     ALL_USER_ORDERS_ROUTE,
     ORDER_ROUTE,
     ALL_PENDING_MODELS_ROUTE,
+    ALL_USER_MODELS_ROUTE,
 } from "./utils/consts";
 import Main from "./pages/Main/Main";
 import TermsOfService from "./pages/TermsOfService/TermsOfService";
@@ -45,6 +46,7 @@ import AllUserOrdersPage from "./pages/AllUserOrdersPage/AllUserOrdersPage";
 import SellerInfoPage from "./pages/AllAdminPages/SellerInfoPage/SellerInfoPage";
 import OrderPage from "./pages/OrderPage/OrderPage";
 import AllPendingModels from "./pages/AllAdminPages/AllPendingModels/AllPendingModels";
+import AllUserModelsPage from "./pages/AllUserModelsPage/AllUserModelsPage";
 
 
 
@@ -71,6 +73,10 @@ export const authRoutes = (user) => {
         {
             path: ORDER_ROUTE + '/:id',
             Component: <OrderPage />
+        },
+        {
+            path: ALL_USER_MODELS_ROUTE,
+            Component: <AllUserModelsPage />
         },
     ];
     

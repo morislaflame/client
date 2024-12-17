@@ -21,4 +21,5 @@ export const SELLER_INFO_ROUTE = '/seller/:id';
 export const ALL_USER_ORDERS_ROUTE = '/user/orders';
 export const ORDER_ROUTE = '/order/:id';
 export const ALL_PENDING_MODELS_ROUTE = '/admin/pending-models';
+export const ALL_USER_MODELS_ROUTE = '/user/models';
 

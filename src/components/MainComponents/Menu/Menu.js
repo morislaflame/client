@@ -11,6 +11,7 @@ import {
   LOGIN_ROUTE,
   MAIN_ROUTE,
   ALL_USER_ORDERS_ROUTE,
+  ALL_USER_MODELS_ROUTE,
 } from '../../../utils/consts';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { FaUserAlt } from 'react-icons/fa';
@@ -99,6 +100,13 @@ const Menu = ({ open, onClose }) => {
           className={styles.menuLink}
         >
           <FaUserAlt /> My Orders
+        </NavLink>
+        <NavLink
+          to={ALL_USER_MODELS_ROUTE}
+          onClick={onClose}
+          className={styles.menuLink}
+        >
+          <FaUserAlt /> My Models
         </NavLink>
         <NavLink
           to={SHOP_ROUTE}

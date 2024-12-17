@@ -26,6 +26,12 @@ const AllUserOrdersPage = observer(() => {
         loadOrders();
     }, []);
 
+    useEffect(() => {
+        if (order.orders) {
+            setFilteredOrders(order.orders);
+        }
+    }, [order.orders]);
+
     const formatOrderOption = (order) => ({
         value: order.id.toString(),
         label: (

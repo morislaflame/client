@@ -10,6 +10,7 @@ import OnlyIcon from '../../../icons/onlyfans.png';
 import Placeholder from '../../../icons/placeholder.jpg';
 import { Modal, Select, message, Popconfirm } from 'antd';
 import { useState } from 'react';
+import PlaceholderImage from '../../../icons/placeholder.jpg';
 
 const { Option } = Select;
 
@@ -62,7 +63,15 @@ const PendingModelItem = ({ model, onApprove, onReject }) => {
     <div className='card_list'>
       <div className={styles.seller_card}>
         <div className={styles.seller_card_image_wrapper} onClick={() => navigate(THING_ROUTE + "/" + model.id)}>
-          <img src={process.env.REACT_APP_API_URL + previewImage} alt={model.name} className={styles.seller_card_image} />
+          {model.images && model.images.length > 0 ? (
+            <img 
+            src={PlaceholderImage} 
+            alt="Placeholder" 
+            className={styles.seller_card_image}
+        />
+          ) : (
+            <Placeholder className={styles.seller_card_image} />
+          )}
         </div>
         <div className={styles.seller_card_content}>
           <div className={styles.brand_name} onClick={() => navigate(THING_ROUTE + "/" + model.id)}>

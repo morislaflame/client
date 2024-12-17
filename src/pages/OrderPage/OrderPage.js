@@ -18,6 +18,7 @@ const OrderPage = observer(() => {
   const { id } = useParams();
 
   useEffect(() => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
     order.getOrderById(id);
   }, [id]);
 

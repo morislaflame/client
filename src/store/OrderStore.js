@@ -62,10 +62,15 @@ export default class OrderStore {
         try {
             const data = await getMyOrders();
             runInAction(() => {
-                this.orders = data;
+                this.orders = data || [];
             });
+            return data;
         } catch (error) {
             console.error('Error loading orders:', error);
+            runInAction(() => {
+                this.orders = [];
+            });
+            throw error;
         }
     }
 
@@ -84,12 +89,14 @@ export default class OrderStore {
         try {
             const data = await createOrder(orderData);
             runInAction(() => {
-                this.orders.push(data);
+                // Обновляем список заказов, добавляя новый заказ в начало массива
+                this.orders = [data, ...this.orders];
                 this.currentOrder = data;
             });
             return data;
         } catch (error) {
             console.error('Error creating order:', error);
+            throw error;
         }
     }
 
@@ -98,10 +105,16 @@ export default class OrderStore {
             const data = await getOrderById(id);
             runInAction(() => {
                 this.currentOrder = data;
+                // Обновляем заказ в списке, если он там есть
+                const index = this.orders.findIndex(order => order.id === data.id);
+                if (index !== -1) {
+                    this.orders[index] = data;
+                }
             });
             return data;
         } catch (error) {
-            console.error('Error loading order:', error);
+            console.error('Error getting order by id:', error);
+            throw error;
         }
     }
 
