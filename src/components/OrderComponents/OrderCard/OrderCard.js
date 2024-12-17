@@ -7,7 +7,6 @@ import styles from './OrderCard.module.css';
 import OrderTags from '../../UI/OrderTags/OrderTags';
 import FormatDate from '../../UI/FormatDate/FormatDate';
 import Placeholder from '../../UI/Placeholder/Placeholder';
-import PlaceholderImage from '../../../icons/placeholder.jpg';
 
 const OrderCard = ({ order }) => {
     const navigate = useNavigate();
@@ -71,8 +70,8 @@ const OrderCard = ({ order }) => {
                 <div className={styles.productInfo}>
                     {order.modelProduct.images && order.modelProduct.images[0] ? (
                         <img 
-                            src={PlaceholderImage} 
-                            alt="Placeholder" 
+                            src={process.env.REACT_APP_API_URL + order.modelProduct.images[0].img}
+                            alt={order.modelProduct.name}
                             className={styles.productImage}
                         />
                     ) : (

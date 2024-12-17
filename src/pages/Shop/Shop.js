@@ -40,7 +40,7 @@ const Shop = observer(() => {
           </Suspense>
         </div>
       </div>
-      <div className="container">
+      <div className="container" style={{background: 'linear-gradient(to bottom, #0c0120, #030107)'}}>
         <Suspense fallback={<Skeleton active />}>
           <ModelList/>
         </Suspense>

@@ -23,6 +23,7 @@
   --main-border-radius: calc(var(--index) * 1);
   --small-border-radius: calc(var(--index) * 0.7);
   --smallest-border-radius: calc(var(--index) * 0.5);
+  --big-border-radius: calc(var(--index) * 2);
 
   --smallest-font-size: calc(var(--index) * 0.7);
   --small-font-size: calc(var(--index) * 1);
@@ -318,10 +319,10 @@ b, strong {
 }
 
 .ant-drawer .ant-drawer-content {
-  background-color: #030107;
-  color: #fff;
-  border-top-left-radius: calc(var(--index) * 1);
-  border-bottom-left-radius: calc(var(--index) * 1);
+  background: radial-gradient(ellipse at right top, #1c051e, black, #1a0734);
+  color: var(--color-text);
+  border-top-left-radius: var(--big-border-radius);
+  border-bottom-left-radius: var(--big-border-radius);
   margin-right: calc(var(--index) * 5);
 }
 

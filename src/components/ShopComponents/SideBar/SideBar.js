@@ -1,17 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Drawer, Button } from 'antd';
 import TypeBar from './TypeBar/TypeBar';
 import BrandBar from './BrandBar/BrandBar';
-import { useState, useContext } from 'react';
+import { useContext } from 'react';
 import './SideBar.css';
 import PriceSlider from './PriceSlider/PriceSlider';
 import SelectedFilters from './SelectedFilters/SelectedFilters';
 import { Context } from '../../../index';
+import { fetchPriceRange } from '../../../http/modelProductAPI';
 
 const SideBar = observer(({ name, ...props }) => {
     const [show, setShow] = useState(false);
     const { model } = useContext(Context);
+    const [minPrice, setMinPrice] = useState(0);
+    const [maxPrice, setMaxPrice] = useState(10000);
+
+    useEffect(() => {
+        fetchPriceRange().then(data => {
+            setMinPrice(data.minPriceUSD);
+            setMaxPrice(data.maxPriceUSD);
+        }).catch(err => console.error("Error fetching price range: ", err));
+    }, []);
 
     const handleClose = () => setShow(false);
     const toggleShow = () => {
@@ -24,7 +34,7 @@ const SideBar = observer(({ name, ...props }) => {
     const handleReset = () => {
         model.setSelectedCountry({});
         model.setSelectedAdultPlatforms([]);
-        model.setPriceRange({ min: 0, max: 10000 });
+        model.setPriceRange({ min: minPrice, max: maxPrice });
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
           }
@@ -33,7 +43,7 @@ const SideBar = observer(({ name, ...props }) => {
     const hasFilters =
         Object.keys(model.selectedCountry).length > 0 ||
         model.selectedAdultPlatforms.length > 0 ||
-        (model.priceRange.min !== 0 || model.priceRange.max !== 10000);
+        (model.priceRange.min !== minPrice || model.priceRange.max !== maxPrice);
 
     return (
         <>
@@ -59,22 +69,19 @@ const SideBar = observer(({ name, ...props }) => {
                 open={show}
                 height={`auto`}
                 styles={{
-                    body: {
-                        padding: `calc(var(--index)* 1)`,
-                        borderBottomLeftRadius: `calc(var(--index)* 1.5)`,
-                        borderBottomRightRadius: `calc(var(--index)* 1.5)`,
+                    content: {
+                        borderBottomLeftRadius: `calc(var(--index) * 2)`,
+                        borderBottomRightRadius: `calc(var(--index) * 2)`,
+                        borderTopLeftRadius: `0`,
                     }
                 }}
             >
                 <div className={'sidebar'}>
-                    <div>
-                        <PriceSlider />
-                    </div>
-                    <div>
+                    <div className='container-item'>
+                        
                         <BrandBar />
-                    </div>
-                    <div>
                         <TypeBar />
+                        <PriceSlider />
                     </div>
                 </div>
             </Drawer>

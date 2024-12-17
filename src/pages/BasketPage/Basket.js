@@ -121,13 +121,17 @@ const handleBuyNow = async (modelProduct) => {
                     />
                     );
                 })}
-                <Button 
-                    danger 
-                    onClick={handleClearBasket}
-                    loading={isLoading}
-                >
-                    Clear cart
-                </Button>
+                <div className='container-card'>
+                    <div className='container-item'>
+                        <Button 
+                            danger 
+                            onClick={handleClearBasket}
+                            loading={isLoading}
+                        >
+                            Clear cart
+                        </Button>
+                    </div>
+                </div>
             </div>
             ) : (
                 <div className="no-info-container">Your Cart Is Empty</div>

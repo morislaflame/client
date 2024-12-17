@@ -5,7 +5,7 @@
     width: 100%;
     padding: calc(var(--index)* 0.1);
     background: linear-gradient(to left, #6b3ce6, #ac57ed, #25032C);
-    border-radius: calc(var(--index)* 1);
+    border-radius: var(--main-border-radius);
 }
 
 .filters-container {
@@ -13,12 +13,10 @@
     flex: 1 1;
     justify-content: center;
     align-items: center;
-    padding: calc(var(--index)* 0.5);
-    border-radius: calc(var(--index)* 1);
-    color: white;
-    font-size: calc(var(--index) * 1.5);
-    background: linear-gradient(to right bottom, #25032C, #211F25);
-    font-size: calc(var(--index) * 1.5);
+    padding: var(--small-padding);
+    border-radius: var(--main-border-radius);
+    color: var(--color-text);
+    background: var(--menu-background);
 }
 
 .filters-buttons {
@@ -27,19 +25,19 @@
     align-items: center;
     justify-content: center;
     width: 35%;
-    padding: calc(var(--index)* 0.5);
+    padding: var(--small-padding);
 }
 
 .filters-button {
-    padding: calc(var(--index)* 0.7);
+    padding: var(--medium-padding);
     background: linear-gradient(150deg, #ac57ed, #6b3ce6);
-    color: white;
-    border-radius: calc(var(--index)* 0.7);
+    color: var(--color-text);
+    border-radius: var(--small-border-radius);
     cursor: pointer;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-size: calc(var(--index) * 1.2);
+    font-size: var(--main-font-size);
     height: fit-content;
     border: none;
     width: 100%;
@@ -47,38 +45,21 @@
 }
 
 .reset-filters-button {
-    background-color: white;
     background: transparent;
-    color: white;
-    border-radius: calc(var(--index)* 1);
+    color: var(--color-text);
+    border-radius: var(--main-border-radius);
     cursor: pointer;
     border: none;
-    font-size: calc(var(--index)* 1.1);
+    font-size: var(--main-font-size);
     width: 100%;
     text-decoration: underline;
-    margin-top: calc(var(--index)* 0.5);
+    margin-top: var(--small-margin);
 }
 
 .filters-button:hover {
     background: #ac57ed;
 }
 
-.offcanvas.offcanvas-top {
-    height: fit-content;
-    background: radial-gradient(ellipse at right top, #1c051e, black, #1a0734);
-    color: white;
-    border-bottom-left-radius: calc(var(--index)* 1.5);
-    border-bottom-right-radius: calc(var(--index)* 1.5);
+.sidebar .ant-drawer .ant-drawer-header{
+    padding: var(--main-padding);
 }
-
-.offcanvas-header {
-    display: flex;
-    justify-content: center;
-}
-
-.offcanvas-header button{
-    color: white;
-    position: absolute;
-    right: 0;
-}
-

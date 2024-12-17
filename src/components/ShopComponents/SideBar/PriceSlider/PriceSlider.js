@@ -11,6 +11,8 @@ const PriceSlider = observer(() => {
     const [minPriceUSD, setMinPriceUSD] = useState(0);
     const [maxPriceUSD, setMaxPriceUSD] = useState(10000);
     const [currentPriceRange, setCurrentPriceRange] = useState([minPriceUSD, maxPriceUSD]);
+    const [leftPosition, setLeftPosition] = useState(0);
+    const [rightPosition, setRightPosition] = useState(100);
 
     useEffect(() => {
         fetchPriceRange().then(data => {
@@ -21,39 +23,62 @@ const PriceSlider = observer(() => {
         }).catch(err => console.error("Error fetching price range: ", err));
     }, []);
 
-    // Добавляем useEffect для отслеживания изменений в thing.priceRange
     useEffect(() => {
         setCurrentPriceRange([model.priceRange.min, model.priceRange.max]);
-    }, [model.priceRange]);
+        const leftPercent = ((model.priceRange.min - minPriceUSD) / (maxPriceUSD - minPriceUSD)) * 100;
+        const rightPercent = ((model.priceRange.max - minPriceUSD) / (maxPriceUSD - minPriceUSD)) * 100;
+        setLeftPosition(leftPercent);
+        setRightPosition(rightPercent);
+    }, [model.priceRange, minPriceUSD, maxPriceUSD]);
 
     const handleSliderChange = (value) => {
         setCurrentPriceRange(value);
+        const leftPercent = ((value[0] - minPriceUSD) / (maxPriceUSD - minPriceUSD)) * 100;
+        const rightPercent = ((value[1] - minPriceUSD) / (maxPriceUSD - minPriceUSD)) * 100;
+        setLeftPosition(leftPercent);
+        setRightPosition(rightPercent);
+
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
-          }
-        console.log(`Price range changed: ${value}`);
+        }
     };
 
-    const applyPriceFilter = () => {
-        console.log("Applying price filter with values: ", { min: currentPriceRange[0], max: currentPriceRange[1] });
-        model.setPriceRange({ min: currentPriceRange[0], max: currentPriceRange[1] });
+    const handleAfterChange = (value) => {
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+        }
+        model.setPriceRange({ min: value[0], max: value[1] });
+        console.log("Price range applied: ", { min: value[0], max: value[1] });
     };
 
     return (
-        <div className="price-slider">
-            <div className='min-max'>
-                <label>Minimum price: {currentPriceRange[0]}</label>
-                <label>Maximum price: {currentPriceRange[1]}</label>
+        <div className="container-card">
+            <div className='price-slider'>
+                <h3 style={{ margin: '0', alignSelf: 'center' }}>Price</h3>
+                
+                <div className="slider-container">
+                    <div 
+                        className="price-label min-price" 
+                        style={{ left: `${leftPosition}%` }}
+                    >
+                        ${currentPriceRange[0]}
+                    </div>
+                    <div 
+                        className="price-label max-price" 
+                        style={{ left: `${rightPosition}%` }}
+                    >
+                        ${currentPriceRange[1]}
+                    </div>
+                    <Slider
+                        range
+                        min={minPriceUSD}
+                        max={maxPriceUSD}
+                        value={currentPriceRange}
+                        onChange={handleSliderChange}
+                        onChangeComplete={handleAfterChange}
+                    />
+                </div>
             </div>
-            
-            <Slider
-                range
-                min={minPriceUSD}
-                max={maxPriceUSD}
-                value={currentPriceRange}
-                onChange={handleSliderChange}
-            />
-            <button onClick={applyPriceFilter}>Confirm</button>
         </div>
     );
 });

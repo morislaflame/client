@@ -7,7 +7,6 @@ import FanslyIcon from '../../../icons/fansly.png';
 import OnlyIcon from '../../../icons/onlyfans.png';
 import { Skeleton } from 'antd';
 import Placeholder from '../../UI/Placeholder/Placeholder';
-import PlaceholderImage from '../../../icons/placeholder.jpg';
 
 const ModelItem = ({model}) => {
     const navigate = useNavigate();
@@ -35,10 +34,10 @@ const ModelItem = ({model}) => {
                     <>
                         {previewImage ? (
                             <img 
-                            src={PlaceholderImage} 
-                            alt="Placeholder" 
-                            className={`card_img`}
-                        />
+                                className={'card_img'} 
+                                src={previewImage} 
+                                alt={model.name}
+                            />
                         ) : (
                             <Placeholder className={'card_img'} />
                         )}

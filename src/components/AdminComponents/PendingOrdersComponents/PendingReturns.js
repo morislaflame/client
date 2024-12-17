@@ -1,13 +1,13 @@
 // components/AdminComponents/PendingReturns.js
 
 import React, { useEffect, useContext, useState } from 'react';
-import { Context } from '../../index';
+import { Context } from '../../../index';
 import { observer } from 'mobx-react-lite';
 import { List, message, Input, Button } from 'antd';
 import { useNavigate } from 'react-router-dom';
 import styles from './AdminComponents.module.css';
-import { THING_ROUTE } from '../../utils/consts';
-import CopyableButton from '../UI/CopyableButton/CopyableButton';
+import { THING_ROUTE } from '../../../utils/consts';
+import CopyableButton from '../../UI/CopyableButton/CopyableButton';
 
 const PendingReturns = observer(() => {
   const { admin } = useContext(Context);
