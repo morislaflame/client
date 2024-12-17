@@ -3,7 +3,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import OrderCard from '../OrderComponents/OrderCard/OrderCard';
 import OrdersSkeletons from '../UI/Skeletons/OrdersSkeletons';
-import Search from '../UI/Search/Search';
+import Search from '../FuctionalComponents/Search/Search';
 
 const SellerOrders = observer(() => {
     const { seller } = useContext(Context);

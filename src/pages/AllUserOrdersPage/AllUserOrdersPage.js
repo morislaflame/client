@@ -2,7 +2,7 @@ import React, { useEffect, useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
-import Search from '../../components/UI/Search/Search';
+import Search from '../../components/FuctionalComponents/Search/Search';
 import OrderCard from '../../components/OrderComponents/OrderCard/OrderCard';
 import OrdersSkeletons from '../../components/UI/Skeletons/OrdersSkeletons';
 

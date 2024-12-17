@@ -3,7 +3,7 @@ import { Context } from '../../../index';
 import { observer } from 'mobx-react-lite';
 import OrderCard from '../../../components/OrderComponents/OrderCard/OrderCard';
 import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
-import Search from '../../../components/UI/Search/Search';
+import Search from '../../../components/FuctionalComponents/Search/Search';
 import OrdersSkeletons from '../../../components/UI/Skeletons/OrdersSkeletons';
 
 const AllOrdersPage = observer(() => {

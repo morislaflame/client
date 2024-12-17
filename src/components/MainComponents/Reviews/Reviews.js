@@ -8,8 +8,8 @@ import { HiMiniPencilSquare, HiMiniTrash } from "react-icons/hi2";
 import { message, Image, Modal, Card, Button, Form, Input, Spin } from 'antd';
 import styles from './Reviews.module.css';
 import StarRating from '../../UI/StarRating/StarRating';
-import StarRatingInput from '../../UI/StarRatingInput/StarRatingInput';
-import ImageUploader from '../../UI/ImageUploader/ImageUploader';
+import StarRatingInput from '../../FuctionalComponents/StarRatingInput/StarRatingInput';
+import ImageUploader from '../../FuctionalComponents/ImageUploader/ImageUploader';
 import ExpandableText from '../../FuctionalComponents/ExpandableText/ExpandableText';
 
 const { confirm } = Modal;

@@ -8,7 +8,7 @@ import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBa
 import styles from './AllSellersPage.module.css';
 import StarRating from '../../../components/UI/StarRating/StarRating';
 import LoadingIndicator from '../../../components/UI/LoadingIndicator/LoadingIndicator';
-import Search from '../../../components/UI/Search/Search';
+import Search from '../../../components/FuctionalComponents/Search/Search';
 
 const AllSellersPage = observer(() => {
     const { admin } = useContext(Context);

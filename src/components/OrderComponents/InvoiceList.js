@@ -4,7 +4,7 @@ import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import InvoiceItem from './InvoiceItem';
 import OrdersSkeletons from '../UI/Skeletons/OrdersSkeletons';
-import Search from '../UI/Search/Search';
+import Search from '../FuctionalComponents/Search/Search';
 import styles from './OrderComponents.module.css';
 
 const InvoiceList = observer(({ orderId }) => {

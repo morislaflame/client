@@ -6,7 +6,7 @@ import { FloatButton, Button } from 'antd';
 import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 import styles from './AllUsersPage.module.css';
 import LoadingIndicator from '../../../components/UI/LoadingIndicator/LoadingIndicator';
-import Search from '../../../components/UI/Search/Search';
+import Search from '../../../components/FuctionalComponents/Search/Search';
 import { EyeOutlined } from '@ant-design/icons';
 
 const AllUsersPage = observer(() => {

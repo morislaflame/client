@@ -2,7 +2,7 @@ import React, { useContext, useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../../index';
 import PendingModelItem from '../../../components/AdminComponents/PendingModelsComponents/PendingModelItem';
-import Search from '../../../components/UI/Search/Search';
+import Search from '../../../components/FuctionalComponents/Search/Search';
 import ModelsSkeletonsArray from '../../../components/UI/Skeletons/ModelsSkeletonsArray';
 import TopicBack from '../../../components/FuctionalComponents/TopicBack/TopicBack';
 

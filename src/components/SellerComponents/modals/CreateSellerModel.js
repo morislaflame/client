@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect, useCallback } from "react";
 import { Button, Modal, Form, Input, InputNumber, Select, Row, Col, message, AutoComplete } from 'antd';
 import { observer } from "mobx-react-lite";
 import { Context } from "../../../index";
-import ImageUploader from '../../UI/ImageUploader/ImageUploader';
+import ImageUploader from '../../FuctionalComponents/ImageUploader/ImageUploader';
 
 const { Option } = Select;
 

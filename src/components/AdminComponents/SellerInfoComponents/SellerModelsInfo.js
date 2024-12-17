@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { Context } from '../../../index';
-import Search from '../../UI/Search/Search';
+import Search from '../../FuctionalComponents/Search/Search';
 import ModelItem from '../../ShopComponents/ModelItem/ModelItem';
 import ModelsSkeletonsArray from '../../UI/Skeletons/ModelsSkeletonsArray';
 

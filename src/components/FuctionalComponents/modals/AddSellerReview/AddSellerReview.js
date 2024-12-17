@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { Modal, Form, Input, message } from 'antd';
-import StarRatingInput from '../../../UI/StarRatingInput/StarRatingInput';
+import StarRatingInput from '../../StarRatingInput/StarRatingInput';
 import { Context } from '../../../../index';
 import { observer } from 'mobx-react-lite';
 

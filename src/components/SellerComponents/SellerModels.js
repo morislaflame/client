@@ -1,7 +1,7 @@
 import React, { useEffect, useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
-import SellerThingItem from './SellerThingItem';
+import SellerModelItem from './SellerModelItem';
 import { message } from 'antd';
 import styles from './SellerComponents.module.css';
 import { useNavigate } from 'react-router-dom';
@@ -57,7 +57,7 @@ const SellerModels = observer(({ onAddModel }) => {
           <ModelsSkeletonsArray count={20} />
         ) : myModelProducts && myModelProducts.length > 0 ? (
           myModelProducts.map((thing) => (
-            <SellerThingItem
+            <SellerModelItem
               key={thing.id}
               thing={thing}
               onEdit={handleEdit}
