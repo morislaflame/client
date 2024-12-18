@@ -27,8 +27,15 @@ const ModelItem = ({model}) => {
         3: MymIcon
     };
 
+    const handleClick = () => {
+        navigate(THING_ROUTE + "/" + model.id);
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+        }
+    };
+
     return (
-        <div className={'card_list'} onClick={() => navigate(THING_ROUTE + "/" + model.id)}>
+        <div className={'card_list'} onClick={handleClick}>
             <div className={'card'}>
                 {model ? (
                     <>

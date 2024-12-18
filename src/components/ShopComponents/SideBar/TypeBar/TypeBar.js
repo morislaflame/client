@@ -18,7 +18,7 @@ const TypeBar = observer(() => {
             model.setSelectedCountry(selectedCountry);
         }
         if (window.Telegram?.WebApp?.HapticFeedback) {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
         }
     };
 
@@ -37,7 +37,7 @@ const TypeBar = observer(() => {
                     onClear={() => {
                         model.setSelectedCountry({});
                         if (window.Telegram?.WebApp?.HapticFeedback) {
-                            window.Telegram.WebApp.HapticFeedback.impactOccurred('light');
+                            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
                         }
                     }}
                 />

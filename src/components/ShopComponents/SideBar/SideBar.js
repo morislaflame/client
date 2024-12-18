@@ -40,7 +40,7 @@ const SideBar = observer(({ name, ...props }) => {
             model.setPriceRange({ min: minPrice, max: maxPrice });
         }
         if (window.Telegram?.WebApp?.HapticFeedback) {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
         }
     };
 
@@ -70,7 +70,12 @@ const SideBar = observer(({ name, ...props }) => {
             <Drawer
                 title="FILTERS"
                 placement="top"
-                onClose={handleClose}
+                onClose={() => {
+                    handleClose();
+                    if (window.Telegram?.WebApp?.HapticFeedback) {
+                        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+                    }
+                }}
                 open={show}
                 height={`auto`}
                 styles={{

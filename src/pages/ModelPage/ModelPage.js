@@ -78,15 +78,12 @@ const ModelPage = observer(() => {
 
     setHeartAnimation(true);
     try {
-        // Находим элемент корзины для текущего товара
         const basketItem = model.basket.find(item => item.modelProductId === Number(id));
         
         if (basketItem) {
-            // Если товар уже в корзине - удаляем его
             await model.removeFromBasket(basketItem.id);
             message.success('Removed from favorites');
         } else {
-            // Если товара нет в корзине - добавляем
             await model.addToBasket(id);
             message.success('Added to favorites');
         }
@@ -98,7 +95,7 @@ const ModelPage = observer(() => {
         const errorMessage = error.response?.data?.message || error.message;
         message.error('Error: ' + errorMessage);
     } finally {
-        setTimeout(() => setHeartAnimation(false), 300);
+        setTimeout(() => setHeartAnimation(false), 1000);
     }
   };
 
@@ -234,11 +231,11 @@ const ModelPage = observer(() => {
                 className={styles.shopping_card}
                 type='text'
                 onClick={handleAddToFavorites}
-                style={{ height: '100%' }}
+                style={{ height: '100%', padding: '0 var(--main-padding)' }}
               >
                 <CSSTransition
                   in={heartAnimation}
-                  timeout={300}
+                  timeout={1000}
                   classNames={{
                     enter: styles.heartEnter,
                     enterActive: styles.heartEnterActive,
@@ -251,14 +248,14 @@ const ModelPage = observer(() => {
                       <IoMdHeart 
                         style={{
                           color: '#ff0000', 
-                          fontSize: 'calc(var(--index) * 3)'
+                          fontSize: 'calc(var(--index) * 3.5)'
                         }}
                       />
                     ) : (
                       <IoMdHeart 
                         style={{
                           color: 'var(--color-text)',
-                          fontSize: 'calc(var(--index) * 3)'
+                          fontSize: 'calc(var(--index) * 3.5)'
                         }}
                       />
                     )}
