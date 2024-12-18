@@ -10,7 +10,7 @@ const SellerInfo = ({ seller }) => {
 
   return (
     <div className='container-item'>
-        <div className={styles.promoCodeContainer}>
+        <div className='container-card'>
             <div className={styles.orderSeller}>
                 <span>Seller: {seller?.sellerInformation?.sellerName}</span>
                 <Button 

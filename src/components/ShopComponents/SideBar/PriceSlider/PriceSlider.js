@@ -19,6 +19,7 @@ const PriceSlider = observer(() => {
             setMinPriceUSD(data.minPriceUSD);
             setMaxPriceUSD(data.maxPriceUSD);
             setCurrentPriceRange([data.minPriceUSD, data.maxPriceUSD]);
+            model.initializePriceRange(data.minPriceUSD, data.maxPriceUSD);
             console.log("Initial global prices set: ", { min: data.minPriceUSD, max: data.maxPriceUSD });
         }).catch(err => console.error("Error fetching price range: ", err));
     }, []);

@@ -6,20 +6,23 @@ import { fetchPriceRange } from '../../../../http/modelProductAPI';
 
 const SelectedFilters = observer(() => {
     const { model } = useContext(Context);
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(10000);
+    const [minPrice, setMinPrice] = useState(null);
+    const [maxPrice, setMaxPrice] = useState(null);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
         fetchPriceRange().then(data => {
             setMinPrice(data.minPriceUSD);
             setMaxPrice(data.maxPriceUSD);
+            setIsInitialized(true);
         }).catch(err => console.error("Error fetching price range: ", err));
     }, []);
 
     const hasFilters =
         Object.keys(model.selectedCountry).length > 0 ||
         model.selectedAdultPlatforms.length > 0 ||
-        (model.priceRange.min !== minPrice || model.priceRange.max !== maxPrice);
+        (isInitialized && model.priceRange.min !== null && model.priceRange.max !== null && 
+         (model.priceRange.min !== minPrice || model.priceRange.max !== maxPrice));
 
     return (
         <div className={styles.selectedFilters}>
@@ -42,7 +45,8 @@ const SelectedFilters = observer(() => {
                             </span>
                         </div>
                     )}
-                    {(model.priceRange.min !== minPrice || model.priceRange.max !== maxPrice) && (
+                    {isInitialized && model.priceRange.min !== null && model.priceRange.max !== null &&
+                     (model.priceRange.min !== minPrice || model.priceRange.max !== maxPrice) && (
                         <div className={styles.filterPrice}>
                             <span className={styles.label}>Price:</span>
                             <span className={styles.value}>

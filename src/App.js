@@ -8,10 +8,22 @@ import { check, telegramAuth } from './http/userAPI';
 import './App.css';
 import Footer from './components/MainComponents/Footer/Footer';
 import LoadingIndicator from './components/UI/LoadingIndicator/LoadingIndicator';
+import { postEvent } from '@telegram-apps/sdk-react';
 
 const App = observer(() => {
   const { user } = useContext(Context);
   const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    try {
+        postEvent('web_app_expand')
+        postEvent('web_app_set_header_color', {color: "#000000"});
+        postEvent('web_app_set_background_color', {color: "#000000"});
+        postEvent('web_app_setup_swipe_behavior', {allow_vertical_swipe: false});
+
+    } catch (e) {
+    }
+}, []);
 
   useEffect(() => {
     const authenticate = async () => {

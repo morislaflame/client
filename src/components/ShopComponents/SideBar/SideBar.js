@@ -13,13 +13,15 @@ import { fetchPriceRange } from '../../../http/modelProductAPI';
 const SideBar = observer(({ name, ...props }) => {
     const [show, setShow] = useState(false);
     const { model } = useContext(Context);
-    const [minPrice, setMinPrice] = useState(0);
-    const [maxPrice, setMaxPrice] = useState(10000);
+    const [minPrice, setMinPrice] = useState(null);
+    const [maxPrice, setMaxPrice] = useState(null);
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
         fetchPriceRange().then(data => {
             setMinPrice(data.minPriceUSD);
             setMaxPrice(data.maxPriceUSD);
+            setIsInitialized(true);
         }).catch(err => console.error("Error fetching price range: ", err));
     }, []);
 
@@ -28,22 +30,25 @@ const SideBar = observer(({ name, ...props }) => {
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
         }
-        setShow((s) => !s );
+        setShow((s) => !s);
     };
 
     const handleReset = () => {
         model.setSelectedCountry({});
         model.setSelectedAdultPlatforms([]);
-        model.setPriceRange({ min: minPrice, max: maxPrice });
+        if (isInitialized) {
+            model.setPriceRange({ min: minPrice, max: maxPrice });
+        }
         if (window.Telegram?.WebApp?.HapticFeedback) {
             window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');
-          }
+        }
     };
 
     const hasFilters =
         Object.keys(model.selectedCountry).length > 0 ||
         model.selectedAdultPlatforms.length > 0 ||
-        (model.priceRange.min !== minPrice || model.priceRange.max !== maxPrice);
+        (isInitialized && model.priceRange.min !== null && model.priceRange.max !== null && 
+         (model.priceRange.min !== minPrice || model.priceRange.max !== maxPrice));
 
     return (
         <>

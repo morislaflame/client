@@ -20,7 +20,7 @@ export default class ModelStore {
     totalCount = 0;
     limit = 20;
     basket = [];
-    priceRange = { min: 0, max: 10000 };
+    priceRange = { min: null, max: null };
     userPurchasedModels = [];
     purchasedModelsLoading = false;
 
@@ -145,6 +145,12 @@ export default class ModelStore {
     setPriceRange(priceRange) {
         this.setPage(1);
         this.priceRange = priceRange;
+    }
+
+    initializePriceRange(minPrice, maxPrice) {
+        if (this.priceRange.min === null || this.priceRange.max === null) {
+            this.priceRange = { min: minPrice, max: maxPrice };
+        }
     }
 
     get getUserPurchasedModels() {

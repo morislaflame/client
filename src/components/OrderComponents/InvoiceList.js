@@ -27,6 +27,10 @@ const InvoiceList = observer(({ orderId }) => {
         loadInvoices();
     }, [orderId]);
 
+    if (!loading && (!order.orderInvoices || order.orderInvoices.length === 0)) {
+        return null;
+    }
+
     const formatInvoiceOption = (invoice) => ({
         value: invoice.id.toString(),
         label: (
@@ -60,9 +64,7 @@ const InvoiceList = observer(({ orderId }) => {
                             />
                         )
                     ) : (
-                        <span className="no-info-container">
-                            {order.orderInvoices.length > 0 ? 'No invoices found' : 'No payment history'}
-                        </span>
+                        <span className="no-info-container">No invoices found</span>
                     )
                 )}
             </div>
