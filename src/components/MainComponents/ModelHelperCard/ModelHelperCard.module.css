@@ -16,6 +16,7 @@
     align-items: center;
     border-radius: var(--small-border-radius);
     position: relative;
+    gap: var(--main-gap);
   }
 
   .delete {
@@ -34,7 +35,7 @@
     height: 100%;
     align-items: center;
     gap: var(--small-gap);
-    width: 30%;
+    width: 40%;
   }
 
   .basket_item_img {
@@ -51,17 +52,18 @@
     height: 100%;
     justify-content: space-between;
     gap: var(--main-gap);
-    padding: 0 var(--main-padding);
+    align-items: center;
   }
 
-  .model_info {
+  .model_name {
     display: flex;
-    height: 100%;
-    width: 100%;
     flex-direction: column;
-    align-items: center;
     gap: var(--main-gap);
+    width: 80%;
     border-bottom: 1px solid var(--line-color);
+    border-top: 1px solid var(--line-color);
+    padding: var(--main-padding);
+    text-align: center;
   }
 
   .info_brand {
@@ -78,9 +80,15 @@
     gap: var(--big-gap);
 }
 
+.brand_item_basket {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 .brands_icons_basket {
-    width: var(--card-icon-size); /* Ширина иконки */
-    height: auto; /* Высота иконки */
+    width: var(--card-icon-size);
+    height: auto;
 }
 
   .clear_basket {

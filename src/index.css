@@ -70,7 +70,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   overflow-x: hidden;
   max-width: 100vw;
-  background-color: #030107 !important;
+  background: radial-gradient(ellipse at right top, #1c051e, black, #1a0734) !important;
 }
 
 code {
@@ -86,7 +86,7 @@ code {
 
 .container {
   display: flex;
-  background-color: #030107;
+  /* background-color: #030107; */
     flex-direction: column;
     width: 100%;
     padding: var(--main-padding) var(--main-padding) var(--big-padding);

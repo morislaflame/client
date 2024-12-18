@@ -89,7 +89,7 @@ const handleBuyNow = async (modelProduct) => {
                 const additionalInfo = (
                     modelProduct.seller?.sellerInformation && (
                         <div className={styles.seller_info}>
-                            <span>Seller: {modelProduct.seller.sellerInformation.sellerName}</span>
+                            <p>Seller: {modelProduct.seller.sellerInformation.sellerName}</p>
                         </div>
                     )
                 );
@@ -121,17 +121,16 @@ const handleBuyNow = async (modelProduct) => {
                     />
                     );
                 })}
-                <div className='container-card'>
+                {/* <div className='container-card'>
                     <div className='container-item'>
-                        <Button 
-                            danger 
+                        <Button  
                             onClick={handleClearBasket}
                             loading={isLoading}
                         >
                             Clear cart
                         </Button>
                     </div>
-                </div>
+                </div> */}
             </div>
             ) : (
                 <div className="no-info-container">Your Cart Is Empty</div>

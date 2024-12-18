@@ -52,11 +52,10 @@ const ModelHelperCard = ({
                 </div>
                 
                 <div className={styles.item_info}>
-                    <div className={styles.model_info}>
-                        <div className={styles.brands_basket}>
-                            {modelProduct.adultPlatforms && modelProduct.adultPlatforms.length > 0 ? (
-                                modelProduct.adultPlatforms.map(adultPlatform => (
-                                    <div
+                    <div className={styles.brands_basket}>
+                        {modelProduct.adultPlatforms && modelProduct.adultPlatforms.length > 0 ? (
+                            modelProduct.adultPlatforms.map(adultPlatform => (
+                                <div
                                         key={adultPlatform.id}
                                         style={brandStyles[adultPlatform.id] || { color: 'black' }}
                                         className={styles.brand_item_basket}
@@ -70,15 +69,16 @@ const ModelHelperCard = ({
                                         )}
                                     </div>
                                 ))
-                            ) : (
-                                <div>Unknown Brand</div>
-                            )}
-                        </div>
+                         ) : (
+                            <div>Unknown Brand</div>
+                        )}
+                    </div>
+                    <div className={styles.model_name}>
                         <h5 className={styles.basket_item_name}>
                             {modelProduct.name} - ${modelProduct.priceUSD}
                         </h5>
+                        {additionalInfo}
                     </div>
-                    {additionalInfo}
                     {actions && (
                         <div className={styles.model_actions}>
                             {actions}

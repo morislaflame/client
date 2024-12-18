@@ -9,6 +9,11 @@ import './App.css';
 import Footer from './components/MainComponents/Footer/Footer';
 import LoadingIndicator from './components/UI/LoadingIndicator/LoadingIndicator';
 import { postEvent } from '@telegram-apps/sdk-react';
+import gsap from 'gsap-trial';
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { useGSAP } from '@gsap/react';
+
+gsap.registerPlugin(ScrollTrigger, useGSAP);
 
 const App = observer(() => {
   const { user } = useContext(Context);

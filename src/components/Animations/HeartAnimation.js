@@ -1,6 +1,7 @@
 import gsap from 'gsap';
 
 export const playHeartAnimation = (heartRef) => {
+    
     return gsap.timeline()
         .to(heartRef.current, {
             scale: 1,

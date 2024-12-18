@@ -1,12 +1,6 @@
-:root {
-    --index: calc(1vw + 1vh);
-    --transition: transform .75s cubic-bezier(.075, .5, 0, 1);
-}
-
 
 .navbar {
     width: 100%;
-    background-color:#030107;
     padding: var(--main-padding) var(--main-padding) 0;
 }
 

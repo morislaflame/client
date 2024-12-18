@@ -6,7 +6,6 @@
     justify-content: center;
     flex-direction: column;
     overflow-x: hidden;
-    background-color: #030107;
 }
 
 .topic {
@@ -29,20 +28,7 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-}
-
-.photo {
-    width: 100%;
-}
-
-.photos {
-    border-radius: var(--main-border-radius) var(--main-border-radius) 0 0;
-    display: block;
-    width: 100% !important;
-    height: calc(var(--index) * 44) !important;
-    object-fit: cover; /* Масштабирует изображение, заполняя контейнер, сохраняя пропорции */
-    object-position: center; /* Центрирует изображение в контейнере */
-    
+    color: var(--color-text);
 }
 
 .description {
@@ -67,79 +53,11 @@
     align-items: center;
 }
 
-.brands {
-    width: 50%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: var(--main-gap);
-    padding: var(--main-padding);
-    border-right: 1px solid #7f7e7e66;
+
+.type {
+    font-weight: 500;
 }
 
-.brands_icons_container {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-around;
-}
-
-.brands_icons {
-    width: calc(var(--index) * 2); /* Ширина иконки */
-    height: auto; /* Высота иконки */
-}
-
-.des_str {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    color: var(--color-text);
-    padding: 0 var(--main-padding) var(--main-padding);
-    width: 100%;
-    border-radius: var(--main-border-radius);
-}
-
-.info_str {
-    display: flex;
-    width: 90%;
-    border-bottom: 1px solid #7f7e7e66;
-    gap: var(--main-gap);
-    font-size: var(--main-font-size);
-    min-height: calc(var(--index)* 4.5);
-}
-
-.info_str:last-child {
-    border: 0;
-}
-
-.info_str span {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
-}
-
-.info_str div {
-    width: 50%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    font-weight: var(--medium-font-weight);
-}
-
-  .add_to_card {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .shopping_card {
-    height: 100%;
-    color: var(--color-text);
-  }
 
 .type_item {
     display: flex;
@@ -150,87 +68,4 @@
     align-items: center;
     padding: calc(var(--index)* 1);
     border-left: 1px solid #7f7e7e66;
-}
-
-.type {
-    font-weight: 500;
-}
-
-.price_n_buy {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: var(--main-gap);
-   width: 100%;
-   background: linear-gradient(to right bottom, #211F25, #25032C);
-    border-radius: var(--main-border-radius);
-    padding: var(--main-padding);
-}
-
-.price {
-    font-size: var(--big-font-size);
-}
-
-.buy {
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--main-actions-button-color);
-    color: var(--color-text);
-    padding: var(--main-padding) var(--big-padding);
-    border-radius: var(--main-border-radius);
-    border: 0;
-}
-
-.buy:hover {
-    background-color: #2B2D42;
-    color: var(--color-text);
-}
-
-.inside {
-    color: var(--color-text);
-    display: flex;
-    flex-direction: column;
-    gap: var(--small-gap);
-    width: 100%;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: var(--main-border-radius);
-    
-}
-
-.warranty {
-    background-color: #211F25;
-    border: 0;
-    color: var(--color-text);
-    border-radius: var(--small-border-radius);
-    display: flex;
-    width: 100%;
-    justify-content: center;
-    align-items: center;
-    gap: var(--small-gap);
-    font-size: var(--main-font-size);
-    padding: var(--medium-padding);
-}
-
-.btn_icn {
-    color: #05ba05;
-    font-size: var(--card-price-font-size);
-}
-
-.admin_info{ 
-    display: flex;
-    margin: var(--big-margin);
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    width: 90%;
-    gap: var(--main-gap);
-    color: var(--color-text);
-}
-
-.admin_info h3 {
-    margin: 0;
 }
