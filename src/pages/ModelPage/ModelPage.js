@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useRef } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { fetchModelProductById } from '../../http/modelProductAPI';
 import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
@@ -16,7 +16,7 @@ import { IoMdLock } from "react-icons/io";
 import styles from './ModelPage.module.css';
 import { FloatButton, Button, Spin } from 'antd';
 import { LoadingOutlined } from "@ant-design/icons";
-import { CSSTransition } from 'react-transition-group';
+import { playHeartAnimation } from '../../components/Animations/HeartAnimation';
 
 const ModelPage = observer(() => {
   const [models, setModels] = useState({ info: {}, images: [], adultPlatforms: [], country: {} });
@@ -27,6 +27,9 @@ const ModelPage = observer(() => {
   const { model, user, order } = useContext(Context);
 
   const navigate = useNavigate();
+
+  // Добавляем ref для сердечка
+  const heartRef = useRef(null);
 
   useEffect(() => {
     // Scroll to top when the component mounts
@@ -77,6 +80,10 @@ const ModelPage = observer(() => {
     }
 
     setHeartAnimation(true);
+    
+    // Используем импортированную анимацию
+    playHeartAnimation(heartRef);
+
     try {
         const basketItem = model.basket.find(item => item.modelProductId === Number(id));
         
@@ -233,18 +240,8 @@ const ModelPage = observer(() => {
                 onClick={handleAddToFavorites}
                 style={{ height: '100%', padding: '0 var(--main-padding)' }}
               >
-                <CSSTransition
-                  in={heartAnimation}
-                  timeout={1000}
-                  classNames={{
-                    enter: styles.heartEnter,
-                    enterActive: styles.heartEnterActive,
-                    exit: styles.heartExit,
-                    exitActive: styles.heartExitActive,
-                  }}
-                >
-                  <div>
-                    {isInBasket ? (
+                <div ref={heartRef}>
+                {isInBasket ? (
                       <IoMdHeart 
                         style={{
                           color: '#ff0000', 
@@ -259,8 +256,7 @@ const ModelPage = observer(() => {
                         }}
                       />
                     )}
-                  </div>
-                </CSSTransition>
+                </div>
               </Button>
             </div>
             )}
