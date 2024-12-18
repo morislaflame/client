@@ -6,7 +6,7 @@ const LoadingIndicator = () => {
   return (
     <div className={styles.loading_indicator}>
       <p>Loading content, please wait...</p>
-      <img src={require('../../../icons/skelet.gif')} className={styles.loading_indicator_img} alt="Loading" />
+      <img src={require('../../../icons/loader.gif')} className={styles.loading_indicator_img} alt="Loading" />
     </div>
   );
 };
