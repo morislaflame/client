@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, Suspense } from 'react';
+import React, { useContext, useEffect, Suspense, useLayoutEffect } from 'react';
 import styles from './Shop.module.css'
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
@@ -7,6 +7,7 @@ import Pages from '../../components/ShopComponents/Pages/Pages';
 import StorySlider from '../../components/ShopComponents/StorySlider/StorySlider';
 import { FloatButton, Skeleton } from "antd";
 import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
+import gsap from 'gsap';
 
 const SideBar = React.lazy(() => import('../../components/ShopComponents/SideBar/SideBar'));
 const Reviews = React.lazy(() => import('../../components/MainComponents/Reviews/Reviews'));
@@ -30,11 +31,23 @@ const Shop = observer(() => {
     sessionStorage.setItem('currentPage', model.page);
   }, [model.page]);
 
+  useLayoutEffect(() => {
+    gsap.fromTo(".filters", {
+        opacity: 0,
+        y: 25,
+    }, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'back.inOut'
+    })
+}, [])
+
   return (
     <div className={styles.main_shop}>
       <div className={styles.shop_top}>
         <StorySlider/>
-        <div className={styles.filters}>
+        <div className='filters'>
           <Suspense fallback={<Skeleton active />}>
             <SideBar/>
           </Suspense>

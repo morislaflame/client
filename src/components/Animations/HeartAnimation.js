@@ -7,49 +7,49 @@ export const playHeartAnimation = (heartRef) => {
             scale: 1,
             rotation: -10,
             y: -10,
-            duration: 0.2,
-            ease: "none"
+            duration: 0.1,
+            ease: 'bounce.inOut'
         })
         .to(heartRef.current, {
-            scale: 1.1,
+            scale: 1,
             rotation: -15,
             y: -5,
             duration: 0.1,
-            ease: "none"
+            ease: 'bounce.inOut'
         })
         .to(heartRef.current, {
-            scale: 1.2,
+            scale: 1,
             rotation: -30,
             y: 0,
             duration: 0.1,
-            ease: "none"
+            ease: 'bounce.inOut'
         })
         .to(heartRef.current, {
             scale: 1,
             rotation: 10,
             y: -10,
-            duration: 0.2,
-            ease: "none"
+            duration: 0.1,
+            ease: 'bounce.inOut'
         })
         .to(heartRef.current, {
-            scale: 1.1,
+            scale: 1,
             rotation: 15,
             y: -5,
             duration: 0.1,
-            ease: "none"
+            ease: 'bounce.inOut'
         })
         .to(heartRef.current, {
-            scale: 1.2,
+            scale: 1,
             rotation: 30,
             y: 0,
             duration: 0.1,
-            ease: "none"
+            ease: 'bounce.inOut'
         })
         .to(heartRef.current, {
             scale: 1,
             rotation: 0,
             y: 0,
             duration: 0.2,
-            ease: "none"
+            ease: 'bounce.inOut'
         });
 };

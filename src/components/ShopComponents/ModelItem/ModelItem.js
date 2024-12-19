@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useLayoutEffect } from 'react';
 import { useNavigate } from "react-router-dom";
 import './ModelItem.css';
 import { THING_ROUTE } from "../../../utils/consts";
@@ -7,9 +7,21 @@ import FanslyIcon from '../../../icons/fansly.png';
 import OnlyIcon from '../../../icons/onlyfans.png';
 import { Skeleton } from 'antd';
 import Placeholder from '../../UI/Placeholder/Placeholder';
+import gsap from 'gsap';
 
 const ModelItem = ({model}) => {
     const navigate = useNavigate();
+
+    // useLayoutEffect(() => {
+    //     gsap.fromTo(".card_list", {
+    //         opacity: 0,
+    //         y: 25,
+    //     }, {
+    //         opacity: 1,
+    //         y: 0,
+    //         ease: 'power1.inOut'
+    //     })
+    // }, [])
 
     const previewImage = model.images && model.images.length > 0 
         ? process.env.REACT_APP_API_URL + model.images[0].img 

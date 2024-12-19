@@ -3,8 +3,8 @@ import { useNavigate } from 'react-router-dom';
 import { message } from 'antd';
 import { Context } from '../../index';
 import { LOGIN_ROUTE, ORDER_ROUTE } from '../../utils/consts';
-import { playHeartAnimation } from '../../components/Animations/HeartAnimation';
 import PurchaseSection from './PurchaseSection';
+import gsap from 'gsap';
 
 const PurchaseSectionContainer = ({ modelId, priceUSD }) => {
   const [addingToBasket, setAddingToBasket] = useState(false);
@@ -58,7 +58,20 @@ const PurchaseSectionContainer = ({ modelId, priceUSD }) => {
       }
 
       setHeartAnimation(true);
-      playHeartAnimation(heartRef);
+      gsap
+      .timeline()
+      .to(heartRef.current, {
+        scale: 1.4,
+        rotation: -10,
+        duration: 0.6,
+        ease: 'bounce.in'
+      })
+      .to(heartRef.current, {
+        scale: 1,
+        rotation: 0,
+        duration: 1,
+        ease: 'bounce.out'
+      });
 
       if (window.Telegram?.WebApp?.HapticFeedback) {
         window.Telegram.WebApp.HapticFeedback.impactOccurred('heavy');

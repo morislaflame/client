@@ -1,9 +1,10 @@
-import React, { useEffect, useState, useMemo, useCallback } from 'react';
+import React, { useEffect, useState, useMemo, useCallback, useLayoutEffect } from 'react';
 import { fetchStories } from '../../../http/storyAPI';
 import Stories from 'react-insta-stories';
 import { Button, message } from 'antd';
 import './StorySlider.css';
 import { AiFillCloseCircle } from 'react-icons/ai';
+import gsap from 'gsap';
 
 const StorySlider = () => {
   const [stories, setStories] = useState([]);
@@ -21,10 +22,21 @@ const StorySlider = () => {
       setStories(data);
     } catch (error) {
       console.error('Ошибка загрузки историй:', error);
-      // Если используете message из antd
       message.error('Не удалось загрузить истории');
     }
   }, []);
+
+  useLayoutEffect(() => {
+    gsap.fromTo(".story-circle-container", {
+        opacity: 0,
+        y: -40,
+    }, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'back.inOut'
+    })
+}, [])
 
   const formattedStories = useMemo(() => {
     return stories.map((story) => {

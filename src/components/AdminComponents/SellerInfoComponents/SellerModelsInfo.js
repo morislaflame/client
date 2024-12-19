@@ -5,6 +5,7 @@ import { Context } from '../../../index';
 import Search from '../../FuctionalComponents/Search/Search';
 import ModelItem from '../../ShopComponents/ModelItem/ModelItem';
 import ModelsSkeletonsArray from '../../UI/Skeletons/ModelsSkeletonsArray';
+import gsap from 'gsap';
 
 const SellerModelsInfo = observer(({ sellerId }) => {
     const { seller } = useContext(Context);
@@ -25,6 +26,18 @@ const SellerModelsInfo = observer(({ sellerId }) => {
         
         loadModels();
     }, [sellerId]);
+
+    useEffect(() => {
+        gsap.fromTo(".thing-list", {
+            opacity: 0,
+            y: 25,
+        }, {
+            opacity: 1,
+            y: 0,
+            duration: 0.7,
+            ease: 'back.inOut'
+        })
+    }, [])
 
     const formatModelOption = (model) => ({
         value: model.id.toString(),

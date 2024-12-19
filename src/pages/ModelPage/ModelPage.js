@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useLayoutEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { fetchModelProductById } from '../../http/modelProductAPI';
 import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
@@ -13,6 +13,8 @@ import ModelPlatforms from '../../components/ModelPageComponents/ModelPlatforms'
 import ModelInfo from '../../components/ModelPageComponents/ModelInfo';
 import AdminSection from '../../components/ModelPageComponents/AdminSection';
 import SellerRoute from '../../components/ModelPageComponents/SellerRoute';
+import { Skeleton } from 'antd';
+import gsap from 'gsap';
 
 const ModelPage = observer(() => {
   const [models, setModels] = useState({ info: {}, images: [], adultPlatforms: [], country: {} });
@@ -21,7 +23,7 @@ const ModelPage = observer(() => {
   const { model, user } = useContext(Context);
 
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
+    window.scrollTo({ top: 0, behavior: 'instant' });
   
     fetchModelProductById(id).then(data => {
       setModels(data);
@@ -33,16 +35,46 @@ const ModelPage = observer(() => {
     }
   }, [id, model, user.isAuth]);
 
+  useLayoutEffect(() => {
+    gsap.fromTo("#topic_back", {
+        opacity: 0,
+        y: -25,
+    }, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'back.inOut'
+    })
+    gsap.fromTo("#main_model", {
+        opacity: 0,
+        y: 25,
+    }, {
+        opacity: 1,
+        y: 0,
+        duration: 0.7,
+        ease: 'back.inOut'
+    })
+}, [])
+
   const isAdmin = user.isAuth && user.user.role === 'ADMIN';
 
   return (
     <div className={styles.thing_content}>
-      <div className={styles.topic_back}>
-        <BackButton style={{padding: '0'}}/>
-        <h2 className={styles.topic}>{models.name}</h2>
+      <div className={styles.topic_back} id='topic_back'>
+        {loading ? (
+          <div style={{ margin: 'var(--main-padding) var(--main-padding) 0', width: '100%', height: '100%', background: 'var(--card-background)', borderRadius: 'var(--main-border-radius)' }}>
+            <Skeleton active paragraph={{ rows: 1, width: '100%' }} />
+          </div>
+        ) : (
+          <>
+            <BackButton style={{padding: '0'}}/>
+            <h2 className={styles.topic}>{models.name}</h2>
+          </>
+        )}
+        
       </div>
-      <div className={styles.main_model}>
-        <ModelImages images={models.images} />
+      <div className={styles.main_model} id='main_model'>
+        <ModelImages images={models.images} loading={loading} />
 
         <div className={styles.description}>
           <div className={styles.brands_n_type}>
