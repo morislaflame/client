@@ -22,11 +22,36 @@ const AdminControls = () => {
         <div className={styles.search_section}>
           <h3>Admin Controls</h3>
           <div className={styles.admin_buttons}>
-            <Button onClick={() => setCountryVisible(true)}>Add country</Button>
-            <Button onClick={() => setAdultPlatformVisible(true)}>Add adult platform</Button>
-            <Button onClick={() => setStoryVisible(true)}>Add story</Button>
-            <Button onClick={() => setPromoVisible(true)}>Add promo code</Button>
-            <Button onClick={() => setModelVisible(true)}>Add model</Button>
+            <Button onClick={() => {
+              if (window.Telegram?.WebApp?.HapticFeedback) {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+              }
+              setCountryVisible(true);
+            }}>Add country</Button>
+            <Button onClick={() => {
+              if (window.Telegram?.WebApp?.HapticFeedback) {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+              }
+              setAdultPlatformVisible(true);
+            }}>Add adult platform</Button>
+            <Button onClick={() => {
+              if (window.Telegram?.WebApp?.HapticFeedback) {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+              }
+              setStoryVisible(true);
+            }}>Add story</Button>
+              <Button onClick={() => {
+              if (window.Telegram?.WebApp?.HapticFeedback) {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+              }
+              setPromoVisible(true);
+            }}>Add promo code</Button>
+            <Button onClick={() => {
+              if (window.Telegram?.WebApp?.HapticFeedback) {
+                window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+              }
+              setModelVisible(true);
+            }}>Add model</Button>
           </div>
         </div>
       </div>

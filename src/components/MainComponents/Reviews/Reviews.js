@@ -138,7 +138,12 @@ const Reviews = observer(() => {
             <div className={styles.review_header}>
                 <h2>Reviews</h2>
                 {user.isAuth && (
-                    <button type="primary" onClick={() => openReviewModal()}>Leave a feedback</button>
+                    <button type="primary" onClick={() => {
+                      if (window.Telegram?.WebApp?.HapticFeedback) {
+                        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+                      }
+                      openReviewModal()
+                    }}>Leave a feedback</button>
                 )}
             </div>
             <div style={{ maxWidth: '100%' }}>
@@ -202,12 +207,27 @@ const Reviews = observer(() => {
             <Modal 
                 title={editMode ? 'Edit feedback' : 'Write feedback'}
                 open={showReviewModal}
-                onCancel={closeReviewModal}
+                onCancel={() => {
+                  if (window.Telegram?.WebApp?.HapticFeedback) {
+                    window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+                  }
+                  closeReviewModal()
+                }}
                 footer={[
-                    <Button key="cancel" onClick={closeReviewModal}>
+                    <Button key="cancel" onClick={() => {
+                      if (window.Telegram?.WebApp?.HapticFeedback) {
+                        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+                      }
+                      closeReviewModal()
+                    }}>
                         Cancel
                     </Button>,
-                    <Button key="submit" type="primary" onClick={handleCreateOrEditReview}>
+                    <Button key="submit" type="primary" onClick={() => {
+                      if (window.Telegram?.WebApp?.HapticFeedback) {
+                        window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+                      }
+                      handleCreateOrEditReview()
+                    }}>
                         {editMode ? 'Save' : 'Send'}
                     </Button>
                 ]}

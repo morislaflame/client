@@ -1,9 +1,8 @@
-import React, { useEffect, useContext, useState, useLayoutEffect } from 'react';
+import React, { useEffect, useContext, useState } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../index';
-import styles from './OrderPage.module.css';
-import { Button, message } from 'antd';
+import { message } from 'antd';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 import OrderTags from '../../components/UI/OrderTags/OrderTags';
 import FormatDate from '../../components/UI/FormatDate/FormatDate';
@@ -13,7 +12,7 @@ import OrderPromoCode from '../../components/OrderComponents/OrderPromoCode';
 import InvoiceIframe from '../../components/OrderComponents/InvoiceIframe';
 import InvoiceList from '../../components/OrderComponents/InvoiceList';
 import LoadingIndicator from '../../components/UI/LoadingIndicator/LoadingIndicator';
-import { UpAnimation } from '../../components/Animations/UpAnimation';
+import OrderTotal from '../../components/OrderComponents/OrderTotal';
 
 const OrderPage = observer(() => {
   const { order } = useContext(Context);
@@ -34,10 +33,6 @@ const OrderPage = observer(() => {
       setLoading(false);
     }
   };
-
-  useLayoutEffect(() => {
-    UpAnimation('#order-total');
-  }, []);
 
   const handlePayment = async () => {
     try {
@@ -72,18 +67,11 @@ const OrderPage = observer(() => {
           <OrderModel modelProduct={currentOrder.modelProduct} />
         )}
         <OrderPromoCode orderId={currentOrder.id} />
-        <div className={styles.orderTotalContainer} id='order-total'>
-          <div className={styles.orderTotal} >
-            <h3>Total: ${currentOrder.totalPriceUSD}</h3>
-            <Button
-              onClick={handlePayment}
-              type="ghost"
-              loading={order.isLoadingInvoice}
-            >
-              Create Invoice
-            </Button>
-          </div>
-        </div>
+        <OrderTotal 
+          totalPriceUSD={currentOrder.totalPriceUSD}
+          onPayment={handlePayment}
+          isLoadingInvoice={order.isLoadingInvoice}
+        />
         <InvoiceList orderId={currentOrder.id} />
       </div>
       <InvoiceIframe

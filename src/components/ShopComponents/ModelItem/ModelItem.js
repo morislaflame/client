@@ -12,17 +12,6 @@ import gsap from 'gsap';
 const ModelItem = ({model}) => {
     const navigate = useNavigate();
 
-    // useLayoutEffect(() => {
-    //     gsap.fromTo(".card_list", {
-    //         opacity: 0,
-    //         y: 25,
-    //     }, {
-    //         opacity: 1,
-    //         y: 0,
-    //         ease: 'power1.inOut'
-    //     })
-    // }, [])
-
     const previewImage = model.images && model.images.length > 0 
         ? process.env.REACT_APP_API_URL + model.images[0].img 
         : null;
@@ -41,9 +30,6 @@ const ModelItem = ({model}) => {
 
     const handleClick = () => {
         navigate(THING_ROUTE + "/" + model.id);
-        if (window.Telegram?.WebApp?.HapticFeedback) {
-            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
-        }
     };
 
     return (

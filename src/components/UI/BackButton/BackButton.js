@@ -16,7 +16,7 @@ export default function BackButton() {
       navigate(SHOP_ROUTE);
     }
     if (window.Telegram?.WebApp?.HapticFeedback) {
-      window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+      window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
     }
   };
 

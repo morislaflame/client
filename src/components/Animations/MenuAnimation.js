@@ -15,11 +15,11 @@ export const MenuAnimation = () => {
         duration: 0.6,
         ease: 'back.inOut'
     });
-    gsap.fromTo('#logout_button', {
+    gsap.fromTo('#logout_container', {
         x: 25,
     }, {
         x: 0,
-        duration: 0.5,
+        duration: 0.6,
         ease: 'back.inOut'
     });
 };

@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, useLayoutEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../../index';
 import { observer } from 'mobx-react-lite';
@@ -13,7 +13,7 @@ import SellerReviewsInfo from '../../../components/AdminComponents/SellerInfoCom
 import { GiHighHeel } from 'react-icons/gi';
 import { LuClipboardList } from 'react-icons/lu';
 import { LuMessageSquare } from "react-icons/lu";
-import { DownAnimation } from '../../../components/Animations/DownAnimation';
+import SellerProfile from '../../../components/AdminComponents/SellerInfoComponents/SellerProfile';
 
 const SellerInfoPage = observer(() => {
     const { id } = useParams();
@@ -26,9 +26,6 @@ const SellerInfoPage = observer(() => {
         loadSellerInfo();
     }, [id]);
 
-    useLayoutEffect(() => {
-        DownAnimation('#seller-info');
-    }, []);
 
     const loadSellerInfo = async () => {
         try {
@@ -40,8 +37,6 @@ const SellerInfoPage = observer(() => {
             setLoading(false);
         }
     };
-
-   
 
     const isAdmin = user.isAuth && user.user.role === 'ADMIN';
 
@@ -57,36 +52,7 @@ const SellerInfoPage = observer(() => {
         <div className="container">
             <TopicBack title="Seller profile" />
             <div className="container-item" >
-                <div className={styles.seller_info} id='seller-info'>
-                    <div className={styles.seller_info_item}>
-                        <div className={styles.seller_mail_id}>
-                        {seller.sellerInfo.email && (
-                            <h4>{seller.sellerInfo.email}</h4> 
-                        )}
-                        {seller.sellerInfo.username && (
-                            <h4>@{seller.sellerInfo.username}</h4>
-                        )}
-                        {seller.sellerInfo.telegramId && (
-                            <h4>Telegram ID: {seller.sellerInfo.telegramId}</h4>
-                        )}
-                        <h4>ID: {seller.sellerInfo.id}</h4>
-                    </div>
-                    <div className={styles.seller_rating}>
-                        <span>{seller.sellerInfo.sellerInformation?.sellerRating.toFixed(1) || 0}</span>
-                            <StarRating rating={seller.sellerInfo.sellerInformation?.sellerRating.toFixed(1) || 0} readonly />
-                        </div>
-                    </div>
-                
-                    <div className={styles.seller_i}>
-                        {seller.sellerInfo.sellerInformation?.sellerName && (
-                            <span>Shop name: <strong>{seller.sellerInfo.sellerInformation.sellerName}</strong></span>
-                        )}
-                        
-                        {seller.sellerInfo.sellerInformation?.sellerInfo && (
-                            <span>Shop info: <strong>{seller.sellerInfo.sellerInformation.sellerInfo}</strong></span>
-                        )}
-                    </div>
-                </div>
+                <SellerProfile sellerInfo={seller.sellerInfo} />
 
                 <div className={styles.menu_links}>
                     <button className={styles.menu_link} onClick={() => setSelectedTab('models')}>
@@ -98,7 +64,7 @@ const SellerInfoPage = observer(() => {
                         </button>
                     )}
                     <button className={styles.menu_link} onClick={() => setSelectedTab('reviews')}>
-                    <LuMessageSquare />Reviews
+                        <LuMessageSquare />Reviews
                     </button>
                 </div>
             </div>

@@ -37,10 +37,16 @@ const SellerReviewsInfo = observer(({ sellerId }) => {
 
     const toggleShowAllReviews = () => {
         setShowAllReviews(!showAllReviews);
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+        }
     };
 
     const handleAddReview = () => {
         setIsModalVisible(true);
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+            window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+        }
     };
 
     return (

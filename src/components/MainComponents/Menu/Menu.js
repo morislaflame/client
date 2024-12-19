@@ -19,6 +19,7 @@ import { AiFillDollarCircle } from 'react-icons/ai';
 import { FaTelegram } from 'react-icons/fa';
 import { FaCartShopping } from 'react-icons/fa6';
 import { FaUsers } from 'react-icons/fa';
+import { FaSignOutAlt } from 'react-icons/fa';
 import { IoShieldCheckmarkSharp } from 'react-icons/io5';
 import BecomeSellerModal from '../../FuctionalComponents/modals/BecomeSellerModal/BecomeSellerModal';
 import { MenuAnimation } from '../../Animations/MenuAnimation';
@@ -153,18 +154,17 @@ const Menu = ({ open, onClose }) => {
         </NavLink>
         
       </div>
-      
+      <div className={styles.links_container} id='logout_container'>
         <Button
           type="primary"
           danger
           block
           onClick={handleLogout}
           style={{ fontWeight: 500 }}
-          id='logout_button'
         >
-          Log Out
+          <FaSignOutAlt /> Quit
         </Button>
-
+      </div>
       <BecomeSellerModal 
         visible={isSellerModalVisible} 
         onClose={() => setIsSellerModalVisible(false)} 

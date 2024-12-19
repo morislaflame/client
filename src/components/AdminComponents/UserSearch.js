@@ -13,13 +13,23 @@ const UserSearch = () => {
       <div className={styles.user_buttons}>
         <Button
           type="primary"
-          onClick={() => navigate(ALL_USERS_ROUTE)}
+          onClick={() => {
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+              window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+            }
+            navigate(ALL_USERS_ROUTE)
+          }}
         >
           All Users
         </Button>
         <Button
           type="primary"
-          onClick={() => navigate(ALL_SELLERS_ROUTE)}
+          onClick={() => {
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+              window.Telegram.WebApp.HapticFeedback.impactOccurred('medium');
+            }
+            navigate(ALL_SELLERS_ROUTE)
+          }}
         >
           All Sellers
         </Button>

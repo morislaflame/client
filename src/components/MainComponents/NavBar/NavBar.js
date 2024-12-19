@@ -26,7 +26,12 @@ const NavBar = observer(() => {
       <div className="navbar-content">
         <div
           className="navbar-brand"
-          onClick={() => navigate(SHOP_ROUTE)}
+          onClick={() => {
+            if (window.Telegram?.WebApp?.HapticFeedback) {
+              window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+            }
+            navigate(SHOP_ROUTE)
+          }}
           style={{ cursor: 'pointer'}}
         >
           <img src={EMM} alt="EMM" />
@@ -38,14 +43,24 @@ const NavBar = observer(() => {
               {user.user.role === 'SELLER' && (
                 <button
                   className="navbar-button"
-                  onClick={() => navigate(SELLER_ACCOUNT_ROUTE)}
+                  onClick={() => {
+                    if (window.Telegram?.WebApp?.HapticFeedback) {
+                      window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+                    }
+                    navigate(SELLER_ACCOUNT_ROUTE)
+                  }}
                 >
                     <AiFillDollarCircle />
                 </button>
               )}
               <button
                 className="navbar-button"
-                onClick={() => navigate(BASKET_ROUTE)}
+                onClick={() => {
+                  if (window.Telegram?.WebApp?.HapticFeedback) {
+                    window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+                  }
+                  navigate(BASKET_ROUTE)
+                }}
                 style={{ position: 'relative' }}
               >
                 <IoMdHeart />
@@ -73,14 +88,24 @@ const NavBar = observer(() => {
           )}
           <button
                 className="navbar-button"
-                onClick={() => setDrawerOpen(true)}
+                onClick={() => {
+                  if (window.Telegram?.WebApp?.HapticFeedback) {
+                    window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+                  }
+                  setDrawerOpen(true)
+                }}
               >
                 <PiListBold />
               </button>
         </div>
       </div>
       {/* Используем ваш существующий компонент Menu */}
-      <Menu open={drawerOpen} onClose={() => setDrawerOpen(false)} />
+      <Menu open={drawerOpen} onClose={() => {
+        if (window.Telegram?.WebApp?.HapticFeedback) {
+          window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+        }
+        setDrawerOpen(false)
+      }} />
     </div>
   );
 });

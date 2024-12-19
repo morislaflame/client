@@ -11,7 +11,12 @@ const StarRatingInput = ({ value = 0, onChange }) => {
             {[...Array(5)].map((_, index) => {
                 const ratingValue = index + 1;
                 return (
-                    <span key={index} onClick={() => onChange(ratingValue)}>
+                    <span key={index} onClick={() => {
+                        if (window.Telegram?.WebApp?.HapticFeedback) {
+                            window.Telegram.WebApp.HapticFeedback.impactOccurred('soft');
+                        }
+                        onChange(ratingValue)
+                    }}>
                         <MdStar
                             className={styles.star}
                             color={ratingValue <= (hover || value) ? "#FFD700" : "#e4e5e9"}
