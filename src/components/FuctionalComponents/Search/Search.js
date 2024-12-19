@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { AutoComplete, Spin } from 'antd';
 import { LoadingOutlined } from '@ant-design/icons';
 import styles from './Search.module.css';
+import { DownAnimation } from '../../Animations/DownAnimation';
 
 const Search = ({ 
     data,
@@ -20,6 +21,10 @@ const Search = ({
     useEffect(() => {
         setFilteredData(data);
     }, [data]);
+
+    useLayoutEffect(() => {
+        DownAnimation('#search');
+    }, []);
 
     const handleSearch = (value) => {
         setSearchValue(value);
@@ -43,7 +48,7 @@ const Search = ({
     const options = data.map(formatOption);
 
     return (
-        <div className={styles.search_section}>
+        <div className={styles.search_section} id='search'>
             <AutoComplete
                 value={searchValue}
                 options={options}

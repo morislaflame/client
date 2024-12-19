@@ -1,10 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useLayoutEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useContext } from 'react';
 import { Context } from '../../../index';
 import OrderCard from '../../OrderComponents/OrderCard/OrderCard';
 import Search from '../../FuctionalComponents/Search/Search';
 import OrdersSkeletons from '../../UI/Skeletons/OrdersSkeletons';
+import { UpAnimation } from '../../Animations/UpAnimation';
+import { DownAnimation } from '../../Animations/DownAnimation';
+
 
 const SellerOrdersInfo = observer(({ sellerId }) => {
     const { order } = useContext(Context);
@@ -26,6 +29,11 @@ const SellerOrdersInfo = observer(({ sellerId }) => {
         loadOrders();
     }, [sellerId]);
 
+    useLayoutEffect(() => {
+        UpAnimation('#seller-orders');
+        DownAnimation('#seller-orders-title');
+    }, []);
+
     const formatOrderOption = (order) => ({
         value: order.id.toString(),
         label: (
@@ -38,8 +46,8 @@ const SellerOrdersInfo = observer(({ sellerId }) => {
     });
 
     return (
-        <div className="container-item">
-            <h3>Seller Orders</h3>
+        <div className="container-item" >
+            <h3 id='seller-orders-title'>Seller Orders</h3>
             <Search 
                 data={order.userOrders}
                 setFilteredData={setFilteredOrders}
@@ -47,7 +55,7 @@ const SellerOrdersInfo = observer(({ sellerId }) => {
                 placeholder="Search by order ID or model name"
                 formatOption={formatOrderOption}
             />
-            <div className="container-item">
+            <div className="container-item" id='seller-orders'>
                 {loading ? (
                     <OrdersSkeletons count={10} />
                 ) : (

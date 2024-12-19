@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useLayoutEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import SellerReviewItem from './SellerReviewItem';
 import ReviewsSkeletons from '../UI/Skeletons/ReviewsSkeletons';
+import { UpAnimation } from '../Animations/UpAnimation';
 
 const SellerReviews = observer(() => {
     const { seller } = useContext(Context);
@@ -23,8 +24,12 @@ const SellerReviews = observer(() => {
         loadReviews();
     }, []);
 
+    useLayoutEffect(() => {
+        UpAnimation('#reviews');
+    }, []);
+
     return (
-        <div className="container-item">
+        <div className="container-item" id='reviews'>
             <h3>My Reviews</h3>
             <div className="container-item">
                 {loading ? (

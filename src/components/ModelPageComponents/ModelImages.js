@@ -23,6 +23,8 @@ const ModelImages = ({ images, loading }) => {
                 src={process.env.REACT_APP_API_URL + image.img}
                 alt={`Slide ${index + 1}`}
                 width={'100%'}
+                preview={false}
+                
               />
             </div>
           ))}

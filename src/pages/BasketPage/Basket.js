@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from 'react';
+import React, { useEffect, useState, useContext, useLayoutEffect } from 'react';
 import styles from './Basket.module.css';
 import { useNavigate } from 'react-router-dom';
 import { Context } from '../../index';
@@ -8,6 +8,7 @@ import { message, Button } from 'antd';
 import ModelHelperCard from '../../components/MainComponents/ModelHelperCard/ModelHelperCard';
 import LoadingIndicator from '../../components/UI/LoadingIndicator/LoadingIndicator';
 import { ORDER_ROUTE } from '../../utils/consts';
+import { UpAnimation } from '../../components/Animations/UpAnimation';
 
 const Basket = observer(() => {
     const { model, order } = useContext(Context);
@@ -15,8 +16,23 @@ const Basket = observer(() => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        model.loadBasket();
+        LoadBasket();
     }, [model]);
+    
+    const LoadBasket = async () => {
+        try {
+            await model.loadBasket();
+        } catch (error) {
+            message.error('Error loading basket: ' + error.message);
+        } finally {
+            setIsLoading(false);
+            
+        }
+    };
+
+    useLayoutEffect(() => {
+        UpAnimation('#basket');
+    }, []);
 
     const handleRemove = async (basketItemId) => {
         setIsLoading(true);
@@ -82,7 +98,7 @@ const handleBuyNow = async (modelProduct) => {
         <div className="container">
             <TopicBack title="Your Favorites" />
             {model.basket.length > 0 ? (
-            <div className="container-item">
+            <div className="container-item" id='basket'>
                 {model.basket.map(item => {
                     const modelProduct = item.modelProduct;
                     
@@ -121,7 +137,8 @@ const handleBuyNow = async (modelProduct) => {
                     />
                     );
                 })}
-                {/* <div className='container-card'>
+                {model.basket.length > 3 && (
+                <div className='container-card'>
                     <div className='container-item'>
                         <Button  
                             onClick={handleClearBasket}
@@ -130,7 +147,8 @@ const handleBuyNow = async (modelProduct) => {
                             Clear cart
                         </Button>
                     </div>
-                </div> */}
+                </div>
+                )}
             </div>
             ) : (
                 <div className="no-info-container">Your Cart Is Empty</div>

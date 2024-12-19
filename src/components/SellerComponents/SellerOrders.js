@@ -1,9 +1,10 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useLayoutEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import OrderCard from '../OrderComponents/OrderCard/OrderCard';
 import OrdersSkeletons from '../UI/Skeletons/OrdersSkeletons';
 import Search from '../FuctionalComponents/Search/Search';
+import { UpAnimation } from '../Animations/UpAnimation';
 
 const SellerOrders = observer(() => {
     const { seller } = useContext(Context);
@@ -24,6 +25,10 @@ const SellerOrders = observer(() => {
         loadMyOrders();
     }, []);
 
+    useLayoutEffect(() => {
+        UpAnimation('#orders');
+    }, []);
+
     const formatOrderOption = (order) => ({
         value: order.id.toString(),
         label: (
@@ -36,7 +41,7 @@ const SellerOrders = observer(() => {
     });
 
     return (
-        <div className="container-item">
+        <div className="container-item" id='orders'>
             <h3>My Orders</h3>
             <Search 
                 data={seller.myOrders}

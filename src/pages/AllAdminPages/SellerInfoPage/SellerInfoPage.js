@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState, useLayoutEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../../index';
 import { observer } from 'mobx-react-lite';
@@ -13,6 +13,7 @@ import SellerReviewsInfo from '../../../components/AdminComponents/SellerInfoCom
 import { GiHighHeel } from 'react-icons/gi';
 import { LuClipboardList } from 'react-icons/lu';
 import { LuMessageSquare } from "react-icons/lu";
+import { DownAnimation } from '../../../components/Animations/DownAnimation';
 
 const SellerInfoPage = observer(() => {
     const { id } = useParams();
@@ -21,9 +22,13 @@ const SellerInfoPage = observer(() => {
     const [selectedTab, setSelectedTab] = useState('models');
 
     useEffect(() => {
+        window.scrollTo({ top: 0, behavior: 'instant' });
         loadSellerInfo();
-        seller.loadSellerReviews(id);
     }, [id]);
+
+    useLayoutEffect(() => {
+        DownAnimation('#seller-info');
+    }, []);
 
     const loadSellerInfo = async () => {
         try {
@@ -35,6 +40,8 @@ const SellerInfoPage = observer(() => {
             setLoading(false);
         }
     };
+
+   
 
     const isAdmin = user.isAuth && user.user.role === 'ADMIN';
 
@@ -49,8 +56,8 @@ const SellerInfoPage = observer(() => {
     return (
         <div className="container">
             <TopicBack title="Seller profile" />
-            <div className="container-item">
-                <div className={styles.seller_info}>
+            <div className="container-item" >
+                <div className={styles.seller_info} id='seller-info'>
                     <div className={styles.seller_info_item}>
                         <div className={styles.seller_mail_id}>
                         {seller.sellerInfo.email && (

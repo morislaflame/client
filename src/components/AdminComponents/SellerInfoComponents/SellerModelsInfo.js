@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { observer } from 'mobx-react-lite';
-import { useContext } from 'react';
+import { useContext, useLayoutEffect } from 'react';
 import { Context } from '../../../index';
 import Search from '../../FuctionalComponents/Search/Search';
 import ModelItem from '../../ShopComponents/ModelItem/ModelItem';
 import ModelsSkeletonsArray from '../../UI/Skeletons/ModelsSkeletonsArray';
-import gsap from 'gsap';
+import { UpAnimation } from '../../Animations/UpAnimation';
+import { DownAnimation } from '../../Animations/DownAnimation';
 
 const SellerModelsInfo = observer(({ sellerId }) => {
     const { seller } = useContext(Context);
@@ -27,17 +28,10 @@ const SellerModelsInfo = observer(({ sellerId }) => {
         loadModels();
     }, [sellerId]);
 
-    useEffect(() => {
-        gsap.fromTo(".thing-list", {
-            opacity: 0,
-            y: 25,
-        }, {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: 'back.inOut'
-        })
-    }, [])
+    useLayoutEffect(() => {
+        DownAnimation('#seller-models-title');
+        UpAnimation('.thing-list');
+    }, []);
 
     const formatModelOption = (model) => ({
         value: model.id.toString(),
@@ -51,7 +45,7 @@ const SellerModelsInfo = observer(({ sellerId }) => {
 
     return (
         <div className="container-item">
-            <h3>Seller Models</h3>
+            <h3 id='seller-models-title'>Seller Models</h3>
             <Search 
                 data={seller.sellerModelProducts}
                 setFilteredData={setFilteredModels}

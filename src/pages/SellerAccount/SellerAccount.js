@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useLayoutEffect } from 'react';
 import { Context } from '../../index';
 import { observer } from 'mobx-react-lite';
 import SellerModels from '../../components/SellerComponents/SellerModels';
@@ -12,6 +12,7 @@ import ChangeInfoModal from '../../components/SellerComponents/modals/ChangeInfo
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 import StarRating from '../../components/UI/StarRating/StarRating';
 import SellerReviews from '../../components/SellerComponents/SellerReviews';
+import { DownAnimation } from '../../components/Animations/DownAnimation';
 
 const SellerAccount = observer(() => {
   const { seller } = useContext(Context);
@@ -23,12 +24,16 @@ const SellerAccount = observer(() => {
     seller.loadMyInformation();
   }, [seller]);
 
+  useLayoutEffect(() => {
+    DownAnimation('#shop_menu');
+  }, []);
+
   const { sellerInfo } = seller;
 
   return (
     <div className="container">
       <TopicBack title="Seller Account" />
-      <div className={styles.shop_menu}>
+      <div className={styles.shop_menu} id='shop_menu'>
         <div className={styles.shop_name_rating}>
           <div className={styles.shop_name}>
             <h3>{sellerInfo.sellerInformation?.sellerName}</h3>

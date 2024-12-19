@@ -14,7 +14,8 @@ import ModelInfo from '../../components/ModelPageComponents/ModelInfo';
 import AdminSection from '../../components/ModelPageComponents/AdminSection';
 import SellerRoute from '../../components/ModelPageComponents/SellerRoute';
 import { Skeleton } from 'antd';
-import gsap from 'gsap';
+import { DownAnimation } from '../../components/Animations/DownAnimation';
+import { UpAnimation } from '../../components/Animations/UpAnimation';
 
 const ModelPage = observer(() => {
   const [models, setModels] = useState({ info: {}, images: [], adultPlatforms: [], country: {} });
@@ -36,24 +37,8 @@ const ModelPage = observer(() => {
   }, [id, model, user.isAuth]);
 
   useLayoutEffect(() => {
-    gsap.fromTo("#topic_back", {
-        opacity: 0,
-        y: -25,
-    }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: 'back.inOut'
-    })
-    gsap.fromTo("#main_model", {
-        opacity: 0,
-        y: 25,
-    }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: 'back.inOut'
-    })
+    DownAnimation("#topic_back");
+    UpAnimation("#main_model");
 }, [])
 
   const isAdmin = user.isAuth && user.user.role === 'ADMIN';

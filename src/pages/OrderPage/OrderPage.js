@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useLayoutEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { useParams } from 'react-router-dom';
 import { Context } from '../../index';
@@ -12,15 +12,32 @@ import OrderModel from '../../components/OrderComponents/OrderModel';
 import OrderPromoCode from '../../components/OrderComponents/OrderPromoCode';
 import InvoiceIframe from '../../components/OrderComponents/InvoiceIframe';
 import InvoiceList from '../../components/OrderComponents/InvoiceList';
+import LoadingIndicator from '../../components/UI/LoadingIndicator/LoadingIndicator';
+import { UpAnimation } from '../../components/Animations/UpAnimation';
 
 const OrderPage = observer(() => {
   const { order } = useContext(Context);
   const { id } = useParams();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     window.scrollTo({ top: 0, behavior: 'smooth' });
-    order.getOrderById(id);
+    LoadOrder();
   }, [id]);
+
+  const LoadOrder = async () => {
+    try {
+      await order.getOrderById(id);
+    } catch (error) {
+      message.error('Error loading order: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useLayoutEffect(() => {
+    UpAnimation('#order-total');
+  }, []);
 
   const handlePayment = async () => {
     try {
@@ -34,8 +51,8 @@ const OrderPage = observer(() => {
     }
   };
 
-  if (!order.currentOrder) {
-    return <div className='no-info-container'>Loading...</div>;
+  if (loading) {
+    return <LoadingIndicator />;
   }
 
   const currentOrder = order.currentOrder;
@@ -55,8 +72,8 @@ const OrderPage = observer(() => {
           <OrderModel modelProduct={currentOrder.modelProduct} />
         )}
         <OrderPromoCode orderId={currentOrder.id} />
-        <div className={styles.orderTotalContainer}>
-          <div className={styles.orderTotal}>
+        <div className={styles.orderTotalContainer} id='order-total'>
+          <div className={styles.orderTotal} >
             <h3>Total: ${currentOrder.totalPriceUSD}</h3>
             <Button
               onClick={handlePayment}

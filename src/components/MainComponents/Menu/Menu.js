@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useLayoutEffect } from 'react';
 import { Drawer, Button } from 'antd';
 import styles from './Menu.module.css';
 import { Context } from '../../../index';
@@ -21,6 +21,7 @@ import { FaCartShopping } from 'react-icons/fa6';
 import { FaUsers } from 'react-icons/fa';
 import { IoShieldCheckmarkSharp } from 'react-icons/io5';
 import BecomeSellerModal from '../../FuctionalComponents/modals/BecomeSellerModal/BecomeSellerModal';
+import { MenuAnimation } from '../../Animations/MenuAnimation';
 
 const Menu = ({ open, onClose }) => {
   const { user } = useContext(Context);
@@ -36,9 +37,23 @@ const Menu = ({ open, onClose }) => {
     onClose(); // Закрываем Drawer после выхода
   };
 
+  useLayoutEffect(() => {
+    if (open) {
+      MenuAnimation();
+    }
+  }, [open]);
+
+  const handleLogout = () => {
+    if (window?.Telegram?.WebApp?.initData) {
+      window.Telegram.WebApp.close();
+    } else {
+      logOut();
+    }
+  };
+
   return (
     <Drawer onClose={onClose} open={open} width="auto">
-      <div className={styles.userinfo}>
+      <div className={styles.userinfo} id='userinfo'>
           <p>
             {user.user.email || user.user.username || `Telegram ID: ${user.user.telegramId}`}
           </p>
@@ -65,7 +80,7 @@ const Menu = ({ open, onClose }) => {
               </button>
             )}
       </div>
-      <div className={styles.links_container}>
+      <div className={styles.links_container} id='links_container'>
         {user.isAuth ? (
           <>
             {user.user.role === 'SELLER' && (
@@ -138,15 +153,18 @@ const Menu = ({ open, onClose }) => {
         </NavLink>
         
       </div>
-      <Button
-        type="primary"
-        danger
-        block
-        onClick={logOut}
-        style={{ fontWeight: 500 }}
-      >
-        Log Out
-      </Button>
+      
+        <Button
+          type="primary"
+          danger
+          block
+          onClick={handleLogout}
+          style={{ fontWeight: 500 }}
+          id='logout_button'
+        >
+          Log Out
+        </Button>
+
       <BecomeSellerModal 
         visible={isSellerModalVisible} 
         onClose={() => setIsSellerModalVisible(false)} 

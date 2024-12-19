@@ -1,9 +1,10 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useLayoutEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Input, Button, message, Card } from 'antd';
 import { Context } from '../../index';
 import { useContext } from 'react';
 import styles from './OrderComponents.module.css';
+import { UpAnimation } from '../Animations/UpAnimation';
 
 const OrderPromoCode = observer(({ orderId }) => {
     const { order } = useContext(Context);
@@ -11,8 +12,23 @@ const OrderPromoCode = observer(({ orderId }) => {
     const [isLoading, setIsLoading] = useState(false);
 
     useEffect(() => {
-        order.loadMyPromoCodes();
+        LoadPromoCodes();
     }, []);
+
+    useLayoutEffect(() => {
+        UpAnimation('#order-promo-code');
+    }, []);
+
+    const LoadPromoCodes = async () => {
+        setIsLoading(true);
+        try {
+            await order.loadMyPromoCodes();
+        } catch (error) {
+            message.error('Error loading promo codes: ' + error.message);
+        } finally {
+            setIsLoading(false);
+        }
+    };
 
     const handleApplyPromoCode = async (code) => {
         if (!code.trim()) {
@@ -59,7 +75,7 @@ const OrderPromoCode = observer(({ orderId }) => {
     const discountAmount = currentOrder?.discountAmountUSD || 0;
 
     return (
-        <div className='container-card'>
+        <div className='container-card' id='order-promo-code'>
             <div className='container-item'>
                 <h3>Promocode</h3>
                 <div className='container-item'>

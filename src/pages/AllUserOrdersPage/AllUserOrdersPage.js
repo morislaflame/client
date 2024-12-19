@@ -1,10 +1,11 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useLayoutEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import TopicBack from '../../components/FuctionalComponents/TopicBack/TopicBack';
 import Search from '../../components/FuctionalComponents/Search/Search';
 import OrderCard from '../../components/OrderComponents/OrderCard/OrderCard';
 import OrdersSkeletons from '../../components/UI/Skeletons/OrdersSkeletons';
+import { UpAnimation } from '../../components/Animations/UpAnimation';
 
 const AllUserOrdersPage = observer(() => {
     const { order } = useContext(Context);
@@ -32,6 +33,10 @@ const AllUserOrdersPage = observer(() => {
         }
     }, [order.orders]);
 
+    useLayoutEffect(() => {
+        UpAnimation('#orders');
+    }, []);
+
     const formatOrderOption = (order) => ({
         value: order.id.toString(),
         label: (
@@ -54,7 +59,7 @@ const AllUserOrdersPage = observer(() => {
                     placeholder="Enter order number"
                     formatOption={formatOrderOption}
                 />
-                <div className="container-item">
+                <div className="container-item" id='orders'>
                     {loading ? (
                         <OrdersSkeletons count={10} />
                     ) : filteredOrders.length > 0 ? (

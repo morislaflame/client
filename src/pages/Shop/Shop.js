@@ -7,7 +7,7 @@ import Pages from '../../components/ShopComponents/Pages/Pages';
 import StorySlider from '../../components/ShopComponents/StorySlider/StorySlider';
 import { FloatButton, Skeleton } from "antd";
 import FaqAccordion from '../../components/FuctionalComponents/FaqAccordion/FaqAccordion';
-import gsap from 'gsap';
+import { UpAnimation } from '../../components/Animations/UpAnimation';
 
 const SideBar = React.lazy(() => import('../../components/ShopComponents/SideBar/SideBar'));
 const Reviews = React.lazy(() => import('../../components/MainComponents/Reviews/Reviews'));
@@ -32,15 +32,7 @@ const Shop = observer(() => {
   }, [model.page]);
 
   useLayoutEffect(() => {
-    gsap.fromTo(".filters", {
-        opacity: 0,
-        y: 25,
-    }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: 'back.inOut'
-    })
+    UpAnimation(".filters");
 }, [])
 
   return (

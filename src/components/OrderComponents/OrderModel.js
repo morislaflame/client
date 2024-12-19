@@ -6,6 +6,8 @@ import OnlyIcon from '../../icons/onlyfans.png';
 import FanslyIcon from '../../icons/fansly.png';
 import MymIcon from '../../icons/Mym.png';
 import { THING_ROUTE } from '../../utils/consts';
+import { useLayoutEffect } from 'react';
+import { UpAnimation } from '../Animations/UpAnimation';
 
 const OrderModel = ({ modelProduct }) => {
 
@@ -23,8 +25,12 @@ const OrderModel = ({ modelProduct }) => {
         3: MymIcon
     };
 
+    useLayoutEffect(() => {
+        UpAnimation('#order-model');
+    }, []);
+
   return (
-    <div className='container-item' >
+    <div className='container-item' id='order-model'>
             <div className={styles.productCard} onClick={() => navigate(THING_ROUTE + "/" + modelProduct.id)}>
                     <>
                         {modelProduct.images && modelProduct.images[0] && (

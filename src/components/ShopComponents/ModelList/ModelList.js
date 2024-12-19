@@ -4,22 +4,14 @@ import { Context } from "../../../index";
 import ModelItem from "../ModelItem/ModelItem";
 import { fetchModelProducts } from '../../../http/modelProductAPI';
 import ModelsSkeletonsArray from '../../UI/Skeletons/ModelsSkeletonsArray';
-import gsap from 'gsap';
+import { UpAnimation } from '../../Animations/UpAnimation';
 
 const ModelList = observer(() => {
     const { model } = useContext(Context);
     const [loading, setLoading] = useState(true);
 
     useLayoutEffect(() => {
-        gsap.fromTo(".thing-list", {
-            opacity: 0,
-            y: 25,
-        }, {
-            opacity: 1,
-            y: 0,
-            duration: 0.7,
-            ease: 'back.inOut'
-        })
+        UpAnimation(".thing-list");
     }, [])
 
     useEffect(() => {

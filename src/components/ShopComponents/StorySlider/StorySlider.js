@@ -4,7 +4,7 @@ import Stories from 'react-insta-stories';
 import { Button, message } from 'antd';
 import './StorySlider.css';
 import { AiFillCloseCircle } from 'react-icons/ai';
-import gsap from 'gsap';
+import { DownAnimation } from '../../Animations/DownAnimation';
 
 const StorySlider = () => {
   const [stories, setStories] = useState([]);
@@ -21,21 +21,13 @@ const StorySlider = () => {
       const data = await fetchStories();
       setStories(data);
     } catch (error) {
-      console.error('Ошибка загрузки историй:', error);
-      message.error('Не удалось загрузить истории');
+      console.error('Error loading stories:', error);
+      message.error('Failed to load stories');
     }
   }, []);
 
   useLayoutEffect(() => {
-    gsap.fromTo(".story-circle-container", {
-        opacity: 0,
-        y: -40,
-    }, {
-        opacity: 1,
-        y: 0,
-        duration: 0.7,
-        ease: 'back.inOut'
-    })
+    DownAnimation(".story-circle-container");
 }, [])
 
   const formattedStories = useMemo(() => {

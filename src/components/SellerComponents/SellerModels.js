@@ -1,4 +1,4 @@
-import React, { useEffect, useContext, useState } from 'react';
+import React, { useEffect, useContext, useState, useLayoutEffect } from 'react';
 import { observer } from 'mobx-react-lite';
 import { Context } from '../../index';
 import SellerModelItem from './SellerModelItem';
@@ -6,6 +6,7 @@ import { message } from 'antd';
 import styles from './SellerComponents.module.css';
 import { useNavigate } from 'react-router-dom';
 import ModelsSkeletonsArray from '../UI/Skeletons/ModelsSkeletonsArray';
+import { UpAnimation } from '../Animations/UpAnimation';
 
 const SellerModels = observer(({ onAddModel }) => {
   const { seller } = useContext(Context);
@@ -27,6 +28,10 @@ const SellerModels = observer(({ onAddModel }) => {
     loadMyModelProducts();
   }, [seller]);
 
+  useLayoutEffect(() => {
+    UpAnimation('#models');
+  }, []);
+
   const handleEdit = (thing) => {
     navigate(`/seller/edit-model/${thing.id}`);
   };
@@ -43,7 +48,7 @@ const SellerModels = observer(({ onAddModel }) => {
   const { myModelProducts } = seller;
 
   return (
-    <div className={styles.models}>
+    <div className={styles.models} id='models'>
       <div className={styles.models_header}>
         <h3>My Models</h3> 
         <div className={styles.buttons}>
